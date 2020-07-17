@@ -1,0 +1,25 @@
+{
+  "name": "clmasters",
+  "version": "1.0.0",
+  "description": "clock masters management",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"No tests yet \"&& exit1",
+    "start": "node app.js",
+    "server": "nodemon app.js"
+  },
+  "repository": "git@github.com:ForeverYoung1208/clmasters.git",
+  "author": "Igor <siafin2010@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "config": "^3.3.1",
+    "express": "^4.17.1",
+    "pg": "^8.3.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.3"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.4"
+  }
+}

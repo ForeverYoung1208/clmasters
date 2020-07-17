@@ -1,0 +1,5 @@
+{
+  "port": 5000,
+  "dbpassword": "120880",
+  "dbname":"clmasters"
+}
