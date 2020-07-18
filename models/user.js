@@ -1,5 +1,7 @@
 const { Model } = require('sequelize');
 const bcrypt = require('bcryptjs');
+const config = require('config');
+
 const SALTROUNDS =  config.get('saltRounds')
 
 
@@ -18,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     static async authenticate(email, password){
       const user = await User.findOne({where: {email: email}})
       if(!user) return false
-      
+
       const { same } = await bcrypt.compare(password, user.hashedPassword)
       if(!same) return false
       return user

@@ -4,9 +4,9 @@
   "description": "clock masters management",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"No tests yet \"&& exit1",
-    "start": "node app.js",
-    "server": "nodemon app.js"
+    "client": "yarn --cwd client start",
+    "server": "nodemon app.js",
+    "dev": "concurrently \"yarn server\" \"yarn client\""
   },
   "repository": "git@github.com:ForeverYoung1208/clmasters.git",
   "author": "Igor <siafin2010@gmail.com>",
