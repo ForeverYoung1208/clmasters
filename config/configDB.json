@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "clm",
+    "password": "120880",
+    "database": "clmasters_development",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "clm",
+    "password": "120880",
+    "database": "clmasters_test",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "clm",
+    "password": "120880",
+    "database": "clmasters_production",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
