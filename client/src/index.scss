@@ -1,0 +1,24 @@
+// @import "~bootstrap/scss/bootstrap";
+// @import "./common";
+// @import "./users";
+// @import "./modal"
+
+@import "./shared/styles/variables.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+html {
+  font-size: 62.5%;  // 1rem = 10px
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: $font;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

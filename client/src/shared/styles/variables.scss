@@ -1,0 +1,8 @@
+$font: 'Comfortaa', cursive, Arial, Helvetica, sans-serif ;
+
+$main-color: #d1913c;
+$main-color-dark: darken($main-color, 20);
+$main-color-light: lighten($main-color, $amount: 25);
+
+$font-color-dark:  darken($main-color, 30);
+$font-color-light: lighten($main-color, $amount: 35);
