@@ -12,14 +12,15 @@ const app = express();
 
 app.listen(PORT, ()=>{ console.log(`App has been started on port ${PORT}`) })
 
-// to disringuish the body of post requests
-app.use(bodyParser.json())
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-)
+// app.use(bodyParser.json())
+// app.use(
+//   bodyParser.urlencoded({
+//     extended: true,
+//   })
+// )
 
+
+app.use(express.json({extended: true}))
 app.use('/api/auth', routes.auth)
 
 

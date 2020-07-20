@@ -43,6 +43,10 @@ router.post(
 })
 
 router.post('/login', async(req, res)=>{
+  console.log('[------------------req.body]', req.body);
+  const {email, password} = req.body
+
+
   try{
     user = await User.authenticate(email, password)
     if(!user) return res.status(400).json({ message: 'not authenticated!' })
@@ -52,18 +56,16 @@ router.post('/login', async(req, res)=>{
       JWTSECRET,
       {expiresIn: '1h'}
     )     
-
     res.status(200).json({token, user:{id: user.id, email:user.email}})
 
-
-
   } catch (e){
-    res.status(500).json({message: 'Something wrong in auth/login'})
+    console.log( '[-----------error]', e );    
+    res.status(500).json({message: 'Something wrong in auth/login: [server error:]'+ e.message})
   }
 })
 
 
-router.get('/users',async(req, res)=>{
+router.get('/users', async(req, res)=>{
   const users = await User.findAll();
 
   // const users = await User.findAll({

@@ -1,5 +1,4 @@
 import React from 'react';
-import AuthPage from "./pages/authPage";
 import './App.scss';
 import { useRoutes } from './routes';
 import { BrowserRouter } from 'react-router-dom';
