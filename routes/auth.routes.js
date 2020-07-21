@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const config = require('config');
 const { User } = require('../models/index');
-const user = require('../models/user');
+// const user = require('../models/user');
 
 const router = Router()
 const JWTSECRET = config.get('jwtSecret')
@@ -45,21 +45,16 @@ router.post(
 router.post('/login', async(req, res)=>{
   console.log('[------------------req.body]', req.body);
   const {email, password} = req.body
-
-
   try{
-    user = await User.authenticate(email, password)
-    if(!user) return res.status(400).json({ message: 'not authenticated!' })
-
+    const {isAuthenticated, user, message} = await User.authenticate(email, password)
+    if(!isAuthenticated) return res.status(400).json({ message: `Not authenticated (${message})!` })
     const token = jwt.sign(
       { userEmail: user.email },
       JWTSECRET,
       {expiresIn: '1h'}
-    )     
-    res.status(200).json({token, user:{id: user.id, email:user.email}})
-
+    ) 
+    return res.status(200).json({token, user:{id: user.id, name:user.name, email:user.email}})
   } catch (e){
-    console.log( '[-----------error]', e );    
     res.status(500).json({message: 'Something wrong in auth/login: [server error:]'+ e.message})
   }
 })
@@ -67,15 +62,8 @@ router.post('/login', async(req, res)=>{
 
 router.get('/users', async(req, res)=>{
   const users = await User.findAll();
-
-  // const users = await User.findAll({
-  //   where:{ email: 'siafin2010@gmail.com' }
-  // });
   res.status(200).json(users)
 })
 
-
-
- 
 
 module.exports = router

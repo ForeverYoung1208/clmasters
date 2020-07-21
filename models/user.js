@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
 
     static async authenticate(email, password){
       const user = await User.findOne({where: {email: email}})
-      if(!user) return false
+      if(!user) return {isAuthenticated:false, user:null, message:'User email not found'}
 
-      const { same } = await bcrypt.compare(password, user.hashedPassword)
-      if(!same) return false
-      return user
+      const isAuthenticated = await bcrypt.compare(password, user.password)
+
+      return {isAuthenticated, user, message: isAuthenticated ? '' : 'Wrong password'}
     }    
 
     static async exists(email){
@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.init({
     email: DataTypes.STRING,
+    name: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
     sequelize,

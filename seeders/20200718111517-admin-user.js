@@ -5,15 +5,7 @@ const SALTROUNDS =  config.get('saltRounds')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
+    //Add seed commands here.
 
     await queryInterface.bulkInsert('Users', 
       [
@@ -33,12 +25,8 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    // Add commands to revert seed here.
+
     await queryInterface.bulkDelete('Users', {email: ['siafin2010@gmail.com','admin@example.com']}, {});
 
   }

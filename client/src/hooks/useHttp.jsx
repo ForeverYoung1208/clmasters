@@ -13,8 +13,16 @@ export const useHttp = () => {
       setIsLoading(true)
 
       body && JSON.stringify(body)
-      headers['Content-Type']= 'application/json'
-      const res = await fetch( url, { method, body, headers })
+      // headers['Content-Type']= 'application/json'
+      // Access-Control-Allow-Origin
+      headers = {
+        ...headers,
+        'Content-Type': 'application/json',
+      }
+
+
+
+      const res = await fetch( 'http://localhost:5000'+url, { method, body, headers})
       const data = await res.json();
       setIsLoading(false)
 
