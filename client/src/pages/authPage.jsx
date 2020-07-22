@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { Card } from '../ui/card';
+import React, { useState, useContext } from 'react'
 
+import { Card } from '../ui/card';
 import { useHttp } from '../hooks/useHttp'
+import { AuthContext } from '../context/contexts';
 
 import './authPage.scss'
 
@@ -11,6 +12,7 @@ const AuthPage = () =>{
     password:'',
   })
   const {isLoading, request} = useHttp()
+  const { auth } =useContext(AuthContext)
 
   const changeHandler = (e) =>{
     setFormData({
@@ -21,8 +23,10 @@ const AuthPage = () =>{
 
   const submitHandler = async () =>{
     try {
-      const data = await request('/api/auth/login', 'POST', JSON.stringify({...formData}) )
-      console.log('[data]', data);
+      const { user } = await request('/api/auth/login', 'POST', JSON.stringify({...formData}) )
+      console.log('[data]', user);
+      auth.setCurrentUser({id:user.id, email:user.email, name:user.name, token:user.token})
+
     } catch (err) {
       console.log('[err]', err);
     }
