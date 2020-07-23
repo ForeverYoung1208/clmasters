@@ -11,7 +11,7 @@ const AuthPage = () =>{
     email:'',
     password:'',
   })
-  const {isLoading, request} = useHttp()
+  const { isLoading, request } = useHttp()
   const { auth } =useContext(AuthContext)
 
   const changeHandler = (e) =>{
@@ -24,14 +24,13 @@ const AuthPage = () =>{
   const submitHandler = async () =>{
     try {
       const { user } = await request('/api/auth/login', 'POST', JSON.stringify({...formData}) )
-      console.log('[data]', user);
-      auth.setCurrentUser({id:user.id, email:user.email, name:user.name, token:user.token})
+      auth.login({id:user.id, email:user.email, name:user.name, token:user.token})
 
     } catch (err) {
       console.log('[err]', err);
     }
   }
-  
+    
   return(
       <div className='authPage'>
         <Card
@@ -44,7 +43,8 @@ const AuthPage = () =>{
             <label htmlFor="password">Password</label>
             <input type="password" name="password" id="password"  onChange={changeHandler}  disabled={isLoading}/>
 
-            <button type="button" onClick={submitHandler} disabled={isLoading}> Submit </button>
+            <button type="button" onClick={submitHandler} disabled={isLoading}> Login </button>
+            <button type="button" onClick={auth.logout} disabled={isLoading}> Logout </button>
           </form>
         </Card>
 

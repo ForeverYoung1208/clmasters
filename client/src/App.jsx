@@ -1,29 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.scss';
-import { useRoutes } from './routes';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContext } from './context/contexts';
 
-
+import { useRoutes } from './routes';
+import { useAuth } from './hooks/useAuth';
+import Header from './components/header';
 
 function App() {
+
   const routes = useRoutes(false);
 
   
-  const [currentUser, setCurrentUser] = useState({
-    id:null,
-    name:null,
-    token:null
-  })
-  
-  
+  // const [currentUser, setCurrentUser] = useState({
+  //   id:null,
+  //   name:null,
+  //   token:null
+  // })
+  const {currentUser, login, logout} = useAuth();
+ 
   return (
-    <AuthContext.Provider value={ {auth:{currentUser, setCurrentUser}} }>
+    <AuthContext.Provider value={ {auth:{currentUser, login, logout}} }>
     
       <div className = 'app-wrapper'> 
-        <div className='app-toolbar'> toolbar </div>
+        <div className='app-header'> 
+          <Header/>
+        </div>
         <div className="app-content">
-          {'current user:' + JSON.stringify(currentUser.email)}
+          {/* {'current user:' + (currentUser ? JSON.stringify(currentUser.email) : '')} */}
         <BrowserRouter>
           {routes}
         </BrowserRouter>
