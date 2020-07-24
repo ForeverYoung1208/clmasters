@@ -1,4 +1,6 @@
 import React from 'react'
+import PT from 'prop-types';
+
 import './card.scss'
 
 export const Card = (props)=> (
@@ -7,3 +9,13 @@ export const Card = (props)=> (
     {props.children}
   </div>
 )
+
+Card.propTypes = {
+  header: PT.string,
+  children: PT.oneOfType([
+    PT.arrayOf(PT.node),
+    PT.node
+  ]).isRequired
+};
+
+export default Card;

@@ -11,28 +11,22 @@ function App() {
 
   const routes = useRoutes(false);
 
-  
-  // const [currentUser, setCurrentUser] = useState({
-  //   id:null,
-  //   name:null,
-  //   token:null
-  // })
   const {currentUser, login, logout} = useAuth();
  
   return (
     <AuthContext.Provider value={ {auth:{currentUser, login, logout}} }>
     
-      <div className = 'app-wrapper'> 
-        <div className='app-header'> 
+      <div className = 'app'> 
+        <div className='app__header'> 
           <Header/>
         </div>
-        <div className="app-content">
+        <div className="app__content">
           {/* {'current user:' + (currentUser ? JSON.stringify(currentUser.email) : '')} */}
         <BrowserRouter>
           {routes}
         </BrowserRouter>
         </div>
-        <footer className="app-footer"> footer here </footer>
+        <footer className="app__footer"> By Ihor S., 2020 </footer>
       </div>
     </AuthContext.Provider>
   );

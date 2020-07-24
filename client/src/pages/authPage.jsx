@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react'
 import { Card } from '../ui/card';
 import { useHttp } from '../hooks/useHttp'
 import { AuthContext } from '../context/contexts';
+import Button from '../ui/button';
 
 import './authPage.scss'
 
@@ -43,8 +44,8 @@ const AuthPage = () =>{
             <label htmlFor="password">Password</label>
             <input type="password" name="password" id="password"  onChange={changeHandler}  disabled={isLoading}/>
 
-            <button type="button" onClick={submitHandler} disabled={isLoading}> Login </button>
-            <button type="button" onClick={auth.logout} disabled={isLoading}> Logout </button>
+            <Button type="button" onClick={submitHandler} disabled={isLoading}>Login</Button>
+            {/* <button type="button" onClick={auth.logout} disabled={isLoading}> Logout </button> */}
           </form>
         </Card>
 

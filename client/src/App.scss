@@ -1,29 +1,32 @@
 @import "./shared/styles/variables.scss";
 
-.app-wrapper{
+.app{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
-}
-
-.app-header{
-  background-color: $main-color-dark;
-  // background-color: rgb(148, 130, 96);;
-}
-
-.app-content{
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  // background-color: rgb(255, 225, 169);
-  background: #d1913c; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #d1913c, #ffd194); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #d1913c, #ffd194); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
-.app-footer{
-  background-color: $main-color-light;
+  
+  &__header{
+    background-color: $main-color-dark;
+    // background-color: rgb(148, 130, 96);;
+  }
+  
+  &__content{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    // background-color: rgb(255, 225, 169);
+    background: #d1913c; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #d1913c, #ffd194); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #d1913c, #ffd194); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+  
+  &__footer{
+    background-color: $main-color-light;
+    text-align: center;
+    color: $font-color-dark;
+    padding-top: 0.5rem;
+  }
 }

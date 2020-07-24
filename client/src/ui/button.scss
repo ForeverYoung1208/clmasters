@@ -1,0 +1,12 @@
+@import "../shared/styles/variables.scss";
+.btn-sm{
+  border: solid 1px $main-color-dark;
+  padding: 1rem;
+  background-color: rgba($main-color-dark, $alpha: 0.1);
+
+  &:active{
+    background-color: rgba($main-color-dark, $alpha: 0.4);
+    box-shadow: -0px 0px 1px 2px $main-color-dark inset;
+  }
+
+}
