@@ -1,0 +1,39 @@
+@import "../../../shared/styles/variables.scss";
+.menu__menuItem{
+  font-weight: 600;
+  color: $font-color-light;
+  text-shadow: -1px 1px 2px black;  
+  margin-right: 4rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.8rem;
+  transition: border 200ms ease-in-out;
+  position: relative;
+  
+  &::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0px;
+    left: 0;
+    background: $font-color-light;
+    visibility: hidden;
+    border-radius: 5px;
+    transform: scaleX(0);
+
+    transition: .25s linear;
+  }
+  &:hover::before{
+    visibility: visible;
+    transform: scaleX(1);
+    bottom: -3px;
+  }
+  
+  &__active{
+    color: $font-color-light;
+    text-shadow: -1px 1px 3px white;  
+
+  }
+  
+}

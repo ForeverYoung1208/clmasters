@@ -1,15 +1,15 @@
 import React from 'react';
 import { Card } from '../ui/card';
 
-import './orderPage.scss';
+import './mastersPage.scss';
 
 const OrderPage = () => {
     return (
-        <div className="orderPage">
+        <div className="mastersPage">
           <Card
-            header = "Order Page here"
+            header = "Masters Page here"
           >  
-            Order Page text here
+            Masters Page text here
           </Card>
         </div>
     );

@@ -10,23 +10,22 @@ import Header from './components/header';
 function App() {
 
   const routes = useRoutes(false);
-
   const {currentUser, login, logout} = useAuth();
- 
+
   return (
-    <AuthContext.Provider value={ {auth:{currentUser, login, logout}} }>
-    
+    <AuthContext.Provider value={  {auth:{currentUser, login, logout}}  }>
       <div className = 'app'> 
         <div className='app__header'> 
           <Header/>
         </div>
         <div className="app__content">
-          {/* {'current user:' + (currentUser ? JSON.stringify(currentUser.email) : '')} */}
-        <BrowserRouter>
-          {routes}
-        </BrowserRouter>
+          <BrowserRouter>
+            {routes}
+          </BrowserRouter>
         </div>
-        <footer className="app__footer"> By Ihor S., 2020 </footer>
+        <footer className="app__footer"> 
+          By Ihor S., 2020 
+        </footer>
       </div>
     </AuthContext.Provider>
   );

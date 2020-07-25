@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-// import { AuthContext } from '../context/contexts';
-
-import './header.scss';
 import logoImg from '../img/glow_clock2.png';
-import Button from '../ui/button';
+import Menu from './header/menu';
 import UserInfo from './header/userInfo';
 
+import './header.scss';
+
 const Header = () => {
-  // const { auth } = useContext(AuthContext)
 
   return (
       <div className="header">
@@ -17,12 +15,11 @@ const Header = () => {
           <div className="caption"> Clock Masters</div>
         </div>
         <div className="header__menu">
-          menu here
-
+          <Menu/>
         </div>
-        <UserInfo/>
-
-          
+        <div className="header__user-info">
+          <UserInfo/>
+        </div>
       </div>
   );
 };

@@ -6,3 +6,7 @@ $main-color-light: lighten($main-color, $amount: 25);
 
 $font-color-dark:  darken($main-color, 30);
 $font-color-light: lighten($main-color, $amount: 35);
+
+$button-color-main: #e9cba5;
+$button-color-pressed: #9b7f5a;
+
