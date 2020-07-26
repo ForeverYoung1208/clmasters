@@ -40,5 +40,37 @@
     align-items: flex-end ;
     width: 30rem;
     margin-right: 1rem;
+    &__hide{
+      transform: translateX(200px);
+      transition: transform 300ms;
+    }
   }  
+}
+
+
+.userInfoTransition-enter {
+  opacity: 0.01;
+}
+
+.userInfoTransition-enter.userInfoTransition-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.userInfoTransition-leave {
+  opacity: 1;
+}
+
+.userInfoTransition-leave.userInfoTransition-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+.userInfoTransition-appear {
+  opacity: 0.01;
+}
+
+.userInfoTransition-appear.userInfoTransition-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
 }

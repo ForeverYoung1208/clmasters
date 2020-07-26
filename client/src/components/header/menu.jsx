@@ -8,15 +8,14 @@ import './menu.scss';
 
 const Menu = () => {
   const { auth } =useContext(AuthContext)
-  const {menuItems, setActiveMenu} = useMenu();
+  const { menuItems } = useMenu();
   return (
     <div className="menu">
       {menuItems.items.map( mi => 
         <MenuItem
           key={mi.name}
           isShown = {!mi.isForAdmin ? true : !!(auth.currentUser&&auth.currentUser.isAdmin)}
-          isActive = {true}
-          onClick = {()=>alert(`clicked ${mi.name}`)}    
+          path={mi.path}
         >
           {mi.name}
         </MenuItem> 

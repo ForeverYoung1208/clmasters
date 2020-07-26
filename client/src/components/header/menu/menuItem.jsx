@@ -1,24 +1,26 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import './menuItem.scss';
 import PT from 'prop-types';
 
 export const MenuItem = (props) => {
 
-  let clases = ['menu__menuItem']
-  if(props.isActive) clases.push('active')
-
   return (
     props.isShown &&
-      <div className={clases.join(' ')} onClick={props.onClick}>
+      <NavLink
+        to={props.path}
+        // exact=true
+        className="menu__menuItem"
+        activeClassName="menu__menuItem__active"
+      >
         {props.children}
-      </div>
+      </NavLink> 
   )
 };
 
 MenuItem.propTypes={
   children: PT.node.isRequired,
   isShown: PT.bool.isRequired,
-  isActive: PT.bool.isRequired,
-  onClick: PT.func.isRequired
+  path: PT.string.isRequired
 }
 

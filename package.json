@@ -12,6 +12,7 @@
   "author": "Igor <siafin2010@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "add": "^2.0.6",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.1",
     "express": "^4.17.1",
@@ -19,7 +20,9 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.3.3"
+    "react-addons-css-transition-group": "^15.6.2",
+    "sequelize": "^6.3.3",
+    "yarn": "^1.22.4"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",

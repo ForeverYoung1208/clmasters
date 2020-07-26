@@ -15,17 +15,17 @@ function App() {
   return (
     <AuthContext.Provider value={  {auth:{currentUser, login, logout}}  }>
       <div className = 'app'> 
-        <div className='app__header'> 
-          <Header/>
-        </div>
-        <div className="app__content">
           <BrowserRouter>
-            {routes}
+            <div className='app__header'> 
+              <Header/>
+            </div>
+            <div className="app__content">
+                {routes}
+            </div>
+            <footer className="app__footer"> 
+              By Ihor S., 2020 
+            </footer>
           </BrowserRouter>
-        </div>
-        <footer className="app__footer"> 
-          By Ihor S., 2020 
-        </footer>
       </div>
     </AuthContext.Provider>
   );

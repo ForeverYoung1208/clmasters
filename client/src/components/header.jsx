@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import logoImg from '../img/glow_clock2.png';
 import Menu from './header/menu';
@@ -18,7 +19,15 @@ const Header = () => {
           <Menu/>
         </div>
         <div className="header__user-info">
-          <UserInfo/>
+          <ReactCSSTransitionGroup
+            transitionAppear={true}
+            transitionAppearTimeout={500}            
+            transitionName="userInfoTransition"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+            <UserInfo key='userInfo'/>
+          </ReactCSSTransitionGroup>
         </div>
       </div>
   );
