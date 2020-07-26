@@ -1,15 +1,25 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/contexts';
+import { CSSTransition } from 'react-transition-group';
 
 import './userInfo.scss';
 
 const UserInfo = () => {
   const { auth } = useContext(AuthContext)
   return (
-    <>
-      {auth.currentUser && <div className="userinfo-email">{auth.currentUser.email}</div>}
-      {auth.currentUser && <button onClick={auth.logout}> Log out</button>}
-    </>
+    <CSSTransition
+    in={!!auth.currentUser}
+    timeout={300}
+    classNames="appear"
+    unmountOnExit            
+    >
+
+      <>
+        {auth.currentUser && <div className="userinfo-email">{auth.currentUser.email}</div>}
+        {<button onClick={auth.logout}> Log out</button>}
+      </>
+    </CSSTransition>
+
   );
 };
 

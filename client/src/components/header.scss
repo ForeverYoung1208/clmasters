@@ -47,30 +47,20 @@
   }  
 }
 
-
-.userInfoTransition-enter {
-  opacity: 0.01;
+.appear-enter {
+  opacity: 0;
+  transform: scale(0.9);
 }
-
-.userInfoTransition-enter.userInfoTransition-enter-active {
+.appear-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
 }
-
-.userInfoTransition-leave {
+.appear-exit {
   opacity: 1;
 }
-
-.userInfoTransition-leave.userInfoTransition-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
-}
-
-.userInfoTransition-appear {
-  opacity: 0.01;
-}
-
-.userInfoTransition-appear.userInfoTransition-appear-active {
-  opacity: 1;
-  transition: opacity .5s ease-in;
+.appear-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
 }
