@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom';
 
 import { Card } from '../ui/card';
 import { useHttp } from '../hooks/useHttp'
@@ -14,6 +15,7 @@ const AuthPage = () =>{
   })
   const { isLoading, request } = useHttp()
   const { auth } =useContext(AuthContext)
+  const history = useHistory()
 
   const changeHandler = (e) =>{
     setFormData({
@@ -25,7 +27,8 @@ const AuthPage = () =>{
   const submitHandler = async () =>{
     try {
       const { user } = await request('/api/auth/login', 'POST', JSON.stringify({...formData}) )
-      auth.login({id:user.id, email:user.email, name:user.name, token:user.token})
+      auth.login(user)
+      history.push('/user')
 
     } catch (err) {
       console.log('[err]', err);

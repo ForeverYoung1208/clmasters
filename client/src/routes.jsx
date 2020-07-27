@@ -10,44 +10,28 @@ import MastersPage from './pages/mastersPage';
 // { name:'Administration', path:'/admin'}
 
 
-export const useRoutes = (isAuthenticated) => {
-  if( isAuthenticated ){
-    return (
-      <Switch>
-        <Route path="/info" exact>
-          <div>info page here</div>
-          {/* <InfoPage/> */}
-        </Route>
-        <Route path="/masters" exact>
-          <MastersPage/>
-        </Route>
-        <Route path="/login" exact>
-          <AuthPage/>
-        </Route>
-        <Route path="/admin" exact>
-          <AdminPage/>
-        </Route>
-        <Redirect to = "/info"/>
-      </Switch>
-    ) 
-  } else {
-    return (
-      <Switch>
-        <Route path="/info" exact>
-          <div>info page here</div>
-          {/* <InfoPage/> */}
-        </Route>
-        <Route path="/masters" exact>
-          <MastersPage/>
-        </Route>
-        <Route path="/login" exact>
-          <AuthPage/>
-        </Route>
-        <Redirect to = "/info"/>
-
-      </Switch>
-    ) 
-  }
+export const useRoutes = (currentUser) => {
+  return (
+    <Switch>
+      <Route path="/info" exact>
+        <div>info page here</div>
+        {/* <InfoPage/> */}
+      </Route>
+      <Route path="/masters" exact>
+        <MastersPage/>
+      </Route>
+      <Route path="/login" exact>
+        <AuthPage/>
+      </Route>
+      <Route path="/user" exact>
+        UserPage
+      </Route>
+      {currentUser?.isAdmin && <Route path="/admin" exact>
+        <AdminPage/>
+      </Route>}
+      <Redirect to = "/info"/>
+    </Switch>
+  ) 
 }
 
 export default useRoutes;

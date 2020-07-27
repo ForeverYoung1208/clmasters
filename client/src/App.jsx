@@ -9,9 +9,9 @@ import Header from './components/header';
 
 function App() {
 
-  const routes = useRoutes(false);
   const {currentUser, login, logout} = useAuth();
-
+  const routes = useRoutes(currentUser);
+  
   return (
     <AuthContext.Provider value={  {auth:{currentUser, login, logout}}  }>
       <div className = 'app'> 

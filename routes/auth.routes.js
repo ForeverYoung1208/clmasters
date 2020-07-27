@@ -53,7 +53,7 @@ router.post('/login', async(req, res)=>{
       JWTSECRET,
       {expiresIn: '1h'}
     ) 
-    return res.status(200).json({user:{id: user.id, name:user.name, email:user.email, token}})
+    return res.status(200).json({user:{id: user.id, name:user.name, email:user.email, isAdmin:user.isAdmin, token}})
   } catch (e){
     res.status(500).json({message: 'Something wrong in auth/login: [server error:]'+ e.message})
   }

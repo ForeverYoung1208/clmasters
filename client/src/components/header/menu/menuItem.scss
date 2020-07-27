@@ -9,6 +9,7 @@
   font-size: 1.8rem;
   transition: border 200ms ease-in-out;
   position: relative;
+  white-space: nowrap;
   
   &::before{
     content: "";
@@ -22,7 +23,7 @@
     border-radius: 5px;
     transform: scaleX(0);
 
-    transition: .25s linear;
+    transition: .10s linear;
   }
   &:hover::before{
     visibility: visible;

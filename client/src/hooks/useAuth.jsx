@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react';
 export const useAuth = () => {
   
-  // const [currentUser, setCurrentUser] = useState({
-  //   id:null,
-  //   name:null,
-  //   email:null,
-  //   token:null,
-  //   isAdmin:false
-  // })
   const [currentUser, setCurrentUser] = useState()
 
   const login = (user) => {
