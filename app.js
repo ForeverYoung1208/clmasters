@@ -1,11 +1,14 @@
 const express = require('express');
 const config = require('config');
-const bodyParser = require('body-parser')
+// const bodyParser = requires('body-parser')
+const path = require('path')
 
 const routes = {
   auth: require('./routes/auth.routes')
 }
+
 //----------------------------------------------------------------------------
+
 const PORT = config.get('port') || 5000
 const app = express();
 
@@ -21,8 +24,18 @@ app.use(function(req, res, next) {
 app.use(express.json({extended: true}))
 app.use('/api/auth', routes.auth)
 
+// app.get('/', (request, response) => {
+//   response.json({ info: 'Node.js, Express, and Postgres API' })
+// })
 
-app.get('/', (request, response) => {
-  response.json({ info: 'Node.js, Express, and Postgres API' })
-})
+//----------------------------------------------------------------------------
 
+if(process.env.NODE_ENV === 'production'){
+  app.use('/', express.static( path.join(__dirname,'client', 'build') ))
+
+  app.get('*', (req, res)=>{
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+ 
+
+}

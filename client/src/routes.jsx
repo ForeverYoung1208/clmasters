@@ -15,7 +15,6 @@ export const useRoutes = (currentUser) => {
     <Switch>
       <Route path="/info" exact>
         <div>info page here</div>
-        {/* <InfoPage/> */}
       </Route>
       <Route path="/masters" exact>
         <MastersPage/>
@@ -26,9 +25,10 @@ export const useRoutes = (currentUser) => {
       <Route path="/user" exact>
         UserPage
       </Route>
-      {currentUser?.isAdmin && <Route path="/admin" exact>
-        <AdminPage/>
-      </Route>}
+      { currentUser?.isAdmin && <Route path="/admin" exact>
+          <AdminPage/>
+        </Route>
+      }
       <Redirect to = "/info"/>
     </Switch>
   ) 
