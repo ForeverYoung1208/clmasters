@@ -1,12 +1,12 @@
 import React from 'react';
 
-import logoImg from '../img/glow_clock2.png';
-import Menu from './header/menu';
-import UserInfo from './header/userInfo';
+import logoImg from '../../img/glow_clock2.png';
+import Menu from './Menu/Menu';
+import UserInfo from './UserInfo/UserInfo';
 
-import './header.scss';
+import './Header.scss';
 
-const Header = () => {
+export const Header = () => {
 
   return (
       <div className="header">
@@ -23,6 +23,3 @@ const Header = () => {
       </div>
   );
 };
-
-
-export default Header;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card } from '../ui/card';
+import { Card } from '../../components/Card/Card';
 
-import './mastersPage.scss';
+import './MastersPage.scss';
 
 const OrderPage = () => {
     return (

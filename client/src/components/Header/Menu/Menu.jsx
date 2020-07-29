@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 
-import { useMenu } from '../../hooks/useMenu';
-import { MenuItem } from "./menu/menuItem";
-import { AuthContext } from '../../context/contexts';
+import { AuthContext } from '../../../context/contexts';
 import { CSSTransition } from 'react-transition-group';
+import { useMenu } from '../../../hooks/useMenu';
+import { MenuItem } from './MenuItem/MenuItem';
 
-import './menu.scss';
+import './Menu.scss';
 
 const Menu = () => {
   const { auth } =useContext(AuthContext)

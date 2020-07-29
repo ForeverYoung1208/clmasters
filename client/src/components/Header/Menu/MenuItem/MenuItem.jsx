@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './menuItem.scss';
 import PT from 'prop-types';
+
+import './MenuItem.scss';
 
 export const MenuItem = (props) => {
 

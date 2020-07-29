@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { AuthContext } from '../../context/contexts';
+import { AuthContext } from '../../../context/contexts';
 import { CSSTransition } from 'react-transition-group';
 
-import './userInfo.scss';
+import './UserInfo.scss';
 
 const UserInfo = () => {
   const { auth } = useContext(AuthContext)

@@ -5,7 +5,7 @@ import { AuthContext } from './context/contexts';
 
 import { useRoutes } from './routes';
 import { useAuth } from './hooks/useAuth';
-import Header from './components/header';
+import { Header } from './components/Header/Header';
 
 function App() {
 

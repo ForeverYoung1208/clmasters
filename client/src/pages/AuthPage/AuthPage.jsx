@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom';
 
-import { Card } from '../ui/card';
-import { useHttp } from '../hooks/useHttp'
-import { AuthContext } from '../context/contexts';
-import Button from '../ui/button';
+import { Card } from '../../components/Card/Card';
+import { Button } from '../../components/Button/Button';
+import { useHttp } from '../../hooks/useHttp'
+import { AuthContext } from '../../context/contexts';
 
-import './authPage.scss'
+import './AuthPage.scss'
 
 const AuthPage = () =>{
   const [formData, setFormData] = useState({

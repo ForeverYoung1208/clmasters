@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card } from '../ui/card';
+import { Card } from '../../components/Card/Card';
 
-import './adminPage.scss';
+import './AdminPage.scss';
 
 const AdminPage = () => {
     return (

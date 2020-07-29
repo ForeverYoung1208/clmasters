@@ -1,11 +1,13 @@
 const express = require('express');
 const config = require('config');
-// const bodyParser = requires('body-parser')
 const path = require('path')
 
 const routes = {
   auth: require('./routes/auth.routes')
 }
+
+console.log('process.env.REACT_APP_API_PORT:', process.env.REACT_APP_API_PORT);
+console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
 
 //----------------------------------------------------------------------------
 
@@ -23,10 +25,6 @@ app.use(function(req, res, next) {
 
 app.use(express.json({extended: true}))
 app.use('/api/auth', routes.auth)
-
-// app.get('/', (request, response) => {
-//   response.json({ info: 'Node.js, Express, and Postgres API' })
-// })
 
 //----------------------------------------------------------------------------
 

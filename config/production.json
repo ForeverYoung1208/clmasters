@@ -1,5 +1,3 @@
 {
-  "port": 5001,
-  "saltRounds": 3,
-  "jwtSecret": "jwt Secret for token security"
+  "port": 5001
 }

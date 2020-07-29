@@ -1,7 +1,7 @@
 import React from 'react'
 import PT from 'prop-types';
 
-import './card.scss'
+import './Card.scss'
 
 export const Card = (props)=> (
   <div className="card">

@@ -1,9 +1,9 @@
 import React from 'react';
 import PT from 'prop-types';
 
-import './button.scss';
+import './Button.scss';
 
-const Button = (props) => {
+export const Button = (props) => {
     return (
       <button type="button" onClick={props.onClick} className = "btn-sm">
         {props.children}
@@ -18,6 +18,3 @@ Button.propTypes = {
     PT.node
   ]).isRequired
 };
-
-export default Button;
-
