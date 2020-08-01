@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 // import { useState } from 'react'
 
-export const useHttp = (env) => {
+export const useHttp = ({env}) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
@@ -17,6 +17,7 @@ export const useHttp = (env) => {
       }
 
       const baseUrl = env==='production' ? process.env.REACT_APP_PRODUCTION_URL : process.env.REACT_APP_DEVELOPMENT_URL
+      console.log('[env]:', env);
 
       const res = await fetch( baseUrl+relativePath, { method, body, headers})
       const data = await res.json();

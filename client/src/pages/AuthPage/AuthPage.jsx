@@ -13,7 +13,7 @@ const AuthPage = () =>{
     email:'',
     password:'',
   })
-  const { isLoading, request } = useHttp()
+  const { isLoading, request } = useHttp({env:process.env.NODE_ENV})
   const { auth } =useContext(AuthContext)
   const history = useHistory()
 
