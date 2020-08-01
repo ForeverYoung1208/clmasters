@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react'
-// import { useState } from 'react'
 
 export const useHttp = ({env}) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -33,7 +32,7 @@ export const useHttp = ({env}) => {
       setError(e.message)
       throw e
     }
-  } , [])
+  } , [env])
 
   const clearError = () => {
     setError(null)      

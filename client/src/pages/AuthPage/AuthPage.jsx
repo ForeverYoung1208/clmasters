@@ -3,8 +3,9 @@ import { useHistory } from 'react-router-dom';
 
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
-import { useHttp } from '../../hooks/useHttp'
+// import { useHttp } from '../../hooks/useHttp'
 import { AuthContext } from '../../context/contexts';
+import { useAPI } from '../../hooks/useAPI';
 
 import './AuthPage.scss'
 
@@ -13,9 +14,10 @@ const AuthPage = () =>{
     email:'',
     password:'',
   })
-  const { isLoading, request } = useHttp({env:process.env.NODE_ENV})
+  // const { isLoading, request } = useHttp({env:process.env.NODE_ENV})
   const { auth } =useContext(AuthContext)
   const history = useHistory()
+  const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
 
   const changeHandler = (e) =>{
     setFormData({
@@ -26,7 +28,8 @@ const AuthPage = () =>{
 
   const submitHandler = async () =>{
     try {
-      const { user } = await request('/api/auth/login', 'POST', JSON.stringify({...formData}) )
+      // const { user } = await request('/api/auth/login', 'POST', JSON.stringify({...formData}) )
+      const user = await API.loginUser(formData)
       auth.login(user)
       history.push('/user')
 
