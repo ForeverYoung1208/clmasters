@@ -14,7 +14,6 @@ const AuthPage = () =>{
     email:'',
     password:'',
   })
-  // const { isLoading, request } = useHttp({env:process.env.NODE_ENV})
   const { auth } =useContext(AuthContext)
   const history = useHistory()
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
@@ -28,7 +27,6 @@ const AuthPage = () =>{
 
   const submitHandler = async () =>{
     try {
-      // const { user } = await request('/api/auth/login', 'POST', JSON.stringify({...formData}) )
       const user = await API.loginUser(formData)
       auth.login(user)
       history.push('/user')
@@ -51,7 +49,6 @@ const AuthPage = () =>{
             <input type="password" name="password" id="password"  onChange={changeHandler}  disabled={isLoading}/>
 
             <Button type="button" onClick={submitHandler} disabled={isLoading}>Login</Button>
-            {/* <button type="button" onClick={auth.logout} disabled={isLoading}> Logout </button> */}
           </form>
         </Card>
 

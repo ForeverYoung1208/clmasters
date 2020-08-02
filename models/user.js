@@ -8,12 +8,17 @@ const SALTROUNDS =  config.get('saltRounds')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
 
-    static async register(name, email, password){
-      if ( await User.exists(email)){ return(false) };
+    // static async register(name, email, password){
+    //   if ( await User.exists(email)){ return({error: 'email already taken' }) };
+    //   let hashedPassword =  await bcrypt.hash(password, SALTROUNDS)
+    //   let newUser = await User.create({name, email, password: hashedPassword})
+    //   return newUser;
+    // }
+    
+    static async register(name, email){
+      if ( await User.exists(email)){ return({error: 'email already taken' }) };
 
-      let hashedPassword =  await bcrypt.hash(password, SALTROUNDS)
-
-      let newUser = await User.create({name, email, password: hashedPassword})
+      let newUser = await User.create({name, email, isAdmin:false})
       return newUser;
     }
 

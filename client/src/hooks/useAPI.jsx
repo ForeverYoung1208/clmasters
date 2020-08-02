@@ -7,8 +7,13 @@ export const useAPI = ({env}) => {
     const { user } = await request('/api/auth/login', 'POST', JSON.stringify({...credentials}) )
     return user
   }
+
+  const registerUser = async ({email, name}) => {
+    const { user } = await request('/api/auth/register', 'POST', JSON.stringify({email, name}) )
+      
+    return(user)
+  };
+
   
-  //...
-  
-  return {API:{loginUser}, isLoading}
+  return {API:{loginUser, registerUser}, isLoading}
 }
