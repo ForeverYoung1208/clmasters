@@ -22,7 +22,7 @@ export const useHttp = ({env}) => {
       setIsLoading(false)
 
       if(!res.ok){
-        throw new Error(`Smthng wrong with http request ${method}, ${baseUrl+relativePath}, headers:${JSON.stringify(headers)}, body:${JSON.stringify(body)}; got message: ${data?.message}`)
+        throw new Error(data?.message)
       }
 
       return data
