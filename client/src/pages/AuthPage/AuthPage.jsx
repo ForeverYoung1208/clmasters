@@ -25,9 +25,13 @@ const AuthPage = () =>{
     })
   }
 
-  const submitHandler = async () =>{
+  const submitHandler = async (e) =>{
+    e.preventDefault()
     try {
+      
       const user = await API.loginUser(formData)
+      console.log('[user]', user);
+
       auth.login(user)
       history.push('/user')
 
@@ -41,14 +45,14 @@ const AuthPage = () =>{
         <Card
           header ="Authentication"
         >
-          <form>
+          <form onSubmit={submitHandler}>
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" onChange={changeHandler}  disabled={isLoading}/>
 
             <label htmlFor="password">Password</label>
             <input type="password" name="password" id="password"  onChange={changeHandler}  disabled={isLoading}/>
 
-            <Button type="button" onClick={submitHandler} disabled={isLoading}>Login</Button>
+            <Button type="submit" disabled={isLoading}>Login</Button>
           </form>
         </Card>
 

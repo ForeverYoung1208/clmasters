@@ -36,14 +36,14 @@ const OrderPage = () => {
       <Card
         header = "Hi! please, introduce yourself!"
       >  
-        <form>
+        <form onSubmit={submitHandler}>
           <label htmlFor="email">Email</label>
           <input type="email" name="email" id="email" onChange={changeHandler}  disabled={isLoading}/>
 
           <label htmlFor="name">Name</label>
           <input type="text" name="name" id="name"  onChange={changeHandler}  disabled={isLoading}/>
 
-          <Button type="button" onClick={submitHandler} disabled={isLoading}>Send data</Button>
+          <Button type="submit" disabled={isLoading}>Send data</Button>
         </form>
       </Card>
     </div>

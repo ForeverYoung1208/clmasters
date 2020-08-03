@@ -7,8 +7,8 @@ const JWTSECRET = config.get('jwtSecret')
 const authController = () => {
     
   async function loginUser({email, password}){
-    const {isAuthenticated, user, message} = await User.authenticate(email, password)
-    if(!isAuthenticated) return res.status(400).json({ message: `Not authenticated (${message})!` })
+    const user = await User.authenticate(email, password)
+    if (user.error) return res.status(400).json({ message: `Not authenticated (${user.error})!` })
     const token = jwt.sign(
       { userEmail: user.email },
       JWTSECRET,
@@ -16,7 +16,7 @@ const authController = () => {
     ) 
     return ({
       status:200, 
-      json:{user:{id: user.id, name:user.name, email:user.email, isAdmin:user.isAdmin, token}}
+      json:{user:{...user.dataValues, token, password:'hidden'}}
     })
   };
 

@@ -5,14 +5,14 @@ import './Button.scss';
 
 export const Button = (props) => {
     return (
-      <button type="button" onClick={props.onClick} className = "btn-sm">
+      <button onClick={props.onClick} className = "btn-sm">
         {props.children}
       </button>
     );
 };
 
 Button.propTypes = {
-  onClick: PT.func.isRequired,
+  onClick: PT.func,
   children: PT.oneOfType([
     PT.arrayOf(PT.node),
     PT.node

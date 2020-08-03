@@ -14,10 +14,12 @@ export const useAuth = () => {
   }
 
   useEffect(()=>{
-    const user = JSON.parse( localStorage.getItem('userData') )
-    if (user&&user.token){
-      setCurrentUser(user)
+    const userData = localStorage.getItem('userData')
+    if(userData!=='undefined'){
+      const user = JSON.parse( userData )
+      user && user.token && setCurrentUser(user)
     }
+
   }, [setCurrentUser]) 
 
   return( {currentUser, login, logout} )
