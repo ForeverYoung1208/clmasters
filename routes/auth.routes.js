@@ -19,16 +19,16 @@ router.post(
     check('name', 'Must be longer than 3 chars!').isLength({ min:3 })
   ],
   async(req, res)=>{
-  // try{
+  try{
     const errors = validationResult(req)
     if (!errors.isEmpty()) return res.status(400).json({message: 'Validation failed!', errors})
 
     const {name, email, password} = req.body
     const {status, json} =  await authController().registerUser({name, email, password})
     return res.status(status).json(json)
-  // } catch (e){
-  //   res.status(500).json({message: 'Wrong auth/register'})
-  // }
+  } catch (e){
+    res.status(500).json({message: 'Wrong auth/register[server error:]'+ e.message})
+  }
 })
 
 router.post('/login',

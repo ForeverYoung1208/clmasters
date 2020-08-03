@@ -8,7 +8,13 @@ const authController = () => {
     
   async function loginUser({email, password}){
     const user = await User.authenticate(email, password)
-    if (user.error) return res.status(400).json({ message: `Not authenticated (${user.error})!` })
+    if (user.error) return (
+      {
+        status:400, 
+        json:{ message: `Not authenticated (${user.error})!` }
+      }
+    )
+
     const token = jwt.sign(
       { userEmail: user.email },
       JWTSECRET,

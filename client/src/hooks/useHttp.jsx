@@ -5,11 +5,10 @@ export const useHttp = ({env}) => {
   const [error, setError] = useState(null)
 
 
-  const request = useCallback ( async (relativePath, method='GET', body=null, headers={} ) =>{
+  const request = useCallback ( async (relativePath, method='GET', body={}, headers={} ) =>{
     try {
       setIsLoading(true)
 
-      body && JSON.stringify(body)
       headers = {
         ...headers,
         'Content-Type': 'application/json',
@@ -18,12 +17,12 @@ export const useHttp = ({env}) => {
       const baseUrl = env==='production' ? process.env.REACT_APP_PRODUCTION_URL : process.env.REACT_APP_DEVELOPMENT_URL
       console.log('[env]:', env);
 
-      const res = await fetch( baseUrl+relativePath, { method, body, headers})
+      const res = await fetch( baseUrl+relativePath, { method, body:JSON.stringify(body), headers})
       const data = await res.json();
       setIsLoading(false)
 
       if(!res.ok){
-        throw new Error(`Smthng wrong with http request ${method}, ${baseUrl+relativePath}, ${JSON.stringify(headers)}, ${JSON.stringify(body)}; got message: ${data?.message}`)
+        throw new Error(`Smthng wrong with http request ${method}, ${baseUrl+relativePath}, headers:${JSON.stringify(headers)}, body:${JSON.stringify(body)}; got message: ${data?.message}`)
       }
 
       return data
