@@ -20,7 +20,7 @@ export const useAuth = () => {
       user && user.token && setCurrentUser(user)
     }
 
-  }, [setCurrentUser]) 
+  }, []) 
 
   return( {currentUser, login, logout} )
 };

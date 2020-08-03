@@ -28,10 +28,7 @@ const AuthPage = () =>{
   const submitHandler = async (e) =>{
     e.preventDefault()
     try {
-      
       const user = await API.loginUser(formData)
-      console.log('[user]', user);
-
       auth.login(user)
       history.push('/user')
 
