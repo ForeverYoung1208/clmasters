@@ -7,7 +7,7 @@ import { useAPI } from '../../hooks/useAPI';
 import './MastersPage.scss';
 import { Form } from '../../components/Form/Form';
 
-const OrderPage = () => {
+const MastersPage = () => {
 
   const [formData, setFormData] = useState({
     email:'',
@@ -23,36 +23,46 @@ const OrderPage = () => {
   }
 
   const submitHandler = async (e) => {
-    const user = await API.registerUser(formData)
-    console.log('[user]', user);
-
-    // TODO: stopped here 
+    e.preventDefault()    
+    alert('under construction')
 
   };
-
-
-  
+ 
   return (
     <div className="mastersPage">
       <Card
-        header = "Hi! please, introduce yourself!"
+        header = "To find a master, we must ask you for some information:"
       >  
         <Form onSubmit={submitHandler}>
-          <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" onChange={changeHandler}  disabled={isLoading}/>
 
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Enter your name:</label>
           <input type="text" name="name" id="name"  onChange={changeHandler}  disabled={isLoading}/>
 
-          <Button type="submit" disabled={isLoading}>Send data</Button>
+          <label htmlFor="email">Enter your email:</label>
+          <input type="email" name="email" id="email" onChange={changeHandler}  disabled={isLoading}/>
+
+          <label htmlFor="clockSize">Clock size:</label>
+          <input type="text" name="clockSize" id="clockSize" onChange={changeHandler}  disabled={isLoading}/>
+
+          <label htmlFor="City">City:</label>
+          <input type="text" name="city" id="city" onChange={changeHandler}  disabled={isLoading}/>
+          
+          <label htmlFor="Date">Date:</label>
+          <input type="text" name="date" id="date" onChange={changeHandler}  disabled={isLoading}/>
+
+          <label htmlFor="Time">Time:</label>
+          <input type="text" name="time" id="time" onChange={changeHandler}  disabled={isLoading}/>
+
+
+          <Button type="submit" disabled={isLoading}>Submit information</Button>
         </Form>
       </Card>
     </div>
   );
 };
 
-OrderPage.propTypes = {
+MastersPage.propTypes = {
     
 };
 
-export default OrderPage;
+export default MastersPage;
