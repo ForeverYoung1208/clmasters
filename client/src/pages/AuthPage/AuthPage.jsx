@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
-// import { useHttp } from '../../hooks/useHttp'
+import { Form } from '../../components/Form/Form';
 import { AuthContext } from '../../context/contexts';
 import { useAPI } from '../../hooks/useAPI';
 
@@ -27,6 +27,13 @@ const AuthPage = () =>{
     })
   }
 
+  useEffect(()=>{
+    const t1 = setTimeout(() => {
+      setErrorText(null);
+    }, 6000);
+    return ()=> clearTimeout(t1)
+  }, [errorText])
+
   const submitHandler = async (e) =>{
     e.preventDefault()
     try {
@@ -37,9 +44,6 @@ const AuthPage = () =>{
     } catch (err) {
       console.log('[err]', err);
       setErrorText(err.message);
-      setTimeout(() => {
-        setErrorText(null);
-      }, 6000);
     }
   }
     
@@ -48,7 +52,7 @@ const AuthPage = () =>{
         <Card
           header ="Authentication"
         >
-          <form onSubmit={submitHandler}>
+          <Form onSubmit={submitHandler}>
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" onChange={changeHandler}  disabled={isLoading}/>
 
@@ -64,7 +68,7 @@ const AuthPage = () =>{
               <div className="form__error"> &nbsp; {errorText} </div>
             </CSSTransition>
 
-          </form>
+          </Form>
         </Card>
 
       </div>

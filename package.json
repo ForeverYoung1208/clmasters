@@ -8,7 +8,7 @@
     "client": "yarn --cwd client start",
     "server": "nodemon app.js",
     "dev": "NODE_ENV=development concurrently \"yarn server\" \"yarn client\"",
-    "client:install": "yarn --cwd client insall",
+    "client:install": "yarn --cwd client install",
     "client:build": "yarn --cwd client build"
   },
   "repository": "git@github.com:ForeverYoung1208/clmasters.git",

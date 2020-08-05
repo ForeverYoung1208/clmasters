@@ -6,7 +6,6 @@ const routes = {
   auth: require('./routes/auth.routes')
 }
 
-console.log('process.env.REACT_APP_API_PORT:', process.env.REACT_APP_API_PORT);
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
 
 //----------------------------------------------------------------------------

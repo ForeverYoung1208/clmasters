@@ -1,30 +1,10 @@
-@import "../../shared/styles/variables.scss";
-@import "../../shared/styles/ui.scss";
-
 .authPage{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .form__error{
-      margin: 1rem;
-      @include error-text;
-    }
-  }
-
-  input{
-    margin-bottom: 2rem;
-    font-size: 1.6rem;
-    width: 80%;
-    padding: 1rem;
-    
-  }
-    
+   
  
 }
 

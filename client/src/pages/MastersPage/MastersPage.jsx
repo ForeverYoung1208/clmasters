@@ -5,6 +5,7 @@ import { Button } from '../../components/Button/Button';
 import { useAPI } from '../../hooks/useAPI';
 
 import './MastersPage.scss';
+import { Form } from '../../components/Form/Form';
 
 const OrderPage = () => {
 
@@ -36,7 +37,7 @@ const OrderPage = () => {
       <Card
         header = "Hi! please, introduce yourself!"
       >  
-        <form onSubmit={submitHandler}>
+        <Form onSubmit={submitHandler}>
           <label htmlFor="email">Email</label>
           <input type="email" name="email" id="email" onChange={changeHandler}  disabled={isLoading}/>
 
@@ -44,7 +45,7 @@ const OrderPage = () => {
           <input type="text" name="name" id="name"  onChange={changeHandler}  disabled={isLoading}/>
 
           <Button type="submit" disabled={isLoading}>Send data</Button>
-        </form>
+        </Form>
       </Card>
     </div>
   );
