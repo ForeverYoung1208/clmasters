@@ -1,16 +1,20 @@
+export const LS = (key) =>{
+  let value =  localStorage.getItem(key)
+  try {
+    value = JSON.parse(localStorage.getItem(key))
+  } catch (error) {
+    value = localStorage.getItem(key);
+  }
+  if (value === 'undefined') {value = null} ;
 
-export const LS = () =>{
-    let items = {}
-    const keys = Object.keys(localStorage);
-    keys.forEach( key =>{
-      let item = {}
-      try {
-        item = JSON.parse(localStorage.getItem(key))
-      } catch (error) {
-        item = localStorage.getItem(key);
-      }
-      item === 'undefined' ? items[key] = null : items[key] = item
-    })
-    console.log('[items]', items);
-    return items
+   
+  return value
+}
+
+LS.setItem = function(key,value){
+  return localStorage.setItem(key, JSON.stringify(value) )
+}
+
+LS.removeItem = function(key){
+  return localStorage.removeItem(key)
 }

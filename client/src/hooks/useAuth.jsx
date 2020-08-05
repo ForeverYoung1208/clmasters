@@ -5,17 +5,17 @@ export const useAuth = () => {
   const [currentUser, setCurrentUser] = useState()
 
   const login = (user) => {
-    localStorage.setItem('userData', JSON.stringify(user));
+    LS.setItem('userData', user);
     setCurrentUser(user)
   };
 
   const logout = () =>{
     setCurrentUser(null)
-    localStorage.removeItem('userData')
+    LS.removeItem('userData')
   }
 
   useEffect(()=>{
-    const user = LS().userData
+    const user = LS('userData')
     user && user.token && setCurrentUser(user)
   }, []) 
 
