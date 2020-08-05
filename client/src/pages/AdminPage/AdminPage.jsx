@@ -9,7 +9,7 @@ const AdminPage = () => {
           <Card
             header = "Order Page here"
           >  
-            Order Page text here
+            AdminPage text here
           </Card>
         </div>
     );

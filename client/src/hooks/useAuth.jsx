@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { LS } from "../shared/js/ls";
 export const useAuth = () => {
   
   const [currentUser, setCurrentUser] = useState()
@@ -14,12 +15,8 @@ export const useAuth = () => {
   }
 
   useEffect(()=>{
-    const userData = localStorage.getItem('userData')
-    if(userData!=='undefined'){
-      const user = JSON.parse( userData )
-      user && user.token && setCurrentUser(user)
-    }
-
+    const user = LS().userData
+    user && user.token && setCurrentUser(user)
   }, []) 
 
   return( {currentUser, login, logout} )
