@@ -10,6 +10,7 @@ import { useAPI } from '../../hooks/useAPI';
 
 import './AuthPage.scss'
 
+
 const AuthPage = () =>{
   const [formData, setFormData] = useState({
     email:'',
