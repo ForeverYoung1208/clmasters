@@ -23,10 +23,10 @@ const Menu = () => {
     <div className="menu">
       {menuItems.items.map( mi => 
           <AnimatedMenuItem
-            key={mi.name}
-            isShown = {mi.isShown}
-            path={mi.path}
-            >
+          key={mi.name}
+          isShown = {mi.isShown}
+          path={mi.path}
+          >
             {mi.name}
           </AnimatedMenuItem> 
       )}

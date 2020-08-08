@@ -1,4 +1,6 @@
 import React from 'react';
+import './withAnimationAppear.scss'
+
 const { CSSTransition } = require("react-transition-group")
 
 const withAppear = (Component) =>(props) => {
@@ -8,7 +10,7 @@ const withAppear = (Component) =>(props) => {
     <CSSTransition
       in={isShown}
       timeout={300}
-      classNames="appear"
+      classNames="animHOC"
     >
       <Component {...props}/>
       

@@ -1,14 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
+// import { CSSTransition } from 'react-transition-group';
 
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
 import { Form } from '../../components/Form/Form';
 import { AuthContext } from '../../context/contexts';
 import { useAPI } from '../../hooks/useAPI';
+import withAppear from '../../HOC/withAnimationAppear';
 
 import './AuthPage.scss'
+
+
+
+const ErrorMessage = ({errorText}) => (
+  <div className="form__error"> &nbsp; {errorText} </div>
+)
+const AnimatedError = withAppear(ErrorMessage)
 
 
 const AuthPage = () =>{
@@ -31,7 +39,7 @@ const AuthPage = () =>{
   useEffect(()=>{
     const t1 = setTimeout(() => {
       setErrorText(null);
-    }, 6000);
+    }, 3000);
     return ()=> clearTimeout(t1)
   }, [errorText])
 
@@ -61,13 +69,11 @@ const AuthPage = () =>{
             <input type="password" name="password" id="password"  onChange={changeHandler}  disabled={isLoading}/>
 
             <Button type="submit" disabled={isLoading}>Login</Button>
-            <CSSTransition
-              in={!!errorText}
-              timeout={300}
-              classNames="appear"
-            >
-              <div className="form__error"> &nbsp; {errorText} </div>
-            </CSSTransition>
+
+            <AnimatedError
+              isShown = {!!errorText}
+              errorText = {errorText}
+            />
 
           </Form>
         </Card>
@@ -77,3 +83,11 @@ const AuthPage = () =>{
 }
 
 export default AuthPage;
+
+{/* <CSSTransition
+in={!!errorText}
+timeout={300}
+classNames="appear__animation"
+>
+<div className="form__error"> &nbsp; {errorText} </div>
+</CSSTransition> */}
