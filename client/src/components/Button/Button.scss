@@ -1,5 +1,6 @@
 @import "../../shared/styles/variables.scss";
 .btn-sm{
+  font-family: $font;
   border: solid 1px $main-color-dark;
   padding: 1rem;
   background-color: $button-color-main;
