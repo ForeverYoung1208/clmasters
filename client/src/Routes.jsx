@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import AdminPage from './pages/AdminPage/AdminPage';
 import AuthPage from './pages/AuthPage/AuthPage';
 import MastersPage from './pages/MastersPage/MastersPage';
+import { AuthContext } from './context/authContext';
 
-export const useRoutes = (currentUser) => {
+export const Routes = () => {
+  
+  const {auth} = useContext(AuthContext)
+  
   return (
     <Switch>
       <Route path="/info" exact>
@@ -19,7 +23,7 @@ export const useRoutes = (currentUser) => {
       <Route path="/user" exact>
         UserPage
       </Route>
-      { currentUser?.isAdmin && <Route path="/admin" exact>
+      { auth && auth.currentUser?.isAdmin && <Route path="/admin" exact>
           <AdminPage/>
         </Route>
       }
@@ -28,4 +32,4 @@ export const useRoutes = (currentUser) => {
   ) 
 }
 
-export default useRoutes;
+export default Routes;

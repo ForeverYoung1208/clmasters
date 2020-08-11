@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
 import { Form } from '../../components/Form/Form';
-import { AuthContext } from '../../context/contexts';
+import { AuthContext } from '../../context/authContext';
 import { useAPI } from '../../hooks/useAPI';
 import withAppear from '../../HOC/withAnimationAppear';
 
@@ -63,10 +63,10 @@ const AuthPage = () =>{
         >
           <Form onSubmit={submitHandler}>
             <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" onChange={changeHandler}  disabled={isLoading}/>
+            <input className='form-input' type="email" name="email" id="email" onChange={changeHandler}  disabled={isLoading}/>
 
             <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password"  onChange={changeHandler}  disabled={isLoading}/>
+            <input className='form-input' type="password" name="password" id="password"  onChange={changeHandler}  disabled={isLoading}/>
 
             <Button type="submit" disabled={isLoading}>Login</Button>
 
@@ -83,11 +83,3 @@ const AuthPage = () =>{
 }
 
 export default AuthPage;
-
-{/* <CSSTransition
-in={!!errorText}
-timeout={300}
-classNames="appear__animation"
->
-<div className="form__error"> &nbsp; {errorText} </div>
-</CSSTransition> */}

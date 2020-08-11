@@ -1,3 +1,12 @@
-.react-datepicker{
-  font-size: 1.8rem;
+.mastersPage{
+  &__form-label{
+    margin-left: 7rem;
+    align-self: start;
+  }
+  .react-datepicker__input-container{
+    .form-input{
+      width: 100%;
+    }
+  }
 }
+

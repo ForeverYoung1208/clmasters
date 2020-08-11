@@ -5,8 +5,15 @@ import Menu from './Menu/Menu';
 import UserInfo from './UserInfo/UserInfo';
 
 import './Header.scss';
+import { AuthContext } from '../../context/authContext';
+import { useContext } from 'react';
+import withAppear from '../../HOC/withAnimationAppear';
+
+
+const UserInfoAnimated = withAppear(UserInfo);
 
 export const Header = () => {
+  const {auth} = useContext(AuthContext)
 
   return (
       <div className="header">
@@ -18,7 +25,7 @@ export const Header = () => {
           <Menu/>
         </div>
         <div className="header__user-info">
-            <UserInfo key='userInfo'/>
+            <UserInfoAnimated key='userInfo' isShown = {!!auth.currentUser}/>
         </div>
       </div>
   );

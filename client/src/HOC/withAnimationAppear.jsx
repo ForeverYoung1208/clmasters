@@ -5,7 +5,7 @@ const { CSSTransition } = require("react-transition-group")
 
 const withAppear = (Component) =>(props) => {
   const {isShown} = props
-
+  
   return(
     <CSSTransition
       in={isShown}

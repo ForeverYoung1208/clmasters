@@ -1,33 +1,31 @@
 import React from 'react';
 import './App.scss';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthContext } from './context/contexts';
+import { AuthProvider } from './context/authContext';
 
-import { useRoutes } from './routes';
-import { useAuth } from './hooks/useAuth';
+import { Routes } from './Routes';
 import { Header } from './components/Header/Header';
 
 function App() {
 
-  const {currentUser, login, logout} = useAuth();
-  const routes = useRoutes(currentUser);
+  // const routes = useRoutes();
   
   return (
-    <AuthContext.Provider value={  {auth:{currentUser, login, logout}}  }>
+    <AuthProvider>
       <div className = 'app'> 
           <BrowserRouter>
             <div className='app__header'> 
               <Header/>
             </div>
             <div className="app__content">
-                {routes}
+              <Routes/>
             </div>
             <footer className="app__footer"> 
               By Ihor S., 2020 
             </footer>
           </BrowserRouter>
       </div>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }
 

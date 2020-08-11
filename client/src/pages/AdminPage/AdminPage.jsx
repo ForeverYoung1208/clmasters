@@ -7,7 +7,7 @@ const AdminPage = () => {
     return (
         <div className="adminPage">
           <Card
-            header = "Order Page here"
+            header = "AdminPage Page here"
           >  
             AdminPage text here
           </Card>

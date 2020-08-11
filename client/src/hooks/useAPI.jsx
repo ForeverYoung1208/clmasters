@@ -10,9 +10,12 @@ export const useAPI = ({env}) => {
 
   const registerUser = async ({email, name}) => {
     const { user } = await request('/api/auth/register', 'POST', {email, name} )
-      
     return user
   };
+
+  const postPreorder = async(preorderData) =>{
+    const result = await request('/api/preorderData', 'POST', {preorderData} )
+  }
 
   
   return {API:{loginUser, registerUser}, isLoading}
