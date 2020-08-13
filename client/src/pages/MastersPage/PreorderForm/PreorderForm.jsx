@@ -29,10 +29,7 @@ export const PreorderForm = (props) => {
     orderDateTime: ''
   })
 
-  const [validationErrors, setValidationErrors] = useState({
-    name:'',
-    email:''
-  })
+  const [validationErrors, setValidationErrors] = useState()
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
   const {globalData,setGlobalData} = useContext(GlobalDataContext)
   
@@ -74,13 +71,11 @@ export const PreorderForm = (props) => {
     ]
   )
 
-  useEffect(()=>{
-    setValidationErrors({
-      // name: validator.findFieldByName('name').error,
-      // email: validator.findFieldByName('email').error
-     })
-
-  },[validator.fields])
+  const validate=(fieldName)=>{
+    validator.testField(fieldName)(formData[fieldName])
+    let error = validator.findFieldByName(fieldName).error
+    setValidationErrors({...validationErrors, [fieldName]:error})
+  }
 
   
 
@@ -91,17 +86,18 @@ export const PreorderForm = (props) => {
         <input className='form-input' type="text" name="name" id="name"  
           onChange={changeHandler} 
           disabled={isLoading} 
-          onBlur = {()=> console.log(validator.testField('name')(formData.name))}
+          onBlur = { ()=>validate('name')}
         />
-        <div className='preorder-form__validation-error'>{validationErrors.name}</div>
+        <div className='preorder-form__validation-error'>{validationErrors?.name}</div>
 
         <label className='preorder-form__form-label' htmlFor="email">Enter your email:</label>
         <input className='form-input'type="email" name="email" id="email" 
           onChange={changeHandler} 
           disabled={isLoading} 
-          onBlur = {()=> console.log(validator.testField('email')(formData.email))}
+          onBlur =  {()=>validate('email')}
         />
-        <div className='preorder-form__validation-error'>{validationErrors.email}</div>        
+
+        <div className='preorder-form__validation-error'>{validationErrors?.email}</div>        
 
         <label className='preorder-form__form-label' htmlFor="clockSize">Clock size:</label>
         <select className='form-select' name="clockSize" id="clockSize" onChange={changeHandler} disabled={isLoading} >
