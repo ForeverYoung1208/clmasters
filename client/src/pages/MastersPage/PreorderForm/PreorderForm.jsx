@@ -76,8 +76,8 @@ export const PreorderForm = (props) => {
 
   useEffect(()=>{
     setValidationErrors({
-      name: validator.findFieldByName('name').error,
-      email: validator.findFieldByName('email').error
+      // name: validator.findFieldByName('name').error,
+      // email: validator.findFieldByName('email').error
      })
 
   },[validator.fields])
