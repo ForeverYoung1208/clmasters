@@ -1,11 +1,17 @@
 $font: 'Comfortaa', cursive, Arial, Helvetica, sans-serif ;
+$font-size: 1rem;
+$font-size-smaller: 0.7rem;
+$font-size-bigger: 1.2rem;
+
 
 $main-color: #d1913c;
 $main-color-dark: darken($main-color, 20);
 $main-color-light: lighten($main-color, $amount: 25);
 
+
 $font-color-dark:  darken($main-color, 30);
 $font-color-light: lighten($main-color, $amount: 35);
+$font-color-error: rgb(165, 0, 0);
 
 $button-color-main: #e9cba5;
 $button-color-pressed: #9b7f5a;

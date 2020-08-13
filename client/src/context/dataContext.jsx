@@ -1,13 +1,18 @@
 import React from 'react';
 import { useState } from 'react';
 
-export const DataContext = React.createContext();
+export const GlobalDataContext = React.createContext(
+  {
+    data:{},
+    setData:null
+  }
+);
 
-export const DataProvider = (props) => {
+export const GlobalDataProvider = (props) => {
   const [data, setData] = useState()
   return(
-  <DataContext.Provider value={ {data, setData} }>
+  <GlobalDataContext.Provider value={ {data, setData} }>
     {props.children}
-  </DataContext.Provider>
+  </GlobalDataContext.Provider>
   )
 }

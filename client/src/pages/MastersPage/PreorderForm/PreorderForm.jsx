@@ -1,24 +1,40 @@
-import React, { useState } from 'react';
-import { Button } from '../../../components/Button/Button';
-import { Form } from '../../../components/Form/Form';
-import { useAPI } from '../../../hooks/useAPI';
-
+import React, { useState, useContext, useEffect} from 'react';
 import DatePicker from "react-datepicker";
 import { registerLocale } from  "react-datepicker";
 import uk from 'date-fns/locale/uk';
 
+import { Button } from '../../../components/Button/Button';
+import { Form } from '../../../components/Form/Form';
+import { useAPI } from '../../../hooks/useAPI';
+import { GlobalDataContext } from '../../../context/dataContext';
+import Validator from '../../../shared/js/validator';
+
 import "react-datepicker/dist/react-datepicker.css";
 import "./PreorderForm.scss"
+
+
+
+// to uninstall packages
+import { isValid } from 'date-fns/esm';
+import { Result } from 'express-validator';
+//
+
 
 registerLocale('uk', uk)
 
 export const PreorderForm = (props) => {
   const [formData, setFormData] = useState({
-    email:'',
     name:'',
+    email:'',
     orderDateTime: ''
   })
+
+  const [validationErrors, setValidationErrors] = useState({
+    name:'',
+    email:''
+  })
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
+  const {globalData,setGlobalData} = useContext(GlobalDataContext)
   
   const changeHandler = (e) =>{
     setFormData({
@@ -36,28 +52,66 @@ export const PreorderForm = (props) => {
 
   const submitHandler = async (e) => {
     e.preventDefault()    
+    // post data to API 
+    // on success, set globalData
+    // on fail, show error
     console.log(formData);
-
   };  
+
+  const validator = new Validator(
+    [
+      {
+        fieldName: 'name', 
+        tests:[ data =>{
+          if(!data || data.length<=3) return('Name must be more than 3 chars!')
+        }]
+      }, {
+        fieldName: 'email', 
+        tests:[ data =>{
+          if(!( /\S+@\S+\.\S+/.test(formData.email)) ) return('Must be an email adress')
+        }]
+      },
+    ]
+  )
+
+  useEffect(()=>{
+    setValidationErrors({
+      name: validator.findFieldByName('name').error,
+      email: validator.findFieldByName('email').error
+     })
+
+  },[validator.fields])
+
+  
+
   return(
     <>
       <Form onSubmit={submitHandler} className = "preorder-form">
-        <label className='mastersPage__form-label' htmlFor="name">Enter your name:</label>
-        <input className='form-input' type="text" name="name" id="name"  onChange={changeHandler} disabled={isLoading} />
+        <label className='preorder-form__form-label' htmlFor="name">Enter your name:</label>
+        <input className='form-input' type="text" name="name" id="name"  
+          onChange={changeHandler} 
+          disabled={isLoading} 
+          onBlur = {()=> console.log(validator.testField('name')(formData.name))}
+        />
+        <div className='preorder-form__validation-error'>{validationErrors.name}</div>
 
-        <label className='mastersPage__form-label' htmlFor="email">Enter your email:</label>
-        <input className='form-input'type="email" name="email" id="email" onChange={changeHandler} disabled={isLoading} />
+        <label className='preorder-form__form-label' htmlFor="email">Enter your email:</label>
+        <input className='form-input'type="email" name="email" id="email" 
+          onChange={changeHandler} 
+          disabled={isLoading} 
+          onBlur = {()=> console.log(validator.testField('email')(formData.email))}
+        />
+        <div className='preorder-form__validation-error'>{validationErrors.email}</div>        
 
-        <label className='mastersPage__form-label' htmlFor="clockSize">Clock size:</label>
+        <label className='preorder-form__form-label' htmlFor="clockSize">Clock size:</label>
         <select className='form-select' name="clockSize" id="clockSize" onChange={changeHandler} disabled={isLoading} >
           <option value='small'>small</option>
           <option value='medium'>medium</option>
           <option value='big'>big</option>
         </select>
 
-        {/* <input type="text" name="clockSize" id="clockSize" onChange={changeHandler} disabled={isLoading} /> */}
 
-        <label className='mastersPage__form-label' htmlFor="City">City:</label>
+        <label className='preorder-form__form-label' htmlFor="City">City:</label>
         <input className='form-select' type="text" name="city" id="city" onChange={changeHandler} disabled={isLoading} />
         
         <label htmlFor="Date">Desired date and time:</label>
@@ -72,7 +126,7 @@ export const PreorderForm = (props) => {
           showTimeSelect
         />
 
-        <Button type="submit" disabled={isLoading}>Submit information</Button>
+        <Button type="submit" disabled={isLoading||!formData.isValid}>Submit information</Button>
       </Form>    
     </>
   )

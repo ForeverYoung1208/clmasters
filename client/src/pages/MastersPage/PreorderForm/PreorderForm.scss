@@ -1,12 +1,22 @@
-.mastersPage{
+@import "../../../shared/styles/variables.scss";
+
+.preorder-form{
   &__form-label{
     margin-left: 7rem;
     align-self: start;
   }
-  .react-datepicker__input-container{
-    .form-input{
-      width: 100%;
-    }
+  &__validation-error{
+    font-size: $font-size-smaller;
+    transform:translateY(-1rem);
+    color: $font-color-error;
+    font-weight: bold;
+
+  }
+}
+
+.react-datepicker__input-container{
+  .form-input{
+    width: 100%;
   }
 }
 
