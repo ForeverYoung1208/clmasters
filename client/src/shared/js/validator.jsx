@@ -25,9 +25,10 @@ export default function Validator(fields){
       let errors = '';
       field.tests.forEach( test => errors += test(dataToTest) ? test(dataToTest) : '' );
       field.error = errors
-
-      console.log(errors);
       return !errors
     }
   }
+
+  this.isAllValid = () => this.fields.reduce((acc, curr)=>(acc && !curr.error), true)
+  
 }

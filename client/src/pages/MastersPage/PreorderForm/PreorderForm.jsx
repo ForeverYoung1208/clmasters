@@ -13,13 +13,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./PreorderForm.scss"
 
 
-
-// to uninstall packages
-import { isValid } from 'date-fns/esm';
-import { Result } from 'express-validator';
-//
-
-
 registerLocale('uk', uk)
 
 export const PreorderForm = (props) => {
@@ -74,7 +67,11 @@ export const PreorderForm = (props) => {
   const validate=(fieldName)=>{
     validator.testField(fieldName)(formData[fieldName])
     let error = validator.findFieldByName(fieldName).error
-    setValidationErrors({...validationErrors, [fieldName]:error})
+    setValidationErrors({
+      ...validationErrors, 
+      [fieldName]:error,
+      isAllValid: validator.isAllValid()
+    })
   }
 
   
@@ -122,7 +119,7 @@ export const PreorderForm = (props) => {
           showTimeSelect
         />
 
-        <Button type="submit" disabled={isLoading||!formData.isValid}>Submit information</Button>
+        <Button type="submit" disabled={isLoading||!validationErrors?.isAllValid}>Submit information</Button>
       </Form>    
     </>
   )

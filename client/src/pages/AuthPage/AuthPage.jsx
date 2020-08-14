@@ -39,7 +39,7 @@ const AuthPage = () =>{
   useEffect(()=>{
     const t1 = setTimeout(() => {
       setErrorText(null);
-    }, 3000);
+    }, 5000);
     return ()=> clearTimeout(t1)
   }, [errorText])
 
