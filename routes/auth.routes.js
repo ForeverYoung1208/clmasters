@@ -6,17 +6,11 @@ const { authController } = require('../controllers/authController');
 
 const router = Router()
 
-// const jwt = require('jsonwebtoken');
-// const config = require('config');
-// const JWTSECRET = config.get('jwtSecret')
-
-//  ------------  /api/auth/...  -------------
-
 router.post(
   '/register',
   [
     check('email', 'Must be an email!').isEmail(),
-    check('name', 'Must be longer than 3 chars!').isLength({ min:3 })
+    check('name', 'Must be longer than 2 chars!').isLength({ min:2 })
   ],
   async(req, res)=>{
   try{
@@ -24,7 +18,7 @@ router.post(
     if (!errors.isEmpty()) return res.status(400).json({message: JSON.stringify(errors)})
 
     const {name, email, password} = req.body
-    const {status, json} =  await authController().registerUser({name, email, password})
+    const {status, json} =  await authController.registerUser({name, email, password})
     return res.status(status).json(json)
   } catch (e){
     res.status(500).json({message: 'Wrong auth/register[server error:]'+ e.message})
@@ -42,7 +36,7 @@ router.post('/login',
     if (!errors.isEmpty()) return res.status(400).json({ message: errors.array().reduce((acc,e)=>{return (acc+' '+e.msg)},'') })
     try{
       const {email, password} = req.body
-      const {status, json} =  await authController().loginUser({email, password})
+      const {status, json} =  await authController.loginUser({email, password})
       return res.status(status).json(json)
     } catch (e){
       res.status(500).json({message: 'Wrong auth/login: [server error:]'+ e.message})

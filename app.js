@@ -3,7 +3,8 @@ const config = require('config');
 const path = require('path')
 
 const routes = {
-  auth: require('./routes/auth.routes')
+  auth: require('./routes/auth.routes'),
+  cities: require('./routes/cities.routes')
 }
 
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
@@ -24,6 +25,11 @@ app.use(function(req, res, next) {
 
 app.use(express.json({extended: true}))
 app.use('/api/auth', routes.auth)
+// app.use('/api/clients', routes.clients)
+// app.use('/api/masters', routes.masters)
+app.use('/api/cities', routes.cities)
+// app.use('/api/orders', routes.orders)
+// app.use('/api/clocks', routes.clocks)
 
 //----------------------------------------------------------------------------
 

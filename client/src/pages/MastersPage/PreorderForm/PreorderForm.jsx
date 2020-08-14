@@ -53,7 +53,7 @@ export const PreorderForm = (props) => {
       {
         fieldName: 'name', 
         tests:[ data =>{
-          if(!data || data.length<=3) return('Name must be more than 3 chars!')
+          if(!data || data.length<=2) return('Name must be more than 2 chars!')
         }]
       }, {
         fieldName: 'email', 

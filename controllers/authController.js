@@ -47,4 +47,4 @@ const authController = () => {
   return ({loginUser, registerUser})
 };
 
-exports.authController = authController;
+exports.authController = authController(); //singleton!
