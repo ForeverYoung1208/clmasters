@@ -1,7 +1,6 @@
 const { Router } = require('express');
 
 // const { check, validationResult } = require('express-validator');
-// const { City } = require('../models/index');
 
 const { citiesController } = require('../controllers/citiesController');
 
@@ -11,23 +10,36 @@ router.post(
   '/create',
   async(req, res)=>{
   try{
-    //...
+    const {inName, inComment} = req.body
+    const {status,json} = citiesController.createCity(inName, inComment)
+    return res.status(status).json(json)
   } catch (e){
-    //...
+    res.status(500).json({message: 'Error in GET cities/:id [server error:]'+ e.message})
   }
 })
 
-// read
+// read one
 router.get(
   '/:id',
   async(req, res)=>{
   try{
     const cityId = req.params.id
-    const {status, json} = await citiesController().getCity(cityId)
-    res.status(status).json(json)
-
+    const {status, json} = await citiesController.getCity(cityId)
+    return res.status(status).json(json)
   } catch (e){
-    res.status(500).json({message: 'Error in GET city/:id [server error:]'+ e.message})
+    res.status(500).json({message: 'Error in GET cities/:id [server error:]'+ e.message})
+  }
+})
+
+// read all
+router.get(
+  '/',
+  async(req, res)=>{
+  try{
+    const {status, json} = await citiesController.getCities()
+    return res.status(status).json(json)
+  } catch (e){
+    res.status(500).json({message: 'Error in GET cities/ [server error:]'+ e.message})
   }
 })
 
@@ -46,11 +58,12 @@ router.put(
 router.delete(
   '/:id',
   async(req, res)=>{
-  try{
-    //...
-  } catch (e){
-    //...
-  }
+    try{
+      const {status, json} = await citiesController.deleteCity(id)
+      return res.status(status).json(json)
+    } catch (e){
+      res.status(500).json({message: 'Error in DELETE cities/ [server error:]'+ e.message})
+    }
 })
 
 
