@@ -35,31 +35,45 @@ const citiesController = () => {
         json:{message: `City NOT created: ${newCity.error ? newCity.error: 'something wrong'}` }
       })
     }    
-    
   }
 
   async function deleteCity(id) {
-    let newCity = await City.create({name, comment})
-    if(newCity && !newCity.error){
+    let deletedCount = await City.destroy({where:{id}})
+    if( deletedCount && deletedCount>0){
       return({
-        status: 201,
-        json:{message: 'City created', city:{ id: newCity.id, email: newCity.email}}
+        status: 200,
+        json:{message: 'City deleted', deletedCount}
       })
     } else {
       return({
         status: 400,
-        json:{message: `City NOT created: ${newCity.error ? newCity.error: 'something wrong'}` }
+        json:{message: `City NOT deleted, something wrong'}` }
       })
     }    
-    
   }
+
+  async function updateCity({id, inName, inComment}) {
+    let count = await City.update({name, comment}, {where:{id}} )
+    let newCity  = await City.findOne({where:{id}})
+    if(newCity && !newCity.error && count && count>0){
+      return({
+        status: 201,
+        json:{message: 'City updated', city:{ id: newCity.id, email: newCity.email}}
+      })
+    } else {
+      return({
+        status: 400,
+        json:{message: `City got errors while updating: ${newCity.error ? newCity.error: 'something wrong'}, updated count =${ count }` }
+      })
+    }    
+  }  
 
 
 
 
   //============//
 
-  return ({getCity, getCities})
+  return ({getCity, getCities, createCity, deleteCity, updateCity })
 
 };
 
