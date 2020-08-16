@@ -6,7 +6,7 @@ import uk from 'date-fns/locale/uk';
 import { Button } from '../../../components/Button/Button';
 import { Form } from '../../../components/Form/Form';
 import { useAPI } from '../../../hooks/useAPI';
-import { GlobalDataContext } from '../../../context/dataContext';
+import { GlobalDataContext } from '../../../context/globalDataContext';
 import Validator from '../../../shared/js/validator';
 
 import "react-datepicker/dist/react-datepicker.css";
