@@ -5,11 +5,21 @@ import { AuthProvider } from './context/authContext';
 
 import { Routes } from './Routes';
 import { Header } from './components/Header/Header';
-import { GlobalDataProvider, GlobalDataContext } from './context/globalDataContext';
+import { GlobalDataContext } from './context/globalDataContext';
+import { useEffect } from 'react';
+import { useAPI } from './hooks/useAPI';
 
 function App() {
-  const {data,setData} = useContext(GlobalDataContext);
-  console.log(data, setData);
+  const {globalData, setGlobalData} = useContext(GlobalDataContext);
+  const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
+  useEffect(()=>{
+    API.getVoc().then(({message, voc}) => {
+      console.log('[voc]',message, voc);
+      setGlobalData({...globalData, voc})
+    })
+
+  },[])
+
   
   return (
     <AuthProvider>
@@ -18,9 +28,10 @@ function App() {
               <div className='app__header'> 
                 <Header/>
               </div>
-              <div className="app__content">
-                <Routes/>
-              </div>
+              {isLoading 
+                ? <div className="app__content"> Data is Loading ... Nice loader must be here...  </div>
+                : <div className="app__content"> <Routes/> </div>
+              }
               <footer className="app__footer"> 
                 By Ihor S., 2020 
               </footer>
