@@ -21,10 +21,25 @@ export const PreorderForm = (props) => {
     email:'',
     orderDateTime: ''
   })
-
   const [validationErrors, setValidationErrors] = useState()
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
-  const {globalData,setGlobalData} = useContext(GlobalDataContext)
+  const {globalData} = useContext(GlobalDataContext)
+  const cities = globalData?.voc.cities;
+ 
+  // const changeSelectHandler = (e) =>{
+  //   console.log('[e]', e.target.name, e.target.value);
+  //   setFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value
+  //   })
+  // }
+  
+  const changeDateHandler = (value) => {
+    setFormData({
+      ...formData,
+      orderDateTime: value
+    })
+  }
   
   const changeHandler = (e) =>{
     setFormData({
@@ -32,14 +47,6 @@ export const PreorderForm = (props) => {
       [e.target.name]: e.target.value
     })
   }
-
-  const changeDateHandler = (value) => {
-    setFormData({
-      ...formData,
-      orderDateTime: value
-    })
-  }
-
   const submitHandler = async (e) => {
     e.preventDefault()    
     // post data to API 
@@ -49,19 +56,22 @@ export const PreorderForm = (props) => {
   };  
 
   const validator = new Validator(
-    [
-      {
-        fieldName: 'name', 
-        tests:[ data =>{
-          if(!data || data.length<=2) return('Name must be more than 2 chars!')
-        }]
-      }, {
-        fieldName: 'email', 
-        tests:[ data =>{
-          if(!( /\S+@\S+\.\S+/.test(formData.email)) ) return('Must be an email adress')
-        }]
-      },
-    ]
+    [{
+      fieldName: 'name', 
+      tests:[ data =>{
+        if(!data || data.length<=2) return('Name must be more than 2 chars!')
+      }]
+    }, {
+      fieldName: 'email', 
+      tests:[ data =>{
+        if(!( /\S+@\S+\.\S+/.test(data)) ) return('Must be an email adress')
+      }]
+    },{
+      fieldName: 'orderDateTime', 
+      tests:[ data =>{
+        if( !data ) return('Date and Time must be specified.')
+      }]
+    }]
   )
 
   const validate=(fieldName)=>{
@@ -72,6 +82,7 @@ export const PreorderForm = (props) => {
       [fieldName]:error,
       isAllValid: validator.isAllValid()
     })
+    console.log('[validator.isAllValid]', validator.isAllValid());
   }
 
   
@@ -103,9 +114,10 @@ export const PreorderForm = (props) => {
           <option value='big'>big</option>
         </select>
 
-
         <label className='preorder-form__form-label' htmlFor="City">City:</label>
-        <input className='form-select' type="text" name="city" id="city" onChange={changeHandler} disabled={isLoading} />
+        <select className='form-select' name="city" id="city" value={formData?.city?.value} onChange={changeHandler} disabled={isLoading}>
+          { cities?.map((city) => <option key={city.id} value = {city.id}>{city.name} ({city.comment})</option>   )}
+        </select>
         
         <label htmlFor="Date">Desired date and time:</label>
         <DatePicker 
@@ -117,7 +129,10 @@ export const PreorderForm = (props) => {
           locale={uk}
           timeIntervals={60}
           showTimeSelect
+          onBlur =  {()=>validate('orderDateTime')}          
         />
+        <div className='preorder-form__validation-error'>{validationErrors?.orderDateTime}</div>
+
 
         <Button type="submit" disabled={isLoading||!validationErrors?.isAllValid}>Submit information</Button>
       </Form>    

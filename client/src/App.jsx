@@ -15,9 +15,8 @@ function App() {
   useEffect(()=>{
     API.getVoc().then(({message, voc}) => {
       console.log('[voc]',message, voc);
-      setGlobalData({...globalData, voc})
+      setGlobalData({voc})
     })
-
   },[])
 
   
