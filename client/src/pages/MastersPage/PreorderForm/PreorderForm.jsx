@@ -26,14 +26,6 @@ export const PreorderForm = (props) => {
   const {globalData} = useContext(GlobalDataContext)
   const cities = globalData?.voc.cities;
  
-  // const changeSelectHandler = (e) =>{
-  //   console.log('[e]', e.target.name, e.target.value);
-  //   setFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.value
-  //   })
-  // }
-  
   const changeDateHandler = (value) => {
     setFormData({
       ...formData,

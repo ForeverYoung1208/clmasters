@@ -31,13 +31,10 @@ export default function Validator(fields){
 
   this.isAllValid = () => {
     const res =  this.fields.reduce((acc, curr)=>{
-      console.log('===================');
-      console.log('[acc]', acc);
-      console.log('[curr.error]', curr.error);
-      console.log('[acc && !curr.error]', acc && !curr.error );
-      console.log('===================');
+      console.log('[==accumulator==]', acc, curr, acc && !curr.error );
       return(acc && !curr.error)
     }, true)
+    return res
   
   }
   
