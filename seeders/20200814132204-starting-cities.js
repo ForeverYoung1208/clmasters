@@ -6,10 +6,12 @@ module.exports = {
     await queryInterface.bulkInsert('Cities', 
       [
         {
+          id:1,
           name: 'Dnipro',
           comment: 'Initial city1',
         },
         {
+          id:2,
           name: 'Uzhgorod',
           comment: 'Initial city2',
         }

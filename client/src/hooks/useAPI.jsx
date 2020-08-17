@@ -19,8 +19,8 @@ export const useAPI = ({env})=>{
   }
 
   const getVoc = async()=>{
-    const { message, data } = await request('/api/cities', 'GET')
-    return {message, voc:{cities:data}}
+    const [cities, clocks] = await Promise.all([request('/api/cities', 'GET'), request('/api/clocks', 'GET')])
+    return {message:cities.message+clocks.message, voc:{cities:cities.data, clocks:clocks.data }}
   }
 
   

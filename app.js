@@ -4,7 +4,8 @@ const path = require('path')
 
 const routes = {
   auth: require('./routes/auth.routes'),
-  cities: require('./routes/cities.routes')
+  cities: require('./routes/cities.routes'),
+  clocks: require('./routes/clocks.routes')
 }
 
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
@@ -29,7 +30,7 @@ app.use('/api/auth', routes.auth)
 // app.use('/api/masters', routes.masters)
 app.use('/api/cities', routes.cities)
 // app.use('/api/orders', routes.orders)
-// app.use('/api/clocks', routes.clocks)
+app.use('/api/clocks', routes.clocks)
 
 //----------------------------------------------------------------------------
 

@@ -13,7 +13,7 @@ router.post(
   async(req, res)=>{
   try{
     const {inName, inComment} = req.body
-    const {status,json} = citiesController.createCity(inName, inComment)
+    const {status,json} = citiesController.create(inName, inComment)
     return res.status(status).json(json)
   } catch (e){
     res.status(500).json({message: 'Error in GET cities/:id [server error:]'+ e.message})
@@ -26,7 +26,7 @@ router.get(
   async(req, res)=>{
   try{
     const cityId = req.params.id
-    const {status, json} = await citiesController.getCity(cityId)
+    const {status, json} = await citiesController.get(cityId)
     return res.status(status).json(json)
   } catch (e){
     res.status(500).json({message: 'Error in GET cities/:id [server error:]'+ e.message})
@@ -41,7 +41,7 @@ router.get(
     const {status, json} = await citiesController.getAll()
     return res.status(status).json(json)
   } catch (e){
-    res.status(500).json({message: 'Error in GET cities/ [server error:]'+ e.message})
+    res.status(500).json({message: 'Error in GET All cities/ [server error:]'+ e.message})
   }
 })
 
@@ -52,7 +52,7 @@ router.put(
     try{
       const {id} = req.params.id
       const {inName, inComment} = req.body      
-      const {status, json} = await citiesController.updateCity({id, inName, inComment})
+      const {status, json} = await citiesController.update({id, inName, inComment})
       return res.status(status).json(json)
     } catch (e){
       res.status(500).json({message: 'Error in PUT cities/ [server error:]'+ e.message})
@@ -65,7 +65,7 @@ router.delete(
   async(req, res)=>{
     try{
       const {id} = req.params.id
-      const {status, json} = await citiesController.deleteCity(id)
+      const {status, json} = await citiesController.delete(id)
       return res.status(status).json(json)
     } catch (e){
       res.status(500).json({message: 'Error in DELETE cities/ [server error:]'+ e.message})
