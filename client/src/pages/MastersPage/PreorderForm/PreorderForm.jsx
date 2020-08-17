@@ -72,10 +72,9 @@ export const PreorderForm = (props) => {
 
   const validate=(fieldName)=>{
     validator.testField(fieldName)(formData[fieldName])
-    let error = validator.findFieldByName(fieldName).error
     setValidationErrors({
       ...validationErrors, 
-      [fieldName]:error,
+      [fieldName]: validator.findFieldByName(fieldName).error,
       isAllValid: validator.isAllValid(formData)
     })
   }

@@ -23,7 +23,7 @@ export default function Validator(fields){
 
     return function(fieldTotest){
       let errors = '';
-      field.tests.forEach( test => errors += test(fieldTotest) ? test(fieldTotest) : '' );
+      field && field.tests.forEach( test => errors += test(fieldTotest) ? test(fieldTotest) : '' );
       field.error = errors
       return !errors
     }
