@@ -21,21 +21,24 @@ export default function Validator(fields){
   this.testField = (fieldName) => {
     let field = this.findFieldByName.call(this,fieldName)
 
-    return function(dataToTest){
+    return function(fieldTotest){
       let errors = '';
-      field.tests.forEach( test => errors += test(dataToTest) ? test(dataToTest) : '' );
+      field.tests.forEach( test => errors += test(fieldTotest) ? test(fieldTotest) : '' );
       field.error = errors
       return !errors
     }
   }
 
-  this.isAllValid = () => {
-    const res =  this.fields.reduce((acc, curr)=>{
-      console.log('[==accumulator==]', acc, curr, acc && !curr.error );
-      return(acc && !curr.error)
+  this.isAllValid = (formData) => {
+    const formFields = Object.keys(formData)
+    let isAllValid =  formFields.reduce((acc, fieldName)=>{
+
+      let isFieldValid = this.testField(fieldName)(formData[fieldName])
+      return(acc && isFieldValid)
     }, true)
-    return res
-  
+
+
+    return isAllValid
   }
   
   

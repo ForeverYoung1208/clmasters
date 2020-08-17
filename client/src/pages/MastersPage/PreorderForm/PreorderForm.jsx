@@ -25,7 +25,11 @@ export const PreorderForm = (props) => {
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
   const {globalData} = useContext(GlobalDataContext)
   const cities = globalData?.voc.cities;
- 
+  useEffect(() => {
+    validate('orderDateTime')
+  },[formData.orderDateTime])
+
+
   const changeDateHandler = (value) => {
     setFormData({
       ...formData,
@@ -72,9 +76,8 @@ export const PreorderForm = (props) => {
     setValidationErrors({
       ...validationErrors, 
       [fieldName]:error,
-      isAllValid: validator.isAllValid()
+      isAllValid: validator.isAllValid(formData)
     })
-    console.log('[validator.isAllValid]', validator.isAllValid());
   }
 
   
