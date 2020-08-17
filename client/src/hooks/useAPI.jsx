@@ -19,8 +19,8 @@ export const useAPI = ({env})=>{
   }
 
   const getVoc = async()=>{
-    const { message, cities } = await request('/api/cities', 'GET')
-    return {message, voc:{cities}}
+    const { message, data } = await request('/api/cities', 'GET')
+    return {message, voc:{cities:data}}
   }
 
   

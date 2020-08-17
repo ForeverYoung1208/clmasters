@@ -38,7 +38,7 @@ router.get(
   '/',
   async(req, res)=>{
   try{
-    const {status, json} = await citiesController.getCities()
+    const {status, json} = await citiesController.getAll()
     return res.status(status).json(json)
   } catch (e){
     res.status(500).json({message: 'Error in GET cities/ [server error:]'+ e.message})
