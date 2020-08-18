@@ -12,8 +12,7 @@ router.post(
   '/create',
   async(req, res)=>{
   try{
-    const {inName, inComment} = req.body
-    const {status,json} = citiesController.create(inName, inComment)
+    const {status,json} = citiesController.create(req.body)
     return res.status(status).json(json)
   } catch (e){
     res.status(500).json({message: 'Error in GET cities/:id [server error:]'+ e.message})

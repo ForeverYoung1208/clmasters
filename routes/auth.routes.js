@@ -14,6 +14,7 @@ router.post(
   ],
   async(req, res)=>{
   try{
+    console.log('[req]', req)
     const errors = validationResult(req)
     if (!errors.isEmpty()) return res.status(400).json({message: JSON.stringify(errors)})
 
@@ -26,12 +27,13 @@ router.post(
 })
 
 router.post('/login',
-  [
-    check('email', 'Email must be an email!').isEmail(),
-    check('password', 'Password must be longer than 3 chars!').isLength({ min:3 })
-  ], 
-  async(req, res)=>{
-    const errors = validationResult(req)
+[
+  check('email', 'Email must be an email!').isEmail(),
+  check('password', 'Password must be longer than 3 chars!').isLength({ min:3 })
+], 
+async(req, res)=>{
+  console.log('[req]', req)
+  const errors = validationResult(req)
 
     if (!errors.isEmpty()) return res.status(400).json({ message: errors.array().reduce((acc,e)=>{return (acc+' '+e.msg)},'') })
     try{

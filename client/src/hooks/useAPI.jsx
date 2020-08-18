@@ -12,17 +12,17 @@ export const useAPI = ({env})=>{
     const { user } = await request('/api/auth/register', 'POST', {email, name} )
     return user
   };
-
-  const postPreorder = async(preorderData)=>{
-    const result = await request('/api/preorderData', 'POST', {preorderData} )
-    return result
-  }
-
+  
   const getVoc = async()=>{
     const [cities, clocks] = await Promise.all([request('/api/cities', 'GET'), request('/api/clocks', 'GET')])
     return {message:cities.message+clocks.message, voc:{cities:cities.data, clocks:clocks.data }}
   }
 
+  const postPreorder = async(preorderData)=>{
+    const result = await request('/api/preorder', 'POST', {preorderData} )
+    return result
+  }
   
-  return {API:{loginUser, registerUser, getVoc}, isLoading}
+  
+  return {API:{loginUser, registerUser, getVoc, postPreorder}, isLoading}
 }

@@ -23,8 +23,9 @@ export const PreorderForm = (props) => {
   })
   const [validationErrors, setValidationErrors] = useState()
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
-  const {globalData} = useContext(GlobalDataContext)
+  const {globalData, setGlobalData} = useContext(GlobalDataContext)
   const cities = globalData?.voc.cities;
+  const clocks = globalData?.voc.clocks;
   useEffect(() => {
     validate('orderDateTime')
   },[formData.orderDateTime])
@@ -45,10 +46,15 @@ export const PreorderForm = (props) => {
   }
   const submitHandler = async (e) => {
     e.preventDefault()    
-    // post data to API 
+    const res = API.postPreorder(formData)
+    if(res){
+      setGlobalData({preorder:res})
+    } else {
+      alert(`no responce from submitting preorder form: ${JSON.stringify(formData)}`)
+    }
+    
     // on success, set globalData
     // on fail, show error
-    console.log(formData);
   };  
 
   const validator = new Validator(
@@ -79,8 +85,6 @@ export const PreorderForm = (props) => {
     })
   }
 
-  
-
   return(
     <>
       <Form onSubmit={submitHandler} className = "preorder-form">
@@ -101,16 +105,14 @@ export const PreorderForm = (props) => {
 
         <div className='preorder-form__validation-error'>{validationErrors?.email}</div>        
 
-        <label className='preorder-form__form-label' htmlFor="clockSize">Clock size:</label>
-        <select className='form-select' name="clockSize" id="clockSize" onChange={changeHandler} disabled={isLoading} >
-          <option value='small'>small</option>
-          <option value='medium'>medium</option>
-          <option value='big'>big</option>
+        <label className='preorder-form__form-label' htmlFor="clockType">Clock size:</label>
+        <select className='form-select' name="clockType" id="clockType" value={formData?.clockType?.value} onChange={changeHandler} disabled={isLoading} >
+          { clocks?.map((c) => <option key={c.id} value = {c.id}>{c.type} {c.comment}</option>   )}
         </select>
 
         <label className='preorder-form__form-label' htmlFor="City">City:</label>
         <select className='form-select' name="city" id="city" value={formData?.city?.value} onChange={changeHandler} disabled={isLoading}>
-          { cities?.map((city) => <option key={city.id} value = {city.id}>{city.name} ({city.comment})</option>   )}
+          { cities?.map((city) => <option key={city.id} value = {city.id}>{city.name} {city.comment}</option>   )}
         </select>
         
         <label htmlFor="Date">Desired date and time:</label>

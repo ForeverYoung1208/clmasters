@@ -17,19 +17,15 @@ export const useHttp = ({env}) => {
       const baseUrl = env==='production' ? process.env.REACT_APP_PRODUCTION_URL : process.env.REACT_APP_DEVELOPMENT_URL
       console.log('[env]:', env);
 
-      
       const res = await fetch( 
         baseUrl+relativePath, 
-        method === 'GET'||'HEAD' 
+        method === 'GET' 
         ? { method, headers}  // Request with GET/HEAD method cannot have body. 
         : { method, body:JSON.stringify(body), headers}
       )
+
       const data = await res.json();
-      // setTimeout( () => {
-        setIsLoading(false)        
-      // }, 2000);
-
-
+      setIsLoading(false)        
 
       if(!res.ok){
         throw new Error(data?.message)
