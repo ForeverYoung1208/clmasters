@@ -4,7 +4,7 @@ const { preordersController } = require('../controllers/preordersController');
 
 const router = Router()
 
-// post preorder
+// POST preorder
 router.post(
   '/',
   async(req, res)=>{

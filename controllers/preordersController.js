@@ -1,7 +1,18 @@
 class PreordersController{
 
   post(preorderData){
-    const data='mock'
+    const data=preorderData
+
+    //eeeemmm //cool logic here )))))
+
+    
+    
+    
+    
+    
+    
+    
+    
     return ({
       status: 200, 
       json: {
