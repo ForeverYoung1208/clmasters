@@ -28,6 +28,7 @@ const authController = () => {
 
   async function registerUser({name, email}){
     newUser = await User.register(name, email)
+    
     if(newUser && !newUser.error){
         return({
           status: 201,

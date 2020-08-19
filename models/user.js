@@ -8,13 +8,6 @@ const SALTROUNDS =  config.get('saltRounds')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
 
-    // static async register(name, email, password){
-    //   if ( await User.exists(email)){ return({error: 'email already taken' }) };
-    //   let hashedPassword =  await bcrypt.hash(password, SALTROUNDS)
-    //   let newUser = await User.create({name, email, password: hashedPassword})
-    //   return newUser;
-    // }
-    
     static async register(name, email){
       if ( await User.exists(email)){ return({error: 'email already taken' }) };
 
@@ -41,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
     }
    
     static associate(models) {
+      // User.orders = User.hasMany(models.Order)      
+      User.orders = this.hasMany(models.Order)      
+
       // The `models/index` file will call this method automatically.
       // define association here
     }

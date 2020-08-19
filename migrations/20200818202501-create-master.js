@@ -11,7 +11,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      cityId: {
+      CityId: {
         type: Sequelize.INTEGER
       },
       comment: {

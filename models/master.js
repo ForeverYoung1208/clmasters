@@ -10,17 +10,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // Master.city = Master.belongsTo(models.City)
       // define association here
     }
   };
   Master.init({
     name: DataTypes.STRING,
-    cityId: DataTypes.INTEGER,
+    CityId: DataTypes.INTEGER,
     comment: DataTypes.STRING,
     deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Master',
+    paranoid: true,
   });
   return Master;
 };

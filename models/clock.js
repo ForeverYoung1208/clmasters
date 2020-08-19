@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // Clock.orders = Clock.hasMany(models.Order)
       // define association here
     }
   };

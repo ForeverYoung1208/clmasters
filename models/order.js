@@ -10,19 +10,25 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // Order.clock = Order.belongsTo(models.Clock)
+      // Order.master = Order.belongsTo(models.Master)
+      // Order.user = Order.belongsTo(models.User)
+      this.belongsTo(models.User)
+
       // define association here
     }
   };
   Order.init({
-    clockId: DataTypes.INTEGER,
-    masterId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
+    ClockId: DataTypes.INTEGER,
+    MasterId: DataTypes.INTEGER,
+    UserId: DataTypes.INTEGER,
     comment: DataTypes.STRING,
     onTime: DataTypes.DATE,
     deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Order',
+    paranoid: true,
   });
   return Order;
 };

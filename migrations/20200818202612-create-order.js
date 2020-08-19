@@ -8,13 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      clockId: {
+      ClockId: {
         type: Sequelize.INTEGER
       },
-      masterId: {
+      MasterId: {
         type: Sequelize.INTEGER
       },
-      userId: {
+      UserId: {
         type: Sequelize.INTEGER
       },
       comment: {
