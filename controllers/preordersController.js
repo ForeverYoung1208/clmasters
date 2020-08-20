@@ -3,33 +3,29 @@ class PreordersController{
 
   async post(data){
     const {preorderData} = data
-    const {email} = preorderData
+    const {email, clockTypeId, cityId, orderDateTime:orderDateTimeStr} = preorderData
+    const orderDateTime = new Date(orderDateTimeStr)
 
-    const user = await User.findOne({where: {email}, include:Order})
-
-    // const userOrders = await user.getOrders()
+    // samples of usage
+    // const user = await User.findOne({where: {email}, include:Order})
+    // const user2 = await User.findByPk(2, {include:Order})
     
-    
-    // console.log(user.name)
-    // console.log(userOrders)
+    // const [user, reqClock, reqCity] = await Promise.all([ 
+    //   User.findOne({where: {email}}),
+    //   Clock.findByPk(clockTypeId),
+    // ])
+    // const needTime = reqClock.repairTime
+    // console.log('[user]', user)
+    // console.log('[needTime]', needTime)
+
+    const [mastersInCity] = await Promise.all([ 
+      Master.findAll({where: {CityId:cityId}, include:Order}),
+    ])
+
+    let freeTime = await mastersInCity[0].freeTimeAfter(orderDateTime)
 
 
-    // const order = await Order.findOne({where: {id:1}})
-
-    // const user = await order.getUser()
-
-    // console.log('[order.comment]', order.comment)
-    console.log('[user]', user.Orders)
-
-    
-
-    //eeeemmm //cool logic here )))))
-
-
-
-    
-    
-    
+    console.log('[freeTime]', freeTime)
     
     
     

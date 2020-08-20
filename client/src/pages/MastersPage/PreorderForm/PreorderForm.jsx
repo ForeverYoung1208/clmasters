@@ -49,8 +49,15 @@ export const PreorderForm = (props) => {
   }
   const submitHandler = async (e) => {
     e.preventDefault() 
-    console.log('[fomData]', formData)
-    const res = API.postPreorder(formData)
+    const preorder =  {
+      cityId: formData.city,
+      clockTypeId: formData.clockType,
+      email: formData.email,
+      name: formData.name,
+      orderDateTime: formData.orderDateTime
+    }
+    console.log('[preorder]', preorder)
+    const res = API.postPreorder(preorder)
     if(res){
       setGlobalData({preorder:res})
     } else {

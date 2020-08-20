@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     UserId: DataTypes.INTEGER,
     comment: DataTypes.STRING,
     onTime: DataTypes.DATE,
+    allocatedTime: DataTypes.TIME, //?
     deletedAt: DataTypes.DATE
   }, {
     sequelize,

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Clock.init({
     type: DataTypes.STRING,
-    repairTime: DataTypes.NUMBER,
+    repairTime: DataTypes.TIME, //?
     comment: DataTypes.STRING
   }, {
     sequelize,

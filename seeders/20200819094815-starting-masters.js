@@ -29,7 +29,10 @@ module.exports = {
           comment: 'Initial master4',
           CityId:2,          
         }
-      ], {});
+      ], {}
+    );
+    await queryInterface.sequelize.query(`ALTER SEQUENCE "Masters_id_seq" RESTART WITH 100`);
+      
   },
 
   down: async (queryInterface, Sequelize) => {

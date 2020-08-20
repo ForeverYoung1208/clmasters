@@ -23,7 +23,10 @@ module.exports = {
           repairTime: '3:00',
           comment: '',
         }
-      ], {});
+      ], {}
+    );
+    await queryInterface.sequelize.query(`ALTER SEQUENCE "Clocks_id_seq" RESTART WITH 100`);
+
   },
 
   down: async (queryInterface, Sequelize) => {

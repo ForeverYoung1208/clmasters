@@ -23,7 +23,10 @@ module.exports = {
           password: await bcrypt.hash('passwordsecret', SALTROUNDS),
           isAdmin: true
         }
-      ], {});
+      ], {}
+    );
+    await queryInterface.sequelize.query(`ALTER SEQUENCE "Users_id_seq" RESTART WITH 100`);
+
   },
 
   down: async (queryInterface, Sequelize) => {

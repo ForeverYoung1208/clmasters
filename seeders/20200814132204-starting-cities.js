@@ -15,7 +15,10 @@ module.exports = {
           name: 'Uzhgorod',
           comment: 'Initial city2',
         }
-      ], {});
+      ], {}
+    );
+    await queryInterface.sequelize.query(`ALTER SEQUENCE "Cities_id_seq" RESTART WITH 100`);
+
   },
 
   down: async (queryInterface, Sequelize) => {
