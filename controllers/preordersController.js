@@ -3,9 +3,10 @@ class PreordersController{
 
   async post(data){
     const {preorderData} = data
-    const {email, clockTypeId, cityId, orderDateTime:orderDateTimeStr} = preorderData
+    const {email, clockTypeId, cityId:CityId, orderDateTime:orderDateTimeStr, repairTime:repairTimeStr} = preorderData
     const orderDateTime = new Date(orderDateTimeStr)
 
+//--------
     // samples of usage
     // const user = await User.findOne({where: {email}, include:Order})
     // const user2 = await User.findByPk(2, {include:Order})
@@ -18,14 +19,19 @@ class PreordersController{
     // console.log('[user]', user)
     // console.log('[needTime]', needTime)
 
-    const [mastersInCity] = await Promise.all([ 
-      Master.findAll({where: {CityId:cityId}, include:Order}),
-    ])
+//---------
+    // const [mastersInCity] = await Promise.all([ 
+    //   Master.findAll({where: {CityId:cityId}, include:Order}),
+    // ])
+    // let freeTime = await mastersInCity[0].freeTimeAfter(orderDateTime)
+//--------
 
-    let freeTime = await mastersInCity[0].freeTimeAfter(orderDateTime)
+
+    let f = await Master.freeMastersAfter({CityId, orderDateTimeStr, repairTimeStr})
 
 
-    console.log('[freeTime]', freeTime)
+
+    console.log('[f]', f)
     
     
     

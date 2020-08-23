@@ -26,8 +26,8 @@ export const PreorderForm = (props) => {
   const {globalData, setGlobalData} = useContext(GlobalDataContext)
   let cities = [], clocks = []
   if (globalData?.voc){
-    cities = [{id:0}, ...globalData.voc.cities];
-    clocks = [{id:0},...globalData.voc.clocks];
+    cities = [{id:-1}, ...globalData.voc.cities];
+    clocks = [{id:-1},...globalData.voc.clocks];
   }
   useEffect(() => {
     validate('orderDateTime')
@@ -47,11 +47,14 @@ export const PreorderForm = (props) => {
       [e.target.name]: e.target.value
     })
   }
+  
   const submitHandler = async (e) => {
     e.preventDefault() 
+
     const preorder =  {
       cityId: formData.city,
       clockTypeId: formData.clockType,
+      repairTime: globalData.voc.clocks.find((c)=>c.id === +formData.clockType)?.repairTime,
       email: formData.email,
       name: formData.name,
       orderDateTime: formData.orderDateTime
@@ -87,13 +90,12 @@ export const PreorderForm = (props) => {
     },{
       fieldName: 'clockType', 
       tests:[ data =>{
-        console.log(data)
-        if( !data || data == 0 ) return('clockType must be specified.')
+        if( !data || data < 0 ) return('clockType must be specified.')
       }]
     },{
       fieldName: 'city', 
       tests:[ data =>{
-        if( !data || data == 0 ) return('city must be specified.')
+        if( !data || data < 0 ) return('city must be specified.')
       }]
     }]
   )
@@ -134,19 +136,35 @@ export const PreorderForm = (props) => {
           disabled={isLoading} 
           onBlur =  {()=>validate('clockType')}
         >
-          { clocks?.map((c) => <option key={c.id} value = {c.id}>{c.type} {c.comment}</option>   )}
+          { clocks?.map((c) => 
+          <option key={c.id} value = {c.id}>
+            {c.type} {c.comment}
+            {c.id === -1
+              ? 'Select clock type, please'
+              : `, repair time: ${globalData.voc.clocks?.find((cl)=>cl.id===c.id)?.repairTime}`
+            }
+          </option>   )}
+
         </select>
         <div className='preorder-form__validation-error'>{validationErrors?.clockType}</div>        
 
 
         <label className='preorder-form__form-label' htmlFor="City">City:</label>
         <select className='form-select' name="city" id="city" 
+          placeholder = 'select a city'
           value={formData?.city?.value} 
           onChange={changeHandler} 
           disabled={isLoading}
           onBlur =  {()=>validate('city')}
           >
-          { cities?.map((city) => <option key={city.id} value = {city.id}>{city.name} {city.comment}</option>   )}
+          { cities?.map((city) => 
+          <option key={city.id} value = {city.id}>
+            {city.name} {city.comment}
+            {city.id === -1
+              ? 'Select a city, please'
+              : ''
+            }
+          </option>   )}
         </select>
         <div className='preorder-form__validation-error'>{validationErrors?.city}</div>        
         
