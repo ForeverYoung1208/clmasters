@@ -3,8 +3,7 @@ class PreordersController{
 
   async post(data){
     const {preorderData} = data
-    const {email, clockTypeId, cityId:CityId, orderDateTime:orderDateTimeStr, repairTime:repairTimeStr} = preorderData
-    const orderDateTime = new Date(orderDateTimeStr)
+    const {cityId:CityId, orderDateTime:orderDateTimeStr, repairTime:repairTimeStr} = preorderData
 
 //--------
     // samples of usage
@@ -26,22 +25,13 @@ class PreordersController{
     // let freeTime = await mastersInCity[0].freeTimeAfter(orderDateTime)
 //--------
 
-
-    let f = await Master.freeMastersAfter({CityId, orderDateTimeStr, repairTimeStr})
-
-
-
-    console.log('[f]', f)
-    
-    
-    
-    
+    const freeMasters = await Master.freeMastersAfter({CityId, orderDateTimeStr, repairTimeStr})
     
     return ({
       status: 200, 
       json: {
-        message:'got preorder data',
-        preorderData
+        message:'free Msters found',
+        freeMasters
       }  
     })  
   }

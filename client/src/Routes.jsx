@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
+
 import AdminPage from './pages/AdminPage/AdminPage';
 import AuthPage from './pages/AuthPage/AuthPage';
 import MastersPage from './pages/MastersPage/MastersPage';
 import { AuthContext } from './context/authContext';
+import InfoPage from './pages/InfoPage/InfoPage';
 
 export const Routes = () => {
   
@@ -12,7 +14,7 @@ export const Routes = () => {
   return (
     <Switch>
       <Route path="/info" exact>
-        <div>info page here</div>
+        <InfoPage/>
       </Route>
       <Route path="/masters" exact>
         <MastersPage/>

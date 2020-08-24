@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import { registerLocale } from  "react-datepicker";
 import uk from 'date-fns/locale/uk';
@@ -12,23 +13,38 @@ import Validator from '../../../shared/js/validator';
 import "react-datepicker/dist/react-datepicker.css";
 import "./PreorderForm.scss"
 
-
 registerLocale('uk', uk)
 
 export const PreorderForm = (props) => {
+  const history = useHistory()  
   const [formData, setFormData] = useState({
     name:'',
     email:'',
-    orderDateTime: ''
+    orderDateTime: '',
+    clockType:null,
+    city:null,
   })
+
   const [validationErrors, setValidationErrors] = useState()
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
   const {globalData, setGlobalData} = useContext(GlobalDataContext)
+
+  useEffect(()=>{
+    if(!globalData?.voc){ 
+      setGlobalData({error:'Sorry, database is out of order... try some time later...'})
+      history.push('/info')
+      return;
+    }
+  },[globalData?.voc])
+
   let cities = [], clocks = []
   if (globalData?.voc){
     cities = [{id:-1}, ...globalData.voc.cities];
     clocks = [{id:-1},...globalData.voc.clocks];
+  } else {
+    
   }
+
   useEffect(() => {
     validate('orderDateTime')
   },[formData.orderDateTime])

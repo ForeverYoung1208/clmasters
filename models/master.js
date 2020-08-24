@@ -2,7 +2,8 @@
 const { timestrToMSec } = require('../shared/services');
 const {
   Model,
-  QueryTypes
+  QueryTypes,
+  Op
 } = require('sequelize');
 const c = require('config');
 module.exports = (sequelize, DataTypes) => {
@@ -10,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
 
     static async freeMastersAfter({CityId, orderDateTimeStr, repairTimeStr}){
       const orderDateTime = new Date(orderDateTimeStr)
-      const orderDateTimeLocalStr = orderDateTime.toLocaleString()
+      const orderDateTimeISOStr = orderDateTime.toISOString()
       const orderDateTimeEnds = new Date(orderDateTime.valueOf() + timestrToMSec(repairTimeStr))
-      const orderDateTimeEndsLocalStr = orderDateTimeEnds.toLocaleString()
+      const orderDateTimeEndsISOStr = orderDateTimeEnds.toISOString()
 
       console.log('[orderDateTimeEnds]', orderDateTimeEnds) 
 
@@ -23,20 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       // cpecified time are concidered to not interfere with giver time.
       // other orders are concidered to interfere, so they provide ids to outer sql to select masters with these 
       // 'interfering' orders.
-      // 
-      // all the resulting data except MasterId is for debugging and testing purposes... but it costs not much cpu time, so
-      // i'll leave it as is 
-      
+
       const busyMasters = await sequelize.query(
         `select 
-          m.name as mastername, 
-          m.id as MasterId,
-          o.id as OrderId,
-          c.name as cityname,
-          o.comment as ordercomment,
-          o."onTime" as ordertime,
-          o."onTime" + o."allocatedTime" as ordertimeends
-
+          m.id
         from "Masters" m 
         left join "Cities" c on c."id"=m."CityId" 
         right join "Orders" o on o."MasterId"=m."id"
@@ -45,51 +36,54 @@ module.exports = (sequelize, DataTypes) => {
           and o.id not in(
             select o2.id from "Orders" o2 
             where 
-            o."onTime" + o."allocatedTime" < :orderDateTimeLocalStr
-            or o."onTime" > :orderDateTimeEndsLocalStr
-            or o."onTime" is null          
+            o2."onTime" + o2."allocatedTime" < :orderDateTimeISOStr
+            or o2."onTime" > :orderDateTimeEndsISOStr
+            or o2."onTime" is null          
           )
         `,
         {
           replacements: {
             CityId,
-            orderDateTimeLocalStr,
-            orderDateTimeEndsLocalStr
+            orderDateTimeISOStr,
+            orderDateTimeEndsISOStr
           },
           type: QueryTypes.SELECT,
           plain: false,
           raw:true
         }
       )
-
-      const freeMasters = Master.findAll({where: {id: email}})
-
-
-      return freeMasters
-
-    }
-
-
-
-    async freeTimeAfter(dateTime){
-      const _orders = await this.getOrders()
-      const orders = _orders.map(({dataValues})=> {
-        let allocatedTimeInMS = 0
-        if (dataValues.allocatedTime){
-          allocatedTimeInMS = timestrToMSec(dataValues.allocatedTime)
-        }
-        return({
-          allocatedTime: allocatedTimeInMS,
-          onTime: dataValues.onTime
-        })
+      const busyMastersIds = busyMasters.map(m => m.id)
+      const freeMasters = await Master.findAll({
+        where: {
+          CityId,
+          id:{
+            [Op.notIn]:busyMastersIds
+          }
+        },
       })
-        //////////////
-        // further logic must be here.....
-        // i've decided to try to optimize db requests using custom query in static method freeMastersAfter..
-        // i.e. i'll try to put most of the logic into the sql query..
-        /////////////
-      return orders
+      return freeMasters
     }
+
+
+
+    // async freeTimeAfter(dateTime){
+    //   const _orders = await this.getOrders()
+    //   const orders = _orders.map(({dataValues})=> {
+    //     let allocatedTimeInMS = 0
+    //     if (dataValues.allocatedTime){
+    //       allocatedTimeInMS = timestrToMSec(dataValues.allocatedTime)
+    //     }
+    //     return({
+    //       allocatedTime: allocatedTimeInMS,
+    //       onTime: dataValues.onTime
+    //     })
+    //   })
+    //     //////////////
+    //     // i've decided to try to optimize db requests using custom query in static method freeMastersAfter..
+    //     // i.e. i'll try to put most of the logic into the sql query..
+    //     /////////////
+    //   return orders
+    // }
 
     /**
      * Helper method for defining associations.

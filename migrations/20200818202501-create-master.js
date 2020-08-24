@@ -14,6 +14,9 @@ module.exports = {
       CityId: {
         type: Sequelize.INTEGER
       },
+      rating: {
+        type: Sequelize.INTEGER
+      },
       comment: {
         type: Sequelize.STRING
       },
