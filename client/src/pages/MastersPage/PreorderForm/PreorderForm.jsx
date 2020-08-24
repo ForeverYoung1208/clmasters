@@ -28,21 +28,21 @@ export const PreorderForm = (props) => {
   const [validationErrors, setValidationErrors] = useState()
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
   const {globalData, setGlobalData} = useContext(GlobalDataContext)
+  
+  const voc = globalData?.voc
 
   useEffect(()=>{
-    if(!globalData?.voc){ 
+    if(!voc){ 
       setGlobalData({error:'Sorry, database is out of order... try some time later...'})
       history.push('/info')
       return;
     }
-  },[globalData?.voc])
+  },[voc])
 
   let cities = [], clocks = []
-  if (globalData?.voc){
+  if (voc){
     cities = [{id:-1}, ...globalData.voc.cities];
     clocks = [{id:-1},...globalData.voc.clocks];
-  } else {
-    
   }
 
   useEffect(() => {
@@ -75,16 +75,13 @@ export const PreorderForm = (props) => {
       name: formData.name,
       orderDateTime: formData.orderDateTime
     }
-    console.log('[preorder]', preorder)
-    const res = API.postPreorder(preorder)
-    if(res){
-      setGlobalData({preorder:res})
+    const preorderResult = await API.postPreorder(preorder)
+    if(preorderResult){
+      setGlobalData({preorder, preorderResult})
     } else {
       alert(`no responce from submitting preorder form: ${JSON.stringify(formData)}`)
     }
     
-    // on success, set globalData
-    // on fail, show error
   };  
 
   const validator = new Validator(

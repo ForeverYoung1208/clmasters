@@ -30,7 +30,7 @@ class PreordersController{
     return ({
       status: 200, 
       json: {
-        message:'free Msters found',
+        message:'free Masters found!',
         freeMasters
       }  
     })  
