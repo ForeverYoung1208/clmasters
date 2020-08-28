@@ -10,13 +10,13 @@ import { useEffect } from 'react';
 import { useAPI } from './hooks/useAPI';
 
 function App() {
-  const {globalData, setGlobalData} = useContext(GlobalDataContext);
+  const {setGlobalData} = useContext(GlobalDataContext);
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
   useEffect(()=>{
     API.getVoc().then(({message, voc}) => {
-      console.log('[voc]',message, voc);
       setGlobalData({voc})
     })
+    // eslint-disable-next-line
   },[])
 
   

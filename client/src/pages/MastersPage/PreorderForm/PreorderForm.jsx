@@ -9,6 +9,7 @@ import { Form } from '../../../components/Form/Form';
 import { useAPI } from '../../../hooks/useAPI';
 import { GlobalDataContext } from '../../../context/globalDataContext';
 import Validator from '../../../shared/js/validator';
+import baseValidaror from '../../../shared/validators/baseValidator'
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./PreorderForm.scss"
@@ -27,6 +28,7 @@ export const PreorderForm = (props) => {
 
   const [validationErrors, setValidationErrors] = useState()
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
+  const {longerThan, isEmail, entered, selected} = baseValidaror
   const {globalData, setGlobalData} = useContext(GlobalDataContext)
   
   const voc = globalData?.voc
@@ -37,6 +39,7 @@ export const PreorderForm = (props) => {
       history.push('/info')
       return;
     }
+    // eslint-disable-next-line
   },[voc])
 
   let cities = [], clocks = []
@@ -47,6 +50,7 @@ export const PreorderForm = (props) => {
 
   useEffect(() => {
     validate('orderDateTime')
+    // eslint-disable-next-line    
   },[formData.orderDateTime])
 
 
@@ -87,29 +91,19 @@ export const PreorderForm = (props) => {
   const validator = new Validator(
     [{
       fieldName: 'name', 
-      tests:[ data =>{
-        if(!data || data.length<=2) return('Name must be more than 2 chars!')
-      }]
+      tests:[ longerThan(2) ]
     }, {
       fieldName: 'email', 
-      tests:[ data =>{
-        if(!( /\S+@\S+\.\S+/.test(data)) ) return('Must be an email adress')
-      }]
+      tests:[ isEmail ]
     },{
       fieldName: 'orderDateTime', 
-      tests:[ data =>{
-        if( !data ) return('Date and Time must be specified.')
-      }]
+      tests:[ entered ]
     },{
       fieldName: 'clockType', 
-      tests:[ data =>{
-        if( !data || data < 0 ) return('clockType must be specified.')
-      }]
+      tests:[ selected ]
     },{
       fieldName: 'city', 
-      tests:[ data =>{
-        if( !data || data < 0 ) return('city must be specified.')
-      }]
+      tests:[ selected ]
     }]
   )
 
@@ -173,9 +167,7 @@ export const PreorderForm = (props) => {
           { cities?.map((city) => 
           <option key={city.id} value = {city.id}>
             {city.name} {city.comment}
-            {city.id === -1
-              ? 'Select a city, please'
-              : ''
+            {city.id === -1 && 'Select a city, please'
             }
           </option>   )}
         </select>

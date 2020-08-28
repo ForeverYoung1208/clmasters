@@ -11,7 +11,7 @@ const authController = () => {
     if (user.error) return (
       {
         status:400, 
-        json:{ message: `Not authenticated (${user.error})!` }
+        json:{ message: `Not authenticated, wrong credentials!` }  // (${user.error})!` }
       }
     )
 

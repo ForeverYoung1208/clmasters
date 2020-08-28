@@ -15,8 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       const orderDateTimeEnds = new Date(orderDateTime.valueOf() + timestrToMSec(repairTimeStr))
       const orderDateTimeEndsISOStr = orderDateTimeEnds.toISOString()
 
-      console.log('[orderDateTimeEnds]', orderDateTimeEnds) 
-
       // the idea of further SQL is
       // to select masters from the given city whithout orders that interfere with requestet time.
       // so, inner subrequry makes sql to define ids of orders that don't inrterfere with given time, i.e.

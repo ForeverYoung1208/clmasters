@@ -14,7 +14,6 @@ router.post(
   ],
   async(req, res)=>{
   try{
-    console.log('[req]', req)
     const errors = validationResult(req)
     if (!errors.isEmpty()) return res.status(400).json({message: JSON.stringify(errors)})
 
@@ -32,7 +31,6 @@ router.post('/login',
   check('password', 'Password must be longer than 3 chars!').isLength({ min:3 })
 ], 
 async(req, res)=>{
-  console.log('[req]', req)
   const errors = validationResult(req)
 
     if (!errors.isEmpty()) return res.status(400).json({ message: errors.array().reduce((acc,e)=>{return (acc+' '+e.msg)},'') })

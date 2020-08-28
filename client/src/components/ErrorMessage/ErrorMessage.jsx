@@ -7,9 +7,8 @@ import './ErrorMessage.scss';
 
 export const ErrorMessage = (props) => {
 
-  const {globalData, setGlobalData} = useContext(GlobalDataContext)
+  const {globalData} = useContext(GlobalDataContext)
   const errorMessage = globalData?.error || ''
-  const isShown = !!errorMessage
 
   return (
     <div {...props} className = "error-message">

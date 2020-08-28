@@ -11,7 +11,7 @@ import './MastersPage.scss';
 
 const MastersPage = () => {
 
-  const {globalData, setGlobalData} = useContext(GlobalDataContext)
+  const {globalData} = useContext(GlobalDataContext)
   const preorderResult = globalData?.preorderResult
   const history = useHistory()
 
@@ -19,9 +19,9 @@ const MastersPage = () => {
     if(!preorderResult) {
       history.push('/masters/preorder')
     } else{
-      console.log('[preorderResult]', preorderResult)
       history.push('/masters/order')
     }
+    // eslint-disable-next-line
   },[preorderResult])
 
 

@@ -5,17 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { GlobalDataProvider } from './context/globalDataContext';
 
-console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-console.log('process.env.REACT_APP_PRODUCTION_URL:', process.env.REACT_APP_PRODUCTION_URL);
-console.log('process.env.REACT_APP_DEVELOPMENT_URL:', process.env.REACT_APP_DEVELOPMENT_URL);
+// console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
+// console.log('process.env.REACT_APP_PRODUCTION_URL:', process.env.REACT_APP_PRODUCTION_URL);
+// console.log('process.env.REACT_APP_DEVELOPMENT_URL:', process.env.REACT_APP_DEVELOPMENT_URL);
 
 ReactDOM.render(
-  // <React.StrictMode>
   <GlobalDataProvider> 
     <App />
   </GlobalDataProvider>
-
-  // </React.StrictMode>
   ,
   document.getElementById('root')
 );

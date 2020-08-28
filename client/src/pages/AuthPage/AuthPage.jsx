@@ -49,9 +49,7 @@ const AuthPage = () =>{
       const user = await API.loginUser(formData)
       auth.login(user)
       history.push('/user')
-
     } catch (err) {
-      console.log('[err]', err);
       setErrorText(err.message);
     }
   }

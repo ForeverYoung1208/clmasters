@@ -14,6 +14,7 @@ const Menu = () => {
   const { menuItems, updateMenuItems } = useMenu(auth.currentUser);
   useEffect(()=>{
       updateMenuItems(auth.currentUser)
+      // eslint-disable-next-line
     }, [auth.currentUser]
   )
   
