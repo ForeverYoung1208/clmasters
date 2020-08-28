@@ -4,10 +4,10 @@
   "description": "clock masters management",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
-    "client": "yarn --cwd client start",
     "server": "nodemon app.js",
+    "client": "yarn --cwd ../client start",
     "dev": "NODE_ENV=development concurrently \"yarn server\" \"yarn client\"",
+    "prod": "NODE_ENV=production node app.js",
     "client:install": "yarn --cwd client install",
     "client:build": "yarn --cwd client build"
   },
@@ -23,7 +23,6 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
-    "react-transition-group": "^4.4.1",
     "sequelize": "^6.3.3",
     "yarn": "^1.22.4"
   },
