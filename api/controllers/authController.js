@@ -1,7 +1,8 @@
 const { User } = require('../models/index');
 const jwt = require('jsonwebtoken');
-const config = require('config');
-const JWTSECRET = config.get('jwtSecret')
+require('dotenv').config()
+
+const JWTSECRET = process.env.SECUR_JWTSECRET
 
 
 const authController = () => {

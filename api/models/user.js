@@ -1,8 +1,5 @@
 const { Model } = require('sequelize');
 const bcrypt = require('bcryptjs');
-const config = require('config');
-
-const SALTROUNDS =  config.get('saltRounds')
 
 
 module.exports = (sequelize, DataTypes) => {

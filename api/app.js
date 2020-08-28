@@ -1,19 +1,18 @@
 const express = require('express');
-const config = require('config');
 const path = require('path')
+require('dotenv').config()
 
 // const routes = {
 //   auth: require('./routes/auth.routes'),
 //   cities: require('./routes/cities.routes'),
 //   clocks: require('./routes/clocks.routes'),
-  
 // }
 
 // console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-
+// console.log('[configResult]', configResult)
 //----------------------------------------------------------------------------
 
-const PORT = config.get('port') || 5000
+const PORT = process.env.APP_PORT || 5000
 const app = express();
 
 

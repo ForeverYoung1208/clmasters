@@ -5,7 +5,6 @@ const {
   QueryTypes,
   Op
 } = require('sequelize');
-const c = require('config');
 module.exports = (sequelize, DataTypes) => {
   class Master extends Model {
 

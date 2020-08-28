@@ -7,7 +7,6 @@
     "server": "nodemon app.js",
     "dev": "NODE_ENV=development concurrently \"yarn server\" \"yarn client\"",
     "prod": "NODE_ENV=production node app.js",
-    
     "client": "yarn --cwd ../client start",
     "client:install": "yarn --cwd ../client install",
     "client:build": "yarn --cwd ../client build"
@@ -18,7 +17,7 @@
   "dependencies": {
     "add": "^2.0.6",
     "bcryptjs": "^2.4.3",
-    "config": "^3.3.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
     "jsonwebtoken": "^8.5.1",
