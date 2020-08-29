@@ -11,9 +11,36 @@ Fitst, clone the project
 
 there you'll find two folders, for backend (server) and frontend(client):
 
+- client/
 - server/
 
-- client/
+
+### To start/build frontend:
+
+1. cd into folder client/ :
+- $ cd client/
+
+2. Install node dependencies for client:
+- $yarn install
+
+3. Create .env file in the client folder:
+- $touch .env
+
+4. Populate the .env file with configuration data (API url for production and/or development), for example:
+```
+REACT_APP_PRODUCTION_URL=http://clmasters.fyoung.dp.ua
+REACT_APP_DEVELOPMENT_URL=http://localhost:5000
+```
+
+5. Starting/building the client application.
+
+    5.1. In development mode:
+    - $yarn client
+
+    5.2. To make a clean production build:
+    - $yarn build
+
+    *The clean build will be placed in the folder "client/build". Backend is already configured to serve this folder as production build folder.*
 
 
 ### To start backend:
@@ -25,6 +52,7 @@ there you'll find two folders, for backend (server) and frontend(client):
 - $yarn install
 
 3. Update configuration data in .env file according to you system configuration, for example:
+```
 APP_PORT_DEV=5000
 APP_PORT_PROD=5001
 APP_BUILD_FOLDER="../client/build"
@@ -34,8 +62,9 @@ DB_USER="clm"
 DB_PASS="120880"
 SECUR_SALTROUNDS=3
 SECUR_JWTSECRET="jwt Secret for token security"
+```
 
-5. With psql, create user according to credentials in .env file (DB_USER, DB_PASS)
+5. With psql, create user according to the credentials in .env file (DB_USER, DB_PASS),
 create databases "clmasters_production" and/or "clmasters_development" and grant user all rights on these databases
 
     *How to create user and databases please refer to postgres documentation*
@@ -61,7 +90,7 @@ create databases "clmasters_production" and/or "clmasters_development" and grant
     8.1. In development mode:
     - $yarn server
 
-    8.2. In production mode:
+    8.2. In production mode (shortcut for NODE_ENV=production node app.js), serves frontend data from the APP_BUILD_FOLDER folder:
     - $yarn prod
 
     You also can use the following scripts here to manipulate the client part:
@@ -69,29 +98,8 @@ create databases "clmasters_production" and/or "clmasters_development" and grant
     - start both, client and server:            $yarn dev
     - make a production build of the client:    $yarn client:build
 
-### To start frontend:
+    8.3 to start whole application in background mode, I recomment to use utility "forever":
+    - $ [sudo] npm install forever -g
+    - $NODE_ENV=production forever start app.js
 
-1. cd into folder client/ :
-- $ cd client/
-
-2. Install node dependencies for client:
-- $yarn install
-
-3. Create .env file in the client folder:
-- $touch .env
-
-4. Populate the .env file with configuration data (API url for production and/or development), for example:
-
-REACT_APP_PRODUCTION_URL=http://clmasters.fyoung.dp.ua
-REACT_APP_DEVELOPMENT_URL=http://localhost:5000
-
-5. Starting the application.
-
-    5.1. In development mode:
-    - $yarn client
-
-    5.2. To make a clean production build:
-    - $yarn build
-
-    *The clean build will be placed in the folder "client/build". Backend is already configured to serve this folder as production build folder.*
 

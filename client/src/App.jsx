@@ -12,13 +12,20 @@ import { useAPI } from './hooks/useAPI';
 function App() {
   const {setGlobalData} = useContext(GlobalDataContext);
   const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
+
   useEffect(()=>{
-    API.getVoc().then(({message, voc}) => {
-      setGlobalData({voc})
-    })
+    try {
+      async function fetchVoc(){
+        const{message, voc} = await API.getVoc()
+        setGlobalData({voc})
+      }
+      fetchVoc()      
+    } catch (error) {
+      setGlobalData({error})
+    }
+    
     // eslint-disable-next-line
   },[])
-
   
   return (
     <AuthProvider>

@@ -13,8 +13,4 @@ const InfoPage = () => {
     );
 };
 
-InfoPage.propTypes = {
-    
-};
-
 export default InfoPage;

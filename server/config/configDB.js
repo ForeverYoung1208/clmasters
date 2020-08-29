@@ -6,7 +6,7 @@ const {
   DB_PASS} = process.env
 
 
-const config = 
+const configDB = 
 {
   "development": {
     "username": DB_USER,
@@ -26,4 +26,4 @@ const config =
   }
 }
 
-module.exports = config
+module.exports = configDB
