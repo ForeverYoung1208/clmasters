@@ -8,12 +8,12 @@ module.exports = {
         {
           id:1,
           name: 'Dnipro',
-          comment: 'Initial city1',
+          comment: '',
         },
         {
           id:2,
           name: 'Uzhgorod',
-          comment: 'Initial city2',
+          comment: '',
         }
       ], {}
     );

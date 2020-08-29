@@ -1,5 +1,0 @@
-{
-  "port": 5000,
-  "saltRounds": 3,
-  "jwtSecret": "jwt Secret for token security"
-}

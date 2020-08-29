@@ -2,19 +2,24 @@ const express = require('express');
 const path = require('path')
 require('dotenv').config()
 
-// const routes = {
-//   auth: require('./routes/auth.routes'),
-//   cities: require('./routes/cities.routes'),
-//   clocks: require('./routes/clocks.routes'),
-// }
 
-// console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
-// console.log('[configResult]', configResult)
-//----------------------------------------------------------------------------
+let PORT;
+switch (process.env.NODE_ENV) {
+  case 'development':
+    PORT = process.env.APP_PORT_DEV || 5000
+    break;
+  case 'production':
+    PORT = process.env.APP_PORT_PROD || 5000
+    break;
+  default:
+    console.log('unknown NODE_ENV, app port set to 5000 ')
+    PORT = 5000
+}
 
-const PORT = process.env.APP_PORT || 5000
+const {APP_BUILD_FOLDER} = process.env
+
+
 const app = express();
-
 
 app.listen(PORT, ()=>{ console.log(`App has been started on port ${PORT}`) })
 
@@ -35,14 +40,16 @@ app.use('/api/preorder', require('./routes/preorder.routes') )
 
 
 
-//----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+//  SERVING FRONTEND 
+//----------------------------------------------------------------------------
 if(process.env.NODE_ENV === 'production'){
-  app.use('/', express.static( path.join(__dirname,'client', 'build') ))
+  // app.use('/', express.static( path.join(__dirname,'client', 'build') ))
+  app.use('/', express.static( path.join(__dirname, APP_BUILD_FOLDER ) ))
 
   app.get('*', (req, res)=>{
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    res.sendFile(path.join(__dirname, APP_BUILD_FOLDER, 'index.html'))
   })
  
-
 }

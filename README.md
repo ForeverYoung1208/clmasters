@@ -9,28 +9,34 @@
 Fitst, clone the project 
 - $ git clone git@github.com:ForeverYoung1208/clmasters.git
 
-there you'll find two folders, for backend (api) and frontend(client):
+there you'll find two folders, for backend (server) and frontend(client):
 
-- api/
+- server/
 
 - client/
 
 
 ### To start backend:
 
-1. cd into folder api/ :
-- $ cd api/
+1. cd into folder server/ :
+- $ cd server/
 
 2. Install node dependencies for server:
 - $yarn install
 
-3. Update configuration data according to you system configuration
-- config/configDB.json  -*database configuration*
-- config/default.json -*default (development) starting port and secrets configuration*
-- config/production.json -*production starting port and secrets configuration*
+3. Update configuration data in .env file according to you system configuration, for example:
+APP_PORT_DEV=5000
+APP_PORT_PROD=5001
+APP_BUILD_FOLDER="../client/build"
+DB_HOST="localhost"
+DB_PORT=5432
+DB_USER="clm"
+DB_PASS="120880"
+SECUR_SALTROUNDS=3
+SECUR_JWTSECRET="jwt Secret for token security"
 
-
-5. With psql, create user and databases according to credentials in /config/configDB.json (feel free to change password)
+5. With psql, create user according to credentials in .env file (DB_USER, DB_PASS)
+create databases "clmasters_production" and/or "clmasters_development" and grant user all rights on these databases
 
     *How to create user and databases please refer to postgres documentation*
 

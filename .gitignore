@@ -45,7 +45,7 @@ client/build
 # Dependency directories
 node_modules/
 client/node_modules/
-api/node_modules/
+server/node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -76,7 +76,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-api/.env
+server/.env
 client/.env
 .env.*
 
