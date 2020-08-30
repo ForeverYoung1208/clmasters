@@ -28,5 +28,11 @@
     "no-unused-vars": [
       "warn"
     ]
-  }
+  },
+  "globals": {
+    "__dirname": "readonly",
+    "__filename": "readonly",
+    "process": "readonly",
+    "var1": "writable"
+}
 }

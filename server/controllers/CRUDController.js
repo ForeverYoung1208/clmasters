@@ -30,9 +30,9 @@ class CRUDController{
   async create(params) {
     let newModel = await this.model.create(params)
     if(newModel && !newModel.error){
-     ({
+      ({
         status: 201,
-        json:{message: `Created`, data:newModel}
+        json:{message: 'Created', data:newModel}
       })
     } else {
       return({
@@ -52,7 +52,7 @@ class CRUDController{
     } else {
       return({
         status: 400,
-        json:{message: `this.model NOT deleted, something wrong'}` }
+        json:{message: 'this.model NOT deleted, something wrong\'}' }
       })
     }    
   }
@@ -75,11 +75,11 @@ class CRUDController{
     } catch (error) {
       return({
         status: 400,
-        json:{message: `this.model got errors while updating: ${error.message} updated count =${ count }` }
+        json:{message: `this.model got errors while updating: ${error.message}` }
       })
     }
   }  
   
 }
 
-exports.CRUDController = CRUDController;
+exports.CRUDController = CRUDController
