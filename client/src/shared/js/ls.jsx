@@ -5,8 +5,8 @@ export const LS = (key) =>{
   } catch (error) {
     value = localStorage.getItem(key);
   }
-  if (value === 'undefined') {value = null} ;
-
+  if (value === 'undefined') { value = null };
+  
    
   return value
 }
