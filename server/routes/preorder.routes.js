@@ -4,17 +4,6 @@ const { preordersController } = require('../controllers/preordersController')
 
 const router = Router()
 
-// POST preorder
-router.post(
-  '/',
-  async(req, res)=>{
-    try{
-      const {status, json} = await preordersController.post(req.body)
-      return res.status(status).json(json)
-    } catch (e){
-      res.status(500).json({message: 'Error in POST preorder/ [server error:]'+ e.message})
-    }
-  }
-)
+router.post('/', preordersController.postValidators(), async(req,res)=> await preordersController.post(req,res))
 
 module.exports = router

@@ -26,10 +26,12 @@ exports.loginUser = async function (req, res) {
     res.status(500).json({message: 'Something wrong at auth/login (server error), '+ e.message})
   }
 }
-exports.loginUserValidators = [  
-  check('email', 'Email must be an email!').isEmail(),
-  check('password', 'Password must be longer than 3 chars!').isLength({ min: 3 })
-]
+exports.loginUserValidators = exports.registerUserValidators = function () {
+  return [
+    check('email', 'Email must be an email!').isEmail(),
+    check('password', 'Password must be longer than 3 chars!').isLength({ min: 3 })
+  ]
+}
 
 
 exports.registerUser = async function (req, res) {
@@ -50,7 +52,9 @@ exports.registerUser = async function (req, res) {
   }
 }
   
-exports.registerUserValidators = [  
-  check('email', 'Must be an email!').isEmail(),
-  check('name', 'Name must be longer than 2 chars!').isLength({ min:2 })  
-]
+exports.registerUserValidators = function () { 
+  return [  
+    check('email', 'Must be an email!').isEmail(),
+    check('name', 'Name must be longer than 2 chars!').isLength({ min:2 })    
+  ]
+}
