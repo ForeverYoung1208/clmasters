@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
-const config = require('config');
+// const SALTROUNDS =  config.get('saltRounds')
+// const config = require('config');
+require('dotenv').config()
+const SALTROUNDS =  process.env.SECUR_SALTROUNDS=3
 
-const SALTROUNDS =  config.get('saltRounds')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
