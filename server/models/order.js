@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 const {
   Model
-} = require('sequelize');
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**
@@ -10,18 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Order.clock = Order.belongsTo(models.Clock)
-      // Order.master = Order.belongsTo(models.Master)
-      // Order.user = Order.belongsTo(models.User)
-      this.belongsTo(models.User)
-
       // define association here
+      this.belongsTo(models.User, {
+        foreignKey: {name: 'userId'}
+      })
+      this.belongsTo(models.Master, {
+        foreignKey: {name: 'masterId'}
+      })
+      this.belongsTo(models.Clock, {
+        foreignKey: {name: 'clockId'}
+      })
+      
     }
-  };
+  }
   Order.init({
-    ClockId: DataTypes.INTEGER,
-    MasterId: DataTypes.INTEGER,
-    UserId: DataTypes.INTEGER,
+    clocIkd: DataTypes.INTEGER,
+    masterId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     comment: DataTypes.STRING,
     onTime: DataTypes.DATE,
     allocatedTime: DataTypes.TIME, //?
@@ -30,6 +35,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Order',
     paranoid: true,
-  });
-  return Order;
-};
+  })
+  return Order
+}

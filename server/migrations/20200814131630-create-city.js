@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Cities', {
@@ -15,21 +15,21 @@ module.exports = {
         type: Sequelize.STRING
       },
       createdAt: {
-        // allowNull: false,
+        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        // allowNull: false,
+        allowNull: false,
         type: Sequelize.DATE
       },
       deletedAt: {
-        // allowNull: false,
         type: Sequelize.DATE
       }
 
-    });
+    })
   },
+  // eslint-disable-next-line no-unused-vars
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Cities');
+    await queryInterface.dropTable('Cities')
   }
-};
+}

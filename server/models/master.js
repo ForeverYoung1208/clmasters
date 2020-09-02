@@ -1,14 +1,14 @@
-'use strict';
-const { timestrToMSec } = require('../shared/services');
+'use strict'
+const { timestrToMSec } = require('../shared/services')
 const {
   Model,
   QueryTypes,
   Op
-} = require('sequelize');
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Master extends Model {
 
-    static async freeMastersAfter({CityId, orderDateTimeStr, repairTimeStr}){
+    static async freeMastersAfter({cityId, orderDateTimeStr, repairTimeStr}){
       const orderDateTime = new Date(orderDateTimeStr)
       const orderDateTimeISOStr = orderDateTime.toISOString()
       const orderDateTimeEnds = new Date(orderDateTime.valueOf() + timestrToMSec(repairTimeStr))
@@ -26,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         `select 
           m.id
         from "Masters" m 
-        left join "Cities" c on c."id"=m."CityId" 
-        right join "Orders" o on o."MasterId"=m."id"
+        left join "Cities" c on c."id"=m."cityId" 
+        right join "Orders" o on o."masterId"=m."id"
         where 
-          "CityId" = :CityId
+          "cityId" = :cityId
           and o.id not in(
             select o2.id from "Orders" o2 
             where 
@@ -37,10 +37,10 @@ module.exports = (sequelize, DataTypes) => {
             or o2."onTime" > :orderDateTimeEndsISOStr
             or o2."onTime" is null          
           )
-        `,
+        `,        
         {
           replacements: {
-            CityId,
+            cityId,
             orderDateTimeISOStr,
             orderDateTimeEndsISOStr
           },
@@ -50,14 +50,16 @@ module.exports = (sequelize, DataTypes) => {
         }
       )
       const busyMastersIds = busyMasters.map(m => m.id)
+
       const freeMasters = await Master.findAll({
         where: {
-          CityId,
+          cityId,
           id:{
             [Op.notIn]:busyMastersIds
           }
         },
       })
+
       return freeMasters
     }
 
@@ -88,20 +90,22 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.City)
+      this.belongsTo(models.City, {
+        foreignKey: { name: 'cityId'}
+      })
       this.hasMany(models.Order)
       // define association here
     }
-  };
+  }
   Master.init({
     name: DataTypes.STRING,
-    CityId: DataTypes.INTEGER,
+    cityId: DataTypes.INTEGER,
     comment: DataTypes.STRING,
     deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Master',
     paranoid: true,
-  });
-  return Master;
-};
+  })
+  return Master
+}

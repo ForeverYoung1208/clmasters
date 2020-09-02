@@ -7,13 +7,12 @@ class PreordersController extends CRUDController{
 
   async post(req, res) {
     const errors = validationResult(req)  // Finds the validation errors in this request and wraps them in an object with handy functions
-    console.log('[errors]', errors)
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
   
     const { preorderData } = req.body
-    const {cityId:CityId, orderDateTime:orderDateTimeStr, repairTime:repairTimeStr} = preorderData
+    const {cityId, orderDateTime:orderDateTimeStr, repairTime:repairTimeStr} = preorderData
 
-    const freeMasters = await Master.freeMastersAfter({CityId, orderDateTimeStr, repairTimeStr})
+    const freeMasters = await Master.freeMastersAfter({cityId, orderDateTimeStr, repairTimeStr})
     
     return (res.status(200).json(freeMasters))
   }

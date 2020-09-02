@@ -1,6 +1,7 @@
-'use strict';
+'use strict'
 
 module.exports = {
+  // eslint-disable-next-line no-unused-vars
   up: async (queryInterface, Sequelize) => {
 
     await queryInterface.bulkInsert('Masters', 
@@ -9,38 +10,47 @@ module.exports = {
           id:1,
           name: 'Master 1',
           comment: 'Initial master1',
-          CityId:1,
-          rating:11,
+          cityId:1,
+          rating: 11,
+          createdAt: new Date().toISOString(), 
+          updatedAt: new Date().toISOString(),          
         },
         {
           id:2,
           name: 'Master 2',
           comment: 'Initial master2',
-          CityId:1,          
-          rating:12,          
+          cityId:1,          
+          rating: 12,          
+          createdAt: new Date().toISOString(), 
+          updatedAt: new Date().toISOString(),          
         },
         {
           id:3,
           name: 'Master 3',
           comment: 'Initial master3',
-          CityId:2,
-          rating:13,          
+          cityId:2,
+          rating: 13,
+          createdAt: new Date().toISOString(), 
+          updatedAt: new Date().toISOString(),          
         },
         {
           id:4,
           name: 'Master 4',
           comment: 'Initial master4',
-          CityId:2,          
-          rating:14,          
+          cityId:2,          
+          rating: 14,          
+          createdAt: new Date().toISOString(), 
+          updatedAt: new Date().toISOString(),          
         }
       ], {}
-    );
-    await queryInterface.sequelize.query(`ALTER SEQUENCE "Masters_id_seq" RESTART WITH 100`);
+    )
+    await queryInterface.sequelize.query('ALTER SEQUENCE "Masters_id_seq" RESTART WITH 100')
       
   },
 
+  // eslint-disable-next-line no-unused-vars
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('Masters', {id: [1,2,3,4]}, {});
+    await queryInterface.bulkDelete('Masters', {id: [1,2,3,4]}, {})
   }
 
-};
+}

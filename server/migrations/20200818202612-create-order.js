@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Orders', {
@@ -8,14 +8,29 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ClockId: {
-        type: Sequelize.INTEGER
+      clockId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Clocks',        // Name of Target model
+          key: 'id',              // Key in Target model that we're referencing
+        },        
+
       },
-      MasterId: {
-        type: Sequelize.INTEGER
+      masterId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Masters',        // Name of Target model
+          key: 'id',              // Key in Target model that we're referencing
+        },        
+
       },
-      UserId: {
-        type: Sequelize.INTEGER
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',        // Name of Target model
+          key: 'id',              // Key in Target model that we're referencing
+        },        
+
       },
       comment: {
         type: Sequelize.STRING
@@ -30,16 +45,17 @@ module.exports = {
         type: Sequelize.DATE
       },
       createdAt: {
-        // allowNull: false,
+        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        // allowNull: false,
+        allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
   },
+  // eslint-disable-next-line no-unused-vars
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Orders');
+    await queryInterface.dropTable('Orders')
   }
-};
+}
