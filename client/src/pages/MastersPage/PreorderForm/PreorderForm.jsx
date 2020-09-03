@@ -3,6 +3,10 @@ import { useHistory } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import { registerLocale } from  "react-datepicker";
 import uk from 'date-fns/locale/uk';
+// import setHours from "date-fns/setHours";
+// import setMinutes from "date-fns/setMinutes";
+import { setHours, setMinutes, isSameDay, startOfToday, endOfDay } from 'date-fns'
+
 
 import { Button } from '../../../components/Button/Button';
 import { Form } from '../../../components/Form/Form';
@@ -172,12 +176,20 @@ export const PreorderForm = (props) => {
           </option>   )}
         </select>
         <div className='preorder-form__validation-error'>{validationErrors?.city}</div>        
-        
         <label htmlFor="Date">Desired date and time:</label>
+        <div>
+          now:{new Date().toLocaleString('uk-UA', { hour12: false })}
+        </div>
+        <div>
+          till:{setHours(setMinutes(new Date(), 59), 23).toLocaleString('uk-UA',{ hour12: false })}
+        </div>
         <DatePicker 
-          selected = {formData.orderDateTime}
+          selected={formData.orderDateTime}
           placeholderText="Choose date and time"
-          className = 'form-input'
+          className='form-input'
+          minDate={new Date()}
+          minTime={new Date()}
+          maxTime={setHours(setMinutes(new Date(), 59), 23)}
           onChange={changeDateHandler}
           dateFormat = "dd.MM.yyyy HH:mm"
           locale={uk}
