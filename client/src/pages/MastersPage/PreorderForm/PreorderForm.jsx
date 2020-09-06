@@ -27,7 +27,8 @@ export const PreorderForm = (props) => {
     email:'',
     orderDateTime: '',
     clockType:null,
-    city:null,
+    city: null,
+    minTime: '',
   })
 
   const [validationErrors, setValidationErrors] = useState()
@@ -59,13 +60,20 @@ export const PreorderForm = (props) => {
 
 
   const changeDateHandler = (value) => {
+
+    console.log('[value]', value)
+    const date = 0
+    const minTime = 0 
+    
     setFormData({
       ...formData,
-      orderDateTime: value
+      orderDateTime: value,
+      minTime,
     })
   }
   
-  const changeHandler = (e) =>{
+  const changeHandler = (e) => {
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -178,10 +186,10 @@ export const PreorderForm = (props) => {
         <div className='preorder-form__validation-error'>{validationErrors?.city}</div>        
         <label htmlFor="Date">Desired date and time:</label>
         <div>
-          now:{new Date().toLocaleString('uk-UA', { hour12: false })}
+          allowed from:{new Date().toLocaleString('uk-UA', { hour12: false })}
         </div>
         <div>
-          till:{setHours(setMinutes(new Date(), 59), 23).toLocaleString('uk-UA',{ hour12: false })}
+          allowed till:{setHours(setMinutes(new Date(), 59), 23).toLocaleString('uk-UA',{ hour12: false })}
         </div>
         <DatePicker 
           selected={formData.orderDateTime}
