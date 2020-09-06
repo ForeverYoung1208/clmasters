@@ -6,9 +6,12 @@ class CRUDController{
 
   async getAll(req, res) {
     const models = await this.model.findAll()
+    const data = models.map((m) => m.dataValues)
 
-    const data = models.map((m) => m.dataValues )
-    return (res.status(200).json(data))
+    setTimeout(() => {
+      return (res.status(200).json(data))
+    }, 1000)
+
   }
 
   getAllValidators() {

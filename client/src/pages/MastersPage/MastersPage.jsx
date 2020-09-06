@@ -1,29 +1,26 @@
 import React, { useEffect, useContext } from 'react';
 import { Switch, Route, useHistory, NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { Card } from '../../components/Card/Card';
 import { PreorderForm } from './PreorderForm/PreorderForm';
-import { GlobalDataContext } from '../../context/globalDataContext';
 import { Button } from '../../components/Button/Button';
 
 import './MastersPage.scss';
 
-
 const MastersPage = () => {
 
-  const {globalData} = useContext(GlobalDataContext)
-  const preorderResult = globalData?.preorderResult
+  const { preorder, preorderResult } = useSelector(state=>state.main)
   const history = useHistory()
 
   useEffect(()=>{
-    if(!preorderResult) {
+    if(!preorderResult || !preorderResult[0]) {
       history.push('/masters/preorder')
     } else{
       history.push('/masters/order')
     }
     // eslint-disable-next-line
   },[preorderResult])
-
 
   return (
 
@@ -38,7 +35,7 @@ const MastersPage = () => {
           <Card header = "Order confirmation will be here">  
             <div> 
               preorder data:
-              {JSON.stringify(globalData?.preorder)}
+              {JSON.stringify(preorder)}
             </div>
             <br/>
 
@@ -47,8 +44,6 @@ const MastersPage = () => {
               {JSON.stringify(preorderResult)}
   
             </div>
-
-
             
               <NavLink
                 to='/masters/preorder'
@@ -68,10 +63,6 @@ const MastersPage = () => {
 
     </div>
   );
-};
-
-MastersPage.propTypes = {
-    
 };
 
 export default MastersPage;

@@ -5,7 +5,7 @@ export const useHttp = ({env}) => {
   const [error, setError] = useState(null)
 
 
-  const request = useCallback ( async (relativePath, method='GET', body={}, headers={} ) =>{
+  const request = async (relativePath, method='GET', body={}, headers={} ) =>{
     try {
       setIsLoading(true)
 
@@ -36,7 +36,7 @@ export const useHttp = ({env}) => {
       setError(e.message)
       throw e
     }
-  } , [env])
+  }
 
   const clearError = () => {
     setError(null)      

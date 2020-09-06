@@ -1,20 +1,24 @@
-import React, { useState, useContext, useEffect} from 'react';
+// foreign libs
+import React, { useState, useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import { registerLocale } from  "react-datepicker";
 import uk from 'date-fns/locale/uk';
-// import setHours from "date-fns/setHours";
-// import setMinutes from "date-fns/setMinutes";
-import { setHours, setMinutes, isSameDay, startOfToday, endOfDay } from 'date-fns'
+import { setHours, setMinutes, isSameDay, endOfDay, startOfDay} from 'date-fns'
 
-
+// my UI
 import { Button } from '../../../components/Button/Button';
 import { Form } from '../../../components/Form/Form';
-import { useAPI } from '../../../hooks/useAPI';
-import { GlobalDataContext } from '../../../context/globalDataContext';
-import Validator from '../../../shared/js/validator';
-import baseValidaror from '../../../shared/validators/baseValidator'
 
+// my services
+import Validator from '../../../shared/js/validator';
+import { longerThan, isEmail, entered, selected } from '../../../shared/validators/baseValidator'
+
+// store
+import { setErrorMessage, postPreorder } from '../../../store/actions/main';
+
+//sytyles
 import "react-datepicker/dist/react-datepicker.css";
 import "./PreorderForm.scss"
 
@@ -28,43 +32,40 @@ export const PreorderForm = (props) => {
     orderDateTime: '',
     clockType:null,
     city: null,
-    minTime: '',
+    minTime: new Date()     //now!
   })
+  const dispatch = useDispatch()
+  const voc = useSelector(state => state.voc)
+  const loaders = useSelector(state => state.main.loaders)
+  const isLoading = loaders?.preorder
 
   const [validationErrors, setValidationErrors] = useState()
-  const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
-  const {longerThan, isEmail, entered, selected} = baseValidaror
-  const {globalData, setGlobalData} = useContext(GlobalDataContext)
-  
-  const voc = globalData?.voc
 
   useEffect(()=>{
     if(!voc){ 
-      setGlobalData({error:'Sorry, database is out of order... try some time later...'})
+      dispatch(setErrorMessage('Sorry, database is out of order... try some time later...'))
       history.push('/info')
       return;
     }
     // eslint-disable-next-line
   },[voc])
 
-  let cities = [], clocks = []
-  if (voc){
-    cities = [{id:-1}, ...globalData.voc.cities];
-    clocks = [{id:-1},...globalData.voc.clocks];
-  }
+  const cities = [{id:-1}, ...voc.cities];
+  const clocks = [{id:-1}, ...voc.clocks];
 
   useEffect(() => {
+    
     validate('orderDateTime')
     // eslint-disable-next-line    
-  },[formData.orderDateTime])
-
+  }, [formData.orderDateTime])
+  
+  
 
   const changeDateHandler = (value) => {
+    const minTime = isSameDay(value, new Date())
+      ? new Date()
+      : startOfDay(new Date())
 
-    console.log('[value]', value)
-    const date = 0
-    const minTime = 0 
-    
     setFormData({
       ...formData,
       orderDateTime: value,
@@ -86,18 +87,14 @@ export const PreorderForm = (props) => {
     const preorder =  {
       cityId: formData.city,
       clockTypeId: formData.clockType,
-      repairTime: globalData.voc.clocks.find((c)=>c.id === +formData.clockType)?.repairTime,
+      repairTime: voc.clocks.find((c)=>c.id === +formData.clockType)?.repairTime,
       email: formData.email,
       name: formData.name,
       orderDateTime: formData.orderDateTime
     }
-    const preorderResult = await API.postPreorder(preorder)
-    if(preorderResult){
-      setGlobalData({preorder, preorderResult})
-    } else {
-      alert(`no responce from submitting preorder form: ${JSON.stringify(formData)}`)
-    }
-    
+
+    dispatch(postPreorder(preorder))
+
   };  
 
   const validator = new Validator(
@@ -160,7 +157,7 @@ export const PreorderForm = (props) => {
             {c.type} {c.comment}
             {c.id === -1
               ? 'Select clock type, please'
-              : `, repair time: ${globalData.voc.clocks?.find((cl)=>cl.id===c.id)?.repairTime}`
+              : `, repair time: ${voc.clocks?.find((cl)=>cl.id===c.id)?.repairTime}`
             }
           </option>   )}
 
@@ -185,23 +182,17 @@ export const PreorderForm = (props) => {
         </select>
         <div className='preorder-form__validation-error'>{validationErrors?.city}</div>        
         <label htmlFor="Date">Desired date and time:</label>
-        <div>
-          allowed from:{new Date().toLocaleString('uk-UA', { hour12: false })}
-        </div>
-        <div>
-          allowed till:{setHours(setMinutes(new Date(), 59), 23).toLocaleString('uk-UA',{ hour12: false })}
-        </div>
         <DatePicker 
           selected={formData.orderDateTime}
           placeholderText="Choose date and time"
           className='form-input'
-          minDate={new Date()}
-          minTime={new Date()}
-          maxTime={setHours(setMinutes(new Date(), 59), 23)}
-          onChange={changeDateHandler}
+          minDate={ new Date() }
+          minTime={ formData.minTime }
+          maxTime={ endOfDay(new Date()) }
+          onChange={ changeDateHandler }
           dateFormat = "dd.MM.yyyy HH:mm"
           locale={uk}
-          timeIntervals={60}
+          timeIntervals={ 60 }
           showTimeSelect
           onBlur =  {()=>validate('orderDateTime')}          
         />

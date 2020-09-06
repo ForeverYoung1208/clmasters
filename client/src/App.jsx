@@ -1,31 +1,25 @@
-import React, { useContext } from 'react';
-import './App.scss';
-import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './context/authContext';
+import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { Routes } from './Routes';
-import { Header } from './components/Header/Header';
-import { GlobalDataContext } from './context/globalDataContext';
-import { useEffect } from 'react';
-import { useAPI } from './hooks/useAPI';
+import { AuthProvider } from './context/authContext'
+import { Routes } from './Routes'
+import { Header } from './components/Header/Header'
+import { fetchVoc } from './store/actions/voc'
+
+import './App.scss'
 
 function App() {
-  const {setGlobalData} = useContext(GlobalDataContext);
-  const {API, isLoading} = useAPI({env:process.env.NODE_ENV})
 
-  useEffect(()=>{
-    try {
-      async function fetchVoc(){
-        const{message, voc} = await API.getVoc()
-        setGlobalData({voc})
-      }
-      fetchVoc()      
-    } catch (error) {
-      setGlobalData({error})
-    }
-    
+  const dispatch = useDispatch();
+  const { loaders } = useSelector(state => state.main)
+  const isLoading = loaders?.voc
+
+  useEffect(() => {
+    dispatch(fetchVoc())
     // eslint-disable-next-line
-  },[])
+  }, [])
   
   return (
     <AuthProvider>

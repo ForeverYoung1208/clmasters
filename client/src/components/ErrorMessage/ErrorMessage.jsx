@@ -1,18 +1,15 @@
 import React from 'react';
-
-import { useContext } from 'react';
-import { GlobalDataContext } from '../../context/globalDataContext';
+import { useSelector } from 'react-redux'
 import './ErrorMessage.scss';
 
 
 export const ErrorMessage = (props) => {
 
-  const {globalData} = useContext(GlobalDataContext)
-  const errorMessage = globalData?.error || ''
+  const error = useSelector(state=>state.main.error)
 
   return (
     <div {...props} className = "error-message">
-      {errorMessage}
+      {error?.message}
     </div>
   );
 };

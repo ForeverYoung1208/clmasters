@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-import vocReducer from './vocReducer'
-import mainReducer from './mainReducer'
+import voc from './voc'
+import main from './main'
 
 export default combineReducers({
-  voc: vocReducer,
-  main: mainReducer,
+  voc,
+  main,
 })

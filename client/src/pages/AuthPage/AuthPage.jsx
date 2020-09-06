@@ -6,7 +6,7 @@ import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
 import { Form } from '../../components/Form/Form';
 import { AuthContext } from '../../context/authContext';
-import { useAPI } from '../../hooks/useAPI';
+import { loginUser } from '../../shared/js/api';
 import withAppear from '../../HOC/withAnimationAppear';
 
 import './AuthPage.scss'
@@ -27,8 +27,10 @@ const AuthPage = () =>{
   const [errorText, setErrorText] = useState()
   const { auth } =useContext(AuthContext)
   const history = useHistory()
-  const { API, isLoading } = useAPI({env:process.env.NODE_ENV})
-
+  
+  // TODO
+  const isLoading = false
+  
   const changeHandler = (e) =>{
     setFormData({
       ...formData,
@@ -46,7 +48,7 @@ const AuthPage = () =>{
   const submitHandler = async (e) =>{
     e.preventDefault()
     try {
-      const user = await API.loginUser(formData)
+      const user = await loginUser(formData)
       auth.login(user)
       history.push('/user')
     } catch (err) {
