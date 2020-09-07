@@ -3,12 +3,12 @@ import { setYear } from "date-fns";
 
 
 export const apiLoginUser = async (credentials)=>{
-  const { user } = await myHttp('/api/auth/login', 'POST', {...credentials} )
+  const { user } = await myHttp('/api/auth/login', 'POST', { ...credentials }).then(u => u.json())
   return user
 }
 
 export const registerUser = async ({email, name})=>{
-  const { user } = await myHttp('/api/auth/register', 'POST', {email, name} )
+  const { user } = await myHttp('/api/auth/register', 'POST', {email, name} ).then(u=>u.json())
   return user
 };
 
