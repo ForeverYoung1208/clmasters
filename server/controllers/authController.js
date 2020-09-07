@@ -21,7 +21,8 @@ exports.loginUser = async function (req, res) {
       JWTSECRET,
       {expiresIn: '1h'}
     ) 
-    res.status(200).json({ user: { ...user.dataValues, token, password: 'hidden' } })    // password: 'hidden' - to overwrite password stored in ...user.dataValues
+    const {password:pwd, ...userDataNoPassword } = user.dataValues
+    res.status(200).json({ user: { ...userDataNoPassword, token} })
   } catch (e){
     res.status(500).json({message: 'Something wrong at auth/login (server error), '+ e.message})
   }

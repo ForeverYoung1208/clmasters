@@ -2,7 +2,7 @@ import { myHttp } from "./myHttp"
 import { setYear } from "date-fns";
 
 
-export const loginUser = async (credentials)=>{
+export const apiLoginUser = async (credentials)=>{
   const { user } = await myHttp('/api/auth/login', 'POST', {...credentials} )
   return user
 }

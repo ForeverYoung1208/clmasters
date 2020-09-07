@@ -6,7 +6,7 @@ import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
 import { Form } from '../../components/Form/Form';
 import { AuthContext } from '../../context/authContext';
-import { loginUser } from '../../shared/js/api';
+import { apiLoginUser } from '../../shared/js/api';
 import withAppear from '../../HOC/withAnimationAppear';
 
 import './AuthPage.scss'
@@ -48,7 +48,7 @@ const AuthPage = () =>{
   const submitHandler = async (e) =>{
     e.preventDefault()
     try {
-      const user = await loginUser(formData)
+      const user = await apiLoginUser(formData)
       auth.login(user)
       history.push('/user')
     } catch (err) {
