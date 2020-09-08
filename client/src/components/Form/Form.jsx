@@ -4,7 +4,7 @@ import './Form.scss';
 
 export const Form = (props)=>{
   return(
-    <form onSubmit={props.onSubmit}>
+    <form onSubmit={props.onSubmit} className={props.className} >
       {props.children}
     </form>
   )

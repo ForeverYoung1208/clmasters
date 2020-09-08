@@ -7,7 +7,7 @@ export const apiLoginUser = async (credentials)=>{
   return user
 }
 
-export const registerUser = async ({email, name})=>{
+export const apiRegisterUser = async ({email, name})=>{
   const { user } = await myHttp('/api/auth/register', 'POST', {email, name} ).then(u=>u.json())
   return user
 };
