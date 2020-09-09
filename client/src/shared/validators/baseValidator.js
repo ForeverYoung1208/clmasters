@@ -1,17 +1,20 @@
-export const longerThan = (len) => {
-  return function (data) {
-    if (!data || data.length <= len) return (`Must be more than ${len} chars!`)
-  }
-}
-  
-export const isEmail = (data) => {
-  if (!(/\S+@\S+\.\S+/.test(data))) return ('Must be an email adress')
-}
-  
-export const entered = (data) => {
-    if( !data ) return('Must be specified.')
-}
-  
-export const selected = (data) => {
-  if (!data || data < 0) return ('Must be selected.')
-}
+
+export const minLength = min => value =>
+  value && value.length <= min
+    ? `Must be ${min} characters or less`
+    : undefined
+
+export const isEmail = value =>
+  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+    ? 'Invalid email address'
+    : undefined
+
+
+export const selected = (data) => 
+  !data || data < 0
+    ? 'Must be selected.'
+    : undefined
+
+export const required = value => value
+  ? undefined
+  : 'Required'    

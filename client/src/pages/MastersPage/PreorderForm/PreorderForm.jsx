@@ -1,11 +1,11 @@
 // foreign libs
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import { registerLocale } from  "react-datepicker";
 import uk from 'date-fns/locale/uk';
-import { setHours, setMinutes, isSameDay, endOfDay, startOfDay} from 'date-fns'
+import { isSameDay, endOfDay, startOfDay} from 'date-fns'
 
 // my UI
 import { Button } from '../../../components/Button/Button';
@@ -13,7 +13,7 @@ import { Form } from '../../../components/Form/Form';
 
 // my services
 import Validator from '../../../shared/js/validator';
-import { longerThan, isEmail, entered, selected } from '../../../shared/validators/baseValidator'
+import { minLength, isEmail, required, selected } from '../../../shared/validators/baseValidator'
 
 // store
 import { setErrorMessage, postPreorder } from '../../../store/actions/main';
@@ -100,13 +100,13 @@ export const PreorderForm = (props) => {
   const validator = new Validator(
     [{
       fieldName: 'name', 
-      tests:[ longerThan(2) ]
+      tests:[ required, minLength(2) ]
     }, {
       fieldName: 'email', 
-      tests:[ isEmail ]
+      tests:[ required, isEmail ]
     },{
       fieldName: 'orderDateTime', 
-      tests:[ entered ]
+      tests:[ required ]
     },{
       fieldName: 'clockType', 
       tests:[ selected ]
@@ -134,7 +134,7 @@ export const PreorderForm = (props) => {
           disabled={isLoading} 
           onBlur = { ()=>validate('name')}
         />
-        <div className='preorder-form__validation-error'>{validationErrors?.name}</div>
+        <div className='preorder-form__validation-error'>{validationErrors?.name || "\u00a0"}</div>
 
         <label className='preorder-form__form-label' htmlFor="email">Enter your email:</label>
         <input className='form-input'type="email" name="email" id="email" 
@@ -143,7 +143,7 @@ export const PreorderForm = (props) => {
           onBlur =  {()=>validate('email')}
         />
 
-        <div className='preorder-form__validation-error'>{validationErrors?.email}</div>        
+        <div className='preorder-form__validation-error'>{validationErrors?.email|| "\u00a0"}</div>        
 
         <label className='preorder-form__form-label' htmlFor="clockType">Clock size:</label>
         <select className='form-select' name="clockType" id="clockType" 
@@ -157,12 +157,12 @@ export const PreorderForm = (props) => {
             {c.type} {c.comment}
             {c.id === -1
               ? 'Select clock type, please'
-              : `, repair time: ${voc.clocks?.find((cl)=>cl.id===c.id)?.repairTime}`
+              : `, repair time: ${voc.clocks?.find((cl)=>cl.id===c.id)?.repairTime|| "\u00a0"}`
             }
           </option>   )}
 
         </select>
-        <div className='preorder-form__validation-error'>{validationErrors?.clockType}</div>        
+        <div className='preorder-form__validation-error'>{validationErrors?.clockType || "\u00a0"}</div>        
 
 
         <label className='preorder-form__form-label' htmlFor="City">City:</label>
@@ -180,7 +180,7 @@ export const PreorderForm = (props) => {
             }
           </option>   )}
         </select>
-        <div className='preorder-form__validation-error'>{validationErrors?.city}</div>        
+        <div className='preorder-form__validation-error'>{validationErrors?.city || "\u00a0"}</div>        
         <label htmlFor="Date">Desired date and time:</label>
         <DatePicker 
           selected={formData.orderDateTime}
