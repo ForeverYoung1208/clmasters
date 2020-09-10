@@ -5,15 +5,14 @@ import Menu from './Menu/Menu';
 import UserInfo from './UserInfo/UserInfo';
 
 import './Header.scss';
-import { AuthContext } from '../../context/authContext';
-import { useContext } from 'react';
 import withAppear from '../../HOC/withAnimationAppear';
+import { useSelector } from 'react-redux';
 
 
 const UserInfoAnimated = withAppear(UserInfo);
 
 export const Header = () => {
-  const {auth} = useContext(AuthContext)
+  const currentUser = useSelector(store=>store.auth.user)
 
   return (
       <div className="header">
@@ -25,7 +24,7 @@ export const Header = () => {
           <Menu/>
         </div>
         <div className="header__user-info">
-            <UserInfoAnimated key='userInfo' isShown = {!!auth.currentUser}/>
+            <UserInfoAnimated key='userInfo' isShown = {!!currentUser}/>
         </div>
       </div>
   );

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
+import { useSelector } from 'react-redux'
 
-import { AuthContext } from '../../../context/authContext';
+// import { AuthContext } from '../../../context/authContext';
 import { useMenu } from '../../../hooks/useMenu';
 import { MenuItem } from './MenuItem/MenuItem';
 import withAppear from '../../../HOC/withAnimationAppear';
@@ -10,12 +11,13 @@ import './Menu.scss';
 const AnimatedMenuItem = withAppear(MenuItem)
 
 const Menu = () => {
-  const { auth } =useContext(AuthContext)
-  const { menuItems, updateMenuItems } = useMenu(auth.currentUser);
+  // const { auth } = useContext(AuthContext)
+  const currentUser = useSelector(store => store.auth.user)
+  const { menuItems, updateMenuItems } = useMenu(currentUser);
   useEffect(()=>{
-      updateMenuItems(auth.currentUser)
+      updateMenuItems(currentUser)
       // eslint-disable-next-line
-    }, [auth.currentUser]
+    }, [currentUser]
   )
   
   return (

@@ -1,10 +1,12 @@
 import { myHttp } from "./myHttp"
-import { setYear } from "date-fns";
 
-
-export const apiLoginUser = async (credentials)=>{
-  const { user } = await myHttp('/api/auth/login', 'POST', { ...credentials }).then(u => u.json())
-  return user
+export const apiLoginUser = async (credentials) => {
+  try {
+    const res = await myHttp('/api/auth/login', 'POST', { ...credentials }).then(u => u.json())
+    return res
+  } catch (error) {
+    return error
+  }
 }
 
 export const apiRegisterUser = async ({email, name})=>{

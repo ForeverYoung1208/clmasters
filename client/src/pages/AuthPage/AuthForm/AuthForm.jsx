@@ -9,7 +9,8 @@ const renderField = ({ className, input, placeholder, type, meta: { touched, err
   <>
     <input {...input} className={className} placeholder={placeholder} type={type} />
     <div className="form__error">
-      {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))|| "\u00a0"}
+      {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+      {"\u00a0"}
     </div>
   </>
 )
@@ -23,13 +24,13 @@ let AuthForm = (props) => {
     <div className='authPage'>
       <Form onSubmit={handleSubmit} className="authPage__form">
         <label htmlFor="email">Email</label>
-        <Field className='form-input' name="email" type="email"
+        <Field className='form-input' name="email" type="email" // placeholder="enter email here"
           component={renderField}
           validate={[ required, isEmail ]}
         />
 
         <label htmlFor="password">Password</label>
-        <Field className='form-input' name="password" type="password"
+        <Field className='form-input' name="password" type="password" //placeholder="enter password here"
           component={renderField}
           validate={[ required, minLength2 ]}
         />

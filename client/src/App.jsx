@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { AuthProvider } from './context/authContext'
+// import { AuthProvider } from './context/authContext'
 import { Routes } from './Routes'
 import { Header } from './components/Header/Header'
 import { fetchVoc } from './store/actions/voc'
@@ -22,7 +22,7 @@ function App() {
   }, [])
   
   return (
-    <AuthProvider>
+    // <AuthProvider>
         <div className = 'app'> 
             <BrowserRouter>
               <div className='app__header'> 
@@ -37,7 +37,7 @@ function App() {
               </footer>
             </BrowserRouter>
         </div>
-    </AuthProvider>
+    // </AuthProvider>
   );
 }
 
