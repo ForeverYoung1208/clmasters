@@ -1,7 +1,6 @@
-
 export const minLength = min => value =>
   value && value.length <= min
-    ? `Must be ${min} characters or less`
+    ? `Must be longer than ${min} characters`
     : undefined
 
 export const isEmail = value =>
@@ -18,3 +17,10 @@ export const selected = (data) =>
 export const required = value => value
   ? undefined
   : 'Required'    
+
+export const validators = {
+  minLength,
+  isEmail,
+  selected,
+  required
+}

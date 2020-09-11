@@ -1,18 +1,16 @@
-import React, { useContext, useEffect } from 'react';
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react';
 
-// import { AuthContext } from '../../../context/authContext';
 import { useMenu } from '../../../hooks/useMenu';
 import { MenuItem } from './MenuItem/MenuItem';
+import withCurrentUser from '../../../HOC/withCurrentUser';
 import withAppear from '../../../HOC/withAnimationAppear';
 
 import './Menu.scss';
 
 const AnimatedMenuItem = withAppear(MenuItem)
 
-const Menu = () => {
-  // const { auth } = useContext(AuthContext)
-  const currentUser = useSelector(store => store.auth.user)
+const Menu = (props) => {
+  const { currentUser } = props
   const { menuItems, updateMenuItems } = useMenu(currentUser);
   useEffect(()=>{
       updateMenuItems(currentUser)
@@ -35,5 +33,5 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default withCurrentUser(Menu);
 

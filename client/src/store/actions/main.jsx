@@ -1,4 +1,4 @@
-import { LOADER_SHOW, LOADER_HIDE, SET_ERROR, POST_PREORDER_OK, SAVE_PREORDER } from "./actionTypes";
+import { LOADER_SHOW, LOADER_HIDE, POST_PREORDER_OK, SAVE_PREORDER, SET_ERROR_MESSAGE } from "./actionTypes";
 import { apiPostPreorder } from "../../shared/js/api";
 
 export const loaderShow = (name) => {
@@ -12,17 +12,22 @@ export const loaderHide = (name) => {
 	return {
     type: LOADER_HIDE,
     payload: { loaderName: name }
-    
 	}     
 }
 
-export const setErrorMessage = (error) => {
-  console.log('[error]', error)
-  //...
+export const setErrorMessage = (errorMessage) => {
   return {
-    type: SET_ERROR,
-    payload: { error }
+    type: SET_ERROR_MESSAGE,
+    payload: { errorMessage }
 	}  
+}
+
+export const clearErrorMessage = () => {
+  return {
+    type: SET_ERROR_MESSAGE,
+    payload: {}
+  }
+  
 }
 
 export const postPreorder = (preorder) => { 

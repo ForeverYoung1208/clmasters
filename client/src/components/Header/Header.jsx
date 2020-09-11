@@ -6,13 +6,13 @@ import UserInfo from './UserInfo/UserInfo';
 
 import './Header.scss';
 import withAppear from '../../HOC/withAnimationAppear';
-import { useSelector } from 'react-redux';
+import withCurrentUser from '../../HOC/withCurrentUser';
 
 
 const UserInfoAnimated = withAppear(UserInfo);
 
-export const Header = () => {
-  const currentUser = useSelector(store=>store.auth.user)
+const Header = (props) => {
+  const {currentUser} = props
 
   return (
       <div className="header">
@@ -29,3 +29,5 @@ export const Header = () => {
       </div>
   );
 };
+
+export default withCurrentUser(Header)

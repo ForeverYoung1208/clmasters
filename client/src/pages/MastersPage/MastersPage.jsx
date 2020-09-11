@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, useHistory, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -32,7 +32,8 @@ const MastersPage = () => {
           </Card>
         </Route>
         <Route path='/masters/order'>
-          <Card header = "Order confirmation will be here">  
+          <Card header="Order confirmation will be here">  
+            
             <div> 
               preorder data:
               {JSON.stringify(preorder)}
@@ -42,9 +43,8 @@ const MastersPage = () => {
             <div>
               got preorder results:
               {JSON.stringify(preorderResult)}
-  
             </div>
-            
+
               <NavLink
                 to='/masters/preorder'
               > 
@@ -52,15 +52,10 @@ const MastersPage = () => {
                   Change preorder data
                 </Button>
               </NavLink> 
-            
-
+              
           </Card>
         </Route>
-
       </Switch>
-  
-  
-
     </div>
   );
 };

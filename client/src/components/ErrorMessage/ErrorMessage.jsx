@@ -1,15 +1,32 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import './ErrorMessage.scss';
+import { Emptyspace } from '../Emptyspace/Emptyspace';
+import { clearErrorMessage } from '../../store/actions/main';
+import { useEffect } from 'react';
 
 
 export const ErrorMessage = (props) => {
+  
+  const dispatch = useDispatch()
+  const { showTime, ..._props } = props
+  const errorMessage = useSelector(state => state.main.errorMessage)
 
-  const error = useSelector(state=>state.main.error)
+  const isMessage = !!errorMessage
+
+  useEffect(() => {
+    
+    setTimeout(() => {
+      dispatch(clearErrorMessage())
+    }, showTime)
+  }, [isMessage])
+  
+
 
   return (
-    <div {...props} className = "error-message">
-      {error?.message}
+    <div {..._props} className = "error-message">
+      {errorMessage}
+      <Emptyspace/>
     </div>
-  );
-};
+  )
+}

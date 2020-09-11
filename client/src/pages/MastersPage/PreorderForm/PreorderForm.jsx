@@ -13,7 +13,7 @@ import { Form } from '../../../components/Form/Form';
 
 // my services
 import Validator from '../../../shared/js/validator';
-import { minLength, isEmail, required, selected } from '../../../shared/validators/baseValidator'
+import { validators } from '../../../shared/validators/baseValidator'
 
 // store
 import { setErrorMessage, postPreorder } from '../../../store/actions/main';
@@ -21,6 +21,7 @@ import { setErrorMessage, postPreorder } from '../../../store/actions/main';
 //sytyles
 import "react-datepicker/dist/react-datepicker.css";
 import "./PreorderForm.scss"
+import { Emptyspace } from '../../../components/Emptyspace/Emptyspace';
 
 registerLocale('uk', uk)
 
@@ -100,19 +101,19 @@ export const PreorderForm = (props) => {
   const validator = new Validator(
     [{
       fieldName: 'name', 
-      tests:[ required, minLength(2) ]
+      tests:[ validators.required, validators.minLength(2) ]
     }, {
       fieldName: 'email', 
-      tests:[ required, isEmail ]
+      tests:[ validators.required, validators.isEmail ]
     },{
       fieldName: 'orderDateTime', 
-      tests:[ required ]
+      tests:[ validators.required ]
     },{
       fieldName: 'clockType', 
-      tests:[ selected ]
+      tests:[ validators.selected ]
     },{
       fieldName: 'city', 
-      tests:[ selected ]
+      tests:[ validators.selected ]
     }]
   )
 
@@ -134,7 +135,7 @@ export const PreorderForm = (props) => {
           disabled={isLoading} 
           onBlur = { ()=>validate('name')}
         />
-        <div className='preorder-form__validation-error'>{validationErrors?.name || "\u00a0"}</div>
+        <div className='preorder-form__validation-error'>{validationErrors?.name || <Emptyspace/>}</div>
 
         <label className='preorder-form__form-label' htmlFor="email">Enter your email:</label>
         <input className='form-input'type="email" name="email" id="email" 
@@ -143,7 +144,7 @@ export const PreorderForm = (props) => {
           onBlur =  {()=>validate('email')}
         />
 
-        <div className='preorder-form__validation-error'>{validationErrors?.email|| "\u00a0"}</div>        
+        <div className='preorder-form__validation-error'>{validationErrors?.email || <Emptyspace/>}</div>        
 
         <label className='preorder-form__form-label' htmlFor="clockType">Clock size:</label>
         <select className='form-select' name="clockType" id="clockType" 
@@ -157,12 +158,12 @@ export const PreorderForm = (props) => {
             {c.type} {c.comment}
             {c.id === -1
               ? 'Select clock type, please'
-              : `, repair time: ${voc.clocks?.find((cl)=>cl.id===c.id)?.repairTime|| "\u00a0"}`
+              : `, repair time: ${voc.clocks?.find((cl)=>cl.id===c.id)?.repairTime || <Emptyspace/>}`
             }
           </option>   )}
 
         </select>
-        <div className='preorder-form__validation-error'>{validationErrors?.clockType || "\u00a0"}</div>        
+        <div className='preorder-form__validation-error'>{validationErrors?.clockType || <Emptyspace/>}</div>        
 
 
         <label className='preorder-form__form-label' htmlFor="City">City:</label>
@@ -180,7 +181,7 @@ export const PreorderForm = (props) => {
             }
           </option>   )}
         </select>
-        <div className='preorder-form__validation-error'>{validationErrors?.city || "\u00a0"}</div>        
+        <div className='preorder-form__validation-error'>{validationErrors?.city || <Emptyspace/>}</div>        
         <label htmlFor="Date">Desired date and time:</label>
         <DatePicker 
           selected={formData.orderDateTime}

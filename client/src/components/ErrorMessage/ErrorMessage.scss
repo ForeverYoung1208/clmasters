@@ -1,3 +1,7 @@
+@import '../../shared/styles/ui.scss';
 .error-message{
-  background-color: red;
+  @include error-text; 
+  margin-top: 0.5rem;
+  transform:translateY(0rem);
+  
 }

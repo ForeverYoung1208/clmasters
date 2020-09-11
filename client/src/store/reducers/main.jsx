@@ -1,4 +1,4 @@
-import { LOADER_SHOW, LOADER_HIDE, POST_PREORDER_OK, SET_ERROR, SAVE_PREORDER } from "../actions/actionTypes"
+import { LOADER_SHOW, LOADER_HIDE, POST_PREORDER_OK, SET_ERROR_MESSAGE, SAVE_PREORDER } from "../actions/actionTypes"
 
 const initialState = {
   loaders:{
@@ -11,7 +11,7 @@ const initialState = {
   preorderResult: {
     //..
   },
-  error: null
+  errorMessage: null
 }
 
 const main = (state = initialState, action) => { 
@@ -43,10 +43,10 @@ const main = (state = initialState, action) => {
         preorder: action.payload.preorder
       }
     
-    case SET_ERROR:
+    case SET_ERROR_MESSAGE:
       return {
         ...state,
-        error: action.payload.error
+        errorMessage: action.payload.errorMessage
       }
     
     default:

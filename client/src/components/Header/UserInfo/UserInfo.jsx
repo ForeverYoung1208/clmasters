@@ -1,22 +1,19 @@
-import React, { useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-// import { AuthContext } from '../../../context/authContext';
+import React from 'react';
+import { useDispatch} from 'react-redux';
 
 import './UserInfo.scss';
 import { authLogoutUser } from '../../../store/actions/auth';
+import withCurrentUser from '../../../HOC/withCurrentUser';
 
-const UserInfo = () => {
-  // const { auth } = useContext(AuthContext)
+const UserInfo = (props) => {
   const dispatch = useDispatch()
   const logout = () => {
     dispatch( authLogoutUser())
   }
+  const {currentUser} = props
 
-  const currentUser = useSelector(store => store.auth.currentUser)
-  
   return (
-    currentUser 
-    ? <>
+    currentUser?.email ? <>
       <div className="userinfo-email"> {currentUser.email}</div>
       <button onClick={logout}> Log out</button>
     </>
@@ -26,4 +23,4 @@ const UserInfo = () => {
 
 
 
-export default UserInfo;
+export default withCurrentUser(UserInfo);

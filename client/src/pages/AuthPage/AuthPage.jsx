@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import { Card } from '../../components/Card/Card';
 import AuthForm from './AuthForm/AuthForm';
+import { Card } from '../../components/Card/Card';
+import { authLoginUser } from '../../store/actions/auth';
+import withCurrentUser from '../../HOC/withCurrentUser'
 
 import './AuthPage.scss'
-import { useDispatch } from 'react-redux';
-import { authLoginUser } from '../../store/actions/auth';
 
-const AuthPage = () => {
+const AuthPage = (props) => {
+  const { currentUser } = props
+  const history = useHistory()
+
+  useEffect(() => {
+    currentUser?.email && history.push('/user')
+    // eslint-disable-next-line
+  }, [currentUser])
+
   const dispatch = useDispatch()
+  
   const submitAuthData = (formData) => {
-    console.log('[formData]', formData)
     dispatch(authLoginUser(formData))
-     
   }
 
   return (
@@ -26,4 +35,4 @@ const AuthPage = () => {
   )
 }
 
-export default AuthPage;
+export default withCurrentUser(AuthPage);
