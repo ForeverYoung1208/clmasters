@@ -1,5 +1,4 @@
 const express = require('express')
-// const expressValidator = require('express-validator')
 const path = require('path')
 const routes = require('./routes')
 const cors = require('cors')
@@ -23,18 +22,15 @@ default:
 
 const app = express()
 
+
 app.use(cors())
 
 app.use(express.json({ extended: true }))
-
-// app.use(expressValidator())
 
 app.use('/api/auth', routes.auth )
 app.use('/api/cities', routes.cities )
 app.use('/api/clocks', routes.clocks )
 app.use('/api/preorder', routes.preorder )
-
-
 
 //  SERVING FRONTEND 
 if(process.env.NODE_ENV === 'production'){

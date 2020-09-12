@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 const {
   Model
-} = require('sequelize');
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class City extends Model {
     /**
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // City.orders = City.hasMany(models.Order)      
       // define association here
     }
-  };
+  }
   City.init({
     name: DataTypes.STRING,
     comment: DataTypes.STRING
@@ -21,6 +21,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'City',
     paranoid: true
-  });
-  return City;
-};
+  })
+  return City
+}

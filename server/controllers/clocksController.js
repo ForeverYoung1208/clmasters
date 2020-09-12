@@ -5,6 +5,5 @@ class ClocksController extends CRUDController{
     super(model)
   }
 }
-const clocksController = new ClocksController(Clock)
 
-exports.clocksController = clocksController
+exports.clocksController = new ClocksController(Clock)

@@ -62,6 +62,7 @@ DB_USER="clm"
 DB_PASS="120880"
 SECUR_SALTROUNDS=3
 SECUR_JWTSECRET="jwt Secret for token security"
+SECUR_JWTSECRET_REFRESH="another jwt Secret for refresh token security"
 ```
 
 5. With psql, create user according to the credentials in .env file (DB_USER, DB_PASS),

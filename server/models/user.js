@@ -1,15 +1,15 @@
-const { Model } = require('sequelize');
-const bcrypt = require('bcryptjs');
+const { Model } = require('sequelize')
+const bcrypt = require('bcryptjs')
 
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
 
     static async register(name, email){
-      if ( await User.exists(email)){ return({error: 'email already taken' }) };
+      if ( await User.exists(email)){ return({error: 'email already taken' }) }
 
       let newUser = await User.create({name, email, isAdmin:false})
-      return newUser;
+      return newUser
     }
 
     static async authenticate(email, password){
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       const isAuthenticated = await bcrypt.compare(password, user.password)
 
       if (isAuthenticated) {
-        return user;
+        return user
       } else {
         return {error:'Wrong password!'}
       }
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       // The `models/index` file will call this method automatically.
       // define association here
     }
-  };
+  }
 
   User.init({
     email: DataTypes.STRING,
@@ -47,6 +47,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
-  });
-  return User;
-};
+  })
+  return User
+}

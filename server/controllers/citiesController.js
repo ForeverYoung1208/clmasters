@@ -4,8 +4,12 @@ class CitiesController extends CRUDController{
   constructor(model){
     super(model)
   }
+
+  post(req, res) { 
+    // super.post(req, res)
+    return res.status(501).send(`'You've been authorized, ${req.userEmail}, but city saving routine is under construction`)
+  }
+
 }
 
-const citiesController = new CitiesController(City)
-
-exports.citiesController = citiesController
+exports.citiesController = new CitiesController(City)

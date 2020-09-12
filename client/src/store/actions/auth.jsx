@@ -8,7 +8,7 @@ export const authLoginUser = (credentials) => {
     dispatch(loaderShow('auth'))
     try {
       const res = await apiLoginUser(credentials)
-      res && res.user && res.user.token
+      res && res.user && res.user.accessToken
         ? dispatch(setCurrentUser(res.user))
         : dispatch(setErrorMessage(`login error: ${res?.message}`))
     } catch (error) {

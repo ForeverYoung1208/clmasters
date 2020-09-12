@@ -63,32 +63,6 @@ module.exports = (sequelize, DataTypes) => {
       return freeMasters
     }
 
-
-
-    // async freeTimeAfter(dateTime){
-    //   const _orders = await this.getOrders()
-    //   const orders = _orders.map(({dataValues})=> {
-    //     let allocatedTimeInMS = 0
-    //     if (dataValues.allocatedTime){
-    //       allocatedTimeInMS = timestrToMSec(dataValues.allocatedTime)
-    //     }
-    //     return({
-    //       allocatedTime: allocatedTimeInMS,
-    //       onTime: dataValues.onTime
-    //     })
-    //   })
-    //     //////////////
-    //     // i've decided to try to optimize db requests using custom query in static method freeMastersAfter..
-    //     // i.e. i'll try to put most of the logic into the sql query..
-    //     /////////////
-    //   return orders
-    // }
-
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       this.belongsTo(models.City, {
         foreignKey: { name: 'cityId'}
