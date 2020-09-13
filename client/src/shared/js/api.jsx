@@ -9,6 +9,14 @@ export const apiLoginUser = async (credentials) => {
   }
 }
 
+export const apiRefreshAccessToken = async (user) => {
+  const res = await myHttp('/api/auth/token', 'POST',
+    {refreshToken:user?.refreshToken}
+  )
+  const { newAccessToken } = await res.json()
+  return newAccessToken
+}
+
 export const apiRegisterUser = async ({email, name})=>{
   const { user } = await myHttp('/api/auth/register', 'POST', {email, name} ).then(u=>u.json())
   return user

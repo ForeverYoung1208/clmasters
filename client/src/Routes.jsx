@@ -1,21 +1,18 @@
 import React from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 import AdminPage from './pages/AdminPage/AdminPage';
 import AuthPage from './pages/AuthPage/AuthPage';
 import MastersPage from './pages/MastersPage/MastersPage';
 // import { AuthContext } from './context/authContext';
 import InfoPage from './pages/InfoPage/InfoPage';
+// import { useEffect } from 'react';
+import withCurrentUser from './HOC/withCurrentUser';
 
-export const Routes = () => {
-
+const Routes = (props) => {
   
-  
-  const currentUser = useSelector(store => store.auth.currentUser)
-  
-  
-  // const {auth} = useContext(AuthContext)
+  const { currentUser } = props
   
   return (
     <Switch>
@@ -40,4 +37,4 @@ export const Routes = () => {
   ) 
 }
 
-export default Routes;
+export default withCurrentUser(Routes);

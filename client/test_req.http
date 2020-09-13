@@ -1,0 +1,37 @@
+http://localhost:5000/api/cities/
+###
+
+http://localhost:5000/api/clocks/
+
+
+###
+
+POST http://localhost:5000/api/auth/login/ HTTP/1.1
+content-type: application/json
+
+{
+    "email": "siafin2010@gmail.com",
+    "password": "123456"
+}
+
+###
+
+POST http://localhost:5000/api/cities/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOnsidXNlckVtYWlsIjoic2lhZmluMjAxMEBnbWFpbC5jb20ifSwiaWF0IjoxNjAwMDIzNTMxLCJleHAiOjE2MDAwMjM4MzF9.5dwAW4tFecucwgRSZe-IFQA1WWeCAcmb7SGwdbYJCEk
+content-type: application/json
+
+{
+    "name": "new city1",
+    "comment": "comment to new city 1"
+}
+###
+
+
+POST http://localhost:5000/api/auth/token HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJzaWFmaW4yMDEwQGdtYWlsLmNvbSIsImlhdCI6MTYwMDAyMzE4OH0.fOiBljydaDjk1__HHM4DPV2FcnT1EaRbJ6nCqykqrMQ
+content-type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJzaWFmaW4yMDEwQGdtYWlsLmNvbSIsImlhdCI6MTYwMDAyMzQxMH0.8h1Vh7GmZa-Qm5oJi4eIRavc_Qq20cIRV7EfSCJPfuw"
+}
+###

@@ -3,9 +3,12 @@ import { BrowserRouter } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Routes } from './Routes'
 import Header from './components/Header/Header'
+import Routes from './Routes'
 import { fetchVoc } from './store/actions/voc'
+import { LS } from './shared/js/ls'
+import { authAutologinUser } from './store/actions/auth'
+
 
 import './App.scss'
 
@@ -17,6 +20,9 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchVoc())
+    const oldUser = LS('user')
+    oldUser && dispatch(authAutologinUser(oldUser))
+
     // eslint-disable-next-line
   }, [])
   

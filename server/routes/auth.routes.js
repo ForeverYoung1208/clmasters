@@ -4,8 +4,8 @@ const { authController } = require('../controllers/authController')
 const router = Router()
 
 
-router.post('/login', authController.loginUserValidators(), authController.loginUser)
-// router.get('/token', authController.getAcceesToken)
+router.post('/login', authController.loginUserValidators(), (req,res)=>authController.loginUser(req, res))
+router.post('/token', (req, res) => authController.issueAccessToken(req, res))
 // router.post('/register', authController.registerUserValidators(), authController.registerUser)
 
 

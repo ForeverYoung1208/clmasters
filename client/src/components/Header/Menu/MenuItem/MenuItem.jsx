@@ -1,11 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import PT from 'prop-types';
 
 import './MenuItem.scss';
+import withAppear from '../../../../HOC/withAnimationAppear';
 
 export const MenuItem = (props) => {
-
   return (
     props.isShown &&
       <NavLink
@@ -19,9 +18,4 @@ export const MenuItem = (props) => {
   )
 };
 
-MenuItem.propTypes={
-  children: PT.node.isRequired,
-  isShown: PT.bool.isRequired,
-  path: PT.string.isRequired
-}
-
+export const AnimatedMenuItem = withAppear(MenuItem)

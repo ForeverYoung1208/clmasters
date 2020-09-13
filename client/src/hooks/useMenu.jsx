@@ -7,7 +7,7 @@ export const useMenu = (currentUser) => {
       { name:'Find master', path:'/masters', isShown:true},
       { name:'Login', path:'/login', isShown:!(cu?.email)},
       { name:'User page', path:'/user', isShown:!!(cu?.email)},
-      { name:'Administration', path:'/admin', isShown:!!(cu && cu.isAdmin)}
+      { name:'Administration', path:'/admin', isShown:!!(cu?.isAdmin)}
     ])
   };
   
