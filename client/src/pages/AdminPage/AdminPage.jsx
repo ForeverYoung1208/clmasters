@@ -5,6 +5,8 @@ import { MastersBlock } from './MastersBlock/MastersBlock';
 
 
 import './AdminPage.scss';
+import { OrdersBlock } from './OrdersBlock/OrdersBlock';
+import { UsersBlock } from './UsersBlock/UsersBlock';
 
 const AdminPage = () => {
     return (
@@ -14,6 +16,12 @@ const AdminPage = () => {
           </Card>
           <Card header = "Masters management" >  
             <MastersBlock/>
+          </Card>
+          <Card header = "Orders management" >  
+            <OrdersBlock/>
+          </Card>
+          <Card header = "Users management" >  
+            <UsersBlock/>
           </Card>
         </div>
     );
