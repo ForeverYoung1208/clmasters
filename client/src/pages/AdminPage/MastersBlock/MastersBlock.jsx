@@ -9,7 +9,7 @@ const CustomItem = (props) => {
   return (
     <>
       <div> {item.name}</div>
-      <span> <Button type='button' onClick={()=> deleteItem(item.id)}> delete---- </Button></span>
+      <span> <Button type='button' className='btn-no-paddings' onClick={()=> deleteItem(item.id)}> delete---- </Button></span>
       <span> <Button type='button' onClick={()=> updateItem(item.id)}> update---- </Button></span>
     </>
   )

@@ -4,11 +4,14 @@ import PT from 'prop-types';
 import './Button.scss';
 
 export const Button = (props) => {
-    return (
-      <button {...props} className = "btn-sm">
-        {props.children}
-      </button>
-    );
+  
+  const { className, ...restProps } = props
+
+  return (
+    <button {...restProps} className={"btn-sm "+className}>
+      {props.children}
+    </button>
+  );
 };
 
 Button.propTypes = {
