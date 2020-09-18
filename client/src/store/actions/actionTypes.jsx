@@ -13,3 +13,6 @@ export const POST_PREORDER_OK = 'main/POST_PREORDER_OK'
 
 export const SET_CURRENT_USER = 'auth/SET_CURRENT_USER'
 export const LOGOUT_USER = 'auth/LOGOUT_USER'
+
+export const FETCH_ADMINDATA_OK = 'admin/FETCH_ADMINDATA_OK'
+export const FETCH_ADMINDATA_ERROR = 'admin/FETCH_ADMINDATA_ERROR'

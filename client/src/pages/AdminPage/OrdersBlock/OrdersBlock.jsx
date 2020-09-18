@@ -6,10 +6,7 @@ import { ItemsList } from '../../../components/ItemsList/ItemsList'
 
 export const OrdersBlock = () => {
 
-  // TODO
-  // const orders = useSelector((store) => store.voc.orders)
-  const orders = [{ name: 'order1', id:1 }, {name:'order2', id:2}]
-
+  const orders = useSelector((store) => store.admin.orders)
 
   return (
     <div className="adminPage__itemsBlock">

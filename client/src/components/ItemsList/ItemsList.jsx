@@ -1,6 +1,8 @@
 import React from 'react'
 import { Button } from '../Button/Button'
-import { Item} from './Item/Item'
+import { Item } from './Item/Item'
+
+import './ItemsList.scss'
 
 export const ItemsList = (props) => {
   const { items, deleteItem, updateItem, addItem, itemComponent } = props
