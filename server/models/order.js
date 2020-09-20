@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Order.init({
-    clocIkd: DataTypes.INTEGER,
+    clockId: DataTypes.INTEGER,
     masterId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
     comment: DataTypes.STRING,

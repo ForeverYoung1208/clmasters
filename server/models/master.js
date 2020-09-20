@@ -67,7 +67,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.City, {
         foreignKey: { name: 'cityId'}
       })
-      this.hasMany(models.Order)
+      this.hasMany(models.Order, {
+        foreignKey: { name: 'masterId'}
+      })
       // define association here
     }
   }

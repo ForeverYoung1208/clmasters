@@ -30,7 +30,10 @@ app.use(express.json({ extended: true }))
 app.use('/api/auth', routes.auth )
 app.use('/api/cities', routes.cities )
 app.use('/api/clocks', routes.clocks )
-app.use('/api/preorder', routes.preorder )
+app.use('/api/preorder', routes.preorder)
+app.use('/api/orders', routes.orders )
+app.use('/api/masters', routes.masters )
+app.use('/api/users', routes.users )
 
 //  SERVING FRONTEND 
 if(process.env.NODE_ENV === 'production'){

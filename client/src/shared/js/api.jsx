@@ -23,7 +23,6 @@ export const apiRegisterUser = async ({email, name})=>{
 };
 
 export const apiGetVoc = async () => {
-
   const [citiesRes, clocksRes] = await Promise.all([
     myHttp('/api/cities', 'GET'),
     myHttp('/api/clocks', 'GET')
@@ -32,9 +31,27 @@ export const apiGetVoc = async () => {
     citiesRes.json(),
     clocksRes.json(),
   ])
-
   return { voc:{cities, clocks }}
-  
+}
+
+export const apiGetAdmindata = async() => {
+  const [ordersRes, mastersRes, usersRes, citiesRes] = await Promise.all([
+    myHttp('/api/orders', 'GET'),
+    myHttp('/api/masters', 'GET'),
+    myHttp('/api/users', 'GET'),
+    myHttp('/api/cities', 'GET'),
+
+  ])
+  const [orders, masters, users, cities] = await Promise.all([
+    ordersRes.json(),
+    mastersRes.json(),
+    usersRes.json(),
+    citiesRes.json(),
+  ])
+
+
+  return { admindata: { orders, masters, users, cities } }
+
 }
 
 export const apiPostPreorder = async(preorderData)=>{

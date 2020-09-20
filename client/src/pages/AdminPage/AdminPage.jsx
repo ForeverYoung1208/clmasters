@@ -1,16 +1,25 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
-import 'react-tabs/style/react-tabs.css'
 import { Card } from '../../components/Card/Card'
 import { CitiesBlock } from './CitiesBlock/CitiesBlock'
 import { MastersBlock } from './MastersBlock/MastersBlock'
-import './AdminPage.scss';
 import { OrdersBlock } from './OrdersBlock/OrdersBlock'
 import { UsersBlock } from './UsersBlock/UsersBlock'
+import { fetchAdmindata } from '../../store/actions/admin'
+
+import './AdminPage.scss';
+import 'react-tabs/style/react-tabs.css'
+
 
 const AdminPage = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchAdmindata())
+  },[])
   return (
     <div className="adminPage">
       <Tabs>
@@ -45,8 +54,5 @@ const AdminPage = () => {
   );
 };
 
-AdminPage.propTypes = {
-    
-};
 
 export default AdminPage;

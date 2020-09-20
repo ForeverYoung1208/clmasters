@@ -31,8 +31,11 @@ module.exports = (sequelize, DataTypes) => {
     }
    
     static associate(models) {
-      // User.orders = User.hasMany(models.Order)      
-      User.orders = this.hasMany(models.Order)      
+      User.orders = this.hasMany(models.Order, {
+        foreignKey: {
+          name: 'userId'
+        }
+      })      
 
       // The `models/index` file will call this method automatically.
       // define association here
