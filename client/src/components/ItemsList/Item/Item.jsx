@@ -4,18 +4,39 @@ import { useState } from 'react'
 
 import './Item.scss'
 
-export const Item = (props) => {
-  const { item, deleteItem, updateItem } = props
-  const [itemValue, setItemValue] = useState(item.name || item.type || '')
+export const Item = ({ item, deleteItem, updateItem, fieldNames }) => {
   
+  //TODO temporary
+  fieldNames = ['name', 'type', 'email']
+  //
 
+  const [itemValues, setItemValues] = useState(item)
+
+  // make item as store for all given fields
+  
   return (
     <div className="items-list__item-element">
-      
-      <input type="text" className="tems-list__imem-name" value={itemValue} onChange={(e)=>setItemValue(e.target.value)}/>
 
-      <span> <Button type='button' onClick={()=> deleteItem(item.id)}> delete </Button></span>
-      <span> <Button type='button' onClick={()=> updateItem(item.id, itemValue)}> update </Button></span>
+      {
+        fieldNames.map((fieldName) => 
+          <input key={fieldName} type="text" className="tems-list__item-name"
+            value={itemValues[fieldName]}
+            onChange={(e) => setItemValues(
+              {
+                ...itemValues,
+                [fieldName]: e.target.value
+              }
+            )}
+          />
+        )
+      }
+
+      <span>
+        <Button type='button' onClick={() => deleteItem(item.id)}> delete </Button>
+      </span>
+      <span>
+        <Button type='button' onClick={() => updateItem(item.id, itemValues)}> update </Button>
+      </span>
     </div>
   )
 }

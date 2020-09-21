@@ -16,19 +16,19 @@ const Routes = (props) => {
   
   return (
     <Switch>
-      <Route path="/info" exact>
+      <Route path="/info" >
         <InfoPage/>
       </Route>
       <Route path="/masters">
         <MastersPage/>
       </Route>
-      <Route path="/login" exact>
+      <Route path="/login" >
         <AuthPage/>
       </Route>
-      <Route path="/user" exact>
+      <Route path="/user" >
         UserPage
       </Route>
-      { currentUser?.isAdmin && <Route path="/admin" exact>
+      { currentUser?.isAdmin && <Route path="/admin" >
           <AdminPage/>
         </Route>
       }

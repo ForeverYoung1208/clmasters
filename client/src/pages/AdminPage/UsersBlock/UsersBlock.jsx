@@ -6,8 +6,8 @@ import { ItemsList } from '../../../components/ItemsList/ItemsList'
 
 export const UsersBlock = () => {
   
-  // const users = useSelector((store) => store.voc.cities)
-  const users = [{ name: 'babavasya', id:1 }, {name:'babapetya', id:2}]
+  const users = useSelector((store) => store.admin.users)
+  // const users = [{ name: 'babavasya', id:1 }, {name:'babapetya', id:2}]
 
   return (
     <div className="adminPage__itemsBlock">
