@@ -1,9 +1,31 @@
+@import '../../../shared/styles/variables.scss';
+
 .items-list__item-element{
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
   input{
-    padding: 0.5rem;
+    padding: 0.3rem;
+    padding-top: 0.8rem;
   }
   button{
     padding: 0.5rem;
   }
+}
+
+.items-list__item-field{
+  width: 200px;
+  display: inline-block;
+  position: relative;
+  label{
+    display: block;
+    height: 0px;
+    color: $font-color-middle;
+    font-size: 0.7rem;
+    font-weight: bold;    
+    position: relative;
+    top: 1px;
+    left: 2px;
+  }
+}
+.items-list__item-buttons{
+  display: inline-block;
 }

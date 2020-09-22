@@ -13,6 +13,11 @@ export const UsersBlock = () => {
     <div className="adminPage__itemsBlock">
       <ItemsList
         items={users}
+        fields={{
+          email:['e-mail','adminPage__field--email'],
+          name:['name','adminPage__field--name'],
+          isAdmin: ['is admin?', 'adminPage__field--boolean'],
+        }}        
         deleteItem={ (id) => { console.log(`delete user ${id}`) }}
         updateItem={ (id) => { console.log(`update user ${id}`) }}
         addItem={() => { console.log('add user') }}

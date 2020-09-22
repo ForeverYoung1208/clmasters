@@ -4,15 +4,21 @@ import { Item } from './Item/Item'
 
 import './ItemsList.scss'
 
-export const ItemsList = (props) => {
-  const { items, deleteItem, updateItem, addItem, itemComponent } = props
+export const ItemsList = ({
+  items, deleteItem, updateItem, addItem, itemComponent, fields
+}) => {
+
   const _Item = itemComponent ? itemComponent : Item
 
   return (
     <div className="items-block">
       <div className="items-list">
         {items?.map(i =>
-          <_Item item={i} key={i.id} deleteItem={deleteItem} updateItem={updateItem}>
+          <_Item item={i} key={i.id}
+            fields={fields}
+            deleteItem={deleteItem}
+            updateItem={updateItem}
+          >
             
           </_Item>)}
       </div>

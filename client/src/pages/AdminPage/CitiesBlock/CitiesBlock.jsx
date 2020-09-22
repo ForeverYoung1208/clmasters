@@ -12,6 +12,10 @@ export const CitiesBlock = () => {
     <div className="adminPage__itemsBlock">
       <ItemsList
         items={cities}
+        fields={{
+          name: ['name', 'adminPage__field--name'],  // label, className
+          comment: ['comment','adminPage__field--comment']
+        }}
         deleteItem={ (id) => { console.log(`delete city ${id}`) }}
         updateItem={ (id) => { console.log(`update city ${id}`) }}
         addItem={() => { console.log('add city') }}

@@ -9,6 +9,7 @@ $main-color-dark: darken($main-color, 20);
 $main-color-light: lighten($main-color, $amount: 25);
 
 
+$font-color-middle:  $main-color;
 $font-color-dark:  darken($main-color, 30);
 $font-color-light: lighten($main-color, $amount: 35);
 $font-color-error: rgb(165, 0, 0);
