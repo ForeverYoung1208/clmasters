@@ -1,14 +1,19 @@
 @import '../../../shared/styles/variables.scss';
 
 .items-list__item-element{
-  // margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px solid $main-color-dark;
+
+
   input{
     padding: 0.3rem;
-    padding-top: 0.8rem;
+    padding-top: 0.7rem;
   }
   button{
     padding: 0.5rem;
+    margin: 0.1rem;
   }
+
 }
 
 .items-list__item-field{
@@ -28,4 +33,5 @@
 }
 .items-list__item-buttons{
   display: inline-block;
+  margin-bottom: 3px;
 }

@@ -19,7 +19,7 @@ const AdminPage = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAdmindata())
-  },[])
+  },[dispatch])
   return (
     <div className="adminPage">
       <Tabs>

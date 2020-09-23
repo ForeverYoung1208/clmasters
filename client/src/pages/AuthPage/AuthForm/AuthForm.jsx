@@ -20,8 +20,7 @@ const renderField = ({ className, input, placeholder, type, meta: { touched, err
 const minLength2 = validators.minLength(2)
 
 
-let AuthForm = (props) => {
-  const { handleSubmit } = props
+let AuthForm = ({ handleSubmit }) => {
   return (
     <div className='authPage'>
       <Form onSubmit={handleSubmit} className="authPage__form">

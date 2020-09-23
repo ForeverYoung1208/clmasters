@@ -13,7 +13,7 @@ export const CitiesBlock = () => {
       <ItemsList
         items={cities}
         fields={{
-          name: ['name', 'adminPage__field--name'],  // label, className
+          name: ['name', 'adminPage__field--name'],  // key: label, className
           comment: ['comment','adminPage__field--comment']
         }}
         deleteItem={ (id) => { console.log(`delete city ${id}`) }}

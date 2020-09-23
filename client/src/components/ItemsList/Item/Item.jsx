@@ -8,8 +8,8 @@ export const Item = ({ item, deleteItem, updateItem, fields }) => {
   
   const [itemValues, setItemValues] = useState(item)
   const fieldKeys = Object.keys(fields)
+  const inputIdent = Date.now()
   
-
   
   return (
     <div className="items-list__item-element">
@@ -17,10 +17,11 @@ export const Item = ({ item, deleteItem, updateItem, fields }) => {
       {
         fieldKeys && fieldKeys.map((fieldKey) =>
           <div key={fieldKey}  className={"items-list__item-field " + fields[fieldKey][1]} >
-            <label>{fields[fieldKey][0]}</label>
+            <label htmlFor={fieldKey+inputIdent}>{fields[fieldKey][0]}</label>
             
             <input type="text" 
               value={itemValues[fieldKey]}
+              id={fieldKey+inputIdent}
               onChange={(e) => setItemValues(
                 {
                   ...itemValues,
