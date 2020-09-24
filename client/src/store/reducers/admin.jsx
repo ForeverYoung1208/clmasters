@@ -1,7 +1,7 @@
 import { FETCH_ADMINDATA_OK } from "../actions/actionTypes";
 
 const initialState = {
-  orders: [{ name: 'order1', id:1 }, {name:'order2', id:2}],
+  orders: [],
   masters: [],
   users: [],
   cities: [],

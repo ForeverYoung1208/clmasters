@@ -17,7 +17,7 @@ export const CitiesBlock = () => {
           comment: ['comment','adminPage__field--comment']
         }}
         deleteItem={ (id) => { console.log(`delete city ${id}`) }}
-        updateItem={ (id) => { console.log(`update city ${id}`) }}
+        editItem={ (id) => { console.log(`editItem city ${id}`) }}
         addItem={() => { console.log('add city') }}
 
       />

@@ -5,7 +5,7 @@ import { Item as StandartItem } from './Item/Item'
 import './ItemsList.scss'
 
 export const ItemsList = ({
-  items, deleteItem, updateItem, addItem, itemComponent, fields
+  items, deleteItem, editItem, addItem, itemComponent, fields
 }) => {
 
   const Item = itemComponent ? itemComponent : StandartItem
@@ -17,14 +17,13 @@ export const ItemsList = ({
           <Item item={i} key={i.id}
             fields={fields}
             deleteItem={deleteItem}
-            updateItem={updateItem}
-          >
-            
-          </Item>)}
+            editItem={editItem}
+          />
+        )}
       </div>
 
       <div className="items-list__add-item">
-        <input type="text" /> <Button type='button' onClick={addItem}>add</Button>
+        <Button type='button' onClick={addItem}>add</Button>
       </div>
 
     </div>

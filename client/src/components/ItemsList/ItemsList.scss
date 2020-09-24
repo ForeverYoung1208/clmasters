@@ -1,9 +1,24 @@
-.items-list__add-item{
-  margin-bottom: 1rem;
-  input{
-    padding: 0.5rem;
+
+.items-block {
+
+
+  .item-narrow{
+    width:3rem;
   }
-  button{
-    padding: 0.5rem;
+  .item-medium{
+    width:7rem;
+  }
+  .item-wide{
+    width:10rem;
+  }
+
+  .items-list__add-item{
+    margin-bottom: 1rem;
+    input{
+      padding: 0.5rem;
+    }
+    button{
+      padding: 0.5rem;
+    }
   }
 }

@@ -19,7 +19,7 @@ export const UsersBlock = () => {
           isAdmin: ['is admin?', 'adminPage__field--boolean'],
         }}        
         deleteItem={ (id) => { console.log(`delete user ${id}`) }}
-        updateItem={ (id) => { console.log(`update user ${id}`) }}
+        updateItem={ (id) => { console.log(`editItem user ${id}`) }}
         addItem={() => { console.log('add user') }}
 
       />
