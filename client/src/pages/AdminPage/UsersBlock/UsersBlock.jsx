@@ -1,26 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
+import { UserEditForm } from './UserEditBlock/UserEditBlock'
 
 
 
 export const UsersBlock = () => {
   
   const users = useSelector((store) => store.admin.users)
-  // const users = [{ name: 'babavasya', id:1 }, {name:'babapetya', id:2}]
+  const [editUserId, setEditUserId] = useState()
 
   return (
     <div className="adminPage__itemsBlock">
       <ItemsList
         items={users}
         fields={{
-          email:['e-mail','adminPage__field--email'],
-          name:['name','adminPage__field--name'],
-          isAdmin: ['is admin?', 'adminPage__field--boolean'],
+          email:['e-mail','item-wide'],
+          name:['name','item-medium'],
+          isAdmin: ['is admin?', 'item-narrow'],
         }}        
         deleteItem={ (id) => { console.log(`delete user ${id}`) }}
-        updateItem={ (id) => { console.log(`editItem user ${id}`) }}
+        editItem={ (id) => { console.log(`editItem user ${id}`) }}
         addItem={() => { console.log('add user') }}
+
+        deleteItem={(id) => { console.log(`delete user ${id}`) }}
+        editItem={(id) => { setEditUserId(id)}}
+        addItem={() => { console.log('add user') }}
+        editItemId={editUserId}
+        EditForm={UserEditForm}
 
       />
     </div>

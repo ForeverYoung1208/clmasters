@@ -1,24 +1,32 @@
 import React from 'react'
 import { Button } from '../Button/Button'
-import { Item as StandartItem } from './Item/Item'
+import { Item } from './Item/Item'
 
 import './ItemsList.scss'
 
 export const ItemsList = ({
-  items, deleteItem, editItem, addItem, itemComponent, fields
+  items,
+  fields,
+  deleteItem,
+  editItem,
+  addItem,
+  editItemId,
+  EditForm
 }) => {
-
-  const Item = itemComponent ? itemComponent : StandartItem
 
   return (
     <div className="items-block">
       <div className="items-list">
-        {items?.map(i =>
-          <Item item={i} key={i.id}
-            fields={fields}
-            deleteItem={deleteItem}
-            editItem={editItem}
+        {items?.map(i => ( 
+
+          i.id === editItemId
+            ? <EditForm key={i.id} />
+            : <Item item={i} key={i.id}
+              fields={fields}
+              deleteItem={deleteItem}
+              editItem={editItem}
           />
+        )
         )}
       </div>
 
