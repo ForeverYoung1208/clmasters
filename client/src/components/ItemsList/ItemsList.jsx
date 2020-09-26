@@ -26,6 +26,7 @@ export const ItemsList = ({
   deleteItem,
   editItem,
   addItem,
+  saveItem,
   editItemId,
   EditForm
 }) => {
@@ -40,7 +41,7 @@ export const ItemsList = ({
             ? <EditForm
               key={item.id}
               item={item}
-              defaultValues={item}
+              onSubmit={saveItem}
             />
             : <Item
               key={item.id}

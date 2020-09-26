@@ -1,4 +1,8 @@
-import { FETCH_ADMINDATA_OK, FETCH_ADMINDATA_ERROR} from './actionTypes'
+import {
+  FETCH_ADMINDATA_OK,
+  FETCH_ADMINDATA_ERROR,
+  UPDATE_ADMINDATA_ORDER_START
+} from './actionTypes'
 import { loaderShow, loaderHide } from './main.jsx'
 import  { apiGetAdmindata } from '../../shared/js/api'
 
@@ -31,6 +35,9 @@ const fetchAdmindataError = (error) => {
   }
 }
 
-const admindataChanged = (name, data) => {
-  console.log('admindataChanged ',name,data)
+export const admindataOrderChanged = (order) => {
+  return {
+    type: UPDATE_ADMINDATA_ORDER_START,
+    order
+  }
 }

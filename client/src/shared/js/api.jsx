@@ -35,22 +35,24 @@ export const apiGetVoc = async () => {
 }
 
 export const apiGetAdmindata = async() => {
-  const [ordersRes, mastersRes, usersRes, citiesRes] = await Promise.all([
+  const [ordersRes, mastersRes, usersRes, citiesRes, clocksRes] = await Promise.all([
     myHttp('/api/orders', 'GET'),
     myHttp('/api/masters', 'GET'),
     myHttp('/api/users', 'GET'),
     myHttp('/api/cities', 'GET'),
+    myHttp('/api/clocks', 'GET'),
   ])
-  let [orders, masters, users, cities] = await Promise.all([
+  let [orders, masters, users, cities, clocks] = await Promise.all([
     ordersRes.json(),
     mastersRes.json(),
     usersRes.json(),
     citiesRes.json(),
+    clocksRes.json(),
   ])
 
   orders = orders.map(order => ({ ...order, onTime: new Date(order.onTime) }))
   
-  return { admindata: { orders, masters, users, cities } }
+  return { admindata: { orders, masters, users, cities, clocks } }
 
 }
 

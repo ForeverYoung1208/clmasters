@@ -1,12 +1,13 @@
-
+@import '../../shared/styles/variables.scss';
+@import '../../shared/styles/ui.scss';
 .items-list {
 
 
   .item-narrow{
-    width:3rem;
+    width:3.2rem;
   }
   .item-medium{
-    width:7rem;
+    width:8rem;
   }
   .item-wide{
     width:15rem;
@@ -29,5 +30,18 @@
     button{
       padding: 0.5rem;
     }
+  }
+
+  &__save-button{
+    @include item-list-paddings;
+    margin-left: 0.5rem;
+    border: solid $main-color-dark 1px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 1px 1px $main-color-dark inset;
+    &:active{
+      background-color: $button-color-pressed;
+      box-shadow: -0px 0px 1px 2px $main-color-dark inset;
+    }
+
   }
 }
