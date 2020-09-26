@@ -1,5 +1,5 @@
 
-.items-block {
+.items-list {
 
 
   .item-narrow{
@@ -12,7 +12,16 @@
     width:15rem;
   }
 
-  .items-list__add-item{
+  &__head{
+    font-weight: 700;
+    word-wrap: break-word;
+    margin-bottom: 1rem;
+    &-element{
+      display: inline-block;    
+    }
+  }
+
+  &__add-item{
     margin-bottom: 1rem;
     input{
       padding: 0.5rem;

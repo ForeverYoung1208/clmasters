@@ -40,16 +40,16 @@ export const apiGetAdmindata = async() => {
     myHttp('/api/masters', 'GET'),
     myHttp('/api/users', 'GET'),
     myHttp('/api/cities', 'GET'),
-
   ])
-  const [orders, masters, users, cities] = await Promise.all([
+  let [orders, masters, users, cities] = await Promise.all([
     ordersRes.json(),
     mastersRes.json(),
     usersRes.json(),
     citiesRes.json(),
   ])
 
-
+  orders = orders.map(order => ({ ...order, onTime: new Date(order.onTime) }))
+  
   return { admindata: { orders, masters, users, cities } }
 
 }

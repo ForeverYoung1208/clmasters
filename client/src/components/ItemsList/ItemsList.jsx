@@ -1,10 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '../Button/Button'
 import { Item } from './Item/Item'
 
 import './ItemsList.scss'
 
+
+const ItemsHead = ({ fields }) => {
+  const fieldKeys = Object.keys(fields)
+  return (
+    <div className='items-list__head'>
+      {fieldKeys?.map((fkey) => (
+        <div key={fkey} className={"items-list__head-element " +fields[fkey][1] }>
+          {fields[fkey][0]}
+        </div>
+      ))}
+
+    </div>
+  )
+}
+
 export const ItemsList = ({
+  withHead,
   items,
   fields,
   deleteItem,
@@ -15,17 +31,24 @@ export const ItemsList = ({
 }) => {
 
   return (
-    <div className="items-block">
-      <div className="items-list">
-        {items?.map(i => ( 
-
-          i.id === editItemId
-            ? <EditForm key={i.id} />
-            : <Item item={i} key={i.id}
+    
+    <div className="items-list">
+      {withHead && <ItemsHead fields={fields}/>}
+      <div className="items-list__body">
+        {items?.map(item => ( 
+          item.id === editItemId
+            ? <EditForm
+              key={item.id}
+              item={item}
+              defaultValues={item}
+            />
+            : <Item
+              key={item.id}
+              item={item}
               fields={fields}
               deleteItem={deleteItem}
               editItem={editItem}
-          />
+            />
         )
         )}
       </div>

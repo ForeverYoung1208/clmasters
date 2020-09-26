@@ -19,10 +19,6 @@ export const UsersBlock = () => {
           name:['name','item-medium'],
           isAdmin: ['is admin?', 'item-narrow'],
         }}        
-        deleteItem={ (id) => { console.log(`delete user ${id}`) }}
-        editItem={ (id) => { console.log(`editItem user ${id}`) }}
-        addItem={() => { console.log('add user') }}
-
         deleteItem={(id) => { console.log(`delete user ${id}`) }}
         editItem={(id) => { setEditUserId(id)}}
         addItem={() => { console.log('add user') }}
