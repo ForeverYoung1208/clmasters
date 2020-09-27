@@ -5,7 +5,7 @@ import {
   POST_ADMINDATA_OK
 } from './actionTypes'
 import { loaderShow, loaderHide } from './main.jsx'
-import  { apiGetAdmindata, apiPostEntity } from '../../shared/js/api'
+import  { apiGetAdmindata, apiPostEntity, apiPutEntity } from '../../shared/js/api'
 
 export const fetchAdmindata = () => {
 	return async (dispatch) => {
@@ -41,10 +41,19 @@ export const admindataChanged = ({ sectionKey, data } , setEdittingItemId) => {
   return async (dispatch) => {
     dispatch(loaderShow('admindata'))
     try {
-      const res = await apiPostEntity({ sectionKey, data })
-      res === 200
-        ? dispatch(postAdmindataOk({ sectionKey, data }))
+      let res
+      data.id
+        ? res = await apiPutEntity({ sectionKey, data }) // id is present - updating
+        : res = await apiPostEntity({ sectionKey, data }) //id isn't present - creating
+      
+      const resData = await res.json()
+      console.log('[resData]', resData, data)
+      
+
+      res.status === 200
+        ? dispatch(postAdmindataOk({ sectionKey, resData }))
         : dispatch(postAdmindataError({ message: 'error with saving data' }))
+      
     } catch (error) {
       dispatch(postAdmindataError(error))
     } finally { 

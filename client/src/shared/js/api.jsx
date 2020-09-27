@@ -53,9 +53,14 @@ export const apiGetAdmindata = async() => {
   return { admindata: { orders, masters, users, cities, clocks } }
 }
 
+export const apiPutEntity = async ({ sectionKey, data }) => {
+  const res = await myHttp('/api/orders/'+data.id, 'PUT', data)
+  return res
+}
+
 export const apiPostEntity = async ({ sectionKey, data }) => {
-  //...
-  return 200
+  const res = await myHttp('/api/orders/', 'POST', data)
+  return res
 }
 
 

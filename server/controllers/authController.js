@@ -18,14 +18,15 @@ class AuthController{
   }
 
   async loginUser(req, res) {
-    const errors = validationResult(req)  // Finds the validation errors in this request and wraps them in an object with handy functions
+    // Finds the validation errors in this request and wraps them in an object
+    const errors = validationResult(req)  
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
   
     try {
       const {email, password} = req.body
       const user = await User.authenticate(email, password)
       if (user.error) return (
-        res.status(403).json({ message: 'Not authenticated, wrong credentials!' })    // `${user.error})!` - to specify exact auth problem
+        res.status(403).json({ message: 'Not authenticated, wrong credentials!' })
       )
       
       const accessToken = AuthController.generateAccessToken(user.email)
@@ -37,6 +38,7 @@ class AuthController{
 
       this.tokenStorage.push(refreshToken)
 
+      // eslint-disable-next-line no-unused-vars
       const {password:pwd, ...userDataNoPassword } = user.dataValues
       res.status(200).json({ user: { ...userDataNoPassword, accessToken, refreshToken} })
     } catch (e){

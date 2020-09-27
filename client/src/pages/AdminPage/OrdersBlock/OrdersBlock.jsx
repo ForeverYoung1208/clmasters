@@ -13,6 +13,7 @@ export const OrdersBlock = () => {
 
   const {orders, clocks, masters, users} = useSelector((store) => store.admin)
   const [editOrderId, setEditOrderId] = useState()
+  const [isAddingOrder, setIsAddingOrder] = useState(false)
   const dispatch = useDispatch()
 
   return (
@@ -21,8 +22,8 @@ export const OrdersBlock = () => {
         withHead={true}
         items={orders}
         fields={{
-          id:['Id', 'item-tiny'],
-          onTime: ['On time','item-medium',
+          id: ['Id', 'item-tiny'],
+          onTime: ['On time', 'item-medium',
             (time) => (new Date(time)).toLocaleString('uk')
           ],
           clockId: ['Clock type', 'item-narrow',
@@ -40,10 +41,18 @@ export const OrdersBlock = () => {
         saveItem={(formData) =>
           dispatch(admindataChanged({ sectionKey: 'orders', data: formData }, setEditOrderId))
         }
-        editItem={(id) => { setEditOrderId(id)}}
-        addItem={() => { console.log('add order') }}
+        editItem={(id) => {
+          setEditOrderId(id)
+          setIsAddingOrder(false)
+        }}
+        addItem={() => {
+          setEditOrderId(null)
+          setIsAddingOrder(true)
+        }}
         editItemId={editOrderId}
+        isAddingItem={isAddingOrder}
         EditForm={OrderEditForm}
+        AddForm={OrderEditForm}
       />
     </div>
   )

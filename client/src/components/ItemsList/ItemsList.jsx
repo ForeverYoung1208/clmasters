@@ -28,7 +28,9 @@ export const ItemsList = ({
   addItem,
   saveItem,
   editItemId,
-  EditForm
+  EditForm,
+  isAddingItem,
+  AddForm
 }) => {
 
   return (
@@ -55,6 +57,11 @@ export const ItemsList = ({
       </div>
 
       <div className="items-list__add-item">
+        {isAddingItem && 
+          <AddForm
+            onSubmit={saveItem}
+          />
+        }
         <Button type='button' onClick={addItem}>add</Button>
       </div>
 
