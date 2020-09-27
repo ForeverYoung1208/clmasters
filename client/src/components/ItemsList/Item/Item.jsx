@@ -25,8 +25,8 @@ export const Item = ({ item, deleteItem, editItem, fields }) => {
       
 
       <div className = "items-list__item-buttons">
-        <Button type='button' onClick={() => deleteItem(item.id)}> delete </Button>
         <Button type='button' onClick={() => editItem(item.id, itemValues)}> edit </Button>
+        <Button type='button' onClick={() => deleteItem(item.id)}> delete </Button>
       </div>
     </div>
   )

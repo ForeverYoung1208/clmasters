@@ -3,8 +3,11 @@
 .items-list {
 
 
+  .item-tiny{
+    width:2rem;
+  }
   .item-narrow{
-    width:3.2rem;
+    width:4rem;
   }
   .item-medium{
     width:8rem;
@@ -34,7 +37,7 @@
 
   &__save-button{
     @include item-list-paddings;
-    margin-left: 0.5rem;
+    // margin-left: 0.5rem;
     border: solid $main-color-dark 1px;
     border-radius: 50%;
     box-shadow: 0px 0px 1px 1px $main-color-dark inset;

@@ -1,10 +1,11 @@
 import {
   FETCH_ADMINDATA_OK,
   FETCH_ADMINDATA_ERROR,
-  UPDATE_ADMINDATA_ORDER_START
+  POST_ADMINDATA_ERROR,
+  POST_ADMINDATA_OK
 } from './actionTypes'
 import { loaderShow, loaderHide } from './main.jsx'
-import  { apiGetAdmindata } from '../../shared/js/api'
+import  { apiGetAdmindata, apiPostEntity } from '../../shared/js/api'
 
 export const fetchAdmindata = () => {
 	return async (dispatch) => {
@@ -20,7 +21,6 @@ export const fetchAdmindata = () => {
 	}
 }
 
-
 const fetchAdmindataOk = (admindata) => {
 	return {
     type: FETCH_ADMINDATA_OK,
@@ -35,9 +35,37 @@ const fetchAdmindataError = (error) => {
   }
 }
 
-export const admindataOrderChanged = (order) => {
+
+export const admindataChanged = ({ sectionKey, data } , setEdittingItemId) => {
+  
+  return async (dispatch) => {
+    dispatch(loaderShow('admindata'))
+    try {
+      const res = await apiPostEntity({ sectionKey, data })
+      res === 200
+        ? dispatch(postAdmindataOk({ sectionKey, data }))
+        : dispatch(postAdmindataError({ message: 'error with saving data' }))
+    } catch (error) {
+      dispatch(postAdmindataError(error))
+    } finally { 
+      dispatch(loaderHide('admindata'))
+      setEdittingItemId(null)
+    }
+
+  }
+}
+
+const postAdmindataOk = ({ sectionKey, data}) => {
   return {
-    type: UPDATE_ADMINDATA_ORDER_START,
-    order
+    type: POST_ADMINDATA_OK,
+    sectionKey,
+    data
+  } 
+}
+
+const postAdmindataError = (error) => { 
+  return {
+    type: POST_ADMINDATA_ERROR,
+    error
   }
 }

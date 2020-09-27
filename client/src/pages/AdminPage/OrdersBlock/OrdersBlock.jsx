@@ -1,16 +1,17 @@
+import { set } from 'date-fns'
 import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
-import { admindataOrderChanged } from '../../../store/actions/admin'
+import { admindataChanged } from '../../../store/actions/admin'
 import OrderEditForm from './OrderEditForm/OrderEditForm'
 
 
 
 export const OrdersBlock = () => {
 
-  const {orders} = useSelector((store) => store.admin)
+  const {orders, clocks, masters, users} = useSelector((store) => store.admin)
   const [editOrderId, setEditOrderId] = useState()
   const dispatch = useDispatch()
 
@@ -20,17 +21,25 @@ export const OrdersBlock = () => {
         withHead={true}
         items={orders}
         fields={{
-          id:['Id', 'item-narrow'],
-          onTime: ['On time', 'item-medium', (time) => {
-            return (new Date(time)).toLocaleString('uk')
-          }],
-          clockId: ['Clock type', 'item-narrow'],
-          masterId: ['Master', 'item-medium'],
-          userId: ['Client', 'item-narrow'],
+          id:['Id', 'item-tiny'],
+          onTime: ['On time','item-medium',
+            (time) => (new Date(time)).toLocaleString('uk')
+          ],
+          clockId: ['Clock type', 'item-narrow',
+            (id) => (clocks.find((c) => c.id == id).type)
+          ],
+          masterId: ['Master', 'item-medium',
+            (id) => (masters.find((c) => c.id == id).name)
+          ],
+          userId: ['Client', 'item-narrow',
+            (id) => (users.find((c) => c.id == id).name)
+          ],
           comment: ['Comment', 'item-wide'],
         }}
         deleteItem={(id) => { console.log(`delete order ${id}`) }}
-        saveItem={(formData) => { dispatch(admindataOrderChanged(formData)) }}
+        saveItem={(formData) =>
+          dispatch(admindataChanged({ sectionKey: 'orders', data: formData }, setEditOrderId))
+        }
         editItem={(id) => { setEditOrderId(id)}}
         addItem={() => { console.log('add order') }}
         editItemId={editOrderId}

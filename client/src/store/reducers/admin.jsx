@@ -1,4 +1,8 @@
-import { FETCH_ADMINDATA_OK, UPDATE_ADMINDATA_ORDER_START } from "../actions/actionTypes";
+import {
+  FETCH_ADMINDATA_OK,
+  POST_ADMINDATA_ERROR,
+  POST_ADMINDATA_OK,
+} from "../actions/actionTypes";
 
 const initialState = {
   orders: [],
@@ -15,15 +19,22 @@ const admin = (state = initialState, action) => {
         ...state,
         ...action.payload.admindata
       };
-    case UPDATE_ADMINDATA_ORDER_START:
-      const newOrderIdx = state.orders.findIndex(o => o.id === action.order.id)
-      const newOrders = state.orders
-      newOrders[newOrderIdx] = action.order
-
+    
+    case POST_ADMINDATA_OK:
+      const newEntityIdx = state[action.sectionKey].findIndex(entity => entity.id == action.data.id)
+      const newSectionItems = state[action.sectionKey]
+      newEntityIdx === -1
+        ? newSectionItems.push(action.data)
+        : newSectionItems[newEntityIdx] = action.data
       return {
         ...state,
-        orders: newOrders
+        [action.sectionKey]: newSectionItems
       }
+    
+    case POST_ADMINDATA_ERROR:
+      console.log(`[${POST_ADMINDATA_ERROR} action.error]`, action.error)
+      return state
+    
     default:
       return state      
   }

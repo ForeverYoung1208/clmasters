@@ -49,12 +49,15 @@ export const apiGetAdmindata = async() => {
     citiesRes.json(),
     clocksRes.json(),
   ])
-
   orders = orders.map(order => ({ ...order, onTime: new Date(order.onTime) }))
-  
   return { admindata: { orders, masters, users, cities, clocks } }
-
 }
+
+export const apiPostEntity = async ({ sectionKey, data }) => {
+  //...
+  return 200
+}
+
 
 export const apiPostPreorder = async(preorderData)=>{
   const preorderRes_ = await myHttp('/api/preorder', 'POST', { preorderData })
