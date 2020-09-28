@@ -1,0 +1,11 @@
+@import '../../../../shared/styles/variables.scss';
+
+.items-list__edit-form{
+  display: inline-block;
+  input{
+    border: solid 1px $main-color-dark;
+  }
+}
+.react-datepicker__tab-loop{
+  display: inline-block;
+}

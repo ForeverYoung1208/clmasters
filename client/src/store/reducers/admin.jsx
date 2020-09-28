@@ -1,7 +1,8 @@
 import {
   FETCH_ADMINDATA_OK,
-  POST_ADMINDATA_ERROR,
+  API_ADMINDATA_ERROR,
   POST_ADMINDATA_OK,
+  DELETE_ADMINDATA_OK,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -19,9 +20,13 @@ const admin = (state = initialState, action) => {
         ...state,
         ...action.payload.admindata
       };
+
+    case API_ADMINDATA_ERROR:
+      console.log(`[${API_ADMINDATA_ERROR} action.error]`, action.error)
+      return state
     
     case POST_ADMINDATA_OK:
-      const newEntityIdx = state[action.sectionKey].findIndex(entity => entity.id == action.data.id)
+      const newEntityIdx = state[action.sectionKey].findIndex(entity => +entity.id === +action.data.id)
       const newSectionItems = state[action.sectionKey]
       newEntityIdx === -1
         ? newSectionItems.push(action.data)
@@ -31,9 +36,15 @@ const admin = (state = initialState, action) => {
         [action.sectionKey]: newSectionItems
       }
     
-    case POST_ADMINDATA_ERROR:
-      console.log(`[${POST_ADMINDATA_ERROR} action.error]`, action.error)
-      return state
+    case DELETE_ADMINDATA_OK:
+      const filteredSectionItems = state[action.sectionKey]
+        .filter( item  => +item.id !== +action.id )
+      return {
+        ...state,
+        [action.sectionKey]: filteredSectionItems
+      }
+    
+
     
     default:
       return state      

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
-import { admindataChanged } from '../../../store/actions/admin'
+import { admindataChanged, admindataDelete } from '../../../store/actions/admin'
 import OrderEditForm from './OrderEditForm/OrderEditForm'
 
 
@@ -37,7 +37,9 @@ export const OrdersBlock = () => {
           ],
           comment: ['Comment', 'item-wide'],
         }}
-        deleteItem={(id) => { console.log(`delete order ${id}`) }}
+        deleteItem={(id) => {
+          window.confirm('Are you sure?') && dispatch(admindataDelete({ sectionKey: 'orders', id}))
+        }}
         saveItem={(formData) =>
           dispatch(admindataChanged({ sectionKey: 'orders', data: formData }, setEditOrderId))
         }

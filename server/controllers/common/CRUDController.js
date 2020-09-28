@@ -1,4 +1,5 @@
-const { validationResult } = require("express-validator")
+const { validationResult } = require('express-validator')
+const { noTimestamps } = require('../../shared/services')
 
 class CRUDController{
   constructor(model){
@@ -13,9 +14,7 @@ class CRUDController{
       ]
     })
     const data = models.map((m) => {
-      //TODO: DRY
-      const {createdAt, updatedAt, ...noTimestamps } = m.dataValues
-      return noTimestamps
+      return noTimestamps(m.dataValues)
     })
     return (res.status(200).json(data))
   }
@@ -40,9 +39,7 @@ class CRUDController{
       message: 'CDUD controller: model not updated'
     })
 
-    //TODO: DRY
-    const {createdAt, updatedAt, ...noTimestamps } = result.dataValues
-    return res.status(200).json(noTimestamps)
+    return res.status(200).json(noTimestamps(result.dataValues))
   }
 
   async post(req, res) { 
@@ -55,10 +52,19 @@ class CRUDController{
       message: 'CDUD controller: not created'
     })
 
-    //TODO: DRY
-    const { createdAt, updatedAt, ...noTimestamps } = newModel.dataValues    
+    return res.status(200).json(noTimestamps(newModel.dataValues))
+  }
+
+  async delete(req, res) { 
+    const { id } = req.params
+
+    const deletedRows = await this.model.destroy({ where: {id} })
+
+    if (deletedRows<1) return res.status(400).json({
+      message: `CDUD controller: model with id:${id} can not be deleted`
+    })
+    return res.sendStatus(200)
     
-    return res.status(200).json(noTimestamps)
   }
 
 

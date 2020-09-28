@@ -1,3 +1,4 @@
+
 const MSEC_IN_HOUR = 3600000
 const MSEC_IN_MINUTE = 60000
 const MSEC_IN_SECOND = 1000
@@ -17,7 +18,15 @@ const services = {
       }
     }, 0)
     return mSec
+  },
+  
+  noTimestamps : function (data){
+    const { createdAt, updatedAt, ...dataNoTimestamps } = data
+    return dataNoTimestamps
   }
+
 }
+
+ 
 
 module.exports = services

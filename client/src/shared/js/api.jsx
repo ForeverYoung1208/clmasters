@@ -54,12 +54,17 @@ export const apiGetAdmindata = async() => {
 }
 
 export const apiPutEntity = async ({ sectionKey, data }) => {
-  const res = await myHttp('/api/orders/'+data.id, 'PUT', data)
+  const res = await myHttp(`/api/${sectionKey}/${data.id}`, 'PUT', data)
   return res
 }
 
 export const apiPostEntity = async ({ sectionKey, data }) => {
-  const res = await myHttp('/api/orders/', 'POST', data)
+  const res = await myHttp(`/api/${sectionKey}/`, 'POST', data)
+  return res
+}
+
+export const apiDeleteEntity = async ({ sectionKey, id }) => {
+  const res = await myHttp(`/api/${sectionKey}/${id}`, 'DELETE')
   return res
 }
 
