@@ -19,14 +19,15 @@ const FieldError = ({ meta: { touched, error, warning } }) => (
 )
 
 const renderFieldInput = ({ className, input, placeholder, type, meta}) => (
-  <>
-    <input {...input} className={className} placeholder={placeholder} type={type} />
+  <span className = 'field-wrapper'>
     <FieldError meta={meta}/>
-  </>
+    <input {...input} className={className} placeholder={placeholder} type={type} />
+  </span>
 )
 
 const renderFieldTime = ({ className, input, placeholder, meta}) => (
-  <>
+  <span className = 'field-wrapper'>
+    <FieldError meta={meta}/>    
     <ReactDatePicker
       {...input}
       selected={Date.parse(input.value) || null}
@@ -36,23 +37,26 @@ const renderFieldTime = ({ className, input, placeholder, meta}) => (
       locale={uk}
       timeIntervals={ 60 }
       showTimeSelect
-      />
-    <FieldError meta={meta}/>    
-  </>
+      autoComplete="off"
+    />
+  </span>
 )
 
-const renderFieldSelect = ({ className, input, placeholder, meta, options}) => (
-  <>
+const renderFieldSelect = ({ className, input, placeholder, meta, options }) => {
+  const showOptions = [{ id:''}, ...options]
+  return (
+  <span className = 'field-wrapper'>
+    <FieldError meta={meta}/>
     <select {...input} className={className} placeholder={placeholder}>
-      {options?.map((o) =>  
-        <option key={o.id} value={o.id}>
+      {showOptions?.map((o) =>  
+        <option key={o.id || 'empty'} value={o.id}>
           {o.name || o.type}
         </option>
       )}
     </select>
-    <FieldError meta={meta}/>
-  </>
-)
+  </span>
+  )
+}
 
 let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
   useEffect(() => {

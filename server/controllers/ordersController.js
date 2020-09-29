@@ -9,15 +9,20 @@ class OrdersController extends CRUDController{
 
   putValidators() {
     return [
-      check('onTime', 'onTime must exist!').exists(),
-      check('userId', 'userId must exist!').exists(),
-      check('clockId', 'clockId must exist!').exists(),
-      check('masterId', 'masterId must exist!').exists(),
+      check('onTime', 'onTime must exist!').exists().notEmpty(),
+      check('userId', 'userId must exist!').exists().notEmpty(),
+      check('clockId', 'clockId must exist!').exists().notEmpty(),
+      check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]
   }  
 
   postValidators() {
-    return this.putValidators()
+    return [
+      check('onTime', 'onTime must exist!').exists().notEmpty(),
+      check('userId', 'userId must exist!').exists().notEmpty(),
+      check('clockId', 'clockId must exist!').exists().notEmpty(),
+      check('masterId', 'masterId must exist!').exists().notEmpty(),
+    ]
   }  
 
 }

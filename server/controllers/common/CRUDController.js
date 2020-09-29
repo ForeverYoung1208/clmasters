@@ -22,7 +22,7 @@ class CRUDController{
   async put(req, res) { 
 
     const errors = validationResult(req)  
-    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
       
     let { id, ...data } = req.body
     id = req.params.id
@@ -44,7 +44,7 @@ class CRUDController{
 
   async post(req, res) { 
     const errors = validationResult(req)  
-    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })    
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })    
 
     const data = req.body
     const newModel = await this.model.create(data)

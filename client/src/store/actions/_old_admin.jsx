@@ -38,7 +38,33 @@ const apiAdmindataError = (error) => {
   }
 }
 
-export const postAdmindataOk = ({ sectionKey, data }) => {
+
+export const admindataChanged = ({ sectionKey, data }, setEdittingItemId) => {
+  return async (dispatch) => {
+    dispatch(loaderShow('admindata'))
+    try {
+      let res
+      data.id
+        ? res = await apiPutEntity({ sectionKey, data }) // id is present - updating
+        : res = await apiPostEntity({ sectionKey, data }) //id isn't present - creating
+      
+      const resData = await res.json()
+
+      if (res.status === 200) { 
+        dispatch(postAdmindataOk({ sectionKey, data: resData }))
+      } else{
+        dispatch(apiAdmindataError({ submissionErrors: resData.errors }))
+      }
+    } catch (error) {
+      dispatch(apiAdmindataError({message:`unknown error at admin/admindataChanged: ${error}`}))
+    } finally { 
+      dispatch(loaderHide('admindata'))
+      setEdittingItemId(null)
+    }
+  }
+}
+
+const postAdmindataOk = ({ sectionKey, data }) => {
   return {
     type: POST_ADMINDATA_OK,
     sectionKey,
