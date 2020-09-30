@@ -20,18 +20,19 @@ const FieldError = ({ meta: { touched, error, warning } }) => (
 
 const renderFieldInput = ({ className, input, placeholder, type, meta}) => (
   <span className = 'field-wrapper'>
-    <FieldError meta={meta}/>
+    
     <input {...input} className={className} placeholder={placeholder} type={type} />
   </span>
 )
 
 const renderFieldTime = ({ className, input, placeholder, meta}) => (
-  <span className = 'field-wrapper'>
-    <FieldError meta={meta}/>    
+  <span className='field-wrapper'>
+    <FieldError meta={meta}/>
     <ReactDatePicker
       {...input}
       selected={Date.parse(input.value) || null}
       placeholderText={placeholder}
+      // className={className + (meta.error ? ' react-datepicker__error' : '')}
       className={className}
       dateFormat = "dd.MM.yyyy HH:mm"
       locale={uk}
@@ -61,7 +62,7 @@ const renderFieldSelect = ({ className, input, placeholder, meta, options }) => 
 let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
   useEffect(() => {
     initialize(order)
-  }, [])
+  }, [initialize, order])
 
   const { clocks, masters, users } = useSelector((store) => store.admin)
     
@@ -100,6 +101,7 @@ let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
         className = 'items-list__item-field item-wide'
       />
       <button className='items-list__save-button' type='submit'>Save</button>
+      {/* <button className='items-list__cancel-button' type='button'>Cancel</button> */}
       
 
     </form>

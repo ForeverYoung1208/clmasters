@@ -1,7 +1,7 @@
 @import '../../../../shared/styles/variables.scss';
 
 .items-list__edit-form{
-  display: inline-block;
+  // display: inline-block;
   input{
     border: solid 1px $main-color-dark;
   }
@@ -13,14 +13,19 @@
     font-weight: bold;
     display: inline-block;
     position: absolute;
-    /* z-index: 1000; */
-    // transform: translate(0px, 27px);
     top: 25px;
     left: 2px;
-
-    color: rgb(200, 0, 0);
+    color: $font-color-error;
   }
+
+}
+
+.adminPage__itemsBlock .react-datepicker{
+  display: flex;
 }
 .react-datepicker__tab-loop{
   display: inline-block;
+}
+.react-datepicker__error{
+  background-color: $font-color-error;
 }

@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button } from '../Button/Button'
 import { Item } from './Item/Item'
 
 import './ItemsList.scss'
-
 
 const ItemsHead = ({ fields }) => {
   const fieldKeys = Object.keys(fields)

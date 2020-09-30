@@ -2,12 +2,10 @@ import {
   FETCH_ADMINDATA_OK,
   API_ADMINDATA_ERROR,
   POST_ADMINDATA_OK,
-  DELETE_ADMINDATA_ERROR,
   DELETE_ADMINDATA_OK,
 } from './actionTypes'
 import { loaderShow, loaderHide } from './main.jsx'
-import  { apiDeleteEntity, apiGetAdmindata, apiPostEntity, apiPutEntity } from '../../shared/js/api'
-import { SubmissionError } from 'redux-form'
+import  { apiGetAdmindata } from '../../shared/js/api'
 
 export const fetchAdmindata = () => {
 	return async (dispatch) => {
@@ -30,7 +28,7 @@ const fetchAdmindataOk = (admindata) => {
 	}    
 }
 
-const apiAdmindataError = (error) => {
+export const apiAdmindataError = (error) => {
   console.log('[error]', error)
   return {
     type: API_ADMINDATA_ERROR,
@@ -46,25 +44,7 @@ export const postAdmindataOk = ({ sectionKey, data }) => {
   } 
 }
 
-export const admindataDelete = ({ sectionKey, id }) => {
-  return async(dispatch) => {
-    dispatch(loaderShow('admindata'))
-    try {
-      const res = await apiDeleteEntity({ sectionKey, id })
-      const resData = await res.json()
-      res.status === 200
-        ? dispatch(deleteAdmindataOk({ sectionKey, id }))
-        : dispatch(apiAdmindataError(resData))
-
-    } catch (error) {
-      dispatch(apiAdmindataError({message:`unknown error at admin/admindataDelete: ${error}`}))      
-    } finally { 
-      dispatch(loaderHide('admindata'))
-    }
-  }
-}
-
-const deleteAdmindataOk = ({ sectionKey, id }) => {
+export const deleteAdmindataOk = ({ sectionKey, id }) => {
   
   return {
     type: DELETE_ADMINDATA_OK,
