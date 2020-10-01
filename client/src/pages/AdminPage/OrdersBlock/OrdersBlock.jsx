@@ -1,12 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { SubmissionError } from 'redux-form'
 
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
-import { apiDeleteEntity, apiPostEntity, apiPutEntity } from '../../../shared/js/api'
-import { deleteAdmindataOk, postAdmindataOk, apiAdmindataError } from '../../../store/actions/admin'
-import { loaderHide, loaderShow } from '../../../store/actions/main'
+import { admindataChanged, admindataDelete } from '../../../store/actions/admin'
 import OrderEditForm from './OrderEditForm/OrderEditForm'
 
 
@@ -17,45 +14,6 @@ export const OrdersBlock = () => {
   const [editOrderId, setEditOrderId] = useState()
   const [isAddingOrder, setIsAddingOrder] = useState(false)
   const dispatch = useDispatch()
-
-  const handleSaveItem = async (formData) => {
-    const sectionKey = 'orders'
-    let res
-    
-    dispatch(loaderShow('admindata'))
-    formData.id
-      ? res = await apiPutEntity({ sectionKey, data: formData }) // id is present - updating
-      : res = await apiPostEntity({ sectionKey, data: formData }) //id isn't present - creating
-    dispatch(loaderHide('admindata'))
-    
-    const resData = await res.json()
-    if (res.status === 200) { 
-      dispatch(postAdmindataOk({ sectionKey, data: resData }))
-    } else {
-      console.log('[resData]', resData)
-      const submissionErrors = resData.errors.reduce((acc, currErr) => {
-        return {
-          ...acc,
-          [currErr.param]:'must exist'
-        }
-      }, {})
-        throw new SubmissionError(submissionErrors)
-    }
-    setEditOrderId(null)
-  }
-
-  const handleDeleteItem = async (id) => {
-    if (!window.confirm('Are you sure?')) return
-    const sectionKey = 'orders'
-
-    dispatch(loaderShow('admindata'))
-    const res = await apiDeleteEntity({ sectionKey, id })
-    dispatch(loaderHide('admindata'))
-
-    res.status === 200
-      ? dispatch(deleteAdmindataOk({ sectionKey, id }))
-      : dispatch(apiAdmindataError({message: `Item id ${id} can't be deleted`}))
-  }
 
   return (
     <div className="adminPage__itemsBlock">
@@ -78,8 +36,13 @@ export const OrdersBlock = () => {
           ],
           comment: ['Comment', 'item-wide'],
         }}
-        deleteItem={handleDeleteItem}
-        saveItem={handleSaveItem}
+        deleteItem={(id) => {
+          window.confirm('Are you sure?') &&
+            dispatch(admindataDelete({ sectionKey: 'orders', id }))
+        }}
+        saveItem={(formData) =>
+          dispatch(admindataChanged(
+            { sectionKey: 'orders', data: formData }, setEditOrderId))}
         editItem={(id) => {
           setEditOrderId(id)
           setIsAddingOrder(false)

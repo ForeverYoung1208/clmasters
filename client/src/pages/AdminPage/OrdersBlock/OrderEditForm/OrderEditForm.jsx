@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import ReactDatePicker, { registerLocale } from "react-datepicker";
 import { uk } from "date-fns/locale";
-import { Field, reduxForm} from "redux-form";
+import { Field, reduxForm } from "redux-form";
+import { validators } from "../../../../shared/validators/baseValidator";
 
 import './OrderEditForm.scss'
 
@@ -76,24 +77,28 @@ let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
         name='onTime'
         component={renderFieldTime}
         className='items-list__item-field item-medium'
+        validate={[ validators.required ]}
       />
       <Field
         name='clockId'
         component={renderFieldSelect}
         options={clocks}
         className='items-list__item-field item-narrow'
+        // validate={[ validators.required ]}
       />
       <Field
         name='masterId'
         component={renderFieldSelect}
         options={masters}
         className='items-list__item-field item-medium'
+        validate={[ validators.required ]}
       />
       <Field
         name='userId'
         component={renderFieldSelect}
         options={users}
-        className = 'items-list__item-field item-narrow'
+        className='items-list__item-field item-narrow'
+        validate={[ validators.required ]}
       />
       <Field
         name='comment'

@@ -22,8 +22,12 @@ const admin = (state = initialState, action) => {
       };
 
     case API_ADMINDATA_ERROR:
-      console.log(`[${API_ADMINDATA_ERROR} action.error]`, action.error)
-      return state
+      console.log(`[${API_ADMINDATA_ERROR} action]`, action)
+      return {
+        ...state,
+        submissionError: action.submissionError,
+        unknownError: action.unknownError
+      };
     
     case POST_ADMINDATA_OK:
       const newEntityIdx = state[action.sectionKey].findIndex(entity => +entity.id === +action.data.id)
