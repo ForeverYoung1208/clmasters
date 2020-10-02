@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
@@ -10,28 +10,13 @@ import { MastersBlock } from './MastersBlock/MastersBlock'
 import { OrdersBlock } from './OrdersBlock/OrdersBlock'
 import { UsersBlock } from './UsersBlock/UsersBlock'
 import { fetchAdmindata } from '../../store/actions/admin'
+import { AdminPageError } from './AdminPageError/AdminPageError'
 
 import './AdminPage.scss';
 import 'react-tabs/style/react-tabs.css'
-import admin from '../../store/reducers/admin'
 
-const AdminPageErrors = () => {
-  const storeAdmin = useSelector((store)=> store.admin)
-  const {submissionError} = storeAdmin
-  const {unknownError} = storeAdmin
-  
-  console.log('[storeAdmin]', storeAdmin)
-  console.log('[submissionError]', submissionError)
 
-  return (
-    <>
-      { submissionError && <div> submissionError: {JSON.stringify(submissionError)} </div > }
-      { unknownError && <div> unknownError: {JSON.stringify(unknownError)} </div >}
-      { (submissionError || unknownError) && <button>sfs</button> }
-    </>
-  )
-    
-}
+
 
 
 const AdminPage = () => {
@@ -70,7 +55,7 @@ const AdminPage = () => {
           </Card>
         </TabPanel>
       </Tabs>
-      <AdminPageErrors/>
+      <AdminPageError/>
     </div>
   );
 };

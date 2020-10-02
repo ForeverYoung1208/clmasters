@@ -3,6 +3,7 @@ import {
   API_ADMINDATA_ERROR,
   POST_ADMINDATA_OK,
   DELETE_ADMINDATA_OK,
+  CLEAR_API_ADMINDATA_ERROR
 } from './actionTypes'
 import { loaderShow, loaderHide } from './main.jsx'
 import  { apiDeleteEntity, apiGetAdmindata, apiPostEntity, apiPutEntity } from '../../shared/js/api'
@@ -100,3 +101,9 @@ export const admindataDelete = ({ sectionKey, id }) => {
     }
   }
 } 
+
+export const clearAdmindataApiError = () => {
+  return {
+    type: CLEAR_API_ADMINDATA_ERROR,
+  }
+}
