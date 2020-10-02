@@ -19,6 +19,7 @@ class CRUDController{
     return (res.status(200).json(data))
   }
 
+
   async put(req, res) { 
 
     const errors = validationResult(req)  
@@ -42,6 +43,7 @@ class CRUDController{
     return res.status(200).json(noTimestamps(result.dataValues))
   }
 
+
   async post(req, res) { 
     const errors = validationResult(req)  
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })    
@@ -55,6 +57,7 @@ class CRUDController{
     return res.status(200).json(noTimestamps(newModel.dataValues))
   }
 
+
   async delete(req, res) { 
     const { id } = req.params
 
@@ -63,14 +66,8 @@ class CRUDController{
     if (deletedRows<1) return res.status(400).json({
       message: `CDUD controller: model with id:${id} can not be deleted`
     })
-    return res.sendStatus(200)
+    return res.sendStatus(204)
     
-  }
-
-
-  crudValidators() {
-    return [
-    ]
   }
  
 }

@@ -12,8 +12,8 @@ export const AdminPageError = () => {
   
   return (
     <>
-      { submissionError && <div> server submissionError: {submissionError.errors[0].msg} </div > }
-      { unknownError && <div> server unknownError: {JSON.stringify(unknownError)} </div >}
+      { submissionError && <div> server submission Error: {submissionError.errors[0].msg} </div > }
+      { unknownError && <div> server unknown Error: {JSON.stringify(unknownError)} </div >}
       { (submissionError || unknownError) &&
         <Button onClick={() => { dispatch(clearAdmindataApiError())  }}>
           Dismiss

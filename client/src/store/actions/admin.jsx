@@ -83,16 +83,21 @@ export const admindataChanged = ({ sectionKey, data } , setEdittingItemId) => {
 export const admindataDelete = ({ sectionKey, id }) => {
   return async(dispatch) => {
     dispatch(loaderShow('admindata'))
+    let resData = `Error with deletion item with id:${id}`
     try {
       
       const res = await apiDeleteEntity({ sectionKey, id })
-      res.status === 200
-        ? dispatch(deleteAdmindataOk({ sectionKey, id }))
-        : dispatch(apiAdmindataError({
+
+      if (res.status === 204) {
+        dispatch(deleteAdmindataOk({ sectionKey, id }))
+      } else {
+        resData = await res.json()
+        dispatch(apiAdmindataError({
           submissionError: {
-            sectionKey, errors: [{ msg: `Can not delete item with id ${id}` }]
+            sectionKey, errors: [{ msg: JSON.stringify(resData) }]
           }
         }))
+      }
       
     } catch (error) {
       dispatch(apiAdmindataError({ unknownError: error }))      
