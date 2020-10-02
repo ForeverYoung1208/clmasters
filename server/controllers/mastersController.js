@@ -7,6 +7,7 @@ class MastersController extends CRUDController{
     super(model)
   }
 
+  // real delete !!!
   async delete(req, res) { 
     const { id } = req.params
 

@@ -1,24 +1,19 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { RenderFieldInput } from "../../../../components/Redux-Form/RenderFieldInput/RenderFieldInput";
 import { validators } from "../../../../shared/validators/baseValidator";
 
-import { RenderFieldSelect } from "../../../../components/Redux-Form/RenderFieldSelect/RenderFieldSelect";
-
-let MasterEditForm = ({ handleSubmit, item: master, initialize }) => {
+let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
   useEffect(() => {
-    initialize(master)
-  }, [initialize, master])
+    initialize(user)
+  }, [initialize, user])
 
-  const { cities } = useSelector((store) => store.admin)
-    
   return (
     <form
       className='items-list__edit-form'
       onSubmit={handleSubmit}
     >
-      <span className='items-list__item-field item-tiny'>{master?.id}</span>
+      <span className='items-list__item-field item-tiny'>{user?.id}</span>
       <Field
         name='name'
         component={RenderFieldInput}
@@ -26,16 +21,17 @@ let MasterEditForm = ({ handleSubmit, item: master, initialize }) => {
         validate={[ validators.required ]}
       />
       <Field
-        name='cityId'
-        component={RenderFieldSelect}
-        options={cities}
-        className='items-list__item-field item-medium'
+        name='email'
+        component={RenderFieldInput}
+        className='items-list__item-field item-wide'
         validate={[ validators.required ]}
       />
+
+      {/* TODO : make boolean!! */}
       <Field
-        name='comment'
+        name='isAdmin'
         component={RenderFieldInput}
-        className = 'items-list__item-field item-wide'
+        className = 'items-list__item-field item-narrow'
       />
       <button className='items-list__save-button' type='submit'>Save</button>
 
@@ -43,6 +39,6 @@ let MasterEditForm = ({ handleSubmit, item: master, initialize }) => {
   )
 }
 export default reduxForm({
-  form: 'editMaster',
-})(MasterEditForm)
+  form: 'editUser',
+})(UserEditForm)
 

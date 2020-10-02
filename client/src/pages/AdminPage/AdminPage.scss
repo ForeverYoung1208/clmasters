@@ -1,6 +1,38 @@
+@import '../../shared/styles/variables.scss';
+
 .adminPage{
   align-self: flex-start;
   width: 900px;
   min-width: 900px;
 
 }
+
+.items-list__edit-form{
+  input{
+    border: solid 1px $main-color-dark;
+  }
+  .field-wrapper{
+   position: relative;
+  }
+  .form__error{
+    font-size: $font-size-smaller;
+    font-weight: bold;
+    display: inline-block;
+    position: absolute;
+    top: 25px;
+    left: 2px;
+    color: $font-color-error;
+  }
+
+}
+
+.adminPage__itemsBlock .react-datepicker{
+  display: flex;
+}
+.react-datepicker__tab-loop{
+  display: inline-block;
+}
+.react-datepicker__error{
+  background-color: $font-color-error;
+}
+

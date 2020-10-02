@@ -3,9 +3,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
 import { admindataChanged, admindataDelete } from '../../../store/actions/admin'
-import { MasterEditForm } from './MasterEditForm/MasterEditForm'
-
-import './MastersBlock.scss'
+import MasterEditForm from './MasterEditForm/MasterEditForm'
 
 export const MastersBlock = () => {
 
@@ -21,6 +19,7 @@ export const MastersBlock = () => {
         withHead={true}
         items={masters}
         fields={{
+          id:['Id', 'item-tiny'],
           name: ['Master Name ', 'item-medium'],
           cityId: ['City', 'item-medium', (id) => (cities.find((c) => +c.id === +id).name)
         ],
