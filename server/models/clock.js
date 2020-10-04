@@ -1,19 +1,27 @@
-'use strict';
+'use strict'
 const {
   Model
-} = require('sequelize');
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Clock extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // Clock.orders = Clock.hasMany(models.Order)
-      // define association here
+    
+    static async maxRepairTimeMsec() {
+      const { timestrToMSec } = require('../shared/services')
+      const maxRepairTimeClock = await this.findOne({
+        attributes: [
+          [sequelize.fn('MAX', sequelize.col('repairTime')), 'maxTime']
+        ],        
+      })
+      return timestrToMSec(maxRepairTimeClock.dataValues.maxTime)
     }
-  };
+  
+    
+    static associate(models) {
+      this.hasMany(models.Order, {
+        foreignKey: {name: 'clockId'}
+      })      
+    }
+  }
   Clock.init({
     type: DataTypes.STRING,
     repairTime: DataTypes.TIME, //?
@@ -22,6 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Clock',
     paranoid: true
-  });
-  return Clock;
-};
+  })
+  return Clock
+}

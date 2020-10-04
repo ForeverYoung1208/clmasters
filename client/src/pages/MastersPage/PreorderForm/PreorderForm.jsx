@@ -88,7 +88,9 @@ export const PreorderForm = (props) => {
     const preorder =  {
       cityId: formData.city,
       clockTypeId: formData.clockType,
-      repairTime: voc.clocks.find((c)=>c.id === +formData.clockType)?.repairTime,
+
+      // perhaps, it isn't necessary, try to rid of it
+      repairTime: voc.clocks.find((c) => c.id === +formData.clockType)?.repairTime,
       email: formData.email,
       name: formData.name,
       orderDateTime: formData.orderDateTime

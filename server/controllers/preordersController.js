@@ -11,9 +11,8 @@ class PreordersController extends CRUDController{
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
   
     const { preorderData } = req.body
-    const {cityId, orderDateTime:orderDateTimeStr, repairTime:repairTimeStr} = preorderData
+    const freeMasters = await Master.freeMastersForOrder(preorderData)
 
-    const freeMasters = await Master.freeMastersAfter({cityId, orderDateTimeStr, repairTimeStr})
     
     return (res.status(200).json(freeMasters))
   }

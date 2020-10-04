@@ -1,14 +1,50 @@
 'use strict'
 const {
-  Model
+  Model, Op
 } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
+    
+    static async getAtDate(dateStr) { 
+      const { startOfDay, endOfDay } = require('date-fns')
+      const givenDateTime = new Date(dateStr)
+      const ds = startOfDay(givenDateTime)
+      const de = endOfDay(givenDateTime)
+      const orders = await this.findAll({
+        where: {
+          onTime: {
+            [Op.between]: [ds, de]
+          }
+        }
+      })
+      return orders
+    }
+
+    static async withinInterval({ dateFrom, dateTo }) {
+      
+      const Clock = sequelize.model('Clock')
+
+      const { startOfDay, endOfDay} = require('date-fns')
+      const ds = startOfDay(dateFrom)
+      const de = endOfDay(dateTo)
+
+      const orders = await this.findAll({
+        where: {
+          onTime: {
+            [Op.between]: [ds, de]
+          }
+        },
+        include: [{
+          model: Clock
+        }]
+      })
+
+      return orders
+    }
+
+
+
     static associate(models) {
       // define association here
       this.belongsTo(models.User, {

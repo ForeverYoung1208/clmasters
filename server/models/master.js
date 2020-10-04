@@ -1,67 +1,68 @@
 'use strict'
-const { timestrToMSec } = require('../shared/services')
 const {
   Model,
-  QueryTypes,
   Op
 } = require('sequelize')
+const { timestrToMSec } = require('../shared/services')
 module.exports = (sequelize, DataTypes) => {
   class Master extends Model {
 
-    static async freeMastersAfter({cityId, orderDateTimeStr, repairTimeStr}){
-      const orderDateTime = new Date(orderDateTimeStr)
-      const orderDateTimeISOStr = orderDateTime.toISOString()
-      const orderDateTimeEnds = new Date(orderDateTime.valueOf() + timestrToMSec(repairTimeStr))
-      const orderDateTimeEndsISOStr = orderDateTimeEnds.toISOString()
+    static async freeMastersForOrder(preorderData) {
+      const { cityId, orderDateTime: orderDateTimeStr, clockTypeId } = preorderData
+      
 
-      // the idea of further SQL is
-      // to select masters from the given city whithout orders that interfere with requestet time.
-      // so, inner subrequry makes sql to define ids of orders that don't inrterfere with given time, i.e.
-      // order which  starts after the given time, or order which ends before the given time or order without
-      // cpecified time are concidered to not interfere with giver time.
-      // other orders are concidered to interfere, so they provide ids to outer sql to select masters with these 
-      // 'interfering' orders.
+      const Clock = sequelize.model('Clock')
+      const Order = sequelize.model('Order')
 
-      const busyMasters = await sequelize.query(
-        `select 
-          m.id
-        from "Masters" m 
-        left join "Cities" c on c."id"=m."cityId" 
-        right join "Orders" o on o."masterId"=m."id"
-        where 
-          "cityId" = :cityId
-          and o.id not in(
-            select o2.id from "Orders" o2 
-            where 
-            o2."onTime" + o2."allocatedTime" < :orderDateTimeISOStr
-            or o2."onTime" > :orderDateTimeEndsISOStr
-            or o2."onTime" is null          
-          )
-        `,        
+      const [clockType, maxRepairTimeMsec, mastersInCity] = await Promise.all([
+        Clock.findByPk(clockTypeId),
+        Clock.maxRepairTimeMsec(),
+        this.findAll({
+          where: {
+            cityId
+          }
+        })
+      ])
+
+      const orderDateTimeStarts = new Date(orderDateTimeStr)
+      const orderDateTimeEnds = new Date(
+        orderDateTimeStarts.valueOf() + timestrToMSec(clockType.dataValues.repairTime)
+      )
+
+      const nearestOrders = await Order.withinInterval(
         {
-          replacements: {
-            cityId,
-            orderDateTimeISOStr,
-            orderDateTimeEndsISOStr
-          },
-          type: QueryTypes.SELECT,
-          plain: false,
-          raw:true
+          dateFrom: orderDateTimeStarts,
+          dateTo: new Date(orderDateTimeStarts.valueOf() + maxRepairTimeMsec)
         }
       )
-      const busyMastersIds = busyMasters.map(m => m.id)
 
-      const freeMasters = await Master.findAll({
-        where: {
-          cityId,
-          id:{
-            [Op.notIn]:busyMastersIds
-          }
-        },
-      })
 
-      return freeMasters
+      const busyMasters = nearestOrders.reduce((acc, order) => {
+        
+        const { dataValues: existingOrder, Clock: { dataValues: existingClock } } = order
+        const existingOrderEnds = new Date(
+          existingOrder.onTime.valueOf() + timestrToMSec(existingClock.repairTime)
+        )
+
+        !!TODO!!!
+
+        if (
+          (existingOrderEnds < orderDateTimeStarts)
+          || (existingOrder.onTime > orderDateTimeEnds)
+        ) { 
+
+          console.log('[existingOrder.masterId]', existingOrder.masterId)
+
+          return acc.push(existingOrder.masterId)
+        }
+      },[])
+
+      console.log('[busyMasters]', busyMasters)
+
+
+
     }
+
 
     static associate(models) {
       this.belongsTo(models.City, {
