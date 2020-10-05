@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   class Master extends Model {
 
     static async freeMastersForOrder(preorderData) {
+      const roundToMinute = require('date-fns/roundToNearestMinutes')
       const { cityId, orderDateTime: orderDateTimeStr, clockTypeId } = preorderData
       
 
@@ -36,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       )
 
-
       const busyMasters = nearestOrders.reduce((acc, order) => {
         
         const { dataValues: existingOrder, Clock: { dataValues: existingClock } } = order
@@ -44,20 +44,21 @@ module.exports = (sequelize, DataTypes) => {
           existingOrder.onTime.valueOf() + timestrToMSec(existingClock.repairTime)
         )
 
-        !!TODO!!!
-
         if (
-          (existingOrderEnds < orderDateTimeStarts)
-          || (existingOrder.onTime > orderDateTimeEnds)
+          (roundToMinute(orderDateTimeStarts) < roundToMinute(existingOrderEnds))
+          && (roundToMinute(orderDateTimeEnds) > roundToMinute(existingOrder.onTime))
         ) { 
-
-          console.log('[existingOrder.masterId]', existingOrder.masterId)
-
-          return acc.push(existingOrder.masterId)
+          acc.push( +existingOrder.masterId)
         }
+
+        return acc
       },[])
 
-      console.log('[busyMasters]', busyMasters)
+      const freeMastersInCity = mastersInCity.filter(
+        ({ dataValues: masterInCity }) => !busyMasters.includes(+masterInCity.id)
+      )
+
+      console.log('[freeMastersInCity]', freeMastersInCity)
 
 
 
