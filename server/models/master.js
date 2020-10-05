@@ -57,11 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       const freeMastersInCity = mastersInCity.filter(
         ({ dataValues: masterInCity }) => !busyMasters.includes(+masterInCity.id)
       )
-
-      console.log('[freeMastersInCity]', freeMastersInCity)
-
-
-
+      return freeMastersInCity
     }
 
 
