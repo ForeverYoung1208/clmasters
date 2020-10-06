@@ -8,11 +8,6 @@
   }
   &__validation-error{
     @include error-text;    
-    // font-size: $font-size-smaller;
-    // transform:translateY(-1rem);
-    // color: $font-color-error;
-    // font-weight: bold;
-
   }
 }
 

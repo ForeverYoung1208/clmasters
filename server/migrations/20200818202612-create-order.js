@@ -38,9 +38,9 @@ module.exports = {
       onTime: {
         type: Sequelize.DATE
       },
-      allocatedTime: {
-        type: Sequelize.TIME
-      },
+      // allocatedTime: {
+      //   type: Sequelize.TIME
+      // },
       deletedAt: {
         type: Sequelize.DATE
       },

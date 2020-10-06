@@ -8,9 +8,7 @@ const initialState = {
   preorder: {
     //..
   },
-  preorderResult: {
-    //..
-  },
+  preorderResult: null,
   errorMessage: null
 }
 
@@ -39,7 +37,7 @@ const main = (state = initialState, action) => {
       }
     case SAVE_PREORDER:
       return {
-        state,
+        ...state,
         preorder: action.payload.preorder
       }
     

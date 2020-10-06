@@ -1,26 +1,25 @@
 import React, { useEffect } from 'react';
-import { Switch, Route, useHistory, NavLink } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { Card } from '../../components/Card/Card';
 import { PreorderForm } from './PreorderForm/PreorderForm';
-import { Button } from '../../components/Button/Button';
 
 import './MastersPage.scss';
+import OrderForm from './OrderForm/OrderForm';
 
 const MastersPage = () => {
 
-  const { preorder, preorderResult } = useSelector(state=>state.main)
+  const { preorderResult } = useSelector(state=>state.main)
   const history = useHistory()
 
   useEffect(()=>{
-    if(!preorderResult || !preorderResult[0]) {
+    if(!preorderResult ) {  //|| !preorderResult[0]
       history.push('/masters/preorder')
     } else{
       history.push('/masters/order')
     }
-    // eslint-disable-next-line
-  },[preorderResult])
+  },[preorderResult, history])
 
   return (
 
@@ -32,27 +31,10 @@ const MastersPage = () => {
           </Card>
         </Route>
         <Route path='/masters/order'>
-          <Card header="Order confirmation will be here">  
-            
-            <div> 
-              preorder data:
-              {JSON.stringify(preorder)}
-            </div>
-            <br/>
-
-            <div>
-              got preorder results:
-              {JSON.stringify(preorderResult)}
-            </div>
-
-              <NavLink
-                to='/masters/preorder'
-              > 
-                <Button> 
-                  Change preorder data
-                </Button>
-              </NavLink> 
-              
+          <Card header="Please check and submit your order">  
+            <OrderForm
+              preorderResult = {preorderResult}
+            />
           </Card>
         </Route>
       </Switch>
@@ -61,3 +43,30 @@ const MastersPage = () => {
 };
 
 export default MastersPage;
+
+
+
+// <Route path='/masters/order'>
+// <Card header="Order confirmation will be here">  
+  
+//   <div> 
+//     preorder data:
+//     {JSON.stringify(preorder)}
+//   </div>
+//   <br/>
+
+//   <div>
+//     got preorder results:
+//     {JSON.stringify(preorderResult)}
+//   </div>
+
+//     <NavLink
+//       to='/masters/preorder'
+//     > 
+//       <Button> 
+//         Change preorder data
+//       </Button>
+//     </NavLink> 
+    
+// </Card>
+// </Route>

@@ -48,8 +48,7 @@ export const PreorderForm = (props) => {
       history.push('/info')
       return;
     }
-    // eslint-disable-next-line
-  },[voc])
+  },[voc, history, dispatch])
 
   const cities = [{id:-1}, ...voc.cities];
   const clocks = [{id:-1}, ...voc.clocks];
