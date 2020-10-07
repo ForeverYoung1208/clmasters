@@ -32,7 +32,7 @@ const MastersPage = () => {
         </Route>
         <Route path='/masters/order'>
           <Card header="Please check and submit your order">  
-            <OrderForm />
+            <OrderForm onSubmit={(val) => {console.log(val)}} />
           </Card>
         </Route>
       </Switch>

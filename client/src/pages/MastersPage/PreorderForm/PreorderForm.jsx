@@ -176,9 +176,6 @@ export const PreorderForm = () => {
         <select className='form-select' name="cityId" id="city" 
           placeholder = 'select a city'
 
-/////////////////////////////////////////////////////////////////////////////////
-// TODO default values
-/////////////////////////////////////////////////////////////////////////////////          
           value={formData.cityId} 
           onChange={changeHandler} 
           disabled={isLoading}
