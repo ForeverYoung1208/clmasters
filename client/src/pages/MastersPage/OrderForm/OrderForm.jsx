@@ -22,7 +22,6 @@ let OrderForm = () => {
     console.log('[submit handler e]', e)
   }
   
-  console.log('[freeMasters]', freeMasters)
   
   return(
     <>

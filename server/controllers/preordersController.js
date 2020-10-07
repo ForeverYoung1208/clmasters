@@ -23,7 +23,7 @@ class PreordersController extends CRUDController{
       check('preorderData.cityId', 'cityId must be specified!').isInt(),
       check('preorderData.orderDateTime', 'orderDateTime must be a date in the future')
         .isAfter( now.toISOString()),
-      check('preorderData.repairTime', 'repairTime must be specified!').isString(),
+      check('preorderData.clockTypeId', 'clockTypeId must be specified!').isInt(),
     ]
   }
 }

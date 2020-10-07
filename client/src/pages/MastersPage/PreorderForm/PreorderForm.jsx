@@ -31,16 +31,15 @@ export const PreorderForm = () => {
   const { loaders, preorder: prevPreorder } = useSelector(state => state.main)
   const voc = useSelector(state => state.voc)
 
-  console.log('[preorder from preorderForm]', prevPreorder)
-
   const [formData, setFormData] = useState({
     name: prevPreorder.name || '',
     email: prevPreorder.email || '',
     orderDateTime: prevPreorder.orderDateTime || '',
-    clockType: prevPreorder.clockType || '-1',
-    city: prevPreorder.cityId || '-1',
+    clockTypeId: prevPreorder.clockTypeId || '-1',
+    cityId: prevPreorder.cityId || '-1',
     minTime: new Date()     //now!
   })
+ 
   const [validationErrors, setValidationErrors] = useState()
   const isLoading = loaders?.preorder
 
@@ -88,8 +87,8 @@ export const PreorderForm = () => {
     e.preventDefault() 
 
     const preorder =  {
-      cityId: formData.city,
-      clockTypeId: formData.clockType,
+      cityId: formData.cityId,
+      clockTypeId: formData.clockTypeId,
 
       // perhaps, it isn't necessary, try to rid of it
       // repairTime: voc.clocks.find((c) => c.id === +formData.clockType)?.repairTime,
@@ -114,10 +113,10 @@ export const PreorderForm = () => {
       fieldName: 'orderDateTime', 
       tests:[ validators.required ]
     },{
-      fieldName: 'clockType', 
+      fieldName: 'clockTypeId', 
       tests:[ validators.selected ]
     },{
-      fieldName: 'city', 
+      fieldName: 'cityId', 
       tests:[ validators.selected ]
     }]
   )
@@ -153,12 +152,12 @@ export const PreorderForm = () => {
 
         <div className='preorder-form__validation-error'>{validationErrors?.email || <Emptyspace/>}</div>        
 
-        <label className='preorder-form__form-label' htmlFor="clockType">Clock size:</label>
-        <select className='form-select' name="clockType" id="clockType" 
-          value={formData.clockType} 
+        <label className='preorder-form__form-label' htmlFor="clockTypeId">Clock size:</label>
+        <select className='form-select' name="clockTypeId" id="clockType" 
+          value={formData.clockTypeId} 
           onChange={changeHandler} 
           disabled={isLoading} 
-          onBlur =  {()=>validate('clockType')}
+          onBlur =  {()=>validate('clockTypeId')}
         >
           { clocks?.map((c) => 
           <option key={c.id} value = {c.id}>
@@ -173,8 +172,8 @@ export const PreorderForm = () => {
         <div className='preorder-form__validation-error'>{validationErrors?.clockType || <Emptyspace/>}</div>        
 
 
-        <label className='preorder-form__form-label' htmlFor="City">City:</label>
-        <select className='form-select' name="city" id="city" 
+        <label className='preorder-form__form-label' htmlFor="CityId">City:</label>
+        <select className='form-select' name="cityId" id="city" 
           placeholder = 'select a city'
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -183,7 +182,7 @@ export const PreorderForm = () => {
           value={formData.cityId} 
           onChange={changeHandler} 
           disabled={isLoading}
-          onBlur =  {()=>validate('city')}
+          onBlur =  {()=>validate('cityId')}
           >
           { cities?.map((city) => 
           <option key={city.id} value = {city.id}>
