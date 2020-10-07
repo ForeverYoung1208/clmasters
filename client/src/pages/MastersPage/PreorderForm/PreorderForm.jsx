@@ -25,22 +25,25 @@ import { Emptyspace } from '../../../components/Emptyspace/Emptyspace';
 
 registerLocale('uk', uk)
 
-export const PreorderForm = (props) => {
+export const PreorderForm = () => {
   const history = useHistory()  
+  const dispatch = useDispatch()
+  const { loaders, preorder: prevPreorder } = useSelector(state => state.main)
+  const voc = useSelector(state => state.voc)
+
+  console.log('[preorder from preorderForm]', prevPreorder)
+
   const [formData, setFormData] = useState({
-    name:'',
-    email:'',
-    orderDateTime: '',
-    clockType:null,
-    city: null,
+    name: prevPreorder.name || '',
+    email: prevPreorder.email || '',
+    orderDateTime: prevPreorder.orderDateTime || '',
+    clockType: prevPreorder.clockType || '-1',
+    city: prevPreorder.cityId || '-1',
     minTime: new Date()     //now!
   })
-  const dispatch = useDispatch()
-  const voc = useSelector(state => state.voc)
-  const loaders = useSelector(state => state.main.loaders)
+  const [validationErrors, setValidationErrors] = useState()
   const isLoading = loaders?.preorder
 
-  const [validationErrors, setValidationErrors] = useState()
 
   useEffect(()=>{
     if(!voc){ 
@@ -89,7 +92,8 @@ export const PreorderForm = (props) => {
       clockTypeId: formData.clockType,
 
       // perhaps, it isn't necessary, try to rid of it
-      repairTime: voc.clocks.find((c) => c.id === +formData.clockType)?.repairTime,
+      // repairTime: voc.clocks.find((c) => c.id === +formData.clockType)?.repairTime,
+
       email: formData.email,
       name: formData.name,
       orderDateTime: formData.orderDateTime
@@ -132,6 +136,7 @@ export const PreorderForm = (props) => {
       <Form onSubmit={submitHandler} className = "preorder-form">
         <label className='preorder-form__form-label' htmlFor="name">Enter your name:</label>
         <input className='form-input' type="text" name="name" id="name"  
+          value={formData.name} 
           onChange={changeHandler} 
           disabled={isLoading} 
           onBlur = { ()=>validate('name')}
@@ -140,6 +145,7 @@ export const PreorderForm = (props) => {
 
         <label className='preorder-form__form-label' htmlFor="email">Enter your email:</label>
         <input className='form-input'type="email" name="email" id="email" 
+          value={formData.email} 
           onChange={changeHandler} 
           disabled={isLoading} 
           onBlur =  {()=>validate('email')}
@@ -149,7 +155,7 @@ export const PreorderForm = (props) => {
 
         <label className='preorder-form__form-label' htmlFor="clockType">Clock size:</label>
         <select className='form-select' name="clockType" id="clockType" 
-          value={formData?.clockType?.value} 
+          value={formData.clockType} 
           onChange={changeHandler} 
           disabled={isLoading} 
           onBlur =  {()=>validate('clockType')}
@@ -170,7 +176,11 @@ export const PreorderForm = (props) => {
         <label className='preorder-form__form-label' htmlFor="City">City:</label>
         <select className='form-select' name="city" id="city" 
           placeholder = 'select a city'
-          value={formData?.city?.value} 
+
+/////////////////////////////////////////////////////////////////////////////////
+// TODO default values
+/////////////////////////////////////////////////////////////////////////////////          
+          value={formData.cityId} 
           onChange={changeHandler} 
           disabled={isLoading}
           onBlur =  {()=>validate('city')}

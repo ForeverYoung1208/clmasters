@@ -10,7 +10,7 @@ import { validators } from '../../../shared/validators/baseValidator';
 
 // import "./OrderForm.scss"
 
-let OrderForm = (props) => {
+let OrderForm = () => {
   const dispatch = useDispatch()
   const { preorderResult: freeMasters, preorder } = useSelector(store => store.main)
   
@@ -26,22 +26,21 @@ let OrderForm = (props) => {
   
   return(
     <>
-      <Form onSubmit={submitHandler} className="order-form">
-        {freeMasters?.length > 0
-          ? <Field
+      {freeMasters?.length > 0
+        ? <Form onSubmit={submitHandler} className="order-form">
+            <Field
               name='masterId'
               component={RenderFieldSelect}
               options={freeMasters}
               className='order-form__input-field'
               validate={[ validators.required ]}
             />
-          : `No free masters in the city on time ${preorder.orderDateTime}`
-        }
-        
-
-
-        {freeMasters?.length > 0 && <Button>Submit</Button>}
-      </Form>  
+          <Button>Submit</Button>
+        </Form>  
+        : <div>
+            No free masters in the city on time
+          </div>
+      }
       
       <NavLink to='/masters/preorder'> 
         <Button> 

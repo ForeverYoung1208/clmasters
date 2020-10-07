@@ -27,14 +27,12 @@ const MastersPage = () => {
       <Switch>
         <Route path='/masters/preorder'>
           <Card header = "To help us find a master, please give us some information">  
-            <PreorderForm/> 
+            <PreorderForm /> 
           </Card>
         </Route>
         <Route path='/masters/order'>
           <Card header="Please check and submit your order">  
-            <OrderForm
-              preorderResult = {preorderResult}
-            />
+            <OrderForm />
           </Card>
         </Route>
       </Switch>
