@@ -1,51 +1,24 @@
-// foreign libs
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from '../../../components/Button/Button';
 import { Form } from '../../../components/Form/Form';
 import { validators } from '../../../shared/validators/baseValidator';
-import { RadioGroup, RadioButton } from 'react-radio-buttons'
-
-// import "./OrderForm.scss"
+import { RenderFieldRadioGroup } from '../../../components/Redux-Form/RenderFieldRadioGroup/RenderFieldRadioGroup';
 
 let OrderForm = ({handleSubmit}) => {
-  const dispatch = useDispatch()
-  const { preorderResult: freeMasters, preorder } = useSelector(store => store.main)
+  const { preorderResult: freeMasters} = useSelector(store => store.main)
   
-  const RenderFieldRadioGroup = ({ className, input, meta, options }) => {
-    const changeHandler = (selection) => {
-      console.log('[selection]', selection)
-      input.onChange(selection)
-    }
-    return (
-      <RadioGroup onChange={changeHandler} className = 'teeeest'>
-        {
-          options?.map((option) =>
-            <RadioButton
-              key={option.id}
-              value={String(option.id)}
-              rootColor='#fff'
-              pointColor='#000'
-            >
-              {option.name}
-            </RadioButton>
-          )
-        }
-      </RadioGroup>
-    )
-  }
-
   return(
-    <>
+    <div className="order-form">
       {freeMasters?.length > 0
-        ? <Form onSubmit={handleSubmit} className="order-form">
+        ? <Form onSubmit={handleSubmit} className="order-form__form">
             <Field
               name='masterId'
               component={RenderFieldRadioGroup}
               options={freeMasters}
-              className='order-form__input-field'
+              className='order-form__radio-group'
               validate={[ validators.required ]}
             />
           <Button>Submit</Button>
@@ -55,12 +28,12 @@ let OrderForm = ({handleSubmit}) => {
           </div>
       }
       
-      <NavLink to='/masters/preorder'> 
+      <NavLink to='/masters/preorder' className = 'order-form__change-link'> 
         <Button> 
           Change preorder data
         </Button>
       </NavLink> 
-    </>
+    </div>
   )
 };
 

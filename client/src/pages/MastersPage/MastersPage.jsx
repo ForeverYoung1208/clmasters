@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Card } from '../../components/Card/Card';
 import { PreorderForm } from './PreorderForm/PreorderForm';
@@ -12,6 +12,7 @@ const MastersPage = () => {
 
   const { preorderResult } = useSelector(state=>state.main)
   const history = useHistory()
+  const dispatch = useDispatch()
 
   useEffect(()=>{
     if(!preorderResult ) {  //|| !preorderResult[0]
@@ -32,7 +33,9 @@ const MastersPage = () => {
         </Route>
         <Route path='/masters/order'>
           <Card header="Please check and submit your order">  
-            <OrderForm onSubmit={(val) => {console.log(val)}} />
+            <OrderForm
+              onSubmit={(masterId) => dispatch()}
+            />
           </Card>
         </Route>
       </Switch>

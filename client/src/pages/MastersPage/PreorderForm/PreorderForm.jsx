@@ -10,6 +10,7 @@ import { isSameDay, endOfDay, startOfDay} from 'date-fns'
 // my UI
 import { Button } from '../../../components/Button/Button';
 import { Form } from '../../../components/Form/Form';
+import { Emptyspace } from '../../../components/Emptyspace/Emptyspace';
 
 // my services
 import Validator from '../../../shared/js/validator';
@@ -18,10 +19,8 @@ import { validators } from '../../../shared/validators/baseValidator'
 // store
 import { setErrorMessage, postPreorder } from '../../../store/actions/main';
 
-//sytyles
 import "react-datepicker/dist/react-datepicker.css";
 import "./PreorderForm.scss"
-import { Emptyspace } from '../../../components/Emptyspace/Emptyspace';
 
 registerLocale('uk', uk)
 

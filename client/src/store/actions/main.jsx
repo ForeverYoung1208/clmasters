@@ -59,3 +59,22 @@ const savePreorder = (preorder) => {
   }
 }
 
+
+
+export const postOrder = (order) => { 
+  return async (dispatch) => {
+    dispatch(loaderShow('order'))
+    try {
+      /////////
+TODO
+      /////////
+      console.log('[order]', order)
+      // const { orderResult } = await apiPostOrder(order)
+      // dispatch(postOrderOk(orderResult))
+    } catch (error) {
+      dispatch(setErrorMessage(error))
+    } finally {
+      dispatch(loaderHide('order'))
+    }
+  }
+}
