@@ -21,6 +21,7 @@ export const MastersBlock = () => {
         fields={{
           id:['Id', 'item-tiny'],
           name: ['Master Name ', 'item-medium'],
+          rating: ['Rating ', 'item-medium'],
           cityId: ['City', 'item-medium', (id) => (cities.find((c) => +c.id === +id).name)
         ],
           comment: ['Comment', 'item-wide'],

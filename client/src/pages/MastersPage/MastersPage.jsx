@@ -4,18 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Card } from '../../components/Card/Card';
 import { PreorderForm } from './PreorderForm/PreorderForm';
+import OrderForm from './OrderForm/OrderForm';
+import { postOrder } from '../../store/actions/main';
 
 import './MastersPage.scss';
-import OrderForm from './OrderForm/OrderForm';
 
 const MastersPage = () => {
 
-  const { preorderResult } = useSelector(state=>state.main)
+  const { preorderResult, preorder } = useSelector(state=>state.main)
   const history = useHistory()
   const dispatch = useDispatch()
 
   useEffect(()=>{
-    if(!preorderResult ) {  //|| !preorderResult[0]
+    if(!preorderResult ) {
       history.push('/masters/preorder')
     } else{
       history.push('/masters/order')
@@ -32,9 +33,9 @@ const MastersPage = () => {
           </Card>
         </Route>
         <Route path='/masters/order'>
-          <Card header="Please check and submit your order">  
+          <Card header="Please choose master and submit your order">  
             <OrderForm
-              onSubmit={(masterId) => dispatch()}
+              onSubmit={(masterId) => dispatch(postOrder({masterId, preorder}))}
             />
           </Card>
         </Route>
@@ -44,30 +45,3 @@ const MastersPage = () => {
 };
 
 export default MastersPage;
-
-
-
-// <Route path='/masters/order'>
-// <Card header="Order confirmation will be here">  
-  
-//   <div> 
-//     preorder data:
-//     {JSON.stringify(preorder)}
-//   </div>
-//   <br/>
-
-//   <div>
-//     got preorder results:
-//     {JSON.stringify(preorderResult)}
-//   </div>
-
-//     <NavLink
-//       to='/masters/preorder'
-//     > 
-//       <Button> 
-//         Change preorder data
-//       </Button>
-//     </NavLink> 
-    
-// </Card>
-// </Route>

@@ -8,7 +8,11 @@ import { validators } from '../../../shared/validators/baseValidator';
 import { RenderFieldRadioGroup } from '../../../components/Redux-Form/RenderFieldRadioGroup/RenderFieldRadioGroup';
 
 let OrderForm = ({handleSubmit}) => {
-  const { preorderResult: freeMasters} = useSelector(store => store.main)
+  const { preorderResult: freeMasters } = useSelector(store => store.main)
+  const options = freeMasters?.map((master) => ({
+    id: master.id,
+    name: `${master.name}, rating:${master.rating} `
+  }))
   
   return(
     <div className="order-form">
@@ -17,14 +21,14 @@ let OrderForm = ({handleSubmit}) => {
             <Field
               name='masterId'
               component={RenderFieldRadioGroup}
-              options={freeMasters}
+              options={options}
               className='order-form__radio-group'
               validate={[ validators.required ]}
             />
           <Button>Submit</Button>
         </Form>  
         : <div>
-            No free masters in the city on time
+            No free masters in given city was found.
           </div>
       }
       

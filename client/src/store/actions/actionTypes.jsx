@@ -10,6 +10,9 @@ export const LOADER_HIDE = 'main/LOADER_HIDE'
 
 export const SAVE_PREORDER = 'main/SAVE_PREORDER'
 export const POST_PREORDER_OK = 'main/POST_PREORDER_OK'
+export const POST_ORDER_OK = 'main/POST_ORDER_OK'
+export const REDIRECTION_DONE = 'main/REDIRECTION_DONE'
+
 
 export const SET_CURRENT_USER = 'auth/SET_CURRENT_USER'
 export const LOGOUT_USER = 'auth/LOGOUT_USER'

@@ -6,6 +6,15 @@ import { validators } from "../../../../shared/validators/baseValidator";
 
 import { RenderFieldSelect } from "../../../../components/Redux-Form/RenderFieldSelect/RenderFieldSelect";
 
+const RATINGS = [
+  { id: 0, name: 'rating 0' },
+  { id: 1, name: 'rating 1' },
+  { id: 2, name: 'rating 2' },
+  { id: 3, name: 'rating 3' },
+  { id: 4, name: 'rating 4' },
+  { id: 5, name: 'rating 5' },
+]
+
 let MasterEditForm = ({ handleSubmit, item: master, initialize }) => {
   useEffect(() => {
     initialize(master)
@@ -22,6 +31,13 @@ let MasterEditForm = ({ handleSubmit, item: master, initialize }) => {
       <Field
         name='name'
         component={RenderFieldInput}
+        className='items-list__item-field item-medium'
+        validate={[ validators.required ]}
+      />
+      <Field
+        name='rating'
+        component={RenderFieldSelect}
+        options={RATINGS}
         className='items-list__item-field item-medium'
         validate={[ validators.required ]}
       />

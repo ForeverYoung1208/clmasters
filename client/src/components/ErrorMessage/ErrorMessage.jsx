@@ -24,7 +24,7 @@ export const ErrorMessage = (props) => {
 
   return (
     <div {..._props} className = "error-message">
-      {errorMessage}
+      {JSON.stringify(errorMessage)}
       <Emptyspace/>
     </div>
   )

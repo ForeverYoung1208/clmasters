@@ -75,7 +75,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     cityId: DataTypes.INTEGER,
     comment: DataTypes.STRING,
-    deletedAt: DataTypes.DATE
+    deletedAt: DataTypes.DATE,
+    rating: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Master',

@@ -1,4 +1,4 @@
-import { LOADER_SHOW, LOADER_HIDE, POST_PREORDER_OK, SET_ERROR_MESSAGE, SAVE_PREORDER } from "../actions/actionTypes"
+import { LOADER_SHOW, LOADER_HIDE, POST_PREORDER_OK, SET_ERROR_MESSAGE, SAVE_PREORDER, POST_ORDER_OK, REDIRECTION_DONE } from "../actions/actionTypes"
 
 const initialState = {
   loaders:{
@@ -30,15 +30,30 @@ const main = (state = initialState, action) => {
         loaders: newLoaders
       }
     
+    case REDIRECTION_DONE:
+      return {
+        ...state,
+        redirectUrl: null
+      }
+
+    case SAVE_PREORDER:
+      return {
+        ...state,
+        preorder: action.payload.preorder
+      }
+      
     case POST_PREORDER_OK:
       return {
         ...state,
         preorderResult: action.payload.preorderResult
       }
-    case SAVE_PREORDER:
+    
+    case POST_ORDER_OK:
       return {
         ...state,
-        preorder: action.payload.preorder
+        preorderResult: null,
+        orderResult: action.orderResult,
+        redirectUrl: action.redirectUrl
       }
     
     case SET_ERROR_MESSAGE:

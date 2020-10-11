@@ -1,19 +1,29 @@
 import React from 'react';
-import {Switch, Route, Redirect} from 'react-router-dom';
-// import { useSelector } from 'react-redux';
+import {Switch, Route, Redirect, useHistory} from 'react-router-dom';
 
 import AdminPage from './pages/AdminPage/AdminPage';
 import AuthPage from './pages/AuthPage/AuthPage';
 import MastersPage from './pages/MastersPage/MastersPage';
-// import { AuthContext } from './context/authContext';
 import InfoPage from './pages/InfoPage/InfoPage';
-// import { useEffect } from 'react';
 import withCurrentUser from './HOC/withCurrentUser';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { redirectionDone } from './store/actions/main';
 
 const Routes = (props) => {
-  
   const { currentUser } = props
-  
+  const history = useHistory()
+  const { redirectUrl } = useSelector((store) => store.main )
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (redirectUrl) {
+      history.push(redirectUrl)  
+      dispatch(redirectionDone())
+    }
+
+  },[redirectUrl, dispatch])
+
   return (
     <Switch>
       <Route path="/info" >

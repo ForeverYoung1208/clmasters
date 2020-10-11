@@ -8,7 +8,7 @@ export const RenderFieldSelect = ({ className, input, placeholder, meta, options
     <FieldError meta={meta}/>
     <select {...input} className={className} placeholder={placeholder}>
       {showOptions?.map((o) =>  
-        <option key={o.id || 'empty'} value={o.id}>
+        <option key={o.id || o.id===0 || 'empty'} value={o.id}>
           {o.name || o.type}
         </option>
       )}

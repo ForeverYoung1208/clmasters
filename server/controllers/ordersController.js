@@ -1,5 +1,5 @@
 const { check } = require('express-validator')
-const { Order } = require('../models')
+const { Order, User } = require('../models')
 const { CRUDController } = require('./common/CRUDController')
 
 class OrdersController extends CRUDController{
@@ -7,10 +7,24 @@ class OrdersController extends CRUDController{
     super(model)
   }
 
+  async post(req, res) { 
+    const data = req.body
+    if (!data.userId) {
+      var [user] = await User.findOrCreate({
+        where: { email: data.email },
+        defaults: { name: data.name }
+      })
+      user.name = data.name
+      user.save()
+      req.body.userId = user.id
+    }
+    return super.post(req, res)
+  }
+  
+
   putValidators() {
     return [
       check('onTime', 'onTime must exist!').exists().notEmpty(),
-      check('userId', 'userId must exist!').exists().notEmpty(),
       check('clockId', 'clockId must exist!').exists().notEmpty(),
       check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]
@@ -19,7 +33,6 @@ class OrdersController extends CRUDController{
   postValidators() {
     return [
       check('onTime', 'onTime must exist!').exists().notEmpty(),
-      check('userId', 'userId must exist!').exists().notEmpty(),
       check('clockId', 'clockId must exist!').exists().notEmpty(),
       check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]

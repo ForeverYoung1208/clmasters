@@ -1,5 +1,13 @@
-import { LOADER_SHOW, LOADER_HIDE, POST_PREORDER_OK, SAVE_PREORDER, SET_ERROR_MESSAGE } from "./actionTypes";
-import { apiPostPreorder } from "../../shared/js/api";
+import {
+  LOADER_SHOW,
+  LOADER_HIDE,
+  POST_PREORDER_OK,
+  SAVE_PREORDER,
+  SET_ERROR_MESSAGE,
+  POST_ORDER_OK,
+  REDIRECTION_DONE
+} from "./actionTypes";
+import { apiPostEntity, apiPostPreorder } from "../../shared/js/api";
 
 export const loaderShow = (name) => {
   return {
@@ -61,20 +69,45 @@ const savePreorder = (preorder) => {
 
 
 
-export const postOrder = (order) => { 
+export const postOrder = ({ masterId, preorder }) => { 
   return async (dispatch) => {
     dispatch(loaderShow('order'))
     try {
-      /////////
-TODO
-      /////////
-      console.log('[order]', order)
-      // const { orderResult } = await apiPostOrder(order)
-      // dispatch(postOrderOk(orderResult))
+      const order = {
+        ...masterId,
+        clockId: preorder.clockTypeId,
+        email: preorder.email,
+        name: preorder.name,
+        onTime: preorder.orderDateTime
+      }
+      const _orderResult = await apiPostEntity({
+        sectionKey: 'orders',
+        data: order
+      })
+      const orderResult = await _orderResult.json()
+
+
+      console.log('[orderResult]', orderResult)
+      orderResult?.id && dispatch(postOrderOk(orderResult))
+
     } catch (error) {
       dispatch(setErrorMessage(error))
     } finally {
       dispatch(loaderHide('order'))
     }
+  }
+}
+
+const postOrderOk = (orderResult) => { 
+  return {
+    type: POST_ORDER_OK,
+    orderResult,
+    redirectUrl: '/info'
+	}    
+}
+
+export const redirectionDone = () => { 
+  return {
+    type: REDIRECTION_DONE,
   }
 }
