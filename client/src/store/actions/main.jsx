@@ -5,7 +5,8 @@ import {
   SAVE_PREORDER,
   SET_ERROR_MESSAGE,
   POST_ORDER_OK,
-  REDIRECTION_DONE
+  REDIRECTION_DONE,
+  CLEAR_ORDER_RESULT
 } from "./actionTypes";
 import { apiPostEntity, apiPostPreorder } from "../../shared/js/api";
 
@@ -85,9 +86,6 @@ export const postOrder = ({ masterId, preorder }) => {
         data: order
       })
       const orderResult = await _orderResult.json()
-
-
-      console.log('[orderResult]', orderResult)
       orderResult?.id && dispatch(postOrderOk(orderResult))
 
     } catch (error) {
@@ -109,5 +107,11 @@ const postOrderOk = (orderResult) => {
 export const redirectionDone = () => { 
   return {
     type: REDIRECTION_DONE,
+  }
+}
+
+export const clearOrderResult = () => {
+  return {
+    type: CLEAR_ORDER_RESULT
   }
 }

@@ -22,7 +22,7 @@ const Routes = (props) => {
       dispatch(redirectionDone())
     }
 
-  },[redirectUrl, dispatch])
+  },[redirectUrl, dispatch, history])
 
   return (
     <Switch>
