@@ -72,9 +72,13 @@ export const apiDeleteEntity = async ({ sectionKey, id }) => {
 
 
 export const apiPostPreorder = async(preorderData)=>{
-  const preorderRes_ = await myHttp('/api/preorder', 'POST', { preorderData })
-  const preorderResult = await preorderRes_.json()
-  return {preorderResult}
+  const res = await myHttp('/api/preorder', 'POST', { preorderData })
+  return res
 }
 
+export const apiGetEntityBy = async ({ sectionKey, params }) => { 
+  const res = await myHttp(`/api/${sectionKey}/query`, 'GET', {}, {}, params)
+  return res
+
+}
 

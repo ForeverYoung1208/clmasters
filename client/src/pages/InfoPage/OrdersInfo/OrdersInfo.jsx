@@ -1,8 +1,8 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Card from '../../../components/Card/Card'
 
-export const OrdersInfo = ({ orders, name, email }) => {
+export const OrdersInfo = ({ orders }) => {
   const { cities, masters, clocks } = useSelector((store) => store.voc)
 
   return (
@@ -20,10 +20,10 @@ export const OrdersInfo = ({ orders, name, email }) => {
             className='orders-info__order'
           >
             <div className ='orders-info__row' >
-              <span>Client name: </span> <span>{name}</span>
+              <span>Client name: </span> <span>{order.user.name}</span>
             </div>
             <div className ='orders-info__row' >
-              <span>Client email: </span> <span>{email}</span>
+              <span>Client email: </span> <span>{order.user.email}</span>
             </div>
             <div className ='orders-info__row' >
               <span>Clock Type: </span> <span>{clock.type}</span>

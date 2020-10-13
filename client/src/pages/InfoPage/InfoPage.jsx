@@ -7,18 +7,18 @@ import { OrdersInfo } from './OrdersInfo/OrdersInfo';
 import { useState } from 'react';
 import { Form } from '../../components/Form/Form';
 import { Button } from '../../components/Button/Button';
-import { clearOrderResult } from '../../store/actions/main';
+import { clearOrderResult, clearOrders, getOrdersBy } from '../../store/actions/main';
 
 
 const InfoPage = () => {
-  const { orderResult } = useSelector((store) => store.main)
-  const { name, email } = useSelector((store) => store.main.preorder)
+  const { orderResult, orders } = useSelector((store) => store.main)
   const [searchValue, setSearchValue] = useState('')
   const dispatch = useDispatch()
 
   const handleSearchSubmit = (e) => {
     e.preventDefault()
-    console.log('handleSearchSubmit '+ searchValue)
+    dispatch(getOrdersBy({ email: searchValue }))
+    
   }
   
   return (
@@ -29,10 +29,18 @@ const InfoPage = () => {
           <h2>Congratulations! New order registered!</h2>
         <OrdersInfo
           orders={[orderResult]}
-          name={name}
-          email={email}
         />
         <Button onClick={ () => { dispatch(clearOrderResult()) } }>Dismiss</Button>
+        </div>
+      }
+
+      { orders &&
+        <div className = 'orders-info'>
+        <h2>We've found the next orders with e-mail "{searchValue}":</h2>
+          <OrdersInfo
+            orders={orders}
+          />
+          <Button onClick={ () => { dispatch(clearOrders()) } }>Dismiss</Button>
         </div>
       }
 
@@ -50,8 +58,6 @@ const InfoPage = () => {
           />
           <Button type='submit'>Search</Button>
         </Form>
-        
-      
         </div>
       }
       

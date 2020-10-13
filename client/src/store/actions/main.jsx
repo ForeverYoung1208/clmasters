@@ -6,9 +6,11 @@ import {
   SET_ERROR_MESSAGE,
   POST_ORDER_OK,
   REDIRECTION_DONE,
-  CLEAR_ORDER_RESULT
+  CLEAR_ORDER_RESULT,
+  GET_ORDERS_OK,
+  CLEAR_ORDERS
 } from "./actionTypes";
-import { apiPostEntity, apiPostPreorder } from "../../shared/js/api";
+import { apiGetEntityBy, apiPostEntity, apiPostPreorder } from "../../shared/js/api";
 
 export const loaderShow = (name) => {
   return {
@@ -36,15 +38,30 @@ export const clearErrorMessage = () => {
     type: SET_ERROR_MESSAGE,
     payload: {}
   }
-  
 }
+
+export const redirectionDone = () => { 
+  return {
+    type: REDIRECTION_DONE,
+  }
+}
+
+export const clearOrderResult = () => {
+  return {
+    type: CLEAR_ORDER_RESULT
+  }
+}
+
+
+
 
 export const postPreorder = (preorder) => { 
   return async (dispatch) => {
     dispatch(loaderShow('preorder'))
     dispatch(savePreorder(preorder))
     try {
-      const { preorderResult } = await apiPostPreorder(preorder)
+      let preorderResult = await apiPostPreorder(preorder)
+      preorderResult = await preorderResult.json()
       dispatch(postPreorderOk(preorderResult))
     } catch (error) {
       dispatch(setErrorMessage(error))
@@ -104,14 +121,34 @@ const postOrderOk = (orderResult) => {
 	}    
 }
 
-export const redirectionDone = () => { 
-  return {
-    type: REDIRECTION_DONE,
+export const getOrdersBy = (params) => {
+  return async (dispatch) => {
+    dispatch(loaderShow('order'))
+    try {
+      const _orders = await apiGetEntityBy({
+        sectionKey: 'orders',
+        params
+      })
+      const orders = await _orders.json()
+      dispatch(getOrdersOk(orders))
+    } catch (error) {
+      dispatch(setErrorMessage(error))            
+    } finally { 
+      dispatch(loaderHide('order'))
+    }
   }
 }
 
-export const clearOrderResult = () => {
+const getOrdersOk = (orders) => { 
   return {
-    type: CLEAR_ORDER_RESULT
+    type: GET_ORDERS_OK,
+    orders
+	}    
+}
+
+export const clearOrders = () => {
+  return {
+    type: CLEAR_ORDERS
   }
 }
+

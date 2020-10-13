@@ -1,4 +1,15 @@
-import { LOADER_SHOW, LOADER_HIDE, POST_PREORDER_OK, SET_ERROR_MESSAGE, SAVE_PREORDER, POST_ORDER_OK, REDIRECTION_DONE, CLEAR_ORDER_RESULT } from "../actions/actionTypes"
+import {
+  LOADER_SHOW,
+  LOADER_HIDE,
+  POST_PREORDER_OK,
+  SET_ERROR_MESSAGE,
+  SAVE_PREORDER,
+  POST_ORDER_OK,
+  REDIRECTION_DONE,
+  CLEAR_ORDER_RESULT,
+  GET_ORDERS_OK,
+  CLEAR_ORDERS
+} from "../actions/actionTypes"
 
 const initialState = {
   loaders:{
@@ -67,6 +78,19 @@ const main = (state = initialState, action) => {
         ...state,
         errorMessage: action.payload.errorMessage
       }
+    
+    case GET_ORDERS_OK:
+      return {
+        ...state,
+        orders: action.orders
+      }
+    
+    case CLEAR_ORDERS:
+      return {
+        ...state,
+        orders: null
+      }
+    
     
     default:
       return state      

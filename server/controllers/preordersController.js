@@ -4,7 +4,8 @@ const { Master } = require('../models/index')
 const { CRUDController } = require('./common/CRUDController')
 
 class PreordersController extends CRUDController{
-
+  
+  // maybe, I should refactore it to masters get call ... 
   async post(req, res) {
     const errors = validationResult(req)  // Finds the validation errors in this request and wraps them in an object with handy functions
     console.log('[errors]', errors)
