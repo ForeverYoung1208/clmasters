@@ -4,7 +4,6 @@ import { FieldError } from '../FieldError/FieldError';
 
 export const RenderFieldRadioGroup = ({ className, input, meta, options }) => {
   const changeHandler = (selection) => {
-    console.log('[selection]', selection)
     input.onChange(selection)
   }
   return (

@@ -2,6 +2,7 @@ const { check, validationResult } = require('express-validator')
 const { Order, User } = require('../models')
 const { CRUDController } = require('./common/CRUDController')
 const { noTimestamps } = require('../shared/services')
+const sendEmail = require('../shared/mailjet')
 
 class OrdersController extends CRUDController{
   constructor(model){
@@ -28,14 +29,36 @@ class OrdersController extends CRUDController{
       message: 'Orders controller: not created'
     })
 
+    const master = await newOrder.getMaster()
+    const city = await master.getCity()
+    const clock = await newOrder.getClock()
+
+    const emailResult = await sendEmail(
+      {
+        toEmail: user.email,
+        HTMLPart: `
+        <h2>Order information</h2>
+        <div>Order ID: ${newOrder.id}
+        <div>User Name: ${user.name}</div>
+        <div>User Email: ${user.email}</div>
+        <div>City: ${city.name}</div>
+        <div>On Time: ${newOrder.onTime.toLocaleString('uk')}</div>
+        <div>Clock Type: ${clock.type}, repair time (hours:minutes): ${ clock.repairTime.substring(0,5)}</div>
+        `
+      }
+    )
+
+
     return res.status(200).json({
       ...noTimestamps(newOrder.dataValues),
       user: {
         name: user.name,
         email: user.email
-      }
+      },
+      isEmailSent: emailResult.response.ok
     })
 
+    
   }
 
   async getAllByParam(req, res) {

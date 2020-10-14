@@ -27,10 +27,11 @@ const InfoPage = () => {
       { orderResult &&
         <div className = 'orders-info'>
           <h2>Congratulations! New order registered!</h2>
-        <OrdersInfo
-          orders={[orderResult]}
-        />
-        <Button onClick={ () => { dispatch(clearOrderResult()) } }>Dismiss</Button>
+          <OrdersInfo
+            orders={[orderResult]}
+          />
+          { orderResult.isEmailSent && <h3>(order information was also sent to email)</h3>}
+          <Button onClick={ () => { dispatch(clearOrderResult()) } }>Dismiss</Button>
         </div>
       }
 
