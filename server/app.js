@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const routes = require('./routes')
 const cors = require('cors')
+const { verifyAccessToken } = require('./middleware/verifyAccessToken')
 require('dotenv').config()
 
 const {APP_BUILD_FOLDER} = process.env

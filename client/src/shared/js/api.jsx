@@ -1,4 +1,25 @@
+import { store } from '../../index'
 import { myHttp } from "./myHttp"
+
+// TODO
+
+// https://stackoverflow.com/questions/38460949/what-is-the-best-way-to-access-redux-store-outside-a-react-component
+// let _this = this
+// store.subscribe(() => {
+//   const state = store.getState()
+//   _this.accessToken = state.auth.user?.accessToken
+// })
+
+// headers = {
+//   ...headers,
+//   'Authorization': 'Bearer' + this.accessToken,
+//   'Content-Type': 'application/json',
+// }
+
+
+
+
+
 
 export const apiLoginUser = async (credentials) => {
   try {
@@ -9,18 +30,13 @@ export const apiLoginUser = async (credentials) => {
   }
 }
 
-export const apiRefreshAccessToken = async (user) => {
-  const res = await myHttp('/api/auth/token', 'POST',
+export const apiRefreshTokens = async (user) => {
+  const res = await myHttp('/api/auth/refreshTokens', 'POST',
     {refreshToken:user?.refreshToken}
   )
-  const { newAccessToken } = await res.json()
-  return newAccessToken
+  const { newAccessToken, newRefreshToken } = await res.json()
+  return { newAccessToken, newRefreshToken }
 }
-
-export const apiRegisterUser = async ({email, name})=>{
-  const { user } = await myHttp('/api/auth/register', 'POST', {email, name} ).then(u=>u.json())
-  return user
-};
 
 export const apiGetVoc = async () => {
   const [citiesRes, clocksRes, mastersRes] = await Promise.all([

@@ -1,4 +1,4 @@
-import { apiLoginUser, apiRefreshAccessToken } from "../../shared/js/api"
+import { apiLoginUser, apiRefreshTokens } from "../../shared/js/api"
 import { loaderHide, loaderShow, setErrorMessage } from "./main"
 import { SET_CURRENT_USER, LOGOUT_USER } from "./actionTypes"
 import { LS } from "../../shared/js/ls"
@@ -22,8 +22,12 @@ export const authLoginUser = (credentials) => {
 
 export const authAutologinUser = (user) => {
   return async (dispatch) => {
-    const newAccessToken = await apiRefreshAccessToken(user)
-    dispatch(authSetCurrentUser({...user, accessToken:newAccessToken}))
+    const { newAccessToken, newRefreshToken }  = await apiRefreshTokens(user)
+    dispatch(authSetCurrentUser({
+      ...user,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken
+    }))
   }
 }
 

@@ -1,5 +1,12 @@
 
-export const myHttp = async (relativePath, method = 'GET', body = {}, headers = {}, params = {}) => {
+export const myHttp = async (
+  relativePath,
+  method = 'GET',
+  body = {},
+  headers = {},
+  params = {}
+) => {
+
   headers = {
     ...headers,
     'Content-Type': 'application/json',
@@ -20,4 +27,3 @@ export const myHttp = async (relativePath, method = 'GET', body = {}, headers = 
       : { method, body:JSON.stringify(body), headers}
   )
 }
-

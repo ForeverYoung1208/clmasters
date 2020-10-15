@@ -18,7 +18,6 @@ class AuthController{
   }
 
   async loginUser(req, res) {
-    // Finds the validation errors in this request and wraps them in an object
     const errors = validationResult(req)  
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
   
@@ -30,11 +29,7 @@ class AuthController{
       )
       
       const accessToken = AuthController.generateAccessToken(user.email)
-      
-      const refreshToken = jwt.sign(
-        { userEmail: user.email },
-        JWTSECRET_REFRESH
-      )
+      const refreshToken = AuthController.generateRefreshToken(user.email)
 
       this.tokenStorage.push(refreshToken)
 
@@ -46,16 +41,34 @@ class AuthController{
     }
   }
 
-  async issueAccessToken(req, res) { 
-    const refreshToken = req.body.refreshToken
-    if (!refreshToken || !this.tokenStorage.find(refreshToken)) return res.status(403).json({message: 'bad refresh token'})
-    jwt.verify(refreshToken, JWTSECRET_REFRESH, (err, decoded) => {
-      if (err) return res.sendStatus(403)
-      const newAccessToken =  AuthController.generateAccessToken({userEmail: decoded.userEmail })
-      res.status(201).json({ newAccessToken })
 
+  async refreshTokens(req, res) { 
+    const refreshTokenGiven = req.body.refreshToken
+    if (!refreshTokenGiven || !this.tokenStorage.find(refreshTokenGiven)) {
+      return res.status(403).json({ message: 'bad refresh token' })
+    }
+
+    this.tokenStorage.delete(refreshTokenGiven)
+
+    jwt.verify(refreshTokenGiven, JWTSECRET_REFRESH, (err, decoded) => {
+      if (err) return res.sendStatus(403)
+      const newAccessToken = AuthController.generateAccessToken({
+        userEmail: decoded.userEmail
+      })
+      const newRefreshToken = AuthController.generateRefreshToken({
+        userEmail: decoded.userEmail
+      })
+      res.status(201).json({ newAccessToken, newRefreshToken })
     })
-    
+  }
+
+  
+  static generateRefreshToken(userEmail) {
+    const refreshToken = jwt.sign(
+      { userEmail },
+      JWTSECRET_REFRESH
+    )
+    return refreshToken
   }
 
   static generateAccessToken(userEmail) {

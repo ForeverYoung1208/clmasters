@@ -33,7 +33,7 @@ function App() {
           <Header />
         </div>
         {isLoading
-          ? <div className="app__content"> Data is Loading ... Nice loader must be here...  </div>
+          ? <div className="app__content"> Data is Loading ...   </div>
           : <div className="app__content"> <Routes /> </div>
         }
         <footer className="app__footer">
