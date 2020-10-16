@@ -1,32 +1,20 @@
-import { store } from '../../index'
 import { myHttp } from "./myHttp"
-
-// TODO
-
-// https://stackoverflow.com/questions/38460949/what-is-the-best-way-to-access-redux-store-outside-a-react-component
-// let _this = this
-// store.subscribe(() => {
-//   const state = store.getState()
-//   _this.accessToken = state.auth.user?.accessToken
-// })
-
-// headers = {
-//   ...headers,
-//   'Authorization': 'Bearer' + this.accessToken,
-//   'Content-Type': 'application/json',
-// }
-
-
-
-
-
 
 export const apiLoginUser = async (credentials) => {
   try {
-    const res = await myHttp('/api/auth/login', 'POST', { ...credentials }).then(u => u.json())
-    return res
+    const { user } = await myHttp('/api/auth/login', 'POST', { ...credentials }).then(u => u.json())
+    return user
   } catch (error) {
-    return error
+    return { error }
+  }
+}
+
+export const apiAuthenticateUser = async (accessToken) => {
+  try {
+    const { user } = await myHttp('/api/auth/byToken', 'GET').then(u => u.json())
+    return user
+  } catch (error) {
+    return { error }
   }
 }
 

@@ -1,4 +1,4 @@
-const { User } = require('../models/index')
+const { User } = require('../models')
 
 const { check, validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
@@ -45,21 +45,30 @@ class AuthController{
   async refreshTokens(req, res) { 
     const refreshTokenGiven = req.body.refreshToken
     if (!refreshTokenGiven || !this.tokenStorage.find(refreshTokenGiven)) {
-      return res.status(403).json({ message: 'bad refresh token' })
+      return res.status(403).json({ message: 'refresh token not found' })
     }
 
     this.tokenStorage.delete(refreshTokenGiven)
 
     jwt.verify(refreshTokenGiven, JWTSECRET_REFRESH, (err, decoded) => {
-      if (err) return res.sendStatus(403)
+      if (err) return res.status(403).json({ message: 'bad refresh token' })
       const newAccessToken = AuthController.generateAccessToken({
         userEmail: decoded.userEmail
       })
       const newRefreshToken = AuthController.generateRefreshToken({
         userEmail: decoded.userEmail
       })
+      this.tokenStorage.push(newRefreshToken)
       res.status(201).json({ newAccessToken, newRefreshToken })
     })
+  }
+
+  async byEmailFromToken(req, res) {
+    const email = req.userEmail    // injected by middleware while token check
+    if (!email) return res.status(403).json({ message: 'no email - maybe, bad access token' })
+    const user = await User.getByEmail(email)
+    const {password:pwd, ...userDataNoPassword } = user.dataValues
+    return res.status(200).json({ user: { ...userDataNoPassword } })
   }
 
   

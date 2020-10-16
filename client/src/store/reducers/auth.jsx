@@ -10,7 +10,7 @@ const auth = (state = initialState, action) => {
     case SET_CURRENT_USER:
       return {
         ...state,
-        user: action.payload.user
+        user: action.user
       }
     case LOGOUT_USER:
       return {

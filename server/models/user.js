@@ -12,9 +12,18 @@ module.exports = (sequelize, DataTypes) => {
       return newUser
     }
 
-    static async authenticate(email, password){
+    static async getByEmail(email) {
       const user = await User.findOne({where: {email: email}})
-      if(!user) return {error:'User email not found'}
+      if (!user) return { error: 'User email not found' }      
+      return user
+    }
+
+
+    static async authenticate(email, password){
+      // const user = await User.findOne({where: {email: email}})
+      // if(!user) return {error:'User email not found'}
+
+      const user = await User.getByEmail(email)
 
       const isAuthenticated = await bcrypt.compare(password, user.password)
 
@@ -23,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       } else {
         return {error:'Wrong password!'}
       }
-    }    
+    }
 
     static async exists(email){
       const user = await User.findOne({where: {email: email}})
