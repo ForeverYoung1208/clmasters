@@ -1,4 +1,4 @@
-import { apiLoginUser, apiRefreshTokens, apiAuthenticateUser } from "../../shared/js/api"
+import { apiLoginUser, apiRefreshTokens, apiAuthUserByToken } from "../../shared/js/api"
 import { loaderHide, loaderShow, setErrorMessage } from "./main"
 import { SET_CURRENT_USER, LOGOUT_USER } from "./actionTypes"
 import { LS } from "../../shared/js/ls"
@@ -20,20 +20,29 @@ export const authLoginUser = (credentials) => {
   }
 }
 
-export const authAutologinUser = () => {
+export const authAutologinUser = (oldUser) => {
   return async (dispatch) => {
-    const user = await apiAuthenticateUser()
-    user.accessToken = LS('user').accessToken
-    user.refreshToken = LS('user').refreshToken
-    user
-      ? dispatch(authSetCurrentUser(user))
-      : dispatch(authRefreshTokens(user))
+
+    const user = await apiAuthUserByToken()
+    if (user && !user.error) { 
+      user.accessToken = oldUser.accessToken   // keep existing tokens
+      user.refreshToken = oldUser.refreshToken
+      dispatch(authSetCurrentUser(user))
+    } else {
+      console.log('[user]', user)
+      console.log('[oldUser]', oldUser)
+      dispatch(authRefreshTokens(oldUser))
+    }
   }
 }
 
 export const authRefreshTokens = (user) => {
   return async (dispatch) => {
+
+    console.log('[user]', user)
+    
     const { newAccessToken, newRefreshToken } = await apiRefreshTokens(user)
+
     if (!newAccessToken || !newRefreshToken ) return dispatch(authLogoutUser())
     
     dispatch(authSetCurrentUser({

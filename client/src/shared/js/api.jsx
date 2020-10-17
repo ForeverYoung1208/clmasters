@@ -9,7 +9,7 @@ export const apiLoginUser = async (credentials) => {
   }
 }
 
-export const apiAuthenticateUser = async (accessToken) => {
+export const apiAuthUserByToken = async (accessToken) => {
   try {
     const { user } = await myHttp('/api/auth/byToken', 'GET').then(u => u.json())
     return user

@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const TokenStorage = require('../shared/tokenStorage')
+const { noTimestamps } = require('../shared/services')
 const _tokenStorage = new TokenStorage()
 
 const JWTSECRET = process.env.SECUR_JWTSECRET
@@ -52,12 +53,12 @@ class AuthController{
 
     jwt.verify(refreshTokenGiven, JWTSECRET_REFRESH, (err, decoded) => {
       if (err) return res.status(403).json({ message: 'bad refresh token' })
-      const newAccessToken = AuthController.generateAccessToken({
-        userEmail: decoded.userEmail
-      })
-      const newRefreshToken = AuthController.generateRefreshToken({
-        userEmail: decoded.userEmail
-      })
+      const newAccessToken = AuthController.generateAccessToken(
+        decoded.userEmail
+      )
+      const newRefreshToken = AuthController.generateRefreshToken(
+        decoded.userEmail
+      )
       this.tokenStorage.push(newRefreshToken)
       res.status(201).json({ newAccessToken, newRefreshToken })
     })
@@ -68,11 +69,12 @@ class AuthController{
     if (!email) return res.status(403).json({ message: 'no email - maybe, bad access token' })
     const user = await User.getByEmail(email)
     const {password:pwd, ...userDataNoPassword } = user.dataValues
-    return res.status(200).json({ user: { ...userDataNoPassword } })
+    return res.status(200).json({ user: { ...noTimestamps(userDataNoPassword) } })
   }
 
   
   static generateRefreshToken(userEmail) {
+    console.log('[==========generateRefreshToken=userEmail===========]', userEmail)
     const refreshToken = jwt.sign(
       { userEmail },
       JWTSECRET_REFRESH
@@ -81,10 +83,13 @@ class AuthController{
   }
 
   static generateAccessToken(userEmail) {
+    console.log('[==========generate__Access___=userEmail===========]', userEmail)
+    
     const accessToken = jwt.sign(
       { userEmail },
       JWTSECRET,
-      {expiresIn: '5m'}
+      {expiresIn: '5s'}
+      // {expiresIn: '5m'}
     ) 
     return accessToken
   }
