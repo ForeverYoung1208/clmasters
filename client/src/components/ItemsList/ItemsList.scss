@@ -13,7 +13,7 @@
     width:8rem;
   }
   .item-wide{
-    width:15rem;
+    width:10rem;
   }
 
   &__head{
@@ -21,6 +21,7 @@
     word-wrap: break-word;
     margin-bottom: 1rem;
     &-element{
+      @include item-list-paddings;    
       display: inline-block;    
     }
   }
