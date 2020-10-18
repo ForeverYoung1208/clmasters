@@ -74,7 +74,6 @@ class AuthController{
 
   
   static generateRefreshToken(userEmail) {
-    console.log('[==========generateRefreshToken=userEmail===========]', userEmail)
     const refreshToken = jwt.sign(
       { userEmail },
       JWTSECRET_REFRESH
@@ -83,13 +82,12 @@ class AuthController{
   }
 
   static generateAccessToken(userEmail) {
-    console.log('[==========generate__Access___=userEmail===========]', userEmail)
     
     const accessToken = jwt.sign(
       { userEmail },
       JWTSECRET,
-      {expiresIn: '5s'}
-      // {expiresIn: '5m'}
+      // {expiresIn: '20s'}
+      {expiresIn: '50m'}
     ) 
     return accessToken
   }

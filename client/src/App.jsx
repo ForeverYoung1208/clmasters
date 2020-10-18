@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Header from './components/Header/Header'
 import Routes from './Routes'
-import { fetchVoc } from './store/actions/voc'
+import { fetchVocOk } from './store/actions/voc'
 import { LS } from './shared/js/ls'
-import { authAutologinUser } from './store/actions/auth'
+import { authSetCurrentUser } from './store/actions/auth'
+import { apiAutoLoginUser, apiGetVoc } from './shared/js/api'
 
 
 import './App.scss'
@@ -19,13 +20,20 @@ function App() {
   const isLoading = loaders?.voc
 
   useEffect(() => {
-    dispatch(fetchVoc())
-    const oldUser = LS('user')
-    oldUser && dispatch(authAutologinUser(oldUser))
-
+    let oldUser = LS('user')
+    
+    // can't use async/await inside useEffect hook 
+    apiAutoLoginUser(oldUser).then((user) => {
+      user && dispatch(authSetCurrentUser(user))
+      apiGetVoc().then((res) => {
+        dispatch(fetchVocOk(res.voc))
+      })
+    })
+     
     // eslint-disable-next-line
   }, [])
-  
+
+
   return (
     <div className='app'>
       <BrowserRouter>

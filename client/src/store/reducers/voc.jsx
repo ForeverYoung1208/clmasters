@@ -11,7 +11,7 @@ const voc = (state = initialState, action) => {
     case FETCH_VOC_OK:
       return {
         ...state,
-        ...action.payload.voc
+        ...action.voc
       };      
     default:
       return state      

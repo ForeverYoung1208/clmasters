@@ -41,16 +41,15 @@ export const PreorderForm = () => {
  
   const [validationErrors, setValidationErrors] = useState()
   const isLoading = loaders?.preorder
-
-
+ 
   useEffect(()=>{
     if(!voc){ 
       dispatch(setErrorMessage('Sorry, database is out of order... try some time later...'))
       history.push('/info')
       return;
     }
-  },[voc, history, dispatch])
-
+  }, [voc, history, dispatch])
+  
   const cities = [{id:-1}, ...voc.cities];
   const clocks = [{id:-1}, ...voc.clocks];
 

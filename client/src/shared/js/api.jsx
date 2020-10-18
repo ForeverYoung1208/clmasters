@@ -1,5 +1,6 @@
 import { myHttp } from "./myHttp"
 
+
 export const apiLoginUser = async (credentials) => {
   try {
     const { user } = await myHttp('/api/auth/login', 'POST', { ...credentials }).then(u => u.json())
@@ -9,12 +10,23 @@ export const apiLoginUser = async (credentials) => {
   }
 }
 
-export const apiAuthUserByToken = async (accessToken) => {
+export const apiAuthUserByToken = async () => {
   try {
     const { user } = await myHttp('/api/auth/byToken', 'GET').then(u => u.json())
     return user
   } catch (error) {
     return { error }
+  }
+}
+
+export const apiAutoLoginUser = async (oldUser) => {
+  const user = await apiAuthUserByToken()
+  if (user && !user.error) { 
+    user.accessToken = oldUser.accessToken   // keep existing tokens
+    user.refreshToken = oldUser.refreshToken
+    return user
+  } else {
+    return null
   }
 }
 
@@ -27,33 +39,22 @@ export const apiRefreshTokens = async (user) => {
 }
 
 export const apiGetVoc = async () => {
-  const [citiesRes, clocksRes, mastersRes] = await Promise.all([
-    myHttp('/api/cities', 'GET'),
-    myHttp('/api/clocks', 'GET'),
-    myHttp('/api/masters', 'GET')
-  ])
   const [cities, clocks, masters] = await Promise.all([
-    citiesRes.json(),
-    clocksRes.json(),
-    mastersRes.json(),
+    myHttp('/api/cities', 'GET').then(x => x.json()),
+    myHttp('/api/clocks', 'GET').then(x => x.json()),
+    myHttp('/api/masters', 'GET').then(x => x.json())
   ])
   return { voc:{cities, clocks, masters }}
 }
 
-export const apiGetAdmindata = async() => {
-  const [ordersRes, mastersRes, usersRes, citiesRes, clocksRes] = await Promise.all([
-    myHttp('/api/orders', 'GET'),
-    myHttp('/api/masters', 'GET'),
-    myHttp('/api/users', 'GET'),
-    myHttp('/api/cities', 'GET'),
-    myHttp('/api/clocks', 'GET'),
-  ])
+export const apiGetAdmindata = async () => {
+  await apiAuthUserByToken() // to prevent unexpected token being outdated
   let [orders, masters, users, cities, clocks] = await Promise.all([
-    ordersRes.json(),
-    mastersRes.json(),
-    usersRes.json(),
-    citiesRes.json(),
-    clocksRes.json(),
+    myHttp('/api/orders', 'GET').then(x => x.json()),
+    myHttp('/api/masters', 'GET').then(x => x.json()),
+    myHttp('/api/users', 'GET').then(x => x.json()),
+    myHttp('/api/cities', 'GET').then(x => x.json()),
+    myHttp('/api/clocks', 'GET').then(x => x.json()),
   ])
   orders = orders.map(order => ({ ...order, onTime: new Date(order.onTime) }))
   return { admindata: { orders, masters, users, cities, clocks } }

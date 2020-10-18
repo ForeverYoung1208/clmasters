@@ -1,6 +1,4 @@
 export const FETCH_VOC_OK = 'voc/FETCH_VOC_OK'
-export const FETCH_VOC_START = 'voc/FETCH_VOC_START'
-export const FETCH_VOC_ERROR = 'voc/FETCH_VOC_ERROR'
 
 export const SET_ERROR_MESSAGE = 'main/SET_ERROR'
 
