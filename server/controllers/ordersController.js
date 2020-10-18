@@ -14,7 +14,9 @@ class OrdersController extends CRUDController{
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })    
     
     const data = req.body
-    if (!data.userId) {
+    if (data.userId) {
+      var user = await User.findByPk(data.userId)
+    } else {
       var [user] = await User.findOrCreate({
         where: { email: data.email },
         defaults: { name: data.name }
@@ -22,6 +24,7 @@ class OrdersController extends CRUDController{
       user.name = data.name
       user.save()
       data.userId = user.id
+
     }
 
     const newOrder = await Order.create(data)
@@ -33,6 +36,7 @@ class OrdersController extends CRUDController{
     const city = await master.getCity()
     const clock = await newOrder.getClock()
 
+
     const emailResult = await sendEmail(
       {
         toEmail: user.email,
@@ -43,7 +47,8 @@ class OrdersController extends CRUDController{
         <div>User Email: ${user.email}</div>
         <div>City: ${city.name}</div>
         <div>On Time: ${newOrder.onTime.toLocaleString('uk')}</div>
-        <div>Clock Type: ${clock.type}, repair time (hours:minutes): ${ clock.repairTime.substring(0,5)}</div>
+        <div>Clock Type: ${clock.type}, repair time (hours:minutes): ${clock.repairTime.substring(0, 5)}</div>
+        <div>Master: ${master.name}</div>
         `
       }
     )

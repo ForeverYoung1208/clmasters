@@ -11,7 +11,6 @@ const accessTokenToEmail = (req, res, next) => {
     (err, decoded) => { 
       if (err === 'TokenExpiredError') return res.sendStatus(401)
       if (err) return res.status(403).json({ error: err })
-      console.log('[===___access____TokenToEmail==== decoded]', decoded)
       req.userEmail = decoded.userEmail
       next()
     }
