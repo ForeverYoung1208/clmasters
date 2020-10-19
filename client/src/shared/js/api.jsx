@@ -45,17 +45,17 @@ export const apiRefreshTokens = async (user) => {
   return { newAccessToken, newRefreshToken }
 }
 
-export const apiGetVoc = async () => {
+export const apiGetVocabluaries = async () => {
   const [cities, clocks, masters] = await Promise.all([
     myHttp('/api/cities', 'GET').then(x => x.json()),
     myHttp('/api/clocks', 'GET').then(x => x.json()),
     myHttp('/api/masters', 'GET').then(x => x.json())
   ])
-  return { voc:{cities, clocks, masters }}
+  return { vocabluaries:{cities, clocks, masters }}
 }
 
 export const apiGetAdmindata = async () => {
-  await apiAuthUserByToken() // to prevent unexpected token being outdated
+  await apiAuthUserByToken() // to prevent token being suddenly outdated
   let [orders, masters, users, cities, clocks] = await Promise.all([
     myHttp('/api/orders', 'GET').then(x => x.json()),
     myHttp('/api/masters', 'GET').then(x => x.json()),

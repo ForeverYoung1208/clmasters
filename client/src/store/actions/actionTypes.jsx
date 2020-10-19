@@ -1,4 +1,4 @@
-export const FETCH_VOC_OK = 'voc/FETCH_VOC_OK'
+export const FETCH_VOCABLUARIES_OK = 'voc/FETCH_VOCABLUARIES_OK'
 
 export const SET_ERROR_MESSAGE = 'main/SET_ERROR'
 

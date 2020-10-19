@@ -15,28 +15,27 @@ import { apiGetEntityBy, apiPostEntity, apiPostPreorder } from "../../shared/js/
 export const loaderShow = (name) => {
   return {
     type: LOADER_SHOW,
-    payload: { loaderName: name }
+    loaderName: name
 	}   
 }
 
 export const loaderHide = (name) => {
 	return {
     type: LOADER_HIDE,
-    payload: { loaderName: name }
+    loaderName: name
 	}     
 }
 
 export const setErrorMessage = (errorMessage) => {
   return {
     type: SET_ERROR_MESSAGE,
-    payload: { errorMessage }
+    errorMessage
 	}  
 }
 
 export const clearErrorMessage = () => {
   return {
     type: SET_ERROR_MESSAGE,
-    payload: {}
   }
 }
 
@@ -51,9 +50,6 @@ export const clearOrderResult = () => {
     type: CLEAR_ORDER_RESULT
   }
 }
-
-
-
 
 export const postPreorder = (preorder) => { 
   return async (dispatch) => {
@@ -74,14 +70,14 @@ export const postPreorder = (preorder) => {
 const postPreorderOk = (preorderResult) => { 
   return {
     type: POST_PREORDER_OK,
-    payload: { preorderResult }
+    preorderResult
 	}    
 }
 
 const savePreorder = (preorder) => { 
   return {
     type: SAVE_PREORDER,
-    payload: { preorder }
+    preorder
   }
 }
 

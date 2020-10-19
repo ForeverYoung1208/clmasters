@@ -19,7 +19,7 @@ const admin = (state = initialState, action) => {
     case FETCH_ADMINDATA_OK:
       return {
         ...state,
-        ...action.payload.admindata
+        ...action.admindata
       };
 
     case API_ADMINDATA_ERROR:

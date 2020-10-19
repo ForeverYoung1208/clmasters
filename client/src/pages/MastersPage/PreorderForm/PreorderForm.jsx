@@ -27,8 +27,8 @@ registerLocale('uk', uk)
 export const PreorderForm = () => {
   const history = useHistory()  
   const dispatch = useDispatch()
-  const { loaders, preorder: prevPreorder } = useSelector(state => state.main)
-  const voc = useSelector(state => state.voc)
+  const { loaders, preorder: prevPreorder } = useSelector(store => store.main)
+  const vocabluaries = useSelector(store => store.vocabluaries)
 
   const [formData, setFormData] = useState({
     name: prevPreorder.name || '',
@@ -43,15 +43,15 @@ export const PreorderForm = () => {
   const isLoading = loaders?.preorder
  
   useEffect(()=>{
-    if(!voc){ 
+    if(!vocabluaries){ 
       dispatch(setErrorMessage('Sorry, database is out of order... try some time later...'))
       history.push('/info')
       return;
     }
-  }, [voc, history, dispatch])
+  }, [vocabluaries, history, dispatch])
   
-  const cities = [{id:-1}, ...voc.cities];
-  const clocks = [{id:-1}, ...voc.clocks];
+  const cities = [{id:-1}, ...vocabluaries.cities];
+  const clocks = [{id:-1}, ...vocabluaries.clocks];
 
   useEffect(() => {
     
@@ -158,7 +158,7 @@ export const PreorderForm = () => {
             {c.type} {c.comment}
             {c.id === -1
               ? 'Select clock type, please'
-              : `, repair time: ${voc.clocks?.find((cl)=>cl.id===c.id)?.repairTime || <Emptyspace/>}`
+              : `, repair time: ${vocabluaries.clocks?.find((cl)=>cl.id===c.id)?.repairTime || <Emptyspace/>}`
             }
           </option>   )}
 

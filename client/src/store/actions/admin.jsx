@@ -25,7 +25,7 @@ export const fetchAdmindata = () => {
 const fetchAdmindataOk = (admindata) => {
 	return {
     type: FETCH_ADMINDATA_OK,
-    payload: { admindata }
+    admindata
 	}    
 }
 

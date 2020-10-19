@@ -13,12 +13,10 @@ import {
 
 const initialState = {
   loaders:{
-    voc: false,
+    vocabluaries: false,
     preorder: false
   },
-  preorder: {
-    //..
-  },
+  preorder: {},
   preorderResult: null,
   errorMessage: null
 }
@@ -28,14 +26,14 @@ const main = (state = initialState, action) => {
   switch (action.type) {
     
     case LOADER_SHOW:
-      newLoaders[action.payload.loaderName] = true
+      newLoaders[action.loaderName] = true
       return {
         ...state,
         loaders: newLoaders
       }
     
     case LOADER_HIDE:
-      newLoaders[action.payload.loaderName] = false
+      newLoaders[action.loaderName] = false
       return {
         ...state,
         loaders: newLoaders
@@ -50,13 +48,13 @@ const main = (state = initialState, action) => {
     case SAVE_PREORDER:
       return {
         ...state,
-        preorder: action.payload.preorder
+        preorder: action.preorder
       }
       
     case POST_PREORDER_OK:
       return {
         ...state,
-        preorderResult: action.payload.preorderResult
+        preorderResult: action.preorderResult
       }
     
     case POST_ORDER_OK:
@@ -76,7 +74,7 @@ const main = (state = initialState, action) => {
     case SET_ERROR_MESSAGE:
       return {
         ...state,
-        errorMessage: action.payload.errorMessage
+        errorMessage: action.errorMessage
       }
     
     case GET_ORDERS_OK:

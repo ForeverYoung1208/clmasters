@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Card from '../../../components/Card/Card'
 
 export const OrdersInfo = ({ orders }) => {
-  const { cities, masters, clocks } = useSelector((store) => store.voc)
+  const { cities, masters, clocks } = useSelector((store) => store.vocabluaries)
 
   return (
     <div>
