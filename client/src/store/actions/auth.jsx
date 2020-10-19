@@ -7,12 +7,12 @@ export const authLoginUser = (credentials) => {
   return async (dispatch) => {
     dispatch(loaderShow('auth'))
     try {
-      const user = await apiLoginUser(credentials)
-      if (user?.accessToken){
-        LS.setItem('user', user)
-        dispatch(authSetCurrentUser(user))
+      const res = await apiLoginUser(credentials)
+      if (res?.accessToken){
+        LS.setItem('user', res)
+        dispatch(authSetCurrentUser(res))
       } else {
-        dispatch(setErrorMessage(`login errors: ${JSON.stringify(user)}`))
+        dispatch(setErrorMessage(`login errors: ${res}`))
       }
 
     } catch (error) {

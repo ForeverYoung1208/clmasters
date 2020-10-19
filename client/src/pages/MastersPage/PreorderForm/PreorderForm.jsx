@@ -87,10 +87,6 @@ export const PreorderForm = () => {
     const preorder =  {
       cityId: formData.cityId,
       clockTypeId: formData.clockTypeId,
-
-      // perhaps, it isn't necessary, try to rid of it
-      // repairTime: voc.clocks.find((c) => c.id === +formData.clockType)?.repairTime,
-
       email: formData.email,
       name: formData.name,
       orderDateTime: formData.orderDateTime
@@ -167,10 +163,10 @@ export const PreorderForm = () => {
           </option>   )}
 
         </select>
-        <div className='preorder-form__validation-error'>{validationErrors?.clockType || <Emptyspace/>}</div>        
+        <div className='preorder-form__validation-error'>{validationErrors?.clockTypeId || <Emptyspace/>}</div>        
 
 
-        <label className='preorder-form__form-label' htmlFor="CityId">City:</label>
+        <label className='preorder-form__form-label' htmlFor="cityId">City:</label>
         <select className='form-select' name="cityId" id="city" 
           placeholder = 'select a city'
 
@@ -186,7 +182,7 @@ export const PreorderForm = () => {
             }
           </option>   )}
         </select>
-        <div className='preorder-form__validation-error'>{validationErrors?.city || <Emptyspace/>}</div>        
+        <div className='preorder-form__validation-error'>{validationErrors?.cityId || <Emptyspace/>}</div>        
         <label htmlFor="Date">Desired date and time:</label>
         <DatePicker 
           selected={formData.orderDateTime}

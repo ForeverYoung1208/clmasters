@@ -3,10 +3,13 @@ import { myHttp } from "./myHttp"
 
 export const apiLoginUser = async (credentials) => {
   try {
-    const { user } = await myHttp('/api/auth/login', 'POST', { ...credentials }).then(u => u.json())
+    const res = await myHttp('/api/auth/login', 'POST', { ...credentials })
+    const { user, message } = await res.json()
+    if (!res.ok) return message
     return user
+
   } catch (error) {
-    return { error }
+    return error
   }
 }
 
@@ -15,18 +18,22 @@ export const apiAuthUserByToken = async () => {
     const { user } = await myHttp('/api/auth/byToken', 'GET').then(u => u.json())
     return user
   } catch (error) {
-    return { error }
+    return error
   }
 }
 
 export const apiAutoLoginUser = async (oldUser) => {
-  const user = await apiAuthUserByToken()
-  if (user && !user.error) { 
-    user.accessToken = oldUser.accessToken   // keep existing tokens
-    user.refreshToken = oldUser.refreshToken
-    return user
-  } else {
-    return null
+  try {
+    const user = await apiAuthUserByToken()
+    if (user && !user.error) { 
+      user.accessToken = oldUser.accessToken   // keep existing tokens
+      user.refreshToken = oldUser.refreshToken
+      return user
+    } else {
+      return {error: user?.error}
+    }
+  } catch (error) {
+    return error
   }
 }
 

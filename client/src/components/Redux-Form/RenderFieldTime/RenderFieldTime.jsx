@@ -7,14 +7,15 @@ registerLocale('uk', uk)
 
 export const RenderFieldTime = ({ className, input, placeholder, meta}) => {
   
-  const selectedDate = new Date(input.value)
+  const selectedDate = input.value
+    ? new Date(input.value)
+    : new Date()
 
   return <span className='field-wrapper'>
     <FieldError meta={meta}/>
     <ReactDatePicker
       {...input}
       value={selectedDate.toLocaleString('uk')}
-      selected={Date.parse(input.value) || null}
       placeholderText={placeholder}
       className={className}
       dateFormat = "dd.MM.yyyy HH:mm"

@@ -38,7 +38,7 @@ let AuthForm = ({ handleSubmit }) => {
 
         <Button type="submit" >Login</Button>
       </Form>
-      <ErrorMessage showTime={3000}/>
+      <ErrorMessage showTime={5000}/>
     </div>
   )
 }

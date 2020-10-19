@@ -23,7 +23,7 @@ class AuthController{
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
   
     try {
-      const {email, password} = req.body
+      const { email, password } = req.body
       const user = await User.authenticate(email, password)
       if (user.error) return (
         res.status(403).json({ message: 'Not authenticated, wrong credentials!' })
@@ -38,7 +38,7 @@ class AuthController{
       const {password:pwd, ...userDataNoPassword } = user.dataValues
       res.status(200).json({ user: { ...userDataNoPassword, accessToken, refreshToken} })
     } catch (e){
-      res.status(500).json({message: 'Something wrong at auth/login (server error), '+ e.message})
+      res.status(500).json({message: 'Something wrong at AuthController/loginUser (server error), '+ e.message})
     }
   }
 

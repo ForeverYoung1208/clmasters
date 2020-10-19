@@ -3,18 +3,19 @@ export const minLength = min => value =>
     ? `Must be longer than ${min} characters`
     : undefined
 
-export const isEmail = value =>
+export const isEmail = (value) =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email address'
     : undefined
 
 
-export const selected = (data) => 
-  !data || data < 0
+export const selected = (data) => {
+  return !data || data < 0
     ? 'Must be selected.'
     : undefined
+}
 
-export const required = value => value
+export const required = (value) => value
   ? undefined
   : 'Required'    
 

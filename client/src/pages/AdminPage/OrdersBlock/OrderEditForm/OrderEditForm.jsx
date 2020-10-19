@@ -53,8 +53,6 @@ let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
         className = 'items-list__item-field item-wide'
       />
       <button className='items-list__save-button' type='submit'>Save</button>
-      {/* <button className='items-list__cancel-button' type='button'>Cancel</button> */}
-      
 
     </form>
   )

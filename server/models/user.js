@@ -20,11 +20,10 @@ module.exports = (sequelize, DataTypes) => {
 
 
     static async authenticate(email, password){
-      // const user = await User.findOne({where: {email: email}})
-      // if(!user) return {error:'User email not found'}
 
       const user = await User.getByEmail(email)
-
+      if (user.error) return { error: user.error }
+      
       const isAuthenticated = await bcrypt.compare(password, user.password)
 
       if (isAuthenticated) {
