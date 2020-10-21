@@ -47,7 +47,10 @@ class OrdersController extends CRUDController{
         <div>User Email: ${user.email}</div>
         <div>City: ${city.name}</div>
         <div>On Time: ${newOrder.onTime.toLocaleString('uk')}</div>
-        <div>Clock Type: ${clock.type}, repair time (hours:minutes): ${clock.repairTime.substring(0, 5)}</div>
+        <div>
+          Clock Type: ${clock.type}, 
+          repair time (hours:minutes): ${clock.repairTime.substring(0, 5)}
+          </div>
         <div>Master: ${master.name}</div>
         `
       }

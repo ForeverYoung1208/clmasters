@@ -30,8 +30,7 @@ function App() {
       })
     })
      
-    // eslint-disable-next-line
-  }, [])
+  }, [dispatch])
 
 
   return (

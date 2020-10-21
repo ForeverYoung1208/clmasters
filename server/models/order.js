@@ -2,6 +2,8 @@
 const {
   Model, Op
 } = require('sequelize')
+const { startOfDay, endOfDay} = require('date-fns')
+
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
 
@@ -25,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       
       const Clock = sequelize.model('Clock')
 
-      const { startOfDay, endOfDay} = require('date-fns')
       const ds = startOfDay(dateFrom)
       const de = endOfDay(dateTo)
 

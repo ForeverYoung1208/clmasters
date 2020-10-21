@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Field, reduxForm } from "redux-form";
-import { RenderFieldInput } from "../../../../components/Redux-Form/RenderFieldInput/RenderFieldInput";
+import { RenderFieldInput } from "../../../../components/ReduxForm/RenderFieldInput/RenderFieldInput";
 import { validators } from "../../../../shared/validators/baseValidator";
 
 let UserEditForm = ({ handleSubmit, item: user, initialize }) => {

@@ -86,8 +86,7 @@ class AuthController{
     const accessToken = jwt.sign(
       { userEmail },
       JWTSECRET,
-      // {expiresIn: '20s'}
-      {expiresIn: '50m'}
+      {expiresIn: '30d'}
     ) 
     return accessToken
   }

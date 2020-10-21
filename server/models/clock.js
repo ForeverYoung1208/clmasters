@@ -2,11 +2,12 @@
 const {
   Model
 } = require('sequelize')
+const { timestrToMSec } = require('../shared/services')
+
 module.exports = (sequelize, DataTypes) => {
   class Clock extends Model {
     
     static async maxRepairTimeMsec() {
-      const { timestrToMSec } = require('../shared/services')
       const maxRepairTimeClock = await this.findOne({
         attributes: [
           [sequelize.fn('MAX', sequelize.col('repairTime')), 'maxTime']

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { RenderFieldInput } from "../../../../components/Redux-Form/RenderFieldInput/RenderFieldInput";
+import { RenderFieldInput } from "../../../../components/ReduxForm/RenderFieldInput/RenderFieldInput";
 import { validators } from "../../../../shared/validators/baseValidator";
 
-import { RenderFieldSelect } from "../../../../components/Redux-Form/RenderFieldSelect/RenderFieldSelect";
-import { RenderFieldTime } from "../../../../components/Redux-Form/RenderFieldTime/RenderFieldTime";
+import { RenderFieldSelect } from "../../../../components/ReduxForm/RenderFieldSelect/RenderFieldSelect";
+import { RenderFieldTime } from "../../../../components/ReduxForm/RenderFieldTime/RenderFieldTime";
 
 let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
   useEffect(() => {

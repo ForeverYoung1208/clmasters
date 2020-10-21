@@ -10,15 +10,14 @@ export const ErrorMessage = (props) => {
   
   const dispatch = useDispatch()
   const { showTime, ..._props } = props
-  const errorMessage = useSelector(state => state.main.errorMessage)
+  const errorMessage = useSelector(({ main: { errorMessage } }) => errorMessage)
 
   const isMessage = !!errorMessage
   useEffect(() => {
     setTimeout(() => {
       dispatch(clearErrorMessage())
     }, showTime)
-    // eslint-disable-next-line    
-  }, [isMessage])
+  }, [isMessage, dispatch, showTime])
   
 
 

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { RenderFieldInput } from "../../../../components/Redux-Form/RenderFieldInput/RenderFieldInput";
+import { RenderFieldInput } from "../../../../components/ReduxForm/RenderFieldInput/RenderFieldInput";
 import { validators } from "../../../../shared/validators/baseValidator";
 
-import { RenderFieldSelect } from "../../../../components/Redux-Form/RenderFieldSelect/RenderFieldSelect";
+import { RenderFieldSelect } from "../../../../components/ReduxForm/RenderFieldSelect/RenderFieldSelect";
 
 const RATINGS = [
   { id: 0, name: 'rating 0' },

@@ -51,6 +51,3 @@ export const OrdersInfo = ({ orders }) => {
     
   )
 }
-
-
-// "id":189,"masterId":2,"clockId":2,"onTime":"2020-10-13T15:00:00.000Z","userId":1,"comment":null,"deletedAt":null}

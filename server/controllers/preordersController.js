@@ -7,7 +7,9 @@ class PreordersController extends CRUDController{
   
   // maybe, I should refactore it to masters get call ... 
   async post(req, res) {
-    const errors = validationResult(req)  // Finds the validation errors in this request and wraps them in an object with handy functions
+
+    // Finds the validation errors in this request and wraps them in an object with handy functions
+    const errors = validationResult(req)  
     console.log('[errors]', errors)
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
   

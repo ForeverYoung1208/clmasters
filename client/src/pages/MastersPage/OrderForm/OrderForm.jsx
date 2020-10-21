@@ -5,7 +5,7 @@ import { Field, reduxForm } from 'redux-form';
 import { Button } from '../../../components/Button/Button';
 import { Form } from '../../../components/Form/Form';
 import { validators } from '../../../shared/validators/baseValidator';
-import { RenderFieldRadioGroup } from '../../../components/Redux-Form/RenderFieldRadioGroup/RenderFieldRadioGroup';
+import { RenderFieldRadioGroup } from '../../../components/ReduxForm/RenderFieldRadioGroup/RenderFieldRadioGroup';
 
 let OrderForm = ({handleSubmit}) => {
   const { preorderResult: freeMasters } = useSelector(store => store.main)

@@ -4,11 +4,12 @@ const {
   Op
 } = require('sequelize')
 const { timestrToMSec } = require('../shared/services')
+const roundToMinute = require('date-fns/roundToNearestMinutes')
+
 module.exports = (sequelize, DataTypes) => {
   class Master extends Model {
 
     static async freeMastersForOrder(preorderData) {
-      const roundToMinute = require('date-fns/roundToNearestMinutes')
       const { cityId, orderDateTime: orderDateTimeStr, clockTypeId } = preorderData
       
 
