@@ -5,7 +5,7 @@ import {
   DELETE_ADMINDATA_OK,
   CLEAR_API_ADMINDATA_ERROR
 } from './actionTypes'
-import { loaderShow, loaderHide } from './main.jsx'
+import { loaderShow, loaderHide, setErrorMessage } from './main.jsx'
 import  { apiDeleteEntity, apiGetAdmindata, apiPostEntity, apiPutEntity } from '../../shared/js/api'
 
 export const fetchAdmindata = () => {
@@ -92,11 +92,7 @@ export const admindataDelete = ({ sectionKey, id }) => {
         dispatch(deleteAdmindataOk({ sectionKey, id }))
       } else {
         resData = await res.json()
-        dispatch(apiAdmindataError({
-          submissionError: {
-            sectionKey, errors: [{ msg: JSON.stringify(resData) }]
-          }
-        }))
+        dispatch(setErrorMessage(JSON.stringify(resData)))
       }
       
     } catch (error) {

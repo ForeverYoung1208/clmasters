@@ -14,6 +14,7 @@ import { AdminPageError } from './AdminPageError/AdminPageError'
 
 import './AdminPage.scss';
 import 'react-tabs/style/react-tabs.css'
+import { ErrorMessageWithButton } from '../../components/ErrorMessage/ErrorMessage'
 
 
 
@@ -55,7 +56,9 @@ const AdminPage = () => {
           </Card>
         </TabPanel>
       </Tabs>
-      <AdminPageError/>
+      {/* <AdminPageError/> */}
+
+      <ErrorMessageWithButton/>
     </div>
   );
 };

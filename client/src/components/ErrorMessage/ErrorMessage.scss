@@ -1,7 +1,18 @@
 @import '../../shared/styles/ui.scss';
+@import '../../shared/styles/variables.scss';
 .error-message{
   @include error-text; 
   margin-top: 0.5rem;
   transform:translateY(0rem);
+  display: flex;
+  span{
+    margin-right: 1rem;
+
+    display: inline-block;
+  }
+  button{
+    font-size: $font-size-bigger;
+    color: red;
+  }
   
 }

@@ -14,7 +14,7 @@ const AuthPage = (props) => {
   const history = useHistory()
 
   useEffect(() => {
-    currentUser?.email && history.push('/user')
+    currentUser?.email && history.push('/admin')
     // eslint-disable-next-line
   }, [currentUser])
 

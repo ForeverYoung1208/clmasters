@@ -26,7 +26,7 @@ class AuthController{
       const { email, password } = req.body
       const user = await User.authenticate(email, password)
       if (user.error) return (
-        res.status(403).json({ message: 'Not authenticated, wrong credentials!' })
+        res.status(403).json({ message: 'Wrong credentials.' })
       )
       
       const accessToken = AuthController.generateAccessToken(user.email)
@@ -46,13 +46,13 @@ class AuthController{
   async refreshTokens(req, res) { 
     const refreshTokenGiven = req.body.refreshToken
     if (!refreshTokenGiven || !this.tokenStorage.find(refreshTokenGiven)) {
-      return res.status(403).json({ message: 'refresh token not found' })
+      return res.status(403).json({ message: 'Refresh token not found' })
     }
 
     this.tokenStorage.delete(refreshTokenGiven)
 
     jwt.verify(refreshTokenGiven, JWTSECRET_REFRESH, (err, decoded) => {
-      if (err) return res.status(403).json({ message: 'bad refresh token' })
+      if (err) return res.status(403).json({ message: 'Bad refresh token' })
       const newAccessToken = AuthController.generateAccessToken(
         decoded.userEmail
       )
@@ -93,8 +93,8 @@ class AuthController{
 
   loginUserValidators() {
     return [
-      check('email', 'Email must be an email!').isEmail(),
-      check('password', 'Password must be longer than 3 chars!').isLength({ min: 3 })
+      check('email', 'Email is invalid').isEmail(),
+      check('password', 'Must be longer than 3 chars!').isLength({ min: 3 })
     ]
   }
 

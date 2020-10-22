@@ -4,7 +4,7 @@ import { Form } from '../../../components/Form/Form'
 import { Button } from '../../../components/Button/Button'
 import { validators } from "../../../shared/validators/baseValidator";
 import { Emptyspace } from '../../../components/Emptyspace/Emptyspace';
-import { ErrorMessage } from '../../../components/ErrorMessage/ErrorMessage';
+import { ErrorMessageWithButton as ErrorMessage } from '../../../components/ErrorMessage/ErrorMessage';
 
 
 const renderField = ({ className, input, placeholder, type, meta: { touched, error, warning } }) => (

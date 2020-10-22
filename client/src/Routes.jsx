@@ -35,9 +35,6 @@ const Routes = (props) => {
       <Route path="/login" >
         <AuthPage/>
       </Route>
-      <Route path="/user" >
-        UserPage
-      </Route>
       { currentUser?.isAdmin && <Route path="/admin" >
           <AdminPage/>
         </Route>

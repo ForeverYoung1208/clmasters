@@ -1,7 +1,8 @@
 import React from 'react';
 
 import './InfoPage.scss';
-import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
+import { ErrorMessageWithTimeout as ErrorMessage
+ } from '../../components/ErrorMessage/ErrorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { OrdersInfo } from './OrdersInfo/OrdersInfo';
 import { useState } from 'react';
