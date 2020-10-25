@@ -8,26 +8,32 @@ import { useEffect } from 'react';
 import './ErrorMessage.scss';
 import { useCallback } from 'react';
 
-export const ErrorMessageTimeout = ({ showTime, ..._props }) => {
+export const ErrorMessageTimeout = ({ showTime, customErrorMessage, ..._props }) => {
   const dispatch = useDispatch()
   const errorMessage = useSelector(({ main: { errorMessage } }) => errorMessage)
   const isMessage = !!errorMessage
+  
   useEffect(() => {
     setTimeout(() => {
       dispatch(clearErrorMessage())
+      console.log('mseconds: '+ showTime)
     }, showTime)
-  }, [isMessage, dispatch, showTime])
+  // we should react only to isMessage to prevent multiple timers
+  // eslint-disable-next-line    
+  }, [isMessage])
+
   return (
     <div {..._props} className = "error-message">
-      { !!errorMessage && errorMessage}
+      { isMessage && (customErrorMessage||errorMessage)}
     </div>
   )
 }
 
-export const ErrorMessageButton = ({ showTime, ..._props }) => {
+export const ErrorMessageButton = ({ showTime, customErrorMessage, ..._props }) => {
   
   const dispatch = useDispatch()
   const errorMessage = useSelector(({ main: { errorMessage } }) => errorMessage)
+  const isMessage = !!errorMessage
 
   const handleDismissClick = useCallback(
     () => dispatch(clearErrorMessage())
@@ -35,7 +41,7 @@ export const ErrorMessageButton = ({ showTime, ..._props }) => {
   
   return (
     <div {..._props} className="error-message">
-      <span>{ !!errorMessage && errorMessage}</span>
+      <span>{ isMessage && (customErrorMessage||errorMessage)}</span>
       {errorMessage
         && <button onClick={handleDismissClick}><HiX/></button>
       }

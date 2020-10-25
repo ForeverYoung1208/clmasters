@@ -15,6 +15,9 @@ import './AdminPage.scss';
 import 'react-tabs/style/react-tabs.css'
 import { ErrorMessageButton } from '../../components/ErrorMessage/ErrorMessage'
 import { clearErrorMessage } from '../../store/actions/main'
+import { withHumanizeError } from '../../HOC/withHumanizeError'
+
+const HumanizedErrorMessageButton = withHumanizeError(ErrorMessageButton)
 
 
 const AdminPage = () => {
@@ -64,7 +67,7 @@ const AdminPage = () => {
         </TabPanel>
       </Tabs>
 
-      <ErrorMessageButton />
+      <HumanizedErrorMessageButton />
     </div>
   );
 };
