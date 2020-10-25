@@ -34,6 +34,7 @@ export const PreorderForm = () => {
     name: prevPreorder.name || '',
     email: prevPreorder.email || '',
     orderDateTime: prevPreorder.orderDateTime || '',
+    isOrderDateTimeTouched: false,
     clockTypeId: prevPreorder.clockTypeId || '-1',
     cityId: prevPreorder.cityId || '-1',
     minTime: new Date()     //now!
@@ -41,7 +42,9 @@ export const PreorderForm = () => {
  
   const [validationErrors, setValidationErrors] = useState()
   const isLoading = loaders?.preorder
- 
+  const cities = [{id:-1}, ...vocabluaries.cities];
+  const clocks = [{ id: -1 }, ...vocabluaries.clocks];
+  
   useEffect(()=>{
     if(!vocabluaries){ 
       dispatch(setErrorMessage('Sorry, database is out of order... try some time later...'))
@@ -50,12 +53,10 @@ export const PreorderForm = () => {
     }
   }, [vocabluaries, history, dispatch])
   
-  const cities = [{id:-1}, ...vocabluaries.cities];
-  const clocks = [{id:-1}, ...vocabluaries.clocks];
 
+  
   useEffect(() => {
-    
-    validate('orderDateTime')
+    formData.isOrderDateTimeTouched && validate('orderDateTime')
     // eslint-disable-next-line    
   }, [formData.orderDateTime])
   
@@ -69,8 +70,10 @@ export const PreorderForm = () => {
     setFormData({
       ...formData,
       orderDateTime: value,
+      isOrderDateTimeTouched: true,
       minTime,
     })
+   
   }
   
   const changeHandler = (e) => {
@@ -127,8 +130,11 @@ export const PreorderForm = () => {
   return(
     <>
       <Form onSubmit={submitHandler} className = "preorder-form">
-        <label className='preorder-form__form-label' htmlFor="name">Enter your name:</label>
-        <input className='form-input' type="text" name="name" id="name"  
+        <label className={'preorder-form__form-label'} htmlFor="name">
+          * Enter your name:
+        </label>
+        <input className={`form-input ${validationErrors?.name && 'form-input--invalid'}`}
+          type="text" name="name" id="name"  
           value={formData.name} 
           onChange={changeHandler} 
           disabled={isLoading} 
@@ -136,8 +142,9 @@ export const PreorderForm = () => {
         />
         <div className='preorder-form__validation-error'>{validationErrors?.name || <Emptyspace/>}</div>
 
-        <label className='preorder-form__form-label' htmlFor="email">Enter your email:</label>
-        <input className='form-input'type="email" name="email" id="email" 
+        <label className='preorder-form__form-label' htmlFor="email">* Enter your email:</label>
+        <input className={`form-input ${validationErrors?.email && 'form-input--invalid'}`}
+          type="email" name="email" id="email" 
           value={formData.email} 
           onChange={changeHandler} 
           disabled={isLoading} 
@@ -146,8 +153,9 @@ export const PreorderForm = () => {
 
         <div className='preorder-form__validation-error'>{validationErrors?.email || <Emptyspace/>}</div>        
 
-        <label className='preorder-form__form-label' htmlFor="clockTypeId">Clock size:</label>
-        <select className='form-select' name="clockTypeId" id="clockType" 
+        <label className='preorder-form__form-label' htmlFor="clockTypeId">* Clock size:</label>
+        <select className={`form-select ${validationErrors?.clockTypeId && 'form-input--invalid'}`}
+          name="clockTypeId" id="clockType" 
           value={formData.clockTypeId} 
           onChange={changeHandler} 
           disabled={isLoading} 
@@ -166,8 +174,9 @@ export const PreorderForm = () => {
         <div className='preorder-form__validation-error'>{validationErrors?.clockTypeId || <Emptyspace/>}</div>        
 
 
-        <label className='preorder-form__form-label' htmlFor="cityId">City:</label>
-        <select className='form-select' name="cityId" id="city" 
+        <label className='preorder-form__form-label' htmlFor="cityId">* City:</label>
+        <select className={`form-select ${validationErrors?.cityId && 'form-input--invalid'}`}
+          name="cityId" id="city" 
           placeholder = 'select a city'
 
           value={formData.cityId} 
@@ -183,11 +192,11 @@ export const PreorderForm = () => {
           </option>   )}
         </select>
         <div className='preorder-form__validation-error'>{validationErrors?.cityId || <Emptyspace/>}</div>        
-        <label htmlFor="Date">Desired date and time:</label>
+        <label htmlFor="Date">* Desired date and time:</label>
         <DatePicker 
+          className={`form-input ${validationErrors?.orderDateTime && 'form-input--invalid'}`}
           selected={formData.orderDateTime}
           placeholderText="Choose date and time"
-          className='form-input'
           minDate={ new Date() }
           minTime={ formData.minTime }
           maxTime={ endOfDay(new Date()) }
@@ -200,8 +209,7 @@ export const PreorderForm = () => {
         />
         <div className='preorder-form__validation-error'>{validationErrors?.orderDateTime}</div>
 
-
-        <Button type="submit" disabled={isLoading||!validationErrors?.isAllValid}>Submit information</Button>
+        <Button type="submit" disabled={isLoading || !validationErrors?.isAllValid}>Submit information</Button>
       </Form>    
     </>
   )

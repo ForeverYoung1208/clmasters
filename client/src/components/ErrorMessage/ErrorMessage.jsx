@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import './ErrorMessage.scss';
 import { useCallback } from 'react';
 
-export const ErrorMessageWithTimeout = ({ showTime, ..._props }) => {
+export const ErrorMessageTimeout = ({ showTime, ..._props }) => {
   const dispatch = useDispatch()
   const errorMessage = useSelector(({ main: { errorMessage } }) => errorMessage)
   const isMessage = !!errorMessage
@@ -24,7 +24,7 @@ export const ErrorMessageWithTimeout = ({ showTime, ..._props }) => {
   )
 }
 
-export const ErrorMessageWithButton = ({ showTime, ..._props }) => {
+export const ErrorMessageButton = ({ showTime, ..._props }) => {
   
   const dispatch = useDispatch()
   const errorMessage = useSelector(({ main: { errorMessage } }) => errorMessage)

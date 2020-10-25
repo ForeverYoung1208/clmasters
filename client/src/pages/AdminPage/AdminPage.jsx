@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
@@ -10,25 +10,32 @@ import { MastersBlock } from './MastersBlock/MastersBlock'
 import { OrdersBlock } from './OrdersBlock/OrdersBlock'
 import { UsersBlock } from './UsersBlock/UsersBlock'
 import { fetchAdmindata } from '../../store/actions/admin'
-import { AdminPageError } from './AdminPageError/AdminPageError'
 
 import './AdminPage.scss';
 import 'react-tabs/style/react-tabs.css'
-import { ErrorMessageWithButton } from '../../components/ErrorMessage/ErrorMessage'
-
-
-
+import { ErrorMessageButton } from '../../components/ErrorMessage/ErrorMessage'
+import { clearErrorMessage } from '../../store/actions/main'
 
 
 const AdminPage = () => {
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(fetchAdmindata())
   }, [dispatch])
+
+
+
+  const selectTabHandler = useCallback(() => {
+    dispatch(clearErrorMessage())
+    return true    
+  },[dispatch])
   
   return (
     <div className="adminPage">
-      <Tabs>
+      <Tabs
+      onSelect = {selectTabHandler}
+      >
         <TabList>
           <Tab>Orders</Tab>
           <Tab>Masters</Tab>
@@ -56,9 +63,8 @@ const AdminPage = () => {
           </Card>
         </TabPanel>
       </Tabs>
-      {/* <AdminPageError/> */}
 
-      <ErrorMessageWithButton/>
+      <ErrorMessageButton />
     </div>
   );
 };
