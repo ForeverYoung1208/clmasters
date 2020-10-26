@@ -1,17 +1,34 @@
 import React from 'react'
+import { useCallback } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
+import { myCofirm } from '../../../shared/js/myConfirm/myConfirm'
 import { admindataChanged, admindataDelete } from '../../../store/actions/admin'
+
 import UserEditForm from './UserEditForm/UserEditForm'
 
 export const UsersBlock = () => {
+
+
+
 
   const { users } = useSelector((store) => store.admin)
 
   const [editUserId, setEditUserId] = useState()
   const [isAddingUser, setIsAddingUser] = useState(false)
   const dispatch = useDispatch()
+
+  const deleteHandler = useCallback((id) => {
+    myCofirm({
+      title: 'Deleting user!',
+      message: 'Are you sure?',
+      onAgree: () => dispatch(admindataDelete({ sectionKey: 'users', id })),
+      onCancel: () => null
+    })
+  },[dispatch])
+
+
 
   return (
     <div className="adminPage__itemsBlock">
@@ -26,10 +43,7 @@ export const UsersBlock = () => {
             return isAdmin ? 'true' : 'false'
           }],
         }}
-        deleteItem={(id) => {
-          window.confirm('Are you sure?') &&
-            dispatch(admindataDelete({ sectionKey: 'users', id }))
-        }}
+        deleteItem={deleteHandler}
         saveItem={(formData) =>
           dispatch(admindataChanged(
             { sectionKey: 'users', data: formData }, setEditUserId))}

@@ -1,8 +1,7 @@
 import React from 'react';
 
 import './InfoPage.scss';
-import { ErrorMessageTimeout as ErrorMessage
- } from '../../components/ErrorMessage/ErrorMessage';
+import { ErrorMessageTimeout } from '../../components/ErrorMessage/ErrorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { OrdersInfo } from './OrdersInfo/OrdersInfo';
 import { useState } from 'react';
@@ -24,7 +23,7 @@ const InfoPage = () => {
   
   return (
     <div className="infoPage">
-      <ErrorMessage />
+      <ErrorMessageTimeout showTime={5000} />
       { orderResult &&
         <div className = 'orders-info'>
           <h2>Congratulations! New order registered!</h2>

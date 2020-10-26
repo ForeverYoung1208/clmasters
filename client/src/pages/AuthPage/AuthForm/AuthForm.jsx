@@ -4,7 +4,7 @@ import { Form } from '../../../components/Form/Form'
 import { Button } from '../../../components/Button/Button'
 import { validators } from "../../../shared/validators/baseValidator";
 import { Emptyspace } from '../../../components/Emptyspace/Emptyspace';
-import { ErrorMessageTimeout as ErrorMessage } from '../../../components/ErrorMessage/ErrorMessage';
+import { ErrorMessageTimeout } from '../../../components/ErrorMessage/ErrorMessage';
 
 
 const renderField = ({ className, input, placeholder, type, meta: { touched, error, warning } }) => (
@@ -38,7 +38,7 @@ let AuthForm = ({ handleSubmit }) => {
 
         <Button type="submit" >Login</Button>
       </Form>
-      <ErrorMessage showTime={5000}/>
+      <ErrorMessageTimeout showTime={5000}/>
     </div>
   )
 }

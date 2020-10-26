@@ -16,7 +16,6 @@ export const ErrorMessageTimeout = ({ showTime, customErrorMessage, ..._props })
   useEffect(() => {
     setTimeout(() => {
       dispatch(clearErrorMessage())
-      console.log('mseconds: '+ showTime)
     }, showTime)
   // we should react only to isMessage to prevent multiple timers
   // eslint-disable-next-line    

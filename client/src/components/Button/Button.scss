@@ -7,7 +7,11 @@
 
   &:active{
     background-color: $button-color-pressed;
-    box-shadow: -0px 0px 1px 2px $main-color-dark inset;
+    box-shadow: 0px 0px 1px 2px $main-color-dark inset;
+  }
+
+  &:hover{
+    box-shadow: 0px 0px 2px 1px $main-color-dark inset;
   }
 
 }

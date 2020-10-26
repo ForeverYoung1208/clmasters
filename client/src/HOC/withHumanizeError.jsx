@@ -9,8 +9,8 @@ export const withHumanizeError = (ErrorComponent) => (props) => {
   ]
 
   const rawMessage = useSelector(({ main: { errorMessage } }) => errorMessage)
-  const translation = errorsTranslations.find((et) => et[0].test(rawMessage))
+  const translation = errorsTranslations.find((et) => rawMessage?.match(et[0]))
 
-  return <ErrorComponent  customErrorMessage = {translation[1]} {...props}/>
+  return <ErrorComponent  customErrorMessage = {translation && translation[1]} {...props}/>
 }
 
