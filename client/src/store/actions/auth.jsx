@@ -1,7 +1,9 @@
-import { apiLoginUser } from "../../shared/js/api"
+import { LOGOUT_USER, SET_CURRENT_USER } from "./actionTypes/auth"
+
 import { loaderHide, loaderShow, setErrorMessage } from "./main"
-import { SET_CURRENT_USER, LOGOUT_USER } from "./actionTypes"
 import { LS } from "../../shared/js/ls"
+
+import { apiLoginUser } from "../../shared/js/api/auth"
 
 export const authLoginUser = (credentials) => {
   return async (dispatch) => {

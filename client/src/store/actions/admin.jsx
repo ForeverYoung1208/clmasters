@@ -1,12 +1,15 @@
 import {
-  FETCH_ADMINDATA_OK,
-  API_ADMINDATA_ERROR,
-  POST_ADMINDATA_OK,
   DELETE_ADMINDATA_OK,
-  CLEAR_API_ADMINDATA_ERROR
-} from './actionTypes'
+  FETCH_ADMINDATA_OK,
+  POST_ADMINDATA_OK
+} from './actionTypes/admindata.jsx'
+
 import { loaderShow, loaderHide, setErrorMessage } from './main.jsx'
-import  { apiDeleteEntity, apiGetAdmindata, apiPostEntity, apiPutEntity } from '../../shared/js/api'
+
+import { apiGetAdmindata } from '../../shared/js/api/adminData'
+import { apiDeleteEntity, apiPostEntity, apiPutEntity } from '../../shared/js/api/entities'
+  
+
 
 export const fetchAdmindata = () => {
 	return async (dispatch) => {
@@ -14,8 +17,8 @@ export const fetchAdmindata = () => {
     try {
       const { admindata } = await apiGetAdmindata()
       dispatch(fetchAdmindataOk(admindata))
-    } catch (e) {
-      dispatch(apiAdmindataError(e))
+    } catch (error) {
+      dispatch(setErrorMessage(JSON.stringify(error)))
     } finally {
       dispatch(loaderHide('admindata'))
     }
@@ -27,14 +30,6 @@ const fetchAdmindataOk = (admindata) => {
     type: FETCH_ADMINDATA_OK,
     admindata
 	}    
-}
-
-export const apiAdmindataError = ({ unknownError, submissionError }) => {
-  return {
-    type: API_ADMINDATA_ERROR,
-    unknownError,
-    submissionError
-  }
 }
 
 export const postAdmindataOk = ({ sectionKey, data }) => {
@@ -68,10 +63,10 @@ export const admindataChanged = ({ sectionKey, data } , setEdittingItemId) => {
 
       res.status === 200
         ? dispatch(postAdmindataOk({ sectionKey, data:resData }))
-        : dispatch(apiAdmindataError({ submissionError: { sectionKey, ...resData } }))
+        : dispatch(setErrorMessage(JSON.stringify(resData)))
       
     } catch (error) {
-      dispatch(apiAdmindataError({ unknownError: error }))
+      dispatch(setErrorMessage(JSON.stringify(error)))
     } finally { 
       dispatch(loaderHide('admindata'))
       setEdittingItemId(null)
@@ -96,15 +91,10 @@ export const admindataDelete = ({ sectionKey, id }) => {
       }
       
     } catch (error) {
-      dispatch(apiAdmindataError({ unknownError: error }))      
+      dispatch(setErrorMessage(JSON.stringify(error)))      
     } finally { 
       dispatch(loaderHide('admindata'))
     }
   }
 } 
 
-export const clearAdmindataApiError = () => {
-  return {
-    type: CLEAR_API_ADMINDATA_ERROR,
-  }
-}

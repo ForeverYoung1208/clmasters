@@ -1,0 +1,1 @@
+export const REDIRECTION_DONE = 'main/REDIRECTION_DONE'

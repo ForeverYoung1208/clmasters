@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
 import { admindataChanged, admindataDelete } from '../../../store/actions/admin'
 import CityEditForm from './CityEditForm/CityEditForm'
+
+import { myCofirm } from '../../../shared/js/myConfirm/myConfirm'
+
 
 export const CitiesBlock = () => {
 
@@ -12,6 +15,16 @@ export const CitiesBlock = () => {
   const [editCityId, setEditCityId] = useState()
   const [isAddingCity, setIsAddingCity] = useState(false)
   const dispatch = useDispatch()
+
+  const deleteHandler = useCallback((id) => {
+    myCofirm({
+      title: 'Deleting city!',
+      message: 'Are you sure?',
+      onAgree: () => dispatch(admindataDelete({ sectionKey: 'cities', id })),
+      onCancel: () => null
+    })
+  },[dispatch])
+
 
   return (
     <div className="adminPage__itemsBlock">
@@ -23,10 +36,7 @@ export const CitiesBlock = () => {
           name: ['City Name ', 'item-medium'],
           comment: ['Comment', 'item-wide'],
         }}
-        deleteItem={(id) => {
-          window.confirm('Are you sure?') &&
-            dispatch(admindataDelete({ sectionKey: 'cities', id }))
-        }}
+        deleteItem={deleteHandler}
         saveItem={(formData) =>
           dispatch(admindataChanged(
             { sectionKey: 'cities', data: formData }, setEditCityId))}

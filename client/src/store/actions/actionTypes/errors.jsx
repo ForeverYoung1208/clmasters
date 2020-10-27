@@ -1,0 +1,1 @@
+export const SET_ERROR_MESSAGE = 'main/SET_ERROR'

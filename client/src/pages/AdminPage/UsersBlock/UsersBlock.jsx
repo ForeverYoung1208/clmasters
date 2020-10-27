@@ -3,8 +3,9 @@ import { useCallback } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
-import { myCofirm } from '../../../shared/js/myConfirm/myConfirm'
+
 import { admindataChanged, admindataDelete } from '../../../store/actions/admin'
+import { myCofirm } from '../../../shared/js/myConfirm/myConfirm'
 
 import UserEditForm from './UserEditForm/UserEditForm'
 

@@ -1,10 +1,8 @@
 import {
-  FETCH_ADMINDATA_OK,
-  API_ADMINDATA_ERROR,
-  POST_ADMINDATA_OK,
   DELETE_ADMINDATA_OK,
-  CLEAR_API_ADMINDATA_ERROR
-} from "../actions/actionTypes";
+  FETCH_ADMINDATA_OK,
+  POST_ADMINDATA_OK
+} from "../actions/actionTypes/admindata";
 
 const initialState = {
   orders: [],
@@ -22,19 +20,19 @@ const admin = (state = initialState, action) => {
         ...action.admindata
       };
 
-    case API_ADMINDATA_ERROR:
-      return {
-        ...state,
-        submissionError: action.submissionError,
-        unknownError: action.unknownError
-      };
+    // case API_ADMINDATA_ERROR:
+    //   return {
+    //     ...state,
+    //     submissionError: action.submissionError,
+    //     unknownError: action.unknownError
+    //   };
     
-    case CLEAR_API_ADMINDATA_ERROR:
-      return {
-        ...state,
-        submissionError: null,
-        unknownError: null
-      };
+    // case CLEAR_API_ADMINDATA_ERROR:
+    //   return {
+    //     ...state,
+    //     submissionError: null,
+    //     unknownError: null
+    //   };
     
     case POST_ADMINDATA_OK:
       const newEntityIdx = state[action.sectionKey].findIndex(entity => +entity.id === +action.data.id)

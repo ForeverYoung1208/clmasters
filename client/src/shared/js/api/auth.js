@@ -1,4 +1,4 @@
-import { myHttp } from "./myHttp"
+import { myHttp } from "../myHttp"
 
 
 export const apiLoginUser = async (credentials) => {
@@ -54,43 +54,4 @@ export const apiGetVocabluaries = async () => {
   return { vocabluaries:{cities, clocks, masters }}
 }
 
-export const apiGetAdmindata = async () => {
-  await apiAuthUserByToken() // to prevent token being suddenly outdated
-  let [orders, masters, users, cities, clocks] = await Promise.all([
-    myHttp('/api/orders', 'GET').then(x => x.json()),
-    myHttp('/api/masters', 'GET').then(x => x.json()),
-    myHttp('/api/users', 'GET').then(x => x.json()),
-    myHttp('/api/cities', 'GET').then(x => x.json()),
-    myHttp('/api/clocks', 'GET').then(x => x.json()),
-  ])
-  orders = orders.map(order => ({ ...order, onTime: new Date(order.onTime) }))
-  return { admindata: { orders, masters, users, cities, clocks } }
-}
-
-export const apiPutEntity = async ({ sectionKey, data }) => {
-  const res = await myHttp(`/api/${sectionKey}/${data.id}`, 'PUT', data)
-  return res
-}
-
-export const apiPostEntity = async ({ sectionKey, data }) => {
-  const res = await myHttp(`/api/${sectionKey}/`, 'POST', data)
-  return res
-}
-
-export const apiDeleteEntity = async ({ sectionKey, id }) => {
-  const res = await myHttp(`/api/${sectionKey}/${id}`, 'DELETE')
-  return res
-}
-
-
-export const apiPostPreorder = async(preorderData)=>{
-  const res = await myHttp('/api/preorder', 'POST', { preorderData })
-  return res
-}
-
-export const apiGetEntityBy = async ({ sectionKey, params }) => { 
-  const res = await myHttp(`/api/${sectionKey}/query`, 'GET', {}, {}, params)
-  return res
-
-}
 

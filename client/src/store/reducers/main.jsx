@@ -1,15 +1,14 @@
+
+import { SET_ERROR_MESSAGE } from "../actions/actionTypes/errors"
+import { LOADER_HIDE, LOADER_SHOW } from "../actions/actionTypes/loaders"
+import { POST_PREORDER_OK, SAVE_PREORDER } from "../actions/actionTypes/preorders"
+import { REDIRECTION_DONE } from "../actions/actionTypes/redirect"
 import {
-  LOADER_SHOW,
-  LOADER_HIDE,
-  POST_PREORDER_OK,
-  SET_ERROR_MESSAGE,
-  SAVE_PREORDER,
-  POST_ORDER_OK,
-  REDIRECTION_DONE,
+  CLEAR_ORDERS,
   CLEAR_ORDER_RESULT,
   GET_ORDERS_OK,
-  CLEAR_ORDERS
-} from "../actions/actionTypes"
+  POST_ORDER_OK
+} from "../actions/actionTypes/orders"
 
 const initialState = {
   loaders:{

@@ -8,8 +8,8 @@ import Routes from './Routes'
 import { fetchVocabluariesOk } from './store/actions/vocabluaries'
 import { LS } from './shared/js/ls'
 import { authSetCurrentUser } from './store/actions/auth'
-import { apiAutoLoginUser, apiGetVocabluaries } from './shared/js/api'
 
+import { apiAutoLoginUser, apiGetVocabluaries } from './shared/js/api/auth'
 
 import './App.scss'
 

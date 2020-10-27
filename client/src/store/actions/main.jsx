@@ -1,16 +1,11 @@
-import {
-  LOADER_SHOW,
-  LOADER_HIDE,
-  POST_PREORDER_OK,
-  SAVE_PREORDER,
-  SET_ERROR_MESSAGE,
-  POST_ORDER_OK,
-  REDIRECTION_DONE,
-  CLEAR_ORDER_RESULT,
-  GET_ORDERS_OK,
-  CLEAR_ORDERS
-} from "./actionTypes";
-import { apiGetEntityBy, apiPostEntity, apiPostPreorder } from "../../shared/js/api";
+import { LOADER_HIDE, LOADER_SHOW } from "./actionTypes/loaders";
+import { SET_ERROR_MESSAGE } from "./actionTypes/errors";
+import { CLEAR_ORDERS, CLEAR_ORDER_RESULT, GET_ORDERS_OK, POST_ORDER_OK } from "./actionTypes/orders";
+import { REDIRECTION_DONE } from "./actionTypes/redirect";
+import { POST_PREORDER_OK, SAVE_PREORDER } from "./actionTypes/preorders";
+
+import { apiPostPreorder } from "../../shared/js/api/preorder";
+import { apiGetEntityBy, apiPostEntity } from "../../shared/js/api/entities";
 
 export const loaderShow = (name) => {
   return {

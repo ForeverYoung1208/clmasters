@@ -1,4 +1,4 @@
-import { FETCH_VOCABLUARIES_OK } from "../actions/actionTypes";
+import { FETCH_VOCABLUARIES_OK } from "../actions/actionTypes/vocabluaries";
 
 const initialState = {
   cities: [],

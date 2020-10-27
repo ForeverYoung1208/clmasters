@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { ItemsList } from '../../../components/ItemsList/ItemsList'
+import { myCofirm } from '../../../shared/js/myConfirm/myConfirm'
 import { admindataChanged, admindataDelete } from '../../../store/actions/admin'
 import OrderEditForm from './OrderEditForm/OrderEditForm'
 
@@ -14,6 +15,16 @@ export const OrdersBlock = () => {
   const [editOrderId, setEditOrderId] = useState()
   const [isAddingOrder, setIsAddingOrder] = useState(false)
   const dispatch = useDispatch()
+
+  const deleteHandler = useCallback((id) => {
+    myCofirm({
+      title: 'Deleting order!',
+      message: 'Are you sure?',
+      onAgree: () => dispatch(admindataDelete({ sectionKey: 'orders', id })),
+      onCancel: () => null
+    })
+  },[dispatch])
+
 
   return (
     <div className="adminPage__itemsBlock">
@@ -36,10 +47,7 @@ export const OrdersBlock = () => {
           ],
           comment: ['Comment', 'item-wide'],
         }}
-        deleteItem={(id) => {
-          window.confirm('Are you sure?') &&
-            dispatch(admindataDelete({ sectionKey: 'orders', id }))
-        }}
+        deleteItem={deleteHandler}
         saveItem={(formData) =>
           dispatch(admindataChanged(
             { sectionKey: 'orders', data: formData }, setEditOrderId))}
