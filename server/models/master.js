@@ -1,7 +1,6 @@
 'use strict'
 const {
-  Model,
-  Op
+  Model
 } = require('sequelize')
 const { timestrToMSec } = require('../shared/services')
 const roundToMinute = require('date-fns/roundToNearestMinutes')
@@ -40,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
 
       const busyMasters = nearestOrders.reduce((acc, order) => {
         
-        const { dataValues: existingOrder, Clock: { dataValues: existingClock } } = order
+        const { dataValues: existingOrder, clock: { dataValues: existingClock } } = order
         const existingOrderEnds = new Date(
           existingOrder.onTime.valueOf() + timestrToMSec(existingClock.repairTime)
         )

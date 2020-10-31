@@ -13,7 +13,7 @@ import { redirectionDone } from './store/actions/main';
 const Routes = (props) => {
   const { currentUser } = props
   const history = useHistory()
-  const { redirectUrl } = useSelector((store) => store.main )
+  const redirectUrl = useSelector(({ main: {redirectUrl}}) => redirectUrl )
   const dispatch = useDispatch()
 
   useEffect(() => {

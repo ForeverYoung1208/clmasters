@@ -12,16 +12,16 @@ import { clearOrderResult, clearOrders, getOrdersBy } from '../../store/actions/
 
 const InfoPage = () => {
   const { orderResult, orders } = useSelector((store) => store.main)
-  const [searchValue, setSearchValue] = useState('')
+  const [searchString, setSearchString] = useState('')
+  const [searchedString, setSearchedString] = useState('')
   const dispatch = useDispatch()
 
   const handleSearchSubmit = (e) => {
     e.preventDefault()
-
-    console.log('[searchValue]', searchValue)
-    dispatch(getOrdersBy({ email: searchValue }))
-    
+    setSearchedString(searchString)
+    dispatch(getOrdersBy({ email: searchString }))
   }
+
   
   return (
     <div className="infoPage">
@@ -39,7 +39,7 @@ const InfoPage = () => {
 
       { orders &&
         <div className = 'orders-info'>
-        <h2>We've found the next orders with e-mail "{searchValue}":</h2>
+        <h2>We've found the next orders with e-mail "{searchedString}":</h2>
           <OrdersInfo
             orders={orders}
           />
@@ -57,7 +57,7 @@ const InfoPage = () => {
             type= 'text'
             id = 'search-by-email'
             className='form-input'
-            onChange={(e) => setSearchValue(e.target.value)} value={searchValue}
+            onChange={(e) => setSearchString(e.target.value)} value={searchString}
           />
           <Button type='submit'>Search</Button>
         </Form>

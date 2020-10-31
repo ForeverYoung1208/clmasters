@@ -14,10 +14,12 @@ class OrdersController extends CRUDController{
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })    
     
     const data = req.body
+    let user
+
     if (data.userId) {
-      var user = await User.findByPk(data.userId)
+      user = await User.findByPk(data.userId)
     } else {
-      var [user] = await User.findOrCreate({
+      [user] = await User.findOrCreate({
         where: { email: data.email },
         defaults: { name: data.name }
       })

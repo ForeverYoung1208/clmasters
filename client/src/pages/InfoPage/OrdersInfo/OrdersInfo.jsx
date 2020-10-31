@@ -12,7 +12,6 @@ export const OrdersInfo = ({ orders }) => {
           user,
           clock,
           master,
-          city,
           comment
         } = order
         
