@@ -1,7 +1,7 @@
 import { LOADER_HIDE, LOADER_SHOW } from "./actionTypes/loaders";
 import { SET_ERROR_MESSAGE } from "./actionTypes/errors";
 import { CLEAR_ORDERS, CLEAR_ORDER_RESULT, GET_ORDERS_OK, POST_ORDER_OK } from "./actionTypes/orders";
-import { REDIRECTION_DONE } from "./actionTypes/redirect";
+import { REDIRECTION_DONE, REDIRECT_START } from "./actionTypes/redirect";
 import { POST_PREORDER_OK, SAVE_PREORDER } from "./actionTypes/preorders";
 
 import { apiPostPreorder } from "../../shared/js/api/preorder";
@@ -37,6 +37,13 @@ export const clearErrorMessage = () => {
 export const redirectionDone = () => { 
   return {
     type: REDIRECTION_DONE,
+  }
+}
+
+export const redirectTo = (redirectUrl) => {
+  return {
+    type: REDIRECT_START,
+    redirectUrl
   }
 }
 

@@ -21,7 +21,11 @@ const MastersPage = () => {
     } else{
       history.push('/masters/order')
     }
-  },[preorderResult, history])
+  }, [preorderResult, history])
+  
+  const handlePostOrder = (masterId) => {
+    dispatch(postOrder({ masterId, preorder }))
+  }
 
   return (
 
@@ -35,7 +39,7 @@ const MastersPage = () => {
         <Route path='/masters/order'>
           <Card header="Please choose master and submit your order">  
             <OrderForm
-              onSubmit={(masterId) => dispatch(postOrder({masterId, preorder}))}
+              onSubmit={handlePostOrder}
             />
           </Card>
         </Route>

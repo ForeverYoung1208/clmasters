@@ -1,1 +1,2 @@
 export const REDIRECTION_DONE = 'main/REDIRECTION_DONE'
+export const REDIRECT_START = 'main/REDIRECT_START'

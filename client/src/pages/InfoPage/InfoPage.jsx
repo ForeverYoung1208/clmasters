@@ -7,7 +7,7 @@ import { OrdersInfo } from './OrdersInfo/OrdersInfo';
 import { useState } from 'react';
 import { Form } from '../../components/Form/Form';
 import { Button } from '../../components/Button/Button';
-import { clearOrderResult, clearOrders, getOrdersBy } from '../../store/actions/main';
+import { clearOrderResult, clearOrders, getOrdersBy, redirectTo } from '../../store/actions/main';
 
 
 const InfoPage = () => {
@@ -22,6 +22,12 @@ const InfoPage = () => {
     dispatch(getOrdersBy({ email: searchString }))
   }
 
+  const handleBackToForm = (e) => {
+    e.preventDefault()
+    dispatch(clearOrderResult())
+    dispatch(redirectTo('/masters/preorder'))
+  }
+
   
   return (
     <div className="infoPage">
@@ -33,7 +39,7 @@ const InfoPage = () => {
             orders={[orderResult]}
           />
           { orderResult.isEmailSent && <h3>(order information was also sent to email)</h3>}
-          <Button onClick={ () => { dispatch(clearOrderResult()) } }>Dismiss</Button>
+          <Button onClick={ handleBackToForm }>Back to form</Button>
         </div>
       }
 
@@ -43,13 +49,13 @@ const InfoPage = () => {
           <OrdersInfo
             orders={orders}
           />
-          <Button onClick={ () => { dispatch(clearOrders()) } }>Dismiss</Button>
+          <Button onClick={ () => { dispatch(clearOrders()) } }>Clear information</Button>
         </div>
       }
 
       { !orderResult &&
         <div className='infoPage__search-email'>
-        <Form onSubmit={handleSearchSubmit}>
+        <Form onSubmit={ handleSearchSubmit }>
           
           <label htmlFor='search-by-email'> Enter email to search for registered orders:</label>
            

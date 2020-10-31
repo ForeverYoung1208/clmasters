@@ -2,7 +2,7 @@
 import { SET_ERROR_MESSAGE } from "../actions/actionTypes/errors"
 import { LOADER_HIDE, LOADER_SHOW } from "../actions/actionTypes/loaders"
 import { POST_PREORDER_OK, SAVE_PREORDER } from "../actions/actionTypes/preorders"
-import { REDIRECTION_DONE } from "../actions/actionTypes/redirect"
+import { REDIRECTION_DONE, REDIRECT_START } from "../actions/actionTypes/redirect"
 import {
   CLEAR_ORDERS,
   CLEAR_ORDER_RESULT,
@@ -38,6 +38,12 @@ const main = (state = initialState, action) => {
         loaders: newLoaders
       }
     
+    case REDIRECT_START:
+      return {
+        ...state,
+        redirectUrl: action.redirectUrl
+      }
+
     case REDIRECTION_DONE:
       return {
         ...state,
@@ -59,6 +65,7 @@ const main = (state = initialState, action) => {
     case POST_ORDER_OK:
       return {
         ...state,
+        preorder: null,
         preorderResult: null,
         orderResult: action.orderResult,
         redirectUrl: action.redirectUrl

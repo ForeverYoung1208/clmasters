@@ -28,7 +28,7 @@ let OrderForm = ({handleSubmit}) => {
           <Button>Submit</Button>
         </Form>  
         : <div>
-            No free masters in given city was found.
+            No free masters in the given city at specified time was found.
           </div>
       }
       

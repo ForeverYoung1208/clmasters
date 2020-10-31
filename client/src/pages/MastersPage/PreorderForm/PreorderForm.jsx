@@ -33,12 +33,12 @@ export const PreorderForm = () => {
   const vocabluaries = useSelector(store => store.vocabluaries)
 
   const [formData, setFormData] = useState({
-    name: prevPreorder.name || '',
-    email: prevPreorder.email || '',
-    orderDateTime: prevPreorder.orderDateTime || '',
+    name: prevPreorder?.name || '',
+    email: prevPreorder?.email || '',
+    orderDateTime: prevPreorder?.orderDateTime || '',
     isOrderDateTimeTouched: false,
-    clockTypeId: prevPreorder.clockTypeId || '-1',
-    cityId: prevPreorder.cityId || '-1',
+    clockTypeId: prevPreorder?.clockTypeId || '-1',
+    cityId: prevPreorder?.cityId || '-1',
     minTime: new Date()     //now!
   })
  
@@ -64,8 +64,6 @@ export const PreorderForm = () => {
     formData.isOrderDateTimeTouched && validate('orderDateTime')
     // eslint-disable-next-line    
   }, [formData.orderDateTime])
-  
-  
 
   const changeDateHandler = (value) => {
     const minTime = isSameDay(value, new Date())
@@ -82,7 +80,6 @@ export const PreorderForm = () => {
   }
   
   const changeHandler = (e) => {
-
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
