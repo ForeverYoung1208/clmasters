@@ -17,6 +17,8 @@ const InfoPage = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault()
+
+    console.log('[searchValue]', searchValue)
     dispatch(getOrdersBy({ email: searchValue }))
     
   }

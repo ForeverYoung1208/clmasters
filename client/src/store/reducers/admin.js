@@ -20,20 +20,6 @@ const admin = (state = initialState, action) => {
         ...action.admindata
       };
 
-    // case API_ADMINDATA_ERROR:
-    //   return {
-    //     ...state,
-    //     submissionError: action.submissionError,
-    //     unknownError: action.unknownError
-    //   };
-    
-    // case CLEAR_API_ADMINDATA_ERROR:
-    //   return {
-    //     ...state,
-    //     submissionError: null,
-    //     unknownError: null
-    //   };
-    
     case POST_ADMINDATA_OK:
       const newEntityIdx = state[action.sectionKey].findIndex(entity => +entity.id === +action.data.id)
       const newSectionItems = state[action.sectionKey]

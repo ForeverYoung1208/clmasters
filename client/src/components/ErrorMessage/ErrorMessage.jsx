@@ -24,7 +24,7 @@ export const ErrorMessageTimeout = ({ showTime, customErrorMessage, ..._props })
 
   return (
     <div {..._props} className = "error-message">
-      { isMessage && (customErrorMessage||errorMessage)}
+      { isMessage && (customErrorMessage||JSON.stringify(errorMessage))}
     </div>
   )
 }

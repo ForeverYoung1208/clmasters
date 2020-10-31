@@ -15,9 +15,11 @@ import { Emptyspace } from '../../../components/Emptyspace/Emptyspace';
 // my services
 import Validator from '../../../shared/js/validator';
 import { validators } from '../../../shared/validators/baseValidator'
+import { apiGetVocabluaries } from '../../../shared/js/api/vocabluaries';
 
 // store
 import { setErrorMessage, postPreorder } from '../../../store/actions/main';
+import { fetchVocabluariesOk } from '../../../store/actions/vocabluaries';
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./PreorderForm.scss"
@@ -45,16 +47,19 @@ export const PreorderForm = () => {
   const cities = [{id:-1}, ...vocabluaries.cities];
   const clocks = [{ id: -1 }, ...vocabluaries.clocks];
   
+  useEffect(() => {
+    apiGetVocabluaries().then((res) => {
+      dispatch(fetchVocabluariesOk(res.vocabluaries))
+    })
+  },[dispatch])
+
   useEffect(()=>{
     if(!vocabluaries){ 
-      dispatch(setErrorMessage('Sorry, database is out of order... try some time later...'))
-      history.push('/info')
+      dispatch(setErrorMessage('data is loading...'))
       return;
     }
   }, [vocabluaries, history, dispatch])
-  
-
-  
+    
   useEffect(() => {
     formData.isOrderDateTimeTouched && validate('orderDateTime')
     // eslint-disable-next-line    

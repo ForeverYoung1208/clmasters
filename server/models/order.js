@@ -37,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
           }
         },
         include: [{
-          model: Clock
+          model: Clock, 
+          as: 'clock'
         }]
       })
 
@@ -49,12 +50,15 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.User, {
+        as: 'user',
         foreignKey: {name: 'userId'}
       })
       this.belongsTo(models.Master, {
+        as: 'master',
         foreignKey: {name: 'masterId'}
       })
       this.belongsTo(models.Clock, {
+        as: 'clock',
         foreignKey: {name: 'clockId'}
       })
       

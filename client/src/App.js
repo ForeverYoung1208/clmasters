@@ -5,11 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Header from './components/Header/Header'
 import Routes from './Routes'
-import { fetchVocabluariesOk } from './store/actions/vocabluaries'
 import { LS } from './shared/js/ls'
 import { authSetCurrentUser } from './store/actions/auth'
 
-import { apiAutoLoginUser, apiGetVocabluaries } from './shared/js/api/auth'
+import { apiAutoLoginUser } from './shared/js/api/auth'
 
 import './App.scss'
 
@@ -25,9 +24,6 @@ function App() {
     // can't use async/await inside useEffect hook 
     apiAutoLoginUser(oldUser).then((user) => {
       user && dispatch(authSetCurrentUser(user))
-      apiGetVocabluaries().then((res) => {
-        dispatch(fetchVocabluariesOk(res.vocabluaries))
-      })
     })
      
   }, [dispatch])

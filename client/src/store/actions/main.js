@@ -5,7 +5,7 @@ import { REDIRECTION_DONE } from "./actionTypes/redirect";
 import { POST_PREORDER_OK, SAVE_PREORDER } from "./actionTypes/preorders";
 
 import { apiPostPreorder } from "../../shared/js/api/preorder";
-import { apiGetEntityBy, apiPostEntity } from "../../shared/js/api/entities";
+import { apiGetEntityBy, apiPostEntity } from "../../shared/js/api/crudEntities";
 
 export const loaderShow = (name) => {
   return {

@@ -1,5 +1,5 @@
 const { check, validationResult } = require('express-validator')
-const { Order, User } = require('../models')
+const { Order, User, Master, Clock, City } = require('../models')
 const { CRUDController } = require('./common/CRUDController')
 const { noTimestamps } = require('../shared/services')
 const sendEmail = require('../shared/mailjet')
@@ -27,26 +27,57 @@ class OrdersController extends CRUDController{
 
     }
 
-    const newOrder = await Order.create(data)
-    if (!newOrder) return res.status(400).json({
+    const _newOrder = await Order.create(data)
+    if (!_newOrder) return res.status(400).json({
       message: 'Orders controller: not created'
     })
 
-    const master = await newOrder.getMaster()
-    const city = await master.getCity()
-    const clock = await newOrder.getClock()
 
+    const newOrders = await Order.findAll({
+      where: {id: _newOrder.dataValues.id },
+      include: [
+        {
+          model: User,
+          as: 'user'
+        }, {
+          model: Master,
+          as: 'master',
+          include: [
+            {
+              model: City,
+              as: 'city'
+            }
+          ]
+        }, {
+          model: Clock,
+          as: 'clock'
+        }
+      ],
+      order: [                  // that is sortring order, not our order entity
+        ['id', 'ASC']
+      ]
+    })
+
+
+
+    // const master = await newOrder.getMaster()
+    // const city = await master.getCity()
+    // const clock = await newOrder.getClock()
+    const {
+      master,
+      clock,
+    } = newOrders[0]
 
     const emailResult = await sendEmail(
       {
         toEmail: user.email,
         HTMLPart: `
         <h2>Order information</h2>
-        <div>Order ID: ${newOrder.id}
+        <div>Order ID: ${newOrders[0].id}
         <div>User Name: ${user.name}</div>
         <div>User Email: ${user.email}</div>
-        <div>City: ${city.name}</div>
-        <div>On Time: ${newOrder.onTime.toLocaleString('uk')}</div>
+        <div>City: ${master.city.name}</div>
+        <div>On Time: ${newOrders[0].onTime.toLocaleString('uk')}</div>
         <div>
           Clock Type: ${clock.type}, 
           repair time (hours:minutes): ${clock.repairTime.substring(0, 5)}
@@ -58,7 +89,7 @@ class OrdersController extends CRUDController{
 
 
     return res.status(200).json({
-      ...noTimestamps(newOrder.dataValues),
+      ...noTimestamps(newOrders[0].dataValues),
       user: {
         name: user.name,
         email: user.email
@@ -80,28 +111,32 @@ class OrdersController extends CRUDController{
     const orders = await Order.findAll({
       where: [
         masterQuery,
-        {'$User.email$':emailQuery.email}],
-      include: [{
-        model: User,
-        as: 'User'          
-      }],
+        {'$user.email$':emailQuery.email}],
+      include: [
+        {
+          model: User,
+          as: 'user'
+        }, {
+          model: Master,
+          as: 'master',
+          include: [
+            {
+              model: City,
+              as: 'city'
+            }
+          ]
+        }, {
+          model: Clock,
+          as: 'clock'
+        }
+      ],
       order: [                  // that is sortring order, not our order entity
         ['id', 'ASC']
       ]
     })
 
-    const data = orders.map((order) => {
+    const data = orders.map((order) => noTimestamps(order.dataValues))
 
-      const { User, ...newOrder } = order
-      const orderDataValues = noTimestamps(newOrder.dataValues)
-      orderDataValues.user = {
-        name: User.dataValues.name,
-        email: User.dataValues.email
-      }
-
-      return orderDataValues
-    })
-    
     return (res.status(200).json(data))
   }  
   

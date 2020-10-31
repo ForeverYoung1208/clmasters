@@ -2,12 +2,12 @@ import {
   DELETE_ADMINDATA_OK,
   FETCH_ADMINDATA_OK,
   POST_ADMINDATA_OK
-} from './actionTypes/admindata.jsx'
+} from './actionTypes/admindata'
 
-import { loaderShow, loaderHide, setErrorMessage } from './main.jsx'
+import { loaderShow, loaderHide, setErrorMessage } from './main'
 
 import { apiGetAdmindata } from '../../shared/js/api/adminData'
-import { apiDeleteEntity, apiPostEntity, apiPutEntity } from '../../shared/js/api/entities'
+import { apiDeleteEntity, apiPostEntity, apiPutEntity } from '../../shared/js/api/crudEntities'
   
 
 
