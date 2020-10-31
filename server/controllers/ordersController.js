@@ -9,16 +9,20 @@ class OrdersController extends CRUDController{
     super(model)
   }
 
+  // put(req, res) goes to parent CRUDController
+
   async post(req, res) { 
     const errors = validationResult(req)
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })    
+    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })    
     
     const data = req.body
     let user
 
     if (data.userId) {
+      // user was logged in (administrator) - so we have userId
       user = await User.findByPk(data.userId)
     } else {
+      // user wasn't logged in (customer) - need to find by email or create
       [user] = await User.findOrCreate({
         where: { email: data.email },
         defaults: { name: data.name }
@@ -26,14 +30,12 @@ class OrdersController extends CRUDController{
       user.name = data.name
       user.save()
       data.userId = user.id
-
     }
 
     const _newOrder = await Order.create(data)
-    if (!_newOrder) return res.status(400).json({
+    if (!_newOrder) return res.status(500).json({
       message: 'Orders controller: not created'
     })
-
 
     const newOrders = await Order.findAll({
       where: {id: _newOrder.dataValues.id },
@@ -60,15 +62,7 @@ class OrdersController extends CRUDController{
       ]
     })
 
-
-
-    // const master = await newOrder.getMaster()
-    // const city = await master.getCity()
-    // const clock = await newOrder.getClock()
-    const {
-      master,
-      clock,
-    } = newOrders[0]
+    const { master, clock } = newOrders[0]
 
     const emailResult = await sendEmail(
       {
@@ -89,8 +83,7 @@ class OrdersController extends CRUDController{
       }
     )
 
-
-    return res.status(200).json({
+    return res.status(201).json({
       ...noTimestamps(newOrders[0].dataValues),
       user: {
         name: user.name,
@@ -98,8 +91,6 @@ class OrdersController extends CRUDController{
       },
       isEmailSent: emailResult.response.ok
     })
-
-    
   }
 
   async getAllByParam(req, res) {

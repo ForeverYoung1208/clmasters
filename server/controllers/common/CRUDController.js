@@ -23,7 +23,7 @@ class CRUDController{
   async put(req, res) { 
 
     const errors = validationResult(req)  
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
+    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
       
     let { id, ...data } = req.body
     id = req.params.id
@@ -36,7 +36,7 @@ class CRUDController{
     Object.assign(modelToUpdate, data)
 
     const result = await modelToUpdate.save()
-    if (!result) return res.stats(400).json({
+    if (!result) return res.stats(500).json({
       message: 'CDUD controller: model not updated'
     })
 
@@ -46,15 +46,15 @@ class CRUDController{
 
   async post(req, res) { 
     const errors = validationResult(req)  
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })    
+    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })    
 
     const data = req.body
     const newModel = await this.model.create(data)
-    if (!newModel) return res.status(400).json({
+    if (!newModel) return res.status(500).json({
       message: 'CDUD controller: not created'
     })
 
-    return res.status(200).json(noTimestamps(newModel.dataValues))
+    return res.status(201).json(noTimestamps(newModel.dataValues))
   }
 
 
@@ -63,7 +63,7 @@ class CRUDController{
 
     const deletedRows = await this.model.destroy({ where: {id} })
 
-    if (deletedRows<1) return res.status(400).json({
+    if (deletedRows<1) return res.status(500).json({
       message: `CDUD controller: model with id:${id} can not be deleted`
     })
     return res.sendStatus(204)
