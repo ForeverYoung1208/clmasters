@@ -30,14 +30,19 @@ class CRUDController{
 
     let modelToUpdate = await this.model.findByPk(id)
     if (!modelToUpdate) return res.status(400).json({
-      message: `CDUD controller: model with id:${id} not found`
+      message: `Model with id:${id} not found`
     })
 
     Object.assign(modelToUpdate, data)
 
-    const result = await modelToUpdate.save()
+    try {
+      var result = await modelToUpdate.save()
+    } catch (error) {
+      return res.status(400).json({ error }) 
+    }
+
     if (!result) return res.stats(500).json({
-      message: 'CDUD controller: model not updated'
+      message: 'CDUD controller error: model not updated'
     })
 
     return res.status(200).json(noTimestamps(result.dataValues))
@@ -49,9 +54,14 @@ class CRUDController{
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })    
 
     const data = req.body
-    const newModel = await this.model.create(data)
+    try {
+      var newModel = await this.model.create(data)
+    } catch (error) {
+      return res.status(400).json({ error })
+    }
+
     if (!newModel) return res.status(500).json({
-      message: 'CDUD controller: not created'
+      message: 'CDUD controller error: not created'
     })
 
     return res.status(201).json(noTimestamps(newModel.dataValues))

@@ -5,6 +5,10 @@
 
   &__radio-group div{
     box-sizing: content-box;
+    div>div{
+      margin-right: 1rem;
+    }
+
   }
 
   &__change-link{

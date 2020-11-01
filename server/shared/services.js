@@ -20,12 +20,37 @@ const services = {
     return mSec
   },
   
-  noTimestamps : function (data){
+  noTimestamps: function (data) {
+    // eslint-disable-next-line no-unused-vars
     const { createdAt, updatedAt, ...dataNoTimestamps } = data
     return dataNoTimestamps
+  },
+
+  timeStrToWords: function (timeStrIn) {
+    // '01:34:67'
+    const hours = +timeStrIn.substring(0, 2)
+    const minutes = +timeStrIn.substring(3, 5)
+    let hVal=''
+    let mVal = ''
+    let hText=''
+    let mText = ''
+    let comma = ''
+    
+    hours === 1 && (hText = ' hour')
+    hours > 1 && (hText = ' hours')
+    hours >= 1 && (hVal = '' + hours)
+
+    minutes === 1 && (mText = ' minute')
+    minutes > 1 && (mText = ' minutes')
+    minutes >= 1 && (mVal = '' + minutes) && (comma = ', ')
+
+    return hVal + hText + comma + mVal + mText
+    
   }
 
 }
+
+
 
  
 

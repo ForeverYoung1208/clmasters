@@ -1,8 +1,11 @@
 const { check, validationResult } = require('express-validator')
 const { Order, User, Master, Clock, City } = require('../models')
 const { CRUDController } = require('./common/CRUDController')
-const { noTimestamps } = require('../shared/services')
+const { noTimestamps, timeStrToWords } = require('../shared/services')
 const sendEmail = require('../shared/mailjet')
+
+const { format } = require('date-fns')
+const { uk } = require('date-fns/locale')
 
 class OrdersController extends CRUDController{
   constructor(model){
@@ -73,10 +76,10 @@ class OrdersController extends CRUDController{
         <div>User Name: ${user.name}</div>
         <div>User Email: ${user.email}</div>
         <div>City: ${master.city.name}</div>
-        <div>On Time: ${newOrders[0].onTime.toLocaleString('uk')}</div>
+        <div>On Time: ${ format(newOrders[0].onTime, 'dd.MM.yyyy HH:mm', {locale:uk})  }</div>
         <div>
           Clock Type: ${clock.type}, 
-          repair time (hours:minutes): ${clock.repairTime.substring(0, 5)}
+          repair time: ${timeStrToWords(clock.repairTime)}
           </div>
         <div>Master: ${master.name}</div>
         `

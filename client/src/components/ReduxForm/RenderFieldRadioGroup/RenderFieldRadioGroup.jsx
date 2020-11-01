@@ -14,7 +14,7 @@ export const RenderFieldRadioGroup = ({ className, input, meta, options }) => {
           <RadioButton
             key={option.id}
             value={String(option.id)}
-            rootColor='#fff'
+            rootColor='#000'
             pointColor='#000'
           >
             {option.name}
