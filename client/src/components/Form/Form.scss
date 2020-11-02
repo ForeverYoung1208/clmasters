@@ -6,14 +6,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  .form__error {
+  .field__error {
     @include error-text;
   }
   .field-wrapper {
     position: relative;
     margin-bottom: 0.5rem;
   }
-  .form__error {
+  .field__error {
     font-size: $font-size-smaller;
     font-weight: bold;
     display: inline-block;

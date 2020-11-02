@@ -61,7 +61,8 @@ export const admindataChanged = ({ sectionKey, data } , setEdittingItemId) => {
 
       const resData = await res.json()
 
-      res.status === 200
+      // res.status === 200
+      res.ok
         ? dispatch(postAdmindataOk({ sectionKey, data:resData }))
         : dispatch(setErrorMessage(JSON.stringify(resData)))
       
