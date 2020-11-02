@@ -4,9 +4,8 @@ const { CRUDController } = require('./common/CRUDController')
 const { noTimestamps, timeStrToWords } = require('../shared/services')
 const sendEmail = require('../shared/mailjet')
 
-// const { format } = require('date-fns')
-const { uk } = require('date-fns/locale')
 const { utcToZonedTime, format } = require('date-fns-tz')
+const timeZone = 'Europe/Kiev'
 
 
 class OrdersController extends CRUDController{
@@ -68,10 +67,12 @@ class OrdersController extends CRUDController{
     })
 
     const { master, clock } = newOrders[0]
+
+    const ukrTime = utcToZonedTime(newOrders[0].onTime, timeZone)
     const ukrTimeStr = format(
-      newOrders[0].onTime,
+      ukrTime,
       'dd.MM.yyyy HH:mm',
-      { locale: uk, timeZone: 'Europe/Kiev' }
+      { timeZone: timeZone }
     )
 
     console.log(ukrTimeStr)
