@@ -4,8 +4,10 @@ const { CRUDController } = require('./common/CRUDController')
 const { noTimestamps, timeStrToWords } = require('../shared/services')
 const sendEmail = require('../shared/mailjet')
 
-const { format } = require('date-fns')
+// const { format } = require('date-fns')
 const { uk } = require('date-fns/locale')
+const { utcToZonedTime, format } = require('date-fns-tz')
+
 
 class OrdersController extends CRUDController{
   constructor(model){
@@ -66,6 +68,14 @@ class OrdersController extends CRUDController{
     })
 
     const { master, clock } = newOrders[0]
+    const ukrTimeStr = format(
+      newOrders[0].onTime,
+      'dd.MM.yyyy HH:mm',
+      { locale: uk, timeZone: 'Europe/Kiev' }
+    )
+
+    console.log(ukrTimeStr)
+
 
     const emailResult = await sendEmail(
       {
@@ -76,7 +86,7 @@ class OrdersController extends CRUDController{
         <div>User Name: ${user.name}</div>
         <div>User Email: ${user.email}</div>
         <div>City: ${master.city.name}</div>
-        <div>On Time: ${ format(newOrders[0].onTime, 'dd.MM.yyyy HH:mm', {locale:uk})  }</div>
+        <div>On Time: ${ukrTimeStr}</div>
         <div>
           Clock Type: ${clock.type}, 
           repair time: ${timeStrToWords(clock.repairTime)}
