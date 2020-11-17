@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useCallback } from "react";
 import { Field, reduxForm } from "redux-form";
 import { RenderFieldInput } from "../../../../components/ReduxForm/RenderFieldInput/RenderFieldInput";
 import { validators } from "../../../../shared/validators/baseValidator";
@@ -7,6 +8,12 @@ let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
   useEffect(() => {
     initialize(user)
   }, [initialize, user])
+
+  const changeIsAdminHandler = useCallback((e, newValue, previousValue, name) => {
+    if (previousValue === false && newValue === true) {
+      prompt('provide password')
+    }
+  },[])
 
   return (
     <form
@@ -27,12 +34,14 @@ let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
         validate={[ validators.required ]}
       />
 
-      {/* TODO : make boolean!! */}
       <Field
         name='isAdmin'
         component={RenderFieldInput}
-        className = 'items-list__item-field item-narrow'
+        type = 'checkbox'
+        className='items-list__item-field item-narrow'
+        onChange = {changeIsAdminHandler}
       />
+
       <button className='items-list__save-button' type='submit'>Save</button>
 
     </form>

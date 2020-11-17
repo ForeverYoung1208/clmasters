@@ -2,8 +2,9 @@ import React from 'react'
 import { useCallback } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ItemsList } from '../../../components/ItemsList/ItemsList'
+import { AiOutlineCheck } from 'react-icons/ai';
 
+import { ItemsList } from '../../../components/ItemsList/ItemsList'
 import { admindataChanged, admindataDelete } from '../../../store/actions/admin'
 import { myCofirm } from '../../../shared/js/myConfirm/myConfirm'
 
@@ -41,7 +42,9 @@ export const UsersBlock = () => {
           name: ['User Name ', 'item-medium'],
           email: ['Email', 'item-wide'],
           isAdmin: ['Is Admin', 'item-narrow', (isAdmin) => {
-            return isAdmin ? 'true' : 'false'
+            return isAdmin
+              ? <AiOutlineCheck/>
+              : ' '
           }],
         }}
         deleteItem={deleteHandler}
