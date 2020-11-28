@@ -9,7 +9,15 @@ import { RenderFieldTime } from "../../../../components/ReduxForm/RenderFieldTim
 
 let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
   useEffect(() => {
-    initialize(order)
+    // initialize(order)
+    order
+      ? initialize(order)
+      : initialize({
+        clockId: -1,
+        masterId: -1,
+        userId: -1
+      })
+
   }, [initialize, order])
 
   const { clocks, masters, users } = useSelector((store) => store.admin)
@@ -31,21 +39,21 @@ let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
         component={RenderFieldSelect}
         options={clocks}
         className='items-list__item-field item-narrow'
-        validate={[ validators.required ]}
+        validate={[ validators.selected ]}
       />
       <Field
         name='masterId'
         component={RenderFieldSelect}
         options={masters}
         className='items-list__item-field item-medium'
-        validate={[ validators.required ]}
+        validate={[ validators.selected ]}
       />
       <Field
         name='userId'
         component={RenderFieldSelect}
         options={users}
         className='items-list__item-field item-narrow'
-        validate={[ validators.required ]}
+        validate={[ validators.selected ]}
       />
       <Field
         name='comment'

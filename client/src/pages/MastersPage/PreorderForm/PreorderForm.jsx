@@ -42,7 +42,7 @@ export const PreorderForm = () => {
     minTime: new Date()     //now!
   })
  
-  const [validationErrors, setValidationErrors] = useState()
+  const [validationErrors, setValidationErrors] = useState({isAllValid: true})
   const isLoading = loaders?.preorder
   const cities = [{id:-1}, ...vocabluaries.cities];
   const clocks = [{ id: -1 }, ...vocabluaries.clocks];
@@ -85,21 +85,6 @@ export const PreorderForm = () => {
       [e.target.name]: e.target.value
     })
   }
-  
-  const submitHandler = async (e) => {
-    e.preventDefault() 
-
-    const preorder =  {
-      cityId: formData.cityId,
-      clockTypeId: formData.clockTypeId,
-      email: formData.email,
-      name: formData.name,
-      orderDateTime: formData.orderDateTime
-    }
-
-    dispatch(postPreorder(preorder))
-
-  };  
 
   const validator = new Validator(
     [{
@@ -119,6 +104,23 @@ export const PreorderForm = () => {
       tests:[ validators.selected ]
     }]
   )
+  const submitHandler = async (e) => {
+    e.preventDefault() 
+    if (!validator.isAllValid(formData)) return;
+    
+    const preorder =  {
+      cityId: formData.cityId,
+      clockTypeId: formData.clockTypeId,
+      email: formData.email,
+      name: formData.name,
+      orderDateTime: formData.orderDateTime
+    }
+
+    dispatch(postPreorder(preorder))
+
+  };  
+
+
 
   const validate=(fieldName)=>{
     validator.testField(fieldName)(formData[fieldName])

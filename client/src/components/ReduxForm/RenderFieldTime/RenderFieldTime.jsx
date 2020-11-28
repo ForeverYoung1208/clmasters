@@ -9,7 +9,7 @@ export const RenderFieldTime = ({ className, input, placeholder, meta}) => {
   
   const selectedDate = input.value
     ? new Date(input.value)
-    : new Date()
+    : ''
 
   return <span className='field-wrapper'>
     <FieldError meta={meta}/>
