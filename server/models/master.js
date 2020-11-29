@@ -1,7 +1,6 @@
 'use strict'
-const {
-  Model
-} = require('sequelize')
+const { Model } = require('sequelize')
+
 const { timestrToMSec } = require('../shared/services')
 const roundToMinute = require('date-fns/roundToNearestMinutes')
 
@@ -60,7 +59,6 @@ module.exports = (sequelize, DataTypes) => {
       return freeMastersInCity
     }
 
-
     static associate(models) {
       this.belongsTo(models.City, {
         as: 'city',
@@ -70,7 +68,6 @@ module.exports = (sequelize, DataTypes) => {
         as: 'orders',
         foreignKey: { name: 'masterId'}
       })
-      // define association here
     }
   }
   Master.init({

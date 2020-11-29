@@ -35,11 +35,14 @@ class OrdersController extends CRUDController{
       user.save()
       data.userId = user.id
     }
-
-    const _newOrder = await Order.create(data)
-    if (!_newOrder) return res.status(500).json({
-      message: 'Orders controller: not created'
-    })
+    
+    try {
+      var _newOrder = await Order.create(data)
+    } catch (error) {
+      return res.status(400).json({
+        error: error.message
+      })      
+    }
 
     const newOrders = await Order.findAll({
       where: {id: _newOrder.dataValues.id },

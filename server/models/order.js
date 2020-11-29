@@ -1,12 +1,12 @@
 'use strict'
-const {
-  Model, Op
-} = require('sequelize')
-const { startOfDay, endOfDay} = require('date-fns')
+const { Model, Op } = require('sequelize')
+const { startOfDay, endOfDay } = require('date-fns')
+const orderValidators = require('./validators/orderValidators')
+
 
 module.exports = (sequelize, DataTypes) => {
+  
   class Order extends Model {
-
     
     static async getAtDate(dateStr) { 
       const { startOfDay, endOfDay } = require('date-fns')
@@ -45,8 +45,6 @@ module.exports = (sequelize, DataTypes) => {
       return orders
     }
 
-
-
     static associate(models) {
       // define association here
       this.belongsTo(models.User, {
@@ -64,18 +62,33 @@ module.exports = (sequelize, DataTypes) => {
       
     }
   }
-  Order.init({
-    clockId: DataTypes.INTEGER,
-    masterId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
-    comment: DataTypes.STRING,
-    onTime: DataTypes.DATE,
-    // allocatedTime: DataTypes.TIME, //?
-    deletedAt: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'Order',
-    paranoid: true,
-  })
+  
+  Order.init(
+    {
+      clockId: DataTypes.INTEGER,
+      masterId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
+      comment: DataTypes.STRING,
+      onTime: DataTypes.DATE,
+      deletedAt: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: 'Order',
+      paranoid: true,
+      validate: {
+        async isMasterFree(){ await orderValidators.checkMasterIsFree(sequelize, this)}
+      },
+    }
+  )
+  
+  
+  // example of defining hooks. Great thing, for future knowledge.
+  
+  // Order.addHook('beforeCreate', 'checkMasterBeforeCreate', order => orderValidators.checkMasterIsFree(sequelize,order))
+  // Order.addHook('beforeUpdate', 'checkMasterBeforeUpdate', order => orderValidators.checkMasterIsFree(sequelize,order))
+    
+
+
   return Order
 }
