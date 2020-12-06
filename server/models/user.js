@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       let newUser = await User.create({ name, email, isAdmin: false })
       return newUser
     }
-
+    
     static async getByEmail(email) {
       const user = await User.findOne({ where: { email: email } })
       if (!user) return { error: 'User email not found' }

@@ -28,11 +28,8 @@ class UsersController extends CRUDController{
         message: `CDUD controller: error with deletion model id:${id}: ${error.name}`
       })
     }
-
-
-    
   }  
-  
+    
   putValidators() {
     return [
       check('name', 'name must be not empty!').exists().notEmpty(),
@@ -45,7 +42,15 @@ class UsersController extends CRUDController{
       check('name', 'name must be not empty!').exists().notEmpty(),
       check('email', 'Email must be an email!').isEmail(),
     ]
-  }  
+  } 
+  
+  // postValidatorsPermitIsAdmin() {
+  //   return [
+  //     check('name', 'name must be not empty!').exists().notEmpty(),
+  //     check('email', 'Email must be an email!').isEmail(),
+  //     check('isAdmin', 'Email must be an email!').not().exists({checkFalsy:true}),
+  //   ]
+  // }  
   
 }
 

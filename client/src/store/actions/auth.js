@@ -26,7 +26,6 @@ export const authLoginUser = (credentials) => {
   }
 }
 
-
 export const authLogoutUser = () => {
   LS.removeItem('user')
 	return {

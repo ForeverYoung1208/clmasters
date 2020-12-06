@@ -1,20 +1,24 @@
-import React, { useEffect } from "react";
-import { useCallback } from "react";
-import { Field, reduxForm } from "redux-form";
-import { RenderFieldInput } from "../../../../components/ReduxForm/RenderFieldInput/RenderFieldInput";
-import { validators } from "../../../../shared/validators/baseValidator";
+import React, { useEffect } from "react"
+import { connect } from "react-redux"
+import { Field, formValueSelector, reduxForm } from "redux-form"
+import { RenderFieldInput } from "../../../../components/ReduxForm/RenderFieldInput/RenderFieldInput"
+import { validators } from "../../../../shared/validators/baseValidator"
 
-let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
+let UserEditForm = ({
+  handleSubmit,
+  item: user,
+  initialize,
+  isAdminValue  
+}) => {
   useEffect(() => {
-    initialize(user)
-  }, [initialize, user])
-
-  const changeIsAdminHandler = useCallback((e, newValue, previousValue, name) => {
-    if (previousValue === false && newValue === true) {
-      prompt('provide password')
+    if (isAdminValue === undefined) {
+      initialize(user)
+    } else {
+      initialize({...user, isAdmin:isAdminValue})
     }
-  },[])
-
+    
+  }, [initialize, user, isAdminValue])
+  
   return (
     <form
       className='items-list__edit-form'
@@ -39,15 +43,40 @@ let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
         component={RenderFieldInput}
         type = 'checkbox'
         className='items-list__item-field item-narrow'
-        onChange = {changeIsAdminHandler}
       />
+      
+      {isAdminValue &&
+        <>
+          <span>password: </span>
+          <Field
+            name='password'
+            type='password'
+            component={RenderFieldInput}
+            className='items-list__item-field item-narrow'
+            validate={[ validators.required, validators.minLength2 ]}
+          />
+        </>
+      }
+      
 
       <button className='items-list__save-button' type='submit'>Save</button>
 
     </form>
   )
 }
-export default reduxForm({
+
+UserEditForm = reduxForm({
   form: 'editUser',
 })(UserEditForm)
+
+const selector = formValueSelector('editUser')
+
+UserEditForm = connect(state => {
+  const isAdminValue = selector(state, 'isAdmin')
+  return {
+    isAdminValue
+  }
+})(UserEditForm)
+
+export default UserEditForm
 
