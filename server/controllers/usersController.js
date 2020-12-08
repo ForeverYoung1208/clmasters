@@ -43,15 +43,7 @@ class UsersController extends CRUDController{
       check('email', 'Email must be an email!').isEmail(),
     ]
   } 
-  
-  // postValidatorsPermitIsAdmin() {
-  //   return [
-  //     check('name', 'name must be not empty!').exists().notEmpty(),
-  //     check('email', 'Email must be an email!').isEmail(),
-  //     check('isAdmin', 'Email must be an email!').not().exists({checkFalsy:true}),
-  //   ]
-  // }  
-  
+ 
 }
 
 exports.usersController = new UsersController(User)

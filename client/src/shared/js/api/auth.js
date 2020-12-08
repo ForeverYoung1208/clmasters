@@ -13,21 +13,6 @@ export const apiLoginUser = async (credentials) => {
   }
 }
 
-// export const apiRegisterUser = async (credentials, isAdmin) => {
-//   alert ('sending to server:' + JSON.stringify(credentials) + JSON.stringify(isAdmin))
-  
-//   try {
-//     const res = await myHttp('/api/auth/login', 'POST', { ...credentials })
-//     const { user, message } = await res.json()
-//     if (!res.ok) return message
-//     return user
-
-//   } catch (error) {
-//     return error
-//   }  
-// }
-
-
 export const apiAuthUserByToken = async () => {
   try {
     const { user } = await myHttp('/api/auth/byToken', 'GET').then(u => u.json())

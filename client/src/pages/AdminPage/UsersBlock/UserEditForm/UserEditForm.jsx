@@ -16,8 +16,7 @@ let UserEditForm = ({
     } else {
       initialize({...user, isAdmin:isAdminValue})
     }
-    
-  }, [initialize, user, isAdminValue])
+  },[])
   
   return (
     <form
