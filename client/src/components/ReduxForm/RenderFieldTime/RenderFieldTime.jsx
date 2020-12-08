@@ -7,13 +7,14 @@ import { isSameDay, startOfDay, endOfDay } from 'date-fns'
 registerLocale('uk', uk)
 
 export const RenderFieldTime = ({ className, input, placeholder, meta }) => {
+  const datePickerTimeIntervals = 60
+  const now = useMemo(() => new Date(), [])
+  const [minTime, setMinTime] = useState(new Date())
+  const maxTime = useMemo(() => endOfDay(new Date()), [])
+
   let selectedDate = ''
   input.value && (selectedDate = new Date(input.value))
 
-  const now = useMemo(() => new Date(), [])
-  
-  const [minTime, setMinTime] = useState(new Date())
-  const maxTime = useMemo(() => endOfDay(new Date()), [])
 
   const changeDateHandler = useCallback(
     (value) => {
@@ -37,7 +38,7 @@ export const RenderFieldTime = ({ className, input, placeholder, meta }) => {
         className={className}
         dateFormat="dd.MM.yyyy HH:mm"
         locale={uk}
-        timeIntervals={60}
+        timeIntervals={datePickerTimeIntervals}
         showTimeSelect
         autoComplete="off"
         minDate={now}

@@ -1,6 +1,6 @@
 require('dotenv').config()
 const bcrypt = require('bcryptjs')
-const SALTROUNDS = process.env.SECUR_SALTROUNDS
+const SALTROUNDS =  parseInt(process.env.SECUR_SALTROUNDS)
 
 
 module.exports = {
