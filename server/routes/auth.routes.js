@@ -1,6 +1,6 @@
-const { Router } = require('express')
-const { authController } = require('../controllers/authController')
-const { accessTokenToEmail } = require('../middleware/accessTokenToEmail')
+import { Router } from 'express'
+import authController from '../controllers/authController.js'
+import accessTokenToEmail from '../middleware/accessTokenToEmail.js'
 
 const router = Router()
 
@@ -23,4 +23,4 @@ router.post(
 )
 
 
-module.exports = router
+export default router

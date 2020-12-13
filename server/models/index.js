@@ -1,12 +1,15 @@
-'use strict'
+import fs from 'fs'
+import path from 'path'
+import Sequelize from 'sequelize'
+import configs from '../config/configDB.js'
 
-const fs = require('fs')
-const path = require('path')
-const Sequelize = require('sequelize')
-const basename = path.basename(__filename)
+const basename = path.basename(import.meta.url)
+const __dirname = path.dirname(import.meta.url).slice(7)  // throw out 'file://'
+
 const env = process.env.NODE_ENV || 'development'
-const config = require(__dirname + '/../config/configDB')[env]
-const db = {}
+
+const config = configs[env]
+const models = {}
 
 let sequelize
 if (config.use_env_variable) {
@@ -32,18 +35,20 @@ fs
   .filter(file => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js')
   })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes)
-    db[model.name] = model
+  .forEach(async (file) => {
+    const model = await import(path.join(__dirname, file))
+    model(sequelize, Sequelize.DataTypes)
+    models[model.name] = model
   })
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db)
+Object.keys(models).forEach(modelName => {
+  if (models[modelName].associate) {
+    models[modelName].associate(models)
   }
 })
 
-db.sequelize = sequelize
-db.Sequelize = Sequelize
+models.sequelize = sequelize
+models.Sequelize = Sequelize
 
-module.exports = db
+export default models
+

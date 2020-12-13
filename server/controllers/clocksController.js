@@ -1,9 +1,13 @@
-const { Clock } = require('../models/index')
-const { CRUDController } = require('./common/CRUDController')
+import models from '../models/index.js'
+import CRUDController from './common/CRUDController.js'
+
+const { Clock } = models
+
+
 class ClocksController extends CRUDController{
   constructor(model) {
     super(model)
   }
 }
 
-exports.clocksController = new ClocksController(Clock)
+export default new ClocksController(Clock)

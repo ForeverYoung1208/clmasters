@@ -1,7 +1,9 @@
-const { check, validationResult } = require('express-validator')
+import { check, validationResult } from 'express-validator'
 
-const { Master } = require('../models/index')
-const { CRUDController } = require('./common/CRUDController')
+import models from '../models/index.js'
+import CRUDController from './common/CRUDController.js'
+
+const { Master } = models
 
 class PreordersController extends CRUDController{
   
@@ -29,4 +31,4 @@ class PreordersController extends CRUDController{
   }
 }
 
-exports.preordersController = new PreordersController()
+export default new PreordersController()

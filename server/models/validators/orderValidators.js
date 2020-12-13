@@ -19,4 +19,4 @@ const checkMasterIsFree = async (sequelize, order) => {
     return Promise.reject(new Error('The master is busy at given time'))
 }
   
-module.exports = { checkMasterIsFree }
+export { checkMasterIsFree }

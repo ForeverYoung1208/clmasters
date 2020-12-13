@@ -1,11 +1,10 @@
-const { validationResult } = require('express-validator')
-const { noTimestamps } = require('../../shared/services')
+import { validationResult } from 'express-validator'
+import { noTimestamps } from '../../shared/services.js'
 
 class CRUDController{
   constructor(model){
     this.model = model
   }
-
 
   async getAll(req, res) {
     const models = await this.model.findAll({
@@ -82,4 +81,4 @@ class CRUDController{
  
 }
 
-exports.CRUDController = CRUDController
+export default CRUDController

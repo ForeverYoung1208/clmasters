@@ -1,6 +1,5 @@
-const { Router } = require('express')
-
-const { clocksController } = require('../controllers/clocksController')
+import { Router } from 'express'
+import clocksController from '../controllers/clocksController.js'
 
 const router = Router()
 
@@ -9,4 +8,4 @@ router.get(
   async (req, res) => clocksController.getAll(req, res)
 )
 
-module.exports = router
+export default router

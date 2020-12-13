@@ -1,6 +1,9 @@
-const { check } = require('express-validator')
-const { User } = require('../models')
-const { CRUDController } = require('./common/CRUDController')
+import { check } from 'express-validator'
+import models from '../models/index.js'
+import CRUDController from './common/CRUDController.js'
+
+const { User } = models
+
 
 class UsersController extends CRUDController{
   constructor(model){
@@ -46,4 +49,4 @@ class UsersController extends CRUDController{
  
 }
 
-exports.usersController = new UsersController(User)
+export default new UsersController(User)

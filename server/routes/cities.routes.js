@@ -1,7 +1,6 @@
-const { Router } = require('express')
-
-const { citiesController } = require('../controllers/citiesController')
-const { accessTokenToEmail } = require('../middleware/accessTokenToEmail')
+import { Router } from 'express'
+import citiesController from '../controllers/citiesController.js'
+import accessTokenToEmail from '../middleware/accessTokenToEmail.js'
 
 const router = Router()
 
@@ -30,4 +29,4 @@ router.delete(
   async (req, res) => citiesController.delete(req, res)
 )
 
-module.exports = router
+export default router

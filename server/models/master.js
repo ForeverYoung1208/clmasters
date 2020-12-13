@@ -1,10 +1,12 @@
 'use strict'
-const { Model } = require('sequelize')
+import sequelize from 'sequelize'
+import dateFns from 'date-fns'
+import { timestrToMSec } from '../shared/services.js'
 
-const { timestrToMSec } = require('../shared/services')
-const roundToMinute = require('date-fns/roundToNearestMinutes')
+const {roundToNearestMinutes} = dateFns
+const { Model } = sequelize
 
-module.exports = (sequelize, DataTypes) => {
+const model = (sequelize, DataTypes) => {
   class Master extends Model {
 
     static async freeMastersForOrder(preorderData) {
@@ -44,8 +46,8 @@ module.exports = (sequelize, DataTypes) => {
         )
 
         if (
-          (roundToMinute(orderDateTimeStarts) < roundToMinute(existingOrderEnds))
-          && (roundToMinute(orderDateTimeEnds) > roundToMinute(existingOrder.onTime))
+          (roundToNearestMinutes(orderDateTimeStarts) < roundToNearestMinutes(existingOrderEnds))
+          && (roundToNearestMinutes(orderDateTimeEnds) > roundToNearestMinutes(existingOrder.onTime))
         ) { 
           acc.push( +existingOrder.masterId)
         }
@@ -83,3 +85,5 @@ module.exports = (sequelize, DataTypes) => {
   })
   return Master
 }
+
+export default model

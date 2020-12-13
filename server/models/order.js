@@ -1,10 +1,11 @@
 'use strict'
-const { Model, Op } = require('sequelize')
-const { startOfDay, endOfDay } = require('date-fns')
-const orderValidators = require('./validators/orderValidators')
+import sequelize  from 'sequelize'
+import { startOfDay, endOfDay } from 'date-fns'
+import { checkMasterIsFree } from './validators/orderValidators.js'
 
+const { Model, Op } = sequelize
 
-module.exports = (sequelize, DataTypes) => {
+const model = (sequelize, DataTypes) => {
   
   class Order extends Model {
     
@@ -77,7 +78,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Order',
       paranoid: true,
       validate: {
-        async isMasterFree(){ await orderValidators.checkMasterIsFree(sequelize, this)}
+        async isMasterFree(){ await checkMasterIsFree(sequelize, this)}
       },
     }
   )
@@ -87,8 +88,8 @@ module.exports = (sequelize, DataTypes) => {
   
   // Order.addHook('beforeCreate', 'checkMasterBeforeCreate', order => orderValidators.checkMasterIsFree(sequelize,order))
   // Order.addHook('beforeUpdate', 'checkMasterBeforeUpdate', order => orderValidators.checkMasterIsFree(sequelize,order))
-    
-
 
   return Order
 }
+
+export default model

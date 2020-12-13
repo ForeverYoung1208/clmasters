@@ -1,5 +1,7 @@
-require('dotenv').config()
-const bcrypt = require('bcryptjs')
+import dotenv from 'dotenv'
+import bcrypt from 'bcryptjs'
+
+dotenv.config()
 
 const SALTROUNDS =  parseInt(process.env.SECUR_SALTROUNDS)
 
@@ -14,4 +16,4 @@ const encodePassword = async (req, res, next) => {
   
 }
 
-exports.encodePassword = encodePassword
+export default encodePassword

@@ -1,7 +1,9 @@
-const { Model } = require('sequelize')
-const bcrypt = require('bcryptjs')
+import sequelize from 'sequelize'
+import bcrypt from 'bcryptjs'
 
-module.exports = (sequelize, DataTypes) => {
+const { Model } = sequelize
+
+const model = (sequelize, DataTypes) => {
   class User extends Model {
 
     static async register(name, email) {
@@ -73,3 +75,5 @@ module.exports = (sequelize, DataTypes) => {
 
   return User
 }
+
+export default model

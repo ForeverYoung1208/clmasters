@@ -1,10 +1,10 @@
 'use strict'
-const {
-  Model
-} = require('sequelize')
-const { timestrToMSec } = require('../shared/services')
+import sequelize from 'sequelize'
+import { timestrToMSec } from '../shared/services.js'
 
-module.exports = (sequelize, DataTypes) => {
+const { Model } = sequelize
+
+const model = (sequelize, DataTypes) => {
   class Clock extends Model {
     
     static async maxRepairTimeMsec() {
@@ -35,3 +35,5 @@ module.exports = (sequelize, DataTypes) => {
   })
   return Clock
 }
+
+export default model

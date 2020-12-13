@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
 const JWTSECRET = process.env.SECUR_JWTSECRET
 
 const accessTokenToEmail = (req, res, next) => {
@@ -18,4 +18,4 @@ const accessTokenToEmail = (req, res, next) => {
   
 }
 
-exports.accessTokenToEmail = accessTokenToEmail
+export default accessTokenToEmail

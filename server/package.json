@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "clock masters management",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "server": "nodemon app.js",
     "dev": "NODE_ENV=development concurrently \"yarn server\" \"yarn client\"",

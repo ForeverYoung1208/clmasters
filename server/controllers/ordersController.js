@@ -1,11 +1,15 @@
-const { check, validationResult } = require('express-validator')
-const { Order, User, Master, Clock, City } = require('../models')
-const { CRUDController } = require('./common/CRUDController')
-const { noTimestamps, timeStrToWords } = require('../shared/services')
-const sendEmail = require('../shared/mailjet')
+import { check, validationResult } from 'express-validator'
+import DateFnsTz from 'date-fns-tz'
 
-const { utcToZonedTime, format } = require('date-fns-tz')
+import models from '../models/index.js'
+import CRUDController from './common/CRUDController.js'
+import { noTimestamps, timeStrToWords } from '../shared/services.js'
+import sendEmail from '../shared/mailjet.js'
+
+const { utcToZonedTime, format } = DateFnsTz
 const timeZone = 'Europe/Kiev'
+
+const { Order, User, Master, Clock, City } = models
 
 
 class OrdersController extends CRUDController{
@@ -170,4 +174,4 @@ class OrdersController extends CRUDController{
 }
 
 
-exports.ordersController = new OrdersController(Order)
+export default new OrdersController(Order)

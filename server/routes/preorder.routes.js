@@ -1,6 +1,6 @@
-const { Router } = require('express')
+import { Router } from 'express'
 
-const { preordersController } = require('../controllers/preordersController')
+import preordersController from '../controllers/preordersController.js'
 
 const router = Router()
 
@@ -10,4 +10,4 @@ router.post(
   async (req, res) => await preordersController.post(req, res)
 )
 
-module.exports = router
+export default router

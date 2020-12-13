@@ -1,17 +1,22 @@
-const { User } = require('../models')
+import models from '../models/index.js'
 
-const { check, validationResult } = require('express-validator')
-const jwt = require('jsonwebtoken')
+import { check, validationResult } from 'express-validator'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
 
-require('dotenv').config()
 
-const TokenStorage = require('../shared/tokenStorage')
-const { noTimestamps } = require('../shared/services')
+import { noTimestamps } from '../shared/services.js'
+import TokenStorage from '../shared/tokenStorage.js'
+
+dotenv.config()
+
+const { User } = models
+
+
 const _tokenStorage = new TokenStorage()
 
 const JWTSECRET = process.env.SECUR_JWTSECRET
 const JWTSECRET_REFRESH = process.env.SECUR_JWTSECRET_REFRESH
-
 
 class AuthController{
   constructor(tokenStorage) { 
@@ -101,4 +106,4 @@ class AuthController{
 }
 
 
-exports.authController = new AuthController(_tokenStorage)
+export default new AuthController(_tokenStorage)

@@ -19,4 +19,4 @@ class TokenStorage {
   
 }
 
-module.exports = TokenStorage
+export default TokenStorage

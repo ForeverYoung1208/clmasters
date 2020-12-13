@@ -1,5 +1,6 @@
-const mailjet = require('node-mailjet')
-  .connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE)
+import mailjet from 'node-mailjet'
+
+mailjet.connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE)
 
 const sendEmail = ({ toEmail, HTMLPart }) => { 
 
@@ -26,5 +27,5 @@ const sendEmail = ({ toEmail, HTMLPart }) => {
   return request
 }
 
-module.exports = sendEmail
+export default sendEmail
 

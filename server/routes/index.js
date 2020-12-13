@@ -1,19 +1,24 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
 const routes = {}
-const basename = path.basename(__filename)
+const basename = path.basename(import.meta.url)
+const __dirname = path.dirname(import.meta.url).slice(7)  // throw out 'file://'
+
 
 fs
   .readdirSync(__dirname)
   .filter(file => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js')
   })
-  .forEach(file => {
-    const route = require(path.join(__dirname, file))
+  .forEach(async (file) => {
+    
+    const route = await import(path.join(__dirname, file))
     const name = file.split('.')[0]
-    routes[name] = route
+    console.log('[>>>>>>>>>>>route]', route)
+    routes[name] = route.default
     
   })
 
-module.exports = routes
+
+export { routes }

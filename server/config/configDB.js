@@ -1,4 +1,7 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 const {
   DB_PORT,
   DB_HOST,
@@ -6,24 +9,24 @@ const {
   DB_PASS} = process.env
 
 
-const configDB = 
+const configsDB = 
 {
-  "development": {
-    "username": DB_USER,
-    "password": DB_PASS,
-    "database": "clmasters_development",
-    "host": DB_HOST,
-    "port": DB_PORT,
-    "dialect": "postgres"
+  'development': {
+    'username': DB_USER,
+    'password': DB_PASS,
+    'database': 'clmasters_development',
+    'host': DB_HOST,
+    'port': DB_PORT,
+    'dialect': 'postgres'
   },
-  "production": {
-    "username": DB_USER,
-    "password": DB_PASS,
-    "database": "clmasters_production",
-    "host": DB_HOST,
-    "port": DB_PORT,
-    "dialect": "postgres"
+  'production': {
+    'username': DB_USER,
+    'password': DB_PASS,
+    'database': 'clmasters_production',
+    'host': DB_HOST,
+    'port': DB_PORT,
+    'dialect': 'postgres'
   }
 }
 
-module.exports = configDB
+export default configsDB

@@ -1,6 +1,6 @@
-const { Router } = require('express')
-const { mastersController } = require('../controllers/mastersController')
-const { accessTokenToEmail } = require('../middleware/accessTokenToEmail')
+import { Router } from 'express'
+import mastersController from '../controllers/mastersController.js'
+import accessTokenToEmail from '../middleware/accessTokenToEmail.js'
 
 const router = Router()
 
@@ -29,4 +29,4 @@ router.delete(
   async (req, res) => mastersController.delete(req, res)
 )
 
-module.exports = router
+export default router
