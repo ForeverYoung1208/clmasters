@@ -11,6 +11,9 @@ let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
 
   useEffect(() => {
     initialize({ ...user, password: '' })
+    // pass empty dependencies array because we need 
+    // to initialize form values only once.
+    // eslint-disable-next-line
   }, [])
 
   return (
