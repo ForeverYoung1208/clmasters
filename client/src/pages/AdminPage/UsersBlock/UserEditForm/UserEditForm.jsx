@@ -8,15 +8,20 @@ let UserEditForm = ({
   handleSubmit,
   item: user,
   initialize,
-  isAdminValue  
+  isAdminValue = false
 }) => {
+  
+
+  console.log('[isAdminValue]', isAdminValue)
+
   useEffect(() => {
-    if (isAdminValue === undefined) {
-      initialize(user)
-    } else {
+    if (isAdminValue) {
       initialize({...user, isAdmin:isAdminValue})
+    } else {
+      initialize(user)
     }
-  },[])
+  }, [])
+  
   
   return (
     <form
