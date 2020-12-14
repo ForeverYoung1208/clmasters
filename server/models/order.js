@@ -3,12 +3,9 @@ const { Model, Op } = require('sequelize')
 const { startOfDay, endOfDay } = require('date-fns')
 const orderValidators = require('./validators/orderValidators')
 
-
 module.exports = (sequelize, DataTypes) => {
-  
   class Order extends Model {
-    
-    static async getAtDate(dateStr) { 
+    static async getAtDate(dateStr) {
       const { startOfDay, endOfDay } = require('date-fns')
       const givenDateTime = new Date(dateStr)
       const ds = startOfDay(givenDateTime)
@@ -16,15 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       const orders = await this.findAll({
         where: {
           onTime: {
-            [Op.between]: [ds, de]
-          }
-        }
+            [Op.between]: [ds, de],
+          },
+        },
       })
       return orders
     }
 
     static async withinInterval({ dateFrom, dateTo }) {
-      
       const Clock = sequelize.model('Clock')
 
       const ds = startOfDay(dateFrom)
@@ -33,13 +29,15 @@ module.exports = (sequelize, DataTypes) => {
       const orders = await this.findAll({
         where: {
           onTime: {
-            [Op.between]: [ds, de]
-          }
+            [Op.between]: [ds, de],
+          },
         },
-        include: [{
-          model: Clock, 
-          as: 'clock'
-        }]
+        include: [
+          {
+            model: Clock,
+            as: 'clock',
+          },
+        ],
       })
 
       return orders
@@ -49,20 +47,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.User, {
         as: 'user',
-        foreignKey: {name: 'userId'}
+        foreignKey: { name: 'userId' },
       })
       this.belongsTo(models.Master, {
         as: 'master',
-        foreignKey: {name: 'masterId'}
+        foreignKey: { name: 'masterId' },
       })
       this.belongsTo(models.Clock, {
         as: 'clock',
-        foreignKey: {name: 'clockId'}
+        foreignKey: { name: 'clockId' },
       })
-      
     }
   }
-  
+
   Order.init(
     {
       clockId: DataTypes.INTEGER,
@@ -77,18 +74,16 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Order',
       paranoid: true,
       validate: {
-        async isMasterFree(){ await orderValidators.checkMasterIsFree(sequelize, this)}
+        async isMasterFree() {
+          await orderValidators.checkMasterIsFree(sequelize, this)
+        },
       },
     }
   )
-  
-  
+
   // example of defining hooks. Great thing, for future knowledge.
-  
   // Order.addHook('beforeCreate', 'checkMasterBeforeCreate', order => orderValidators.checkMasterIsFree(sequelize,order))
   // Order.addHook('beforeUpdate', 'checkMasterBeforeUpdate', order => orderValidators.checkMasterIsFree(sequelize,order))
-    
-
 
   return Order
 }

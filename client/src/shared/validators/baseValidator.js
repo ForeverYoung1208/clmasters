@@ -1,14 +1,6 @@
-export const minLength = (min) => (value) => {
-  if (value && value.length <= min) {
-    return `Must be longer than ${min} characters`
-  } else {
-    return null
-  }
-}
-
 export const minLength2 = (value) => {
   if (value && value.length <= 2) {
-    return minLength(2)(value)
+    return `Must be longer than 2 characters`
   } else {
     return null
   }
@@ -39,7 +31,6 @@ export const required = (value) => {
 }
 
 export const validators = {
-  minLength,
   minLength2,
   isEmail,
   selected,

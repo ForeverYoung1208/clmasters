@@ -11,10 +11,7 @@ export const RenderFieldTime = ({ className, input, placeholder, meta }) => {
   const now = useMemo(() => new Date(), [])
   const [minTime, setMinTime] = useState(new Date())
   const maxTime = useMemo(() => endOfDay(new Date()), [])
-
-  let selectedDate = ''
-  input.value && (selectedDate = new Date(input.value))
-
+  const { value } = input
 
   const changeDateHandler = useCallback(
     (value) => {
@@ -33,7 +30,7 @@ export const RenderFieldTime = ({ className, input, placeholder, meta }) => {
       <FieldError meta={meta} />
       <ReactDatePicker
         {...input}
-        value={selectedDate.toLocaleString('uk')}
+        value={value?.toLocaleString('uk')}
         placeholderText={placeholder}
         className={className}
         dateFormat="dd.MM.yyyy HH:mm"
