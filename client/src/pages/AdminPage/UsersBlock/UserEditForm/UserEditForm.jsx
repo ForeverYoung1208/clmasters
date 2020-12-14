@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
+import { connect, useSelector } from "react-redux"
 import { Field, formValueSelector, reduxForm } from "redux-form"
 import { RenderFieldInput } from "../../../../components/ReduxForm/RenderFieldInput/RenderFieldInput"
 import { validators } from "../../../../shared/validators/baseValidator"
@@ -8,18 +8,12 @@ let UserEditForm = ({
   handleSubmit,
   item: user,
   initialize,
-  isAdminValue = false
 }) => {
   
-
-  console.log('[isAdminValue]', isAdminValue)
+  const isAdminValue = useSelector(state => state.form.editUser?.values?.isAdmin)
 
   useEffect(() => {
-    if (isAdminValue) {
-      initialize({...user, isAdmin:isAdminValue})
-    } else {
-      initialize(user)
-    }
+    initialize({ ...user, password: '' })
   }, [])
   
   
@@ -71,15 +65,6 @@ let UserEditForm = ({
 
 UserEditForm = reduxForm({
   form: 'editUser',
-})(UserEditForm)
-
-const selector = formValueSelector('editUser')
-
-UserEditForm = connect(state => {
-  const isAdminValue = selector(state, 'isAdmin')
-  return {
-    isAdminValue
-  }
 })(UserEditForm)
 
 export default UserEditForm
