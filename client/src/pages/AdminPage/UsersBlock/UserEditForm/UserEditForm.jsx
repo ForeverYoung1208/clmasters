@@ -11,7 +11,7 @@ let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
 
   useEffect(() => {
     initialize({ ...user, password: '' })
-    // pass empty dependencies array because we need 
+    // pass empty dependencies array because we need
     // to initialize form values only once.
     // eslint-disable-next-line
   }, [])
@@ -47,7 +47,7 @@ let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
             type="password"
             component={RenderFieldInput}
             className="items-list__item-field item-narrow"
-            validate={[validators.required, validators.minLength2]}
+            validate={[validators.required, validators.minLength]}
           />
         </>
       )}

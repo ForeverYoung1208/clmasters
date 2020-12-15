@@ -28,7 +28,7 @@ let AuthForm = ({ handleSubmit }) => {
             name="password"
             type="password" //placeholder="enter password here"
             component={RenderFieldInput}
-            validate={[validators.required, validators.minLength2]}
+            validate={[validators.required, validators.minLength]}
           />
         </div>
 
