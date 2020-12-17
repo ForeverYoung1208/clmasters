@@ -47,7 +47,7 @@ let UserEditForm = ({ handleSubmit, item: user, initialize }) => {
             type="password"
             component={RenderFieldInput}
             className="items-list__item-field item-narrow"
-            validate={[validators.required, validators.minLength]}
+            validate={[validators.required, validators.minLength2]}
           />
         </>
       )}

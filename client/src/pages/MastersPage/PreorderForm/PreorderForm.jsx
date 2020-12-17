@@ -88,7 +88,7 @@ export const PreorderForm = () => {
   const validator = new Validator([
     {
       fieldName: 'name',
-      tests: [validators.required, validators.minLength]
+      tests: [validators.required, validators.minLength2]
     },
     {
       fieldName: 'email',

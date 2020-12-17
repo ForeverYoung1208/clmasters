@@ -1,11 +1,7 @@
-// arguments of this validator defined by the redux-form validator call
-export function minLength(value, obj, properties, fieldName, minLimit = 2) {
-  if (value && value.length <= minLimit) {
-    return `Must be longer than ${minLimit} characters`
-  } else {
-    return null
-  }
-}
+export const minLength2 = (value) =>
+  value && value.length <= 2
+    ? `Must be longer than 2 characters`
+    : undefined
 
 export const isEmail = (value) => {
   if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
@@ -32,7 +28,7 @@ export const required = (value) => {
 }
 
 export const validators = {
-  minLength,
+  minLength2,
   isEmail,
   selected,
   required,
