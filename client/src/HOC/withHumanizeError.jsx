@@ -6,6 +6,8 @@ export const withHumanizeError = (ErrorComponent) => (props) => {
   const errorsTranslations = [
     ['ForeignKeyConstraint', 'Can\'t delete: record is associated with another data'],
     ['email must be unique', 'Email must be unique'],
+    ['email must be unique', 'Email must be unique'],
+    ['The master is busy at given time', 'The master is busy at given time']
 
   ]
 
