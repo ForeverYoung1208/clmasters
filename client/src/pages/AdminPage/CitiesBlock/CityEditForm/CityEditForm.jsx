@@ -7,7 +7,7 @@ import { validators } from "../../../../shared/validators/baseValidator";
 let CityEditForm = ({ handleSubmit, item: city, initialize }) => {
   useEffect(() => {
     initialize(city)
-  }, [initialize, city])
+  }, [])
 
   return (
     <form
