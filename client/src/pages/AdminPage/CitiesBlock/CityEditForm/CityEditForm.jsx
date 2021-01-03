@@ -7,6 +7,7 @@ import { validators } from "../../../../shared/validators/baseValidator";
 let CityEditForm = ({ handleSubmit, item: city, initialize }) => {
   useEffect(() => {
     initialize(city)
+    // eslint-disable-next-line    
   }, [])
 
   return (

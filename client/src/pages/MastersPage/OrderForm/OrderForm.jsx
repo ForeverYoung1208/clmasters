@@ -26,7 +26,7 @@ let OrderForm = ({handleSubmit}) => {
               className='order-form__radio-group'
               validate={[ validators.required ]}
             />
-          <Button>Submit</Button>
+          <Button type="submit">Submit</Button>
         </Form>  
         : <div>
             No free masters in the given city at specified time was found.

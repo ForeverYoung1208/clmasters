@@ -2,12 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, compose, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import thunk from 'redux-thunk'
 import * as serviceWorker from './serviceWorker';
 
 
 import App from './App';
 import rootReducer from './store/reducers/rootReducer';
+import mainTheme from './shared/themes/mainTheme'
 
 import './index.scss';
 
@@ -27,10 +29,12 @@ export const store = createStore(
   )
 )
 
-
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ThemeProvider theme={mainTheme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
   </Provider>
   ,
   document.getElementById('root')

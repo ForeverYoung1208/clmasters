@@ -1,23 +1,20 @@
-import React from 'react';
-import PT from 'prop-types';
+import React from 'react'
+import MaterialButton from '@material-ui/core/Button'
 
-import './Button.scss';
+import './Button.scss'
 
 export const Button = (props) => {
-  
   const { className, ...restProps } = props
 
   return (
-    <button {...restProps} className={"btn-sm "+className}>
+    <MaterialButton
+      {...restProps}
+      variant="contained"
+      color="primary"
+      // className={"btn-sm" + className}>
+      className={className}
+    >
       {props.children}
-    </button>
-  );
-};
-
-Button.propTypes = {
-  onClick: PT.func,
-  children: PT.oneOfType([
-    PT.arrayOf(PT.node),
-    PT.node
-  ]).isRequired
-};
+    </MaterialButton>
+  )
+}
