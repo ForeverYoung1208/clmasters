@@ -23,7 +23,17 @@ export const CitiesBlock = () => {
       onAgree: () => dispatch(admindataDelete({ sectionKey: 'cities', id })),
       onCancel: () => null
     })
-  },[dispatch])
+  }, [dispatch])
+  
+  const saveHandler = useCallback((formData) => {
+    console.log('[formData]', formData)
+    if (!!formData.name.trim) {
+      formData.name = formData.name.trim()
+    }
+    dispatch(
+      admindataChanged({ sectionKey: 'cities', data: formData }, setEditCityId)
+    )
+  }, [dispatch])
 
 
   return (
@@ -37,9 +47,7 @@ export const CitiesBlock = () => {
           comment: ['Comment', 'item-wide'],
         }}
         deleteItem={deleteHandler}
-        saveItem={(formData) =>
-          dispatch(admindataChanged(
-            { sectionKey: 'cities', data: formData }, setEditCityId))}
+        saveItem={saveHandler}
         editItem={(id) => {
           setEditCityId(id)
           setIsAddingCity(false)
