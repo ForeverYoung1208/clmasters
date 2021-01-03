@@ -17,8 +17,10 @@ let OrderEditForm = ({ handleSubmit, item: order, initialize }) => {
         masterId: -1,
         userId: -1
       })
-
-  }, [initialize, order])
+    // pass empty dependencies array because we need
+    // to initialize form values only once.
+    // eslint-disable-next-line
+  }, [])
 
   const { clocks, masters, users } = useSelector((store) => store.admin)
     
