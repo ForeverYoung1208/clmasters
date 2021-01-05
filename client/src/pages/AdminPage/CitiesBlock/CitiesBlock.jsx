@@ -34,6 +34,8 @@ export const CitiesBlock = () => {
       admindataChanged({ sectionKey: 'cities', data: formData }, setEditCityId)
     )
   }, [dispatch])
+  
+  console.log('[editCityId]', editCityId)
 
 
   return (

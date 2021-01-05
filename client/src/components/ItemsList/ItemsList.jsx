@@ -31,7 +31,7 @@ export const ItemsList = ({
   isAddingItem,
   AddForm
 }) => {
-
+  
   return (
     
     <div className="items-list">

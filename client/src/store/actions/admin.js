@@ -11,6 +11,21 @@ import { apiDeleteEntity, apiPostEntity, apiPutEntity } from '../../shared/js/ap
   
 
 
+
+export const fetchCities = () => {
+	return async (dispatch) => {
+		dispatch(loaderShow('admindata'))
+    try {
+      const { cities } = await apiGetCities()
+      dispatch(fetchCitiesOk(cities))
+    } catch (error) {
+      dispatch(setErrorMessage(JSON.stringify(error)))
+    } finally {
+      dispatch(loaderHide('admindata'))
+    }
+	}
+}
+
 export const fetchAdmindata = () => {
 	return async (dispatch) => {
 		dispatch(loaderShow('admindata'))
@@ -23,6 +38,14 @@ export const fetchAdmindata = () => {
       dispatch(loaderHide('admindata'))
     }
 	}
+}
+
+TODO: further refactoring of cities fetching to make a single api call on each admin section
+const fetchCitiesOk = (cities) => {
+	return {
+    type: FETCH_CITIES_OK,
+    cities
+	}    
 }
 
 const fetchAdmindataOk = (admindata) => {
