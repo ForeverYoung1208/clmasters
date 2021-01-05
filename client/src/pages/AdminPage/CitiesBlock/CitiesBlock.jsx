@@ -26,7 +26,6 @@ export const CitiesBlock = () => {
   }, [dispatch])
   
   const saveHandler = useCallback((formData) => {
-    console.log('[formData]', formData)
     if (!!formData.name.trim) {
       formData.name = formData.name.trim()
     }
