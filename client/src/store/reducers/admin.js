@@ -8,7 +8,7 @@ const initialState = {
   orders: [],
   masters: [],
   users: [],
-  cities: [],
+  // cities: [],
 }
 
 const admin = (state = initialState, action) => { 
@@ -19,7 +19,7 @@ const admin = (state = initialState, action) => {
         ...state,
         ...action.admindata
       };
-
+    
     case POST_ADMINDATA_OK:
       const newEntityIdx = state[action.sectionKey].findIndex(entity => +entity.id === +action.data.id)
       const newSectionItems = state[action.sectionKey]

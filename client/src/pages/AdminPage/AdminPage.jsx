@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useCallback } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 // import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
@@ -7,12 +7,11 @@ import { useDispatch } from 'react-redux'
 
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import { Box, Typography } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 
 import { Card } from '../../components/Card/Card'
 
 import { CitiesBlock } from './CitiesBlock/CitiesBlock'
-import { MastersBlock } from './MastersBlock/MastersBlock'
 import { OrdersBlock } from './OrdersBlock/OrdersBlock'
 import { UsersBlock } from './UsersBlock/UsersBlock'
 import { fetchAdmindata } from '../../store/actions/admin'
@@ -75,7 +74,8 @@ const AdminPage = () => {
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={1}>
         <Card header="Masters management">
-          <MastersBlock />
+          <div>Masters here (depends on cities)...</div>
+          {/* <MastersBlock /> */}
         </Card>
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={2}>
