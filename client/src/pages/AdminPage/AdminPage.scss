@@ -26,6 +26,14 @@
 
 }
 
+.adminPage__itemsBlock{
+  display: flex;
+  height: calc(100vh - 280px);
+  min-height: 300px;
+
+}
+
+
 .adminPage__itemsBlock .react-datepicker{
   display: flex;
 }

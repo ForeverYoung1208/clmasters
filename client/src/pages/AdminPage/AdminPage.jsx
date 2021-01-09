@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import { Box } from '@material-ui/core'
+import { TabPanel } from '../../components/Material/TabPanel/TabPanel'
 
 import { Card } from '../../components/Card/Card'
 
@@ -17,7 +18,7 @@ import { UsersBlock } from './UsersBlock/UsersBlock'
 import { fetchAdmindata } from '../../store/actions/admin'
 
 import './AdminPage.scss'
-import 'react-tabs/style/react-tabs.css'
+// import 'react-tabs/style/react-tabs.css'
 import { ErrorMessageButton } from '../../components/ErrorMessage/ErrorMessage'
 import { clearErrorMessage } from '../../store/actions/main'
 import { withHumanizeError } from '../../HOC/withHumanizeError'
@@ -38,22 +39,6 @@ const AdminPage = () => {
     dispatch(clearErrorMessage())
   }
 
-  const TabPanel = (props) => {
-    const { children, selectedTab, index } = props
-
-    return (
-      <div
-        hidden={selectedTab !== index}
-        id={`simple-tabpanel-${index}`}
-      >
-        {selectedTab === index && (
-          <Box p={3}>
-            {children}
-          </Box>
-        )}
-      </div>
-    )
-  }
 
   return (
     <div className="adminPage">
@@ -84,9 +69,9 @@ const AdminPage = () => {
         </Card>
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={3}>
-        <Card header="Cities management">
+        {/* <Card header="Cities management"> */}
           <CitiesBlock />
-        </Card>
+        {/* </Card> */}
       </TabPanel>
       <HumanizedErrorMessageButton />
     </div>

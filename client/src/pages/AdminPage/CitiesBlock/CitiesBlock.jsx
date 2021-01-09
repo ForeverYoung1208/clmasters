@@ -1,149 +1,64 @@
 import React, { useCallback, useEffect } from 'react'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ItemsList } from '../../../components/ItemsList/ItemsList'
-import {
-  admindataChanged,
-  admindataDelete,
-} from '../../../store/actions/admin'
 import { fetchCities } from '../../../store/actions/cities'
-import CityEditForm from './CityEditForm/CityEditForm'
+import { DataGrid } from '@material-ui/data-grid'
+import { IconButton } from '@material-ui/core'
 
-import { myCofirm } from '../../../shared/js/myConfirm/myConfirm'
-
+// import { DeleteIcon, EditIcon }  from '@material-ui/icons'
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export const CitiesBlock = () => {
   const dispatch = useDispatch()
-  const [cities, citiesStatus] = useSelector(
-    ({ cities }) => [cities?.data, cities?.status]
-  )
-  console.log('[cities]', cities)
-  console.log('[citiesStatus]', citiesStatus)
+  const [cities, citiesStatus] = useSelector(({ cities }) => [
+    cities?.data,
+    cities?.status,
+  ])
+  // cities: [ {id: 1, name: "Dnipro", comment: "", deletedAt: null}, ... ]
   
-  
+  const editHandler = (id) => {console.log('[edit id]', id)}
+  const deleteHandler = (id) => {console.log('[delete id]', id)}
+
+  const columnsDef = [
+    { field: 'id', headerName: 'Id', width: 80 },
+    { field: 'name', headerName: 'City Name', width: 150 },
+    { field: 'comment', headerName: 'Comment', flex: 1 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      disableClickEventBubbling: true,
+      disableColumnMenu: true,
+      filterable: false,
+      sortable: false,
+      width: 120,
+      renderCell: ({ row }) => (
+        <>
+          <IconButton onClick={() => editHandler(row.id)}>
+            <EditIcon />
+          </IconButton>
+
+          <IconButton onClick={() => deleteHandler(row.id)}>
+            <DeleteIcon />
+          </IconButton>
+        </>
+      ),
+    },
+  ]
+
   useEffect(() => {
     if (citiesStatus === 'idle') {
       dispatch(fetchCities())
     }
   }, [citiesStatus, dispatch])
-  
-
-  const [editCityId, setEditCityId] = useState()
-  const [isAddingCity, setIsAddingCity] = useState(false)
-
-  const deleteHandler = useCallback(
-    (id) => {
-      myCofirm({
-        title: 'Deleting city!',
-        message: 'Are you sure?',
-        onAgree: () => dispatch(admindataDelete({ sectionKey: 'cities', id })),
-        onCancel: () => null,
-      })
-    },
-    [dispatch]
-  )
-
-  const saveHandler = useCallback(
-    (formData) => {
-      if (!!formData.name.trim) {
-        formData.name = formData.name.trim()
-      }
-      dispatch(
-        admindataChanged(
-          { sectionKey: 'cities', data: formData },
-          setEditCityId
-        )
-      )
-    },
-    [dispatch]
-  )
 
   return (
     <div className="adminPage__itemsBlock">
-      {JSON.stringify(cities)}
+      <DataGrid
+        showToolbar
+        rows={cities}
+        columns={columnsDef}
+        disableColumnReorder={true}
+      />
     </div>
   )
 }
-
-
-
-// import React, { useCallback, useEffect } from 'react'
-// import { useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { ItemsList } from '../../../components/ItemsList/ItemsList'
-// import {
-//   admindataChanged,
-//   admindataDelete,
-//   fetchCities,
-// } from '../../../store/actions/admin'
-// import CityEditForm from './CityEditForm/CityEditForm'
-
-// import { myCofirm } from '../../../shared/js/myConfirm/myConfirm'
-
-// export const CitiesBlock = () => {
-//   const dispatch = useDispatch()
-  
-//   // useEffect(() => {
-//   //   dispatch(fetchCities())
-//   // }, [])
-
-//   const cities = useSelector(({ admin: { cities } }) => cities)
-
-//   const [editCityId, setEditCityId] = useState()
-//   const [isAddingCity, setIsAddingCity] = useState(false)
-
-//   const deleteHandler = useCallback(
-//     (id) => {
-//       myCofirm({
-//         title: 'Deleting city!',
-//         message: 'Are you sure?',
-//         onAgree: () => dispatch(admindataDelete({ sectionKey: 'cities', id })),
-//         onCancel: () => null,
-//       })
-//     },
-//     [dispatch]
-//   )
-
-//   const saveHandler = useCallback(
-//     (formData) => {
-//       if (!!formData.name.trim) {
-//         formData.name = formData.name.trim()
-//       }
-//       dispatch(
-//         admindataChanged(
-//           { sectionKey: 'cities', data: formData },
-//           setEditCityId
-//         )
-//       )
-//     },
-//     [dispatch]
-//   )
-
-//   return (
-//     <div className="adminPage__itemsBlock">
-//       <ItemsList
-//         withHead={true}
-//         items={cities}
-//         fields={{
-//           id: ['Id', 'item-tiny'],
-//           name: ['City Name ', 'item-medium'],
-//           comment: ['Comment', 'item-wide'],
-//         }}
-//         deleteItem={deleteHandler}
-//         saveItem={saveHandler}
-//         editItem={(id) => {
-//           setEditCityId(id)
-//           setIsAddingCity(false)
-//         }}
-//         addItem={() => {
-//           setEditCityId(null)
-//           setIsAddingCity(true)
-//         }}
-//         editItemId={editCityId}
-//         isAddingItem={isAddingCity}
-//         EditForm={CityEditForm}
-//         AddForm={CityEditForm}
-//       />
-//     </div>
-//   )
-// }
