@@ -15,6 +15,7 @@
   "author": "Igor <siafin2010@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "add": "^2.0.6",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

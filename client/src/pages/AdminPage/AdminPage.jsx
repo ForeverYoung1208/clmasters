@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux'
 
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import { Box } from '@material-ui/core'
 import { TabPanel } from '../../components/Material/TabPanel/TabPanel'
 
 import { Card } from '../../components/Card/Card'

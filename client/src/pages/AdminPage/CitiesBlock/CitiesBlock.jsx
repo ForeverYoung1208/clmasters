@@ -1,23 +1,49 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCities } from '../../../store/actions/cities'
+import { fetchCities, putCitiy } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
 import { IconButton } from '@material-ui/core'
+import './CitiesBlock.scss'
 
 // import { DeleteIcon, EditIcon }  from '@material-ui/icons'
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@material-ui/icons/Delete'
+import { CityEditDialog } from './CityEditDialog/CityEditDialog'
 
 export const CitiesBlock = () => {
   const dispatch = useDispatch()
-  const [cities, citiesStatus] = useSelector(({ cities }) => [
+  const [cities, citiesStatus, error] = useSelector(({ cities }) => [
     cities?.data,
     cities?.status,
+    cities?.error,
   ])
-  // cities: [ {id: 1, name: "Dnipro", comment: "", deletedAt: null}, ... ]
-  
-  const editHandler = (id) => {console.log('[edit id]', id)}
-  const deleteHandler = (id) => {console.log('[delete id]', id)}
+
+  // cities.data: [ {id: 1, name: "Dnipro", comment: "", deletedAt: null}, ... ]
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false)
+  const [editingCityId, setEditingCityId] = React.useState(null)
+
+  const editHandler = (id) => {
+    setEditingCityId(id)
+    setIsDialogOpen(true)
+  }
+
+  const saveHandler = (city) => {
+    dispatch(putCitiy({ city, setIsDialogOpen }))
+  }
+
+  const deleteHandler = (id) => {
+    console.log('[delete id]', id)
+  }
+
+  const closeHandler = () => {
+    setIsDialogOpen(false)
+  }
+
+  useEffect(() => {
+    if (citiesStatus === 'idle') {
+      dispatch(fetchCities())
+    }
+  }, [citiesStatus, dispatch])
 
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 80 },
@@ -45,19 +71,21 @@ export const CitiesBlock = () => {
     },
   ]
 
-  useEffect(() => {
-    if (citiesStatus === 'idle') {
-      dispatch(fetchCities())
-    }
-  }, [citiesStatus, dispatch])
-
   return (
     <div className="adminPage__itemsBlock">
       <DataGrid
+        className="purple-borders-datagrid"
         showToolbar
         rows={cities}
         columns={columnsDef}
         disableColumnReorder={true}
+      />
+      <CityEditDialog
+        caption={'Edit City'}
+        open={isDialogOpen}
+        onClose={closeHandler}
+        onSave={saveHandler}
+        cityId={editingCityId}
       />
     </div>
   )

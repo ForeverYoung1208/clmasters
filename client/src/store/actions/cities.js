@@ -1,34 +1,25 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { apiGetCities } from '../../shared/js/api/cities'
-import { loaderShow } from "./main"
+import { apiGetCities, apiPutCity } from '../../shared/js/api/cities'
+import { loaderShow, setErrorMessage } from './main'
 
 export const fetchCities = createAsyncThunk('cities/fetch', async () => {
   const { cities } = await apiGetCities()
   return cities
 })
-  
-  
-// export const fetchCities = () => {
-//   fetchCitiesStart()
-// 	return async (dispatch) => {
-//     try {
-//       const { cities } = await apiGetCities()
-//       dispatch(fetchCitiesOk(cities))
-//     } catch (error) {
-//       dispatch(fetchCitiesError())
-//       dispatch(setErrorMessage(JSON.stringify(error)))
-//     } finally {
-//       dispatch(fetchCitiesEnd())
-//     }
-// 	}
-// }
 
-
-
-
-// const fetchCitiesOk = (cities) => {
-// 	return {
-//     type: CITIES_FETCH_OK,
-//     cities
-// 	}    
-// }
+export const putCitiy = createAsyncThunk(
+  'cities/put',
+  async ({ city, setIsDialogOpen }, {dispatch, rejectWithValue }) => {
+    const res = await apiPutCity(city)
+    if (res.ok) {
+      dispatch(setErrorMessage(''))
+      setIsDialogOpen && setIsDialogOpen(false)
+      return city
+    } else {
+      const apiError = await res.json()
+      console.log('[apiError]', apiError)
+      dispatch(setErrorMessage(JSON.stringify(apiError)))
+      return rejectWithValue(apiError)
+    }
+  }
+)

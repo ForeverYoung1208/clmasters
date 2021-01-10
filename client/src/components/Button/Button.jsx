@@ -11,7 +11,6 @@ export const Button = (props) => {
       {...restProps}
       variant="contained"
       color="primary"
-      // className={"btn-sm" + className}>
       className={className}
     >
       {props.children}

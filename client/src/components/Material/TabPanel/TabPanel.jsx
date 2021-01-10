@@ -14,8 +14,6 @@ export const TabPanel = (props) => {
   const { children, selectedTab, index } = props
   const classes = useStyles()
   
-  console.log('[classes]', classes)
-
   return (
     <div hidden={selectedTab !== index} id={`simple-tabpanel-${index}`}>
       {selectedTab === index &&
@@ -27,26 +25,3 @@ export const TabPanel = (props) => {
     </div>
   )
 }
-
-// import React from 'react'
-// import { Box } from '@material-ui/core'
-
-// const panelStyles = {
-//   bgcolor: 'background.paper',
-//   borderColor: 'primary.main',
-//   m: 1,
-//   p: 2,
-//   border: 1,
-//   borderRadius: 4,
-//   boxShadow: 2,
-// }
-
-// export const TabPanel = (props) => {
-//   const { children, selectedTab, index } = props
-
-//   return (
-//     <div hidden={selectedTab !== index} id={`simple-tabpanel-${index}`}>
-//       {selectedTab === index && <Box {...panelStyles}>{children}</Box>}
-//     </div>
-//   )
-// }

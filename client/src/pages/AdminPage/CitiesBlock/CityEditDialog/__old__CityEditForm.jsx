@@ -33,7 +33,7 @@ let CityEditForm = ({ handleSubmit, item: city, initialize }) => {
     </form>
   )
 }
-export default reduxForm({
+export default old_reduxForm({
   form: 'editCity',
 })(CityEditForm)
 

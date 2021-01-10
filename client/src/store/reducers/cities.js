@@ -1,31 +1,57 @@
-import { CITIES_FETCH_OK } from "../actions/actionTypes/cities";
-
 const initialState = {
   data: [],
   status: 'idle',
-  error: null
+  error: null,
 }
 
-const cities = (state = initialState, action) => { 
+const cities = (state = initialState, action) => {
   console.log('[action]', action)
-
-  switch (action.type) {  
+  switch (action.type) {
     case 'cities/fetch/fulfilled':
       return {
         ...state,
-        data: [ ...action.payload ],
-        status: 'fulfilled'
-      };
+        data: [...action.payload],
+        status: 'fulfilled',
+      }
     case 'cities/fetch/pending':
       return {
         ...state,
         data: [],
-        status: 'pending'
+        status: 'pending',
       }
-    default:
-      return state      
-  }
 
+    case 'cities/put/fulfilled':
+      const newCityIdx = state.data.findIndex(
+        (city) => +city.id === +action.payload.id
+      )
+      const newCities = [...state.data]
+      newCities[newCityIdx] = action.payload
+
+      console.log('[newCities]', newCities)
+      return {
+        ...state,
+        data: newCities,
+        status: 'fulfilled',
+        error: null,
+      }
+
+    case 'cities/put/pending':
+      return {
+        ...state,
+        status: 'pending',
+        error: null,
+      }
+
+    case 'cities/put/rejected':
+      return {
+        ...state,
+        status: 'error',
+        error: action.error.message,
+      }
+
+    default:
+      return state
+  }
 }
 
 export default cities
