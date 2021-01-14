@@ -30,8 +30,8 @@ export const CityEditDialog = ({
   caption,
   cityId,
 }) => {
-  let city = useSelector(({ cities }) =>
-    cities?.data.find((c) => +c.id === +cityId)
+  let city = useSelector(({ cities: { data: cities} }) =>
+    cities.find((c) => +c.id === +cityId)
   )
 
   return (
