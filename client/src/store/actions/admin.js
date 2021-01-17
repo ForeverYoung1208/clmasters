@@ -53,6 +53,7 @@ export const admindataChanged = ({ sectionKey, data } , setEdittingItemId) => {
   
   return async (dispatch) => {
     dispatch(loaderShow('admindata'))
+    dispatch(setErrorMessage(''))
     try {
       let res
       data.id

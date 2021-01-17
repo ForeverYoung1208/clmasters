@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { setErrorMessage } from '../../store/actions/main'
 import { Button } from '../Button/Button'
 import { Item } from './Item/Item'
 
@@ -31,7 +33,12 @@ export const ItemsList = ({
   isAddingItem,
   AddForm
 }) => {
-  
+  const dispatch = useDispatch()
+  const addItemHandler = useCallback(() => {
+    dispatch(setErrorMessage(''))
+    addItem()
+  },[dispatch, addItem])
+
   return (
     
     <div className="items-list">
@@ -61,7 +68,7 @@ export const ItemsList = ({
             onSubmit={saveItem}
           />
         }
-        <Button type='button' onClick={addItem}>add</Button>
+        <Button type='button' onClick={addItemHandler}>add</Button>
       </div>
 
     </div>
