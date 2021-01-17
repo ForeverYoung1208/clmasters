@@ -37,8 +37,8 @@ class CRUDController{
 
     try {
       var result = await modelToUpdate.save()
-    } catch (error) {
-      return res.status(400).json({ error }) 
+    } catch ({errors}) {
+      return res.status(400).json({ errors }) 
     }
 
     if (!result) return res.stats(500).json({

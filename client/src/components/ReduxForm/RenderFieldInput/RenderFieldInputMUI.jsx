@@ -11,6 +11,7 @@ export const RenderFieldInput = ({label, input, placeholder, meta: {touched, err
       
       <TextField
         {...input}
+        margin='normal'
         error={ isError }
         label={ label }
         // defaultValue="defaultValue text"

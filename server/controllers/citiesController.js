@@ -32,6 +32,7 @@ class CitiesController extends CRUDController{
   putValidators() {
     return [
       check('name', 'name must be not empty!').exists().notEmpty(),
+      check('comment', 'comment must be not empty!').exists().notEmpty(),
     ]
   }  
 

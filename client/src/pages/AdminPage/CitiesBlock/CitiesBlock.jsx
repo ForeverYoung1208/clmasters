@@ -9,6 +9,7 @@ import './CitiesBlock.scss'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { CityEditDialog } from './CityEditDialog/CityEditDialog'
+import { SubmissionError } from 'redux-form'
 
 export const CitiesBlock = () => {
   const dispatch = useDispatch()
@@ -27,8 +28,18 @@ export const CitiesBlock = () => {
     setIsDialogOpen(true)
   }
 
-  const saveHandler = (city) => {
-    dispatch(putCitiy({ city, setIsDialogOpen }))
+  const saveHandler = async (city) => {
+    const result = await dispatch(putCitiy({ city, setIsDialogOpen }))
+    
+    console.log('[result]', result.type)
+    
+    TODO: parse error keys and messages and map to redux - form format
+    
+    if (result.type === 'cities/put/rejected') {
+      throw new SubmissionError({
+        name: 'TODO: parse error keys and messages and map to redux-form format'
+      }) 
+    }
   }
 
   const deleteHandler = (id) => {

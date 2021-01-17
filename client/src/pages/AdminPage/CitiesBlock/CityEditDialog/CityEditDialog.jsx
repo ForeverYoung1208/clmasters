@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Paper,
 } from '@material-ui/core'
@@ -30,9 +29,9 @@ export const CityEditDialog = ({
   caption,
   cityId,
 }) => {
-  let city = useSelector(({ cities: { data: cities} }) =>
-    cities.find((c) => +c.id === +cityId)
-  )
+  let [city] = useSelector(({ cities: { data } }) => [
+    data.find((c) => +c.id === +cityId),
+  ])
 
   return (
     <Dialog
@@ -45,11 +44,6 @@ export const CityEditDialog = ({
       <DialogContent>
         <CityEditForm city={city} onSubmit={saveHandler} />
       </DialogContent>
-
-      <DialogContentText>
-        TODO: styling of this window, show error here, implement deletion (after
-        confirmation)
-      </DialogContentText>
       <DialogActions>
         <Button onClick={closeHandler} color="primary">
           Cancel

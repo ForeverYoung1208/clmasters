@@ -5,7 +5,6 @@ const initialState = {
 }
 
 const cities = (state = initialState, action) => {
-  console.log('[action]', action)
   switch (action.type) {
     case 'cities/fetch/fulfilled':
       return {
@@ -26,8 +25,6 @@ const cities = (state = initialState, action) => {
       )
       const newCities = [...state.data]
       newCities[newCityIdx] = action.payload
-
-      console.log('[newCities]', newCities)
       return {
         ...state,
         data: newCities,
@@ -46,7 +43,7 @@ const cities = (state = initialState, action) => {
       return {
         ...state,
         status: 'error',
-        error: action.error.message,
+        error: action.payload,
       }
 
     default:
