@@ -5,21 +5,23 @@ import { DataGrid } from '@material-ui/data-grid'
 import { IconButton } from '@material-ui/core'
 import './CitiesBlock.scss'
 
-// import { DeleteIcon, EditIcon }  from '@material-ui/icons'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteIcon from '@material-ui/icons/Delete'
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Add as AddIcon,
+} from '@material-ui/icons'
+
 import { CityEditDialog } from './CityEditDialog/CityEditDialog'
 import { SubmissionError } from 'redux-form'
+import { normalizeFormSubmitError } from '../../../shared/js/common'
 
 export const CitiesBlock = () => {
   const dispatch = useDispatch()
-  const [cities, citiesStatus, error] = useSelector(({ cities }) => [
+  const [cities, citiesStatus] = useSelector(({ cities }) => [
     cities?.data,
     cities?.status,
-    cities?.error,
   ])
 
-  // cities.data: [ {id: 1, name: "Dnipro", comment: "", deletedAt: null}, ... ]
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
   const [editingCityId, setEditingCityId] = React.useState(null)
 
@@ -29,21 +31,21 @@ export const CitiesBlock = () => {
   }
 
   const saveHandler = async (city) => {
-    const result = await dispatch(putCitiy({ city, setIsDialogOpen }))
-    
-    console.log('[result]', result.type)
-    
-    TODO: parse error keys and messages and map to redux - form format
-    
-    if (result.type === 'cities/put/rejected') {
-      throw new SubmissionError({
-        name: 'TODO: parse error keys and messages and map to redux-form format'
-      }) 
+    const action = await dispatch(putCitiy({ city, setIsDialogOpen }))
+    if (action.type === 'cities/put/rejected') {
+      const formSubmitError = normalizeFormSubmitError(action.payload.errors)
+      throw new SubmissionError(formSubmitError)
     }
+  }
+
+  const addHandler = () => {
+    console.log('[add!]')
+    // TODO: addHandler
   }
 
   const deleteHandler = (id) => {
     console.log('[delete id]', id)
+    // TODO: deleteHandler
   }
 
   const closeHandler = () => {
@@ -90,7 +92,17 @@ export const CitiesBlock = () => {
         rows={cities}
         columns={columnsDef}
         disableColumnReorder={true}
+        pageSize={20}
+        rowsPerPageOptions={[10, 20, 50]}
       />
+      
+TODO: button position
+      
+      <Button onClick={addHandler}>
+        AddCity
+        <AddIcon />
+      </Button>
+
       <CityEditDialog
         caption={'Edit City'}
         open={isDialogOpen}

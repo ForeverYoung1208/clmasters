@@ -11,12 +11,19 @@ const cities = (state = initialState, action) => {
         ...state,
         data: [...action.payload],
         status: 'fulfilled',
+        error: null,
       }
     case 'cities/fetch/pending':
       return {
         ...state,
-        data: [],
         status: 'pending',
+        error:null,
+      }
+    case 'cities/fetch/rejected':
+      return {
+        ...state,
+        status: 'error',
+        error: action.payload,
       }
 
     case 'cities/put/fulfilled':

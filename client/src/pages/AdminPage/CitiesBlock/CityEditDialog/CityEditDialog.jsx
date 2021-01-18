@@ -1,5 +1,6 @@
 import React from 'react'
 import Draggable from 'react-draggable'
+import CityEditForm from './CityEditForm'
 import {
   Button,
   Dialog,
@@ -8,7 +9,6 @@ import {
   DialogTitle,
   Paper,
 } from '@material-ui/core'
-import CityEditForm from './CityEditForm'
 import { useSelector } from 'react-redux'
 
 function PaperComponent(props) {

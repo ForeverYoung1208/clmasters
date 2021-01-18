@@ -1,6 +1,5 @@
-import { Box } from '@material-ui/core'
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { Box } from '@material-ui/core'
 import { reduxForm, Field } from 'redux-form'
 import { Button } from '../../../../components/Button/Button'
 import { RenderFieldInput } from '../../../../components/ReduxForm/RenderFieldInput/RenderFieldInputMUI'
@@ -18,8 +17,7 @@ let CityEditForm = ({
     initialize(city)
     // eslint-disable-next-line
   }, [])
-   
-  
+
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
       <form onSubmit={handleSubmit}>
