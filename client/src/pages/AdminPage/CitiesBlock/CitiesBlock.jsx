@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCities, putCitiy } from '../../../store/actions/cities'
+import {
+  deleteCity,
+  fetchCities,
+  putCitiy,
+} from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
-import { IconButton } from '@material-ui/core'
+import { Box, IconButton } from '@material-ui/core'
 import './CitiesBlock.scss'
 
 import {
@@ -14,6 +18,8 @@ import {
 import { CityEditDialog } from './CityEditDialog/CityEditDialog'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'
+import { Button } from '../../../components/Button/Button'
+import { setErrorMessage } from '../../../store/actions/main'
 
 export const CitiesBlock = () => {
   const dispatch = useDispatch()
@@ -25,7 +31,8 @@ export const CitiesBlock = () => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false)
   const [editingCityId, setEditingCityId] = React.useState(null)
 
-  const editHandler = (id) => {
+  const startEditHandler = (id) => {
+    dispatch(setErrorMessage(''))
     setEditingCityId(id)
     setIsDialogOpen(true)
   }
@@ -44,8 +51,11 @@ export const CitiesBlock = () => {
   }
 
   const deleteHandler = (id) => {
-    console.log('[delete id]', id)
-    // TODO: deleteHandler
+    
+    // TODO: Modal window before deleteHandler
+    
+    dispatch(deleteCity({ cityId:id, setIsDialogOpen }))
+
   }
 
   const closeHandler = () => {
@@ -72,7 +82,7 @@ export const CitiesBlock = () => {
       width: 120,
       renderCell: ({ row }) => (
         <>
-          <IconButton onClick={() => editHandler(row.id)}>
+          <IconButton onClick={() => startEditHandler(row.id)}>
             <EditIcon />
           </IconButton>
 
@@ -85,31 +95,32 @@ export const CitiesBlock = () => {
   ]
 
   return (
-    <div className="adminPage__itemsBlock">
-      <DataGrid
-        className="purple-borders-datagrid"
-        showToolbar
-        rows={cities}
-        columns={columnsDef}
-        disableColumnReorder={true}
-        pageSize={20}
-        rowsPerPageOptions={[10, 20, 50]}
-      />
-      
-TODO: button position
-      
-      <Button onClick={addHandler}>
-        AddCity
-        <AddIcon />
-      </Button>
+    <>
+      <div className="adminPage__itemsBlock">
+        <DataGrid
+          className="purple-borders-datagrid"
+          showToolbar
+          rows={cities}
+          columns={columnsDef}
+          disableColumnReorder={true}
+          pageSize={20}
+          rowsPerPageOptions={[10, 20, 50]}
+        />
 
-      <CityEditDialog
-        caption={'Edit City'}
-        open={isDialogOpen}
-        onClose={closeHandler}
-        onSave={saveHandler}
-        cityId={editingCityId}
-      />
-    </div>
+        <CityEditDialog
+          caption={'Edit City'}
+          open={isDialogOpen}
+          onClose={closeHandler}
+          onSave={saveHandler}
+          cityId={editingCityId}
+        />
+      </div>
+      <Box p={2} display="flex" justifyContent="center">
+        <Button onClick={addHandler}>
+          AddCity
+          <AddIcon />
+        </Button>
+      </Box>
+    </>
   )
 }

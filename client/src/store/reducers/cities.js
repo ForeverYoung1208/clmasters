@@ -5,6 +5,7 @@ const initialState = {
 }
 
 const cities = (state = initialState, action) => {
+  let newCities=[]
   switch (action.type) {
     case 'cities/fetch/fulfilled':
       return {
@@ -30,7 +31,7 @@ const cities = (state = initialState, action) => {
       const newCityIdx = state.data.findIndex(
         (city) => +city.id === +action.payload.id
       )
-      const newCities = [...state.data]
+      newCities = [...state.data]
       newCities[newCityIdx] = action.payload
       return {
         ...state,
@@ -38,20 +39,39 @@ const cities = (state = initialState, action) => {
         status: 'fulfilled',
         error: null,
       }
-
     case 'cities/put/pending':
       return {
         ...state,
         status: 'pending',
         error: null,
       }
-
     case 'cities/put/rejected':
       return {
         ...state,
         status: 'error',
         error: action.payload,
       }
+    
+    case 'cities/delete/fulfilled':
+      newCities = state.data.filter((c) => +c.id !== +action.payload.cityId)
+      return {
+        ...state,
+        data: newCities,
+        status: 'fulfilled',
+        error: null,
+      }
+    case 'cities/delete/pending':
+      return {
+        ...state,
+        status: 'pending',
+        error: null,
+      }
+    case 'cities/delete/rejected':
+      return {
+        ...state,
+        status: 'error',
+        error: action.payload,
+      }    
 
     default:
       return state
