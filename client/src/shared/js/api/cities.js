@@ -10,6 +10,11 @@ export const apiPutCity = async (city) => {
   return res
 }
 
+export const apiPostCity = async (city) => {
+  const res = await myHttp(`/api/cities/`, 'POST', city)
+  return res
+}
+
 export const apiDeleteCity = async (cityId) => {
   const res = await myHttp(`/api/cities/${cityId}`, 'DELETE')
   return res

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   deleteCity,
   fetchCities,
+  postCitiy,
   putCitiy,
 } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
@@ -20,6 +21,8 @@ import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'
 import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
+import { CityDeleteDialog } from './CityDeleteDialog/CityDeleteDialog'
+import { CityAddDialog } from './CityAddDialog/CityAddDialog'
 
 export const CitiesBlock = () => {
   const dispatch = useDispatch()
@@ -28,38 +31,49 @@ export const CitiesBlock = () => {
     cities?.status,
   ])
 
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false)
   const [editingCityId, setEditingCityId] = React.useState(null)
+  const [deletingCityId, setDeletingCityId] = React.useState(null)
+  const [addingCityId, setAddingCityId] = React.useState(null)
 
   const startEditHandler = (id) => {
     dispatch(setErrorMessage(''))
     setEditingCityId(id)
-    setIsDialogOpen(true)
   }
-
   const saveHandler = async (city) => {
-    const action = await dispatch(putCitiy({ city, setIsDialogOpen }))
+    const action = await dispatch(putCitiy({ city, setEditingCityId }))
     if (action.type === 'cities/put/rejected') {
       const formSubmitError = normalizeFormSubmitError(action.payload.errors)
       throw new SubmissionError(formSubmitError)
     }
   }
-
-  const addHandler = () => {
-    console.log('[add!]')
-    // TODO: addHandler
+  const closeEditHandler = () => {
+    setEditingCityId(null)
   }
 
+  const startDeleteHandler = (id) => {
+    dispatch(setErrorMessage(''))
+    setDeletingCityId(id)
+  }
   const deleteHandler = (id) => {
-    
-    // TODO: Modal window before deleteHandler
-    
-    dispatch(deleteCity({ cityId:id, setIsDialogOpen }))
-
+    dispatch(deleteCity({ cityId: id, setDeletingCityId }))
+  }
+  const closeDeleteHandler = () => {
+    setDeletingCityId(null)
   }
 
-  const closeHandler = () => {
-    setIsDialogOpen(false)
+  const startAddHandler = () => {
+    dispatch(setErrorMessage(''))
+    setAddingCityId(true)
+  }
+  const addHandler = async (city) => {
+    const action = await dispatch(postCitiy({ city, setAddingCityId }))
+    if (action.type === 'cities/post/rejected') {
+      const formSubmitError = normalizeFormSubmitError(action.payload.errors)
+      throw new SubmissionError(formSubmitError)
+    }
+  }
+  const closeAddHandler = () => {
+    setAddingCityId(false)
   }
 
   useEffect(() => {
@@ -86,7 +100,7 @@ export const CitiesBlock = () => {
             <EditIcon />
           </IconButton>
 
-          <IconButton onClick={() => deleteHandler(row.id)}>
+          <IconButton onClick={() => startDeleteHandler(row.id)}>
             <DeleteIcon />
           </IconButton>
         </>
@@ -109,14 +123,29 @@ export const CitiesBlock = () => {
 
         <CityEditDialog
           caption={'Edit City'}
-          open={isDialogOpen}
-          onClose={closeHandler}
+          open={!!editingCityId}
+          onClose={closeEditHandler}
           onSave={saveHandler}
           cityId={editingCityId}
         />
+
+        <CityAddDialog
+          caption={'New City'}
+          open={!!addingCityId}
+          onClose={closeAddHandler}
+          onAdd={addHandler}
+        />
+
+        <CityDeleteDialog
+          caption={'Delete City'}
+          open={!!deletingCityId}
+          onClose={closeDeleteHandler}
+          onDelete={deleteHandler}
+          cityId={deletingCityId}
+        />
       </div>
       <Box p={2} display="flex" justifyContent="center">
-        <Button onClick={addHandler}>
+        <Button onClick={startAddHandler}>
           AddCity
           <AddIcon />
         </Button>

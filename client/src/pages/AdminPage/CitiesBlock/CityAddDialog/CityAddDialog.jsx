@@ -1,5 +1,5 @@
 import React from 'react'
-import CityEditForm from './CityEditForm'
+import CityAddForm from './CityAddForm'
 import {
   Button,
   Dialog,
@@ -7,21 +7,16 @@ import {
   DialogContent,
   DialogTitle,
 } from '@material-ui/core'
-import { useSelector } from 'react-redux'
 import { DraggablePaper } from '../../../../components/Material/DraggablePaper/DraggablePaper'
 
 
-export const CityEditDialog = ({
+export const CityAddDialog = ({
   open,
   onClose: closeHandler,
-  onSave: saveHandler,
+  onAdd: addHandler,
   caption,
-  cityId,
 }) => {
-  let [city] = useSelector(({ cities: { data } }) => [
-    data.find((c) => +c.id === +cityId),
-  ])
-
+  const city = {}
   return (
     <Dialog
       open={open}
@@ -31,7 +26,7 @@ export const CityEditDialog = ({
     >
       <DialogTitle id="draggable-dialog-title">{caption}</DialogTitle>
       <DialogContent>
-        <CityEditForm city={city} onSubmit={saveHandler} />
+        <CityAddForm city={city} onSubmit={addHandler} />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeHandler} color="primary">
