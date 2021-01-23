@@ -1,8 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { setErrorMessage } from '../../../store/actions/main'
-import { Delete as DeleteIcon } from '@material-ui/icons'
-import { Edit as EditIcon } from '@material-ui/icons';
+import { Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons'
 import { IconButton } from '@material-ui/core'
 
 import './Item.scss'

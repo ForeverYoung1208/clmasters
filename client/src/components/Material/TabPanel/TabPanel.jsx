@@ -10,10 +10,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export const TabPanel = (props) => {
-  const { children, selectedTab, index } = props
+export const TabPanel = ({ children, selectedTab, index }) => {
   const classes = useStyles()
-  
   return (
     <div hidden={selectedTab !== index} id={`simple-tabpanel-${index}`}>
       {selectedTab === index &&

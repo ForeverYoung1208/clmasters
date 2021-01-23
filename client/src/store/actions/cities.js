@@ -9,14 +9,14 @@ import { setErrorMessage } from './main'
 
 
 export const fetchCities = createAsyncThunk('cities/fetch', async () => {
-  const { cities } = await apiGetCities()
+  const cities = await apiGetCities()
   return cities
 })
 
 export const putCitiy = createAsyncThunk(
   'cities/put',
-  async ({ city, setEditingCityId }, { dispatch, rejectWithValue }) => {
-    const res = await apiPutCity(city)
+  async ({ city, setEditingCityId }, { rejectWithValue }) => {
+    const res = await apiPutCity({ ...city, name: city.name.trim() })
     if (res.ok) {
       setEditingCityId && setEditingCityId(null)
       return city
@@ -29,11 +29,11 @@ export const putCitiy = createAsyncThunk(
 
 export const postCitiy = createAsyncThunk(
   'cities/post',
-  async ({ city, setAddingCityId }, { dispatch, rejectWithValue }) => {
-    const res = await apiPostCity(city)
+  async ({ city, setIsAddingCity }, { rejectWithValue }) => {
+    const res = await apiPostCity({ ...city, name: city.name.trim() })
     if (res.ok) {
       const resJSON = await res.json()
-      setAddingCityId && setAddingCityId(null)
+      setIsAddingCity && setIsAddingCity(false)
       return resJSON
     } else {
       const apiError = await res.json()

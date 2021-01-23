@@ -1,70 +1,86 @@
+import {
+  CITIES_DELETE_FULFILLED,
+  CITIES_DELETE_PENDING,
+  CITIES_DELETE_REJECTED,
+  CITIES_FETCH_FULFILLED,
+  CITIES_FETCH_PENDING,
+  CITIES_FETCH_REJECTED,
+  CITIES_POST_FULFILLED,
+  CITIES_POST_PENDING,
+  CITIES_POST_REJECTED,
+  CITIES_PUT_FULFILLED,
+  CITIES_PUT_PENDING,
+  CITIES_PUT_REJECTED,
+} from '../actions/actionTypes/cities'
+import { ERROR, FULFILLED, PENDING, PRISTINE } from './statuses/statuses'
+
 const initialState = {
   data: [],
-  status: 'idle',
+  status: PRISTINE,
   error: null,
 }
 
-const cities = (state = initialState, action) => {
+const cities = (state = initialState, { type, payload }) => {
   let newCities = []
-  switch (action.type) {
-    case 'cities/fetch/fulfilled':
+  switch (type) {
+    case CITIES_FETCH_FULFILLED:
       return {
         ...state,
-        data: [...action.payload],
-        status: 'fulfilled',
+        data: [...payload],
+        status: FULFILLED,
         error: null,
       }
 
-    case 'cities/put/fulfilled':
+    case CITIES_PUT_FULFILLED:
       const newCityIdx = state.data.findIndex(
-        (city) => +city.id === +action.payload.id
+        (city) => +city.id === +payload.id
       )
       newCities = [...state.data]
-      newCities[newCityIdx] = action.payload
+      newCities[newCityIdx] = payload
       return {
         ...state,
         data: newCities,
-        status: 'fulfilled',
+        status: FULFILLED,
         error: null,
       }
 
-    case 'cities/post/fulfilled':
+    case CITIES_POST_FULFILLED:
       newCities = [...state.data]
-      newCities.push(action.payload)
+      newCities.push(payload)
       return {
         ...state,
         data: newCities,
-        status: 'fulfilled',
+        status: FULFILLED,
         error: null,
       }
 
-    case 'cities/delete/fulfilled':
-      newCities = state.data.filter((c) => +c.id !== +action.payload.cityId)
+    case CITIES_DELETE_FULFILLED:
+      newCities = state.data.filter((c) => +c.id !== +payload.cityId)
       return {
         ...state,
         data: newCities,
-        status: 'fulfilled',
+        status: FULFILLED,
         error: null,
       }
 
-    case 'cities/fetch/pending':
-    case 'cities/put/pending':
-    case 'cities/post/pending':
-    case 'cities/delete/pending':
+    case CITIES_FETCH_PENDING:
+    case CITIES_PUT_PENDING:
+    case CITIES_POST_PENDING:
+    case CITIES_DELETE_PENDING:
       return {
         ...state,
-        status: 'pending',
+        status: PENDING,
         error: null,
       }
 
-    case 'cities/fetch/rejected':
-    case 'cities/put/rejected':
-    case 'cities/post/rejected':
-    case 'cities/delete/rejected':
+    case CITIES_FETCH_REJECTED:
+    case CITIES_PUT_REJECTED:
+    case CITIES_POST_REJECTED:
+    case CITIES_DELETE_REJECTED:
       return {
         ...state,
-        status: 'error',
-        error: action.payload,
+        status: ERROR,
+        error: payload,
       }
 
     default:

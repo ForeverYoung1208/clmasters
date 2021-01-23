@@ -1,5 +1,5 @@
 import { TextField } from '@material-ui/core'
-import React from 'react'
+import React, { useMemo } from 'react'
 
 export const RenderFieldInput = ({
   label,
@@ -7,9 +7,14 @@ export const RenderFieldInput = ({
   placeholder,
   meta: { touched, error, warning },
 }) => {
-  const isError = !!(touched && (error || warning))
+  const isError = useMemo(() => {
+    return !!(touched && (error || warning))
+  }, [touched, error, warning])
 
-  const errorText = (error && error) || (warning && warning)
+  const errorText = useMemo(() => {
+    return (error && error) || (warning && warning)
+  }, [error, warning])
+  
   return (
     <span className="field-wrapper">
       <TextField

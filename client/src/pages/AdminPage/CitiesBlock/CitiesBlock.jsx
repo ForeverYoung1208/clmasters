@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   deleteCity,
@@ -24,63 +24,91 @@ import { setErrorMessage } from '../../../store/actions/main'
 import { CityDeleteDialog } from './CityDeleteDialog/CityDeleteDialog'
 import { CityAddDialog } from './CityAddDialog/CityAddDialog'
 
+const PAGE_SIZE = 20
+const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
+
 export const CitiesBlock = () => {
   const dispatch = useDispatch()
-  const [cities, citiesStatus] = useSelector(({ cities }) => [
-    cities?.data,
-    cities?.status,
-  ])
+  const cities = useSelector(({ cities }) => cities?.data)
 
-  const [editingCityId, setEditingCityId] = React.useState(null)
-  const [deletingCityId, setDeletingCityId] = React.useState(null)
-  const [addingCityId, setAddingCityId] = React.useState(null)
+  const [editingCityId, setEditingCityId] = useState(null)
+  const [deletingCityId, setDeletingCityId] = useState(null)
+  const [isAddingCity, setIsAddingCity] = useState(null)
 
-  const startEditHandler = (id) => {
-    dispatch(setErrorMessage(''))
-    setEditingCityId(id)
-  }
-  const saveHandler = async (city) => {
-    const action = await dispatch(putCitiy({ city, setEditingCityId }))
-    if (action.type === 'cities/put/rejected') {
-      const formSubmitError = normalizeFormSubmitError(action.payload.errors)
-      throw new SubmissionError(formSubmitError)
-    }
-  }
-  const closeEditHandler = () => {
+  const startEditHandler = useCallback(
+    (id) => {
+      dispatch(setErrorMessage(''))
+      setEditingCityId(id)
+    },
+    [dispatch]
+  )
+  const saveHandler = useCallback(
+    async (city) => {
+      const action = await dispatch(putCitiy({ city, setEditingCityId }))
+      if (action.type === 'cities/put/rejected') {
+        const formSubmitError = normalizeFormSubmitError(action.payload.errors)
+        throw new SubmissionError(formSubmitError)
+      }
+    },
+    [dispatch]
+  )
+  const closeEditHandler = useCallback(() => {
     setEditingCityId(null)
-  }
+  }, [setEditingCityId])
 
-  const startDeleteHandler = (id) => {
-    dispatch(setErrorMessage(''))
-    setDeletingCityId(id)
-  }
-  const deleteHandler = (id) => {
-    dispatch(deleteCity({ cityId: id, setDeletingCityId }))
-  }
-  const closeDeleteHandler = () => {
+  const startDeleteHandler = useCallback(
+    (id) => {
+      dispatch(setErrorMessage(''))
+      setDeletingCityId(id)
+    },
+    [dispatch]
+  )
+  const deleteHandler = useCallback(
+    (id) => {
+      dispatch(deleteCity({ cityId: id, setDeletingCityId }))
+    },
+    [dispatch]
+  )
+  const closeDeleteHandler = useCallback(() => {
     setDeletingCityId(null)
-  }
+  }, [setDeletingCityId])
 
-  const startAddHandler = () => {
+  const startAddHandler = useCallback(() => {
     dispatch(setErrorMessage(''))
-    setAddingCityId(true)
-  }
-  const addHandler = async (city) => {
-    const action = await dispatch(postCitiy({ city, setAddingCityId }))
-    if (action.type === 'cities/post/rejected') {
-      const formSubmitError = normalizeFormSubmitError(action.payload.errors)
-      throw new SubmissionError(formSubmitError)
-    }
-  }
-  const closeAddHandler = () => {
-    setAddingCityId(false)
-  }
+    setIsAddingCity(true)
+  }, [dispatch])
+  const addHandler = useCallback(
+    async (city) => {
+      const action = await dispatch(postCitiy({ city, setIsAddingCity }))
+      if (action.type === 'cities/post/rejected') {
+        console.log('[action.payload]', action.payload)
+        const formSubmitError = normalizeFormSubmitError(action.payload.errors)
+        throw new SubmissionError(formSubmitError)
+      }
+    },
+    [dispatch]
+  )
+  const closeAddHandler = useCallback(() => {
+    setIsAddingCity(false)
+  }, [setIsAddingCity])
 
   useEffect(() => {
-    if (citiesStatus === 'idle') {
-      dispatch(fetchCities())
-    }
-  }, [citiesStatus, dispatch])
+    dispatch(fetchCities())
+  }, [dispatch])
+
+  const renderActions = useCallback(({ row }) => {
+    return (
+      <>
+        <IconButton onClick={() => startEditHandler(row.id)}>
+          <EditIcon />
+        </IconButton>
+
+        <IconButton onClick={() => startDeleteHandler(row.id)}>
+          <DeleteIcon />
+        </IconButton>
+      </>
+    )
+  }, [startEditHandler, startDeleteHandler])
 
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 80 },
@@ -94,17 +122,7 @@ export const CitiesBlock = () => {
       filterable: false,
       sortable: false,
       width: 120,
-      renderCell: ({ row }) => (
-        <>
-          <IconButton onClick={() => startEditHandler(row.id)}>
-            <EditIcon />
-          </IconButton>
-
-          <IconButton onClick={() => startDeleteHandler(row.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </>
-      ),
+      renderCell: renderActions,
     },
   ]
 
@@ -117,8 +135,8 @@ export const CitiesBlock = () => {
           rows={cities}
           columns={columnsDef}
           disableColumnReorder={true}
-          pageSize={20}
-          rowsPerPageOptions={[10, 20, 50]}
+          pageSize={PAGE_SIZE}
+          rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
         />
 
         <CityEditDialog
@@ -131,7 +149,7 @@ export const CitiesBlock = () => {
 
         <CityAddDialog
           caption={'New City'}
-          open={!!addingCityId}
+          open={!!isAddingCity}
           onClose={closeAddHandler}
           onAdd={addHandler}
         />

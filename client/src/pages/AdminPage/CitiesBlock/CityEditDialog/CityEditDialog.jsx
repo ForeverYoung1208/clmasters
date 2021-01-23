@@ -18,9 +18,9 @@ export const CityEditDialog = ({
   caption,
   cityId,
 }) => {
-  let [city] = useSelector(({ cities: { data } }) => [
-    data.find((c) => +c.id === +cityId),
-  ])
+  let city = useSelector(({ cities: { data } }) =>
+    data.find((c) => +c.id === +cityId)
+  )
 
   return (
     <Dialog
