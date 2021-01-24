@@ -1,7 +1,7 @@
 const normalizeFormSubmitError = (someErrors) => {
   let normalErrors = {}
 
-  someErrors.forEach((e) => {
+  someErrors && someErrors.forEach((e) => {
     if (e.msg && e.param) {
       normalErrors[e.param] = e.msg
     }

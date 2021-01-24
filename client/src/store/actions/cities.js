@@ -13,7 +13,7 @@ export const fetchCities = createAsyncThunk('cities/fetch', async () => {
   return cities
 })
 
-export const putCitiy = createAsyncThunk(
+export const putCity = createAsyncThunk(
   'cities/put',
   async ({ city, setEditingCityId }, { rejectWithValue }) => {
     const res = await apiPutCity({ ...city, name: city.name.trim() })
@@ -27,7 +27,7 @@ export const putCitiy = createAsyncThunk(
   }
 )
 
-export const postCitiy = createAsyncThunk(
+export const postCity = createAsyncThunk(
   'cities/post',
   async ({ city, setIsAddingCity }, { rejectWithValue }) => {
     const res = await apiPostCity({ ...city, name: city.name.trim() })

@@ -5,6 +5,7 @@ import auth from './auth'
 import main from './main'
 import admin from './admin'
 import cities from './cities'
+import masters from './masters'
 
 import { reducer as formReducer } from 'redux-form'
 
@@ -15,5 +16,6 @@ export default combineReducers({
   main,
   admin,
   cities,
+  masters,
   form: formReducer
 })

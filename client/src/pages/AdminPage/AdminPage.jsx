@@ -16,6 +16,7 @@ import './AdminPage.scss'
 import { ErrorMessageButton } from '../../components/ErrorMessage/ErrorMessage'
 import { clearErrorMessage } from '../../store/actions/main'
 import { withHumanizeError } from '../../HOC/withHumanizeError'
+import { MastersBlock } from './MastersBlock/MastersBlock'
 
 const HumanizedErrorMessageButton = withHumanizeError(ErrorMessageButton)
 
@@ -48,13 +49,12 @@ const AdminPage = () => {
       </Tabs>
       <TabPanel selectedTab={selectedTab} index={0}>
         <Card header="Orders management">
-          <OrdersBlock />
+          {/* <OrdersBlock /> */}
+          OrdersBlock here (depends on cities, masters)
         </Card>
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={1}>
-        <Card header="Masters management">
-          <div>Masters here (depends on cities)...</div>
-        </Card>
+        <MastersBlock/>
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={2}>
         <Card header="Users management">
@@ -62,7 +62,7 @@ const AdminPage = () => {
         </Card>
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={3}>
-          <CitiesBlock />
+        <CitiesBlock />
       </TabPanel>
       <HumanizedErrorMessageButton />
     </div>

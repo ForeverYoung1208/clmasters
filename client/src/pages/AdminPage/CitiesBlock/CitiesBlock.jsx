@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   deleteCity,
   fetchCities,
-  postCitiy,
-  putCitiy,
+  postCity,
+  putCity,
 } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
 import { Box, IconButton } from '@material-ui/core'
@@ -44,7 +44,7 @@ export const CitiesBlock = () => {
   )
   const saveHandler = useCallback(
     async (city) => {
-      const action = await dispatch(putCitiy({ city, setEditingCityId }))
+      const action = await dispatch(putCity({ city, setEditingCityId }))
       if (action.type === 'cities/put/rejected') {
         const formSubmitError = normalizeFormSubmitError(action.payload.errors)
         throw new SubmissionError(formSubmitError)
@@ -79,9 +79,8 @@ export const CitiesBlock = () => {
   }, [dispatch])
   const addHandler = useCallback(
     async (city) => {
-      const action = await dispatch(postCitiy({ city, setIsAddingCity }))
+      const action = await dispatch(postCity({ city, setIsAddingCity }))
       if (action.type === 'cities/post/rejected') {
-        console.log('[action.payload]', action.payload)
         const formSubmitError = normalizeFormSubmitError(action.payload.errors)
         throw new SubmissionError(formSubmitError)
       }
@@ -111,7 +110,7 @@ export const CitiesBlock = () => {
   }, [startEditHandler, startDeleteHandler])
 
   const columnsDef = [
-    { field: 'id', headerName: 'Id', width: 80 },
+    { field: 'id', headerName: 'Id', width: 70 },
     { field: 'name', headerName: 'City Name', width: 150 },
     { field: 'comment', headerName: 'Comment', flex: 1 },
     {
@@ -125,7 +124,7 @@ export const CitiesBlock = () => {
       renderCell: renderActions,
     },
   ]
-
+  
   return (
     <>
       <div className="adminPage__itemsBlock">
@@ -164,7 +163,7 @@ export const CitiesBlock = () => {
       </div>
       <Box p={2} display="flex" justifyContent="center">
         <Button onClick={startAddHandler}>
-          AddCity
+          Add City
           <AddIcon />
         </Button>
       </Box>
