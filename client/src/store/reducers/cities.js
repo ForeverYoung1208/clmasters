@@ -12,11 +12,9 @@ import {
   CITIES_PUT_PENDING,
   CITIES_PUT_REJECTED,
 } from '../actions/actionTypes/cities'
-import { ERROR, FULFILLED, PENDING, PRISTINE } from './statuses/statuses'
 
 const initialState = {
   data: [],
-  status: PRISTINE,
   error: null,
 }
 
@@ -27,7 +25,6 @@ const cities = (state = initialState, { type, payload }) => {
       return {
         ...state,
         data: [...payload],
-        status: FULFILLED,
         error: null,
       }
 
@@ -40,7 +37,6 @@ const cities = (state = initialState, { type, payload }) => {
       return {
         ...state,
         data: newCities,
-        status: FULFILLED,
         error: null,
       }
 
@@ -50,7 +46,6 @@ const cities = (state = initialState, { type, payload }) => {
       return {
         ...state,
         data: newCities,
-        status: FULFILLED,
         error: null,
       }
 
@@ -59,7 +54,6 @@ const cities = (state = initialState, { type, payload }) => {
       return {
         ...state,
         data: newCities,
-        status: FULFILLED,
         error: null,
       }
 
@@ -69,7 +63,6 @@ const cities = (state = initialState, { type, payload }) => {
     case CITIES_DELETE_PENDING:
       return {
         ...state,
-        status: PENDING,
         error: null,
       }
 
@@ -79,7 +72,6 @@ const cities = (state = initialState, { type, payload }) => {
     case CITIES_DELETE_REJECTED:
       return {
         ...state,
-        status: ERROR,
         error: payload,
       }
 

@@ -10,18 +10,17 @@ import { fetchCities } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
 import { Box, IconButton } from '@material-ui/core'
 import './MastersBlock.scss'
-
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   Add as AddIcon,
 } from '@material-ui/icons'
-
 import { MasterEditDialog } from './MasterEditDialog/MasterEditDialog'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'
 import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
+import { MASTERS_POST_REJECTED } from '../../../store/actions/actionTypes/masters'
 // import { MasterDeleteDialog } from './MasterDeleteDialog/MasterDeleteDialog'
 // import { MasterAddDialog } from './MasterAddDialog/MasterAddDialog'
 
@@ -78,11 +77,11 @@ export const MastersBlock = () => {
     dispatch(setErrorMessage(''))
     setIsAddingMaster(true)
   }, [dispatch])
+  
   const addHandler = useCallback(
     async (Master) => {
       const action = await dispatch(postMaster({ Master, setIsAddingMaster }))
-      if (action.type === 'masters/post/rejected') {
-        console.log('[action.payload]', action.payload)
+      if (action.type === MASTERS_POST_REJECTED) {
         const formSubmitError = normalizeFormSubmitError(action.payload.errors)
         throw new SubmissionError(formSubmitError)
       }

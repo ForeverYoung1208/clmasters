@@ -18,13 +18,9 @@ export const putMaster = createAsyncThunk(
   async ({ master, setEditingMasterId }, { rejectWithValue }) => {
     const res = await apiPutMaster({ ...master, name: master.name.trim() })
     if (res.ok) {
-      
-TODO: implement cityName update at masters state 
-when it has changed.
-now it updtes only cityId
-      
+      const newMaster = await res.json()
       setEditingMasterId && setEditingMasterId(null)
-      return master
+      return newMaster
     } else {
       const apiError = await res.json()
       return rejectWithValue(apiError)

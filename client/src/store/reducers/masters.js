@@ -12,11 +12,9 @@ import {
   MASTERS_PUT_PENDING,
   MASTERS_PUT_REJECTED,
 } from '../actions/actionTypes/masters'
-import { ERROR, FULFILLED, PENDING, PRISTINE } from './statuses/statuses'
 
 const initialState = {
   data: [],
-  status: PRISTINE,
   error: null,
 }
 
@@ -27,7 +25,6 @@ const masters = (state = initialState, { type, payload }) => {
       return {
         ...state,
         data: [...payload],
-        status: FULFILLED,
         error: null,
       }
 
@@ -40,7 +37,6 @@ const masters = (state = initialState, { type, payload }) => {
       return {
         ...state,
         data: newMasters,
-        status: FULFILLED,
         error: null,
       }
 
@@ -50,7 +46,6 @@ const masters = (state = initialState, { type, payload }) => {
       return {
         ...state,
         data: newMasters,
-        status: FULFILLED,
         error: null,
       }
 
@@ -59,7 +54,6 @@ const masters = (state = initialState, { type, payload }) => {
       return {
         ...state,
         data: newMasters,
-        status: FULFILLED,
         error: null,
       }
 
@@ -69,7 +63,6 @@ const masters = (state = initialState, { type, payload }) => {
     case MASTERS_DELETE_PENDING:
       return {
         ...state,
-        status: PENDING,
         error: null,
       }
 
@@ -79,7 +72,6 @@ const masters = (state = initialState, { type, payload }) => {
     case MASTERS_DELETE_REJECTED:
       return {
         ...state,
-        status: ERROR,
         error: payload,
       }
 

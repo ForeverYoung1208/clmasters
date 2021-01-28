@@ -23,6 +23,7 @@ import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
 import { CityDeleteDialog } from './CityDeleteDialog/CityDeleteDialog'
 import { CityAddDialog } from './CityAddDialog/CityAddDialog'
+import { CITIES_POST_REJECTED, CITIES_PUT_REJECTED } from '../../../store/actions/actionTypes/cities'
 
 const PAGE_SIZE = 20
 const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
@@ -45,7 +46,7 @@ export const CitiesBlock = () => {
   const saveHandler = useCallback(
     async (city) => {
       const action = await dispatch(putCity({ city, setEditingCityId }))
-      if (action.type === 'cities/put/rejected') {
+      if (action.type === CITIES_PUT_REJECTED) {
         const formSubmitError = normalizeFormSubmitError(action.payload.errors)
         throw new SubmissionError(formSubmitError)
       }
@@ -80,7 +81,7 @@ export const CitiesBlock = () => {
   const addHandler = useCallback(
     async (city) => {
       const action = await dispatch(postCity({ city, setIsAddingCity }))
-      if (action.type === 'cities/post/rejected') {
+      if (action.type === CITIES_POST_REJECTED) {
         const formSubmitError = normalizeFormSubmitError(action.payload.errors)
         throw new SubmissionError(formSubmitError)
       }
