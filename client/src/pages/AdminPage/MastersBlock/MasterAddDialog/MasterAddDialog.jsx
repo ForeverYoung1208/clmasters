@@ -1,5 +1,5 @@
 import React from 'react'
-import CityAddForm from './CityAddForm'
+import MasterForm from '../MasterForm/MasterForm'
 import {
   Button,
   Dialog,
@@ -9,14 +9,13 @@ import {
 } from '@material-ui/core'
 import { DraggablePaper } from '../../../../components/Material/DraggablePaper/DraggablePaper'
 
-
-export const CityAddDialog = ({
+export const MasterAddDialog = ({
   open,
   onClose: closeHandler,
   onAdd: addHandler,
   caption,
 }) => {
-  const city = {}
+  const master = {}
   return (
     <Dialog
       open={open}
@@ -26,7 +25,7 @@ export const CityAddDialog = ({
     >
       <DialogTitle id="draggable-dialog-title">{caption}</DialogTitle>
       <DialogContent>
-        <CityAddForm city={city} onSubmit={addHandler} />
+        <MasterForm master={master} onSubmit={addHandler} />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeHandler} color="primary">

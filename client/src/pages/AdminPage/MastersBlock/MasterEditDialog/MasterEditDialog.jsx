@@ -1,5 +1,5 @@
 import React from 'react'
-import MasterEditForm from './MasterEditForm'
+import MasterForm from '../MasterForm/MasterForm'
 import {
   Button,
   Dialog,
@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { DraggablePaper } from '../../../../components/Material/DraggablePaper/DraggablePaper'
-
 
 export const MasterEditDialog = ({
   open,
@@ -31,7 +30,7 @@ export const MasterEditDialog = ({
     >
       <DialogTitle id="draggable-dialog-title">{caption}</DialogTitle>
       <DialogContent>
-        <MasterEditForm master={master} onSubmit={saveHandler} />
+        <MasterForm master={master} onSubmit={saveHandler} />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeHandler} color="primary">

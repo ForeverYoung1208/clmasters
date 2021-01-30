@@ -1,5 +1,5 @@
 import React from 'react'
-import CityEditForm from './CityEditForm'
+import CityForm from '../CityForm/CityForm'
 import {
   Button,
   Dialog,
@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { DraggablePaper } from '../../../../components/Material/DraggablePaper/DraggablePaper'
-
 
 export const CityEditDialog = ({
   open,
@@ -31,7 +30,7 @@ export const CityEditDialog = ({
     >
       <DialogTitle id="draggable-dialog-title">{caption}</DialogTitle>
       <DialogContent>
-        <CityEditForm city={city} onSubmit={saveHandler} />
+        <CityForm city={city} onSubmit={saveHandler} />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeHandler} color="primary">

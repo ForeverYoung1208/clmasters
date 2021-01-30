@@ -20,9 +20,12 @@ import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'
 import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
-import { MASTERS_POST_REJECTED } from '../../../store/actions/actionTypes/masters'
-// import { MasterDeleteDialog } from './MasterDeleteDialog/MasterDeleteDialog'
-// import { MasterAddDialog } from './MasterAddDialog/MasterAddDialog'
+import {
+  MASTERS_POST_REJECTED,
+  MASTERS_PUT_REJECTED,
+} from '../../../store/actions/actionTypes/masters'
+import { MasterAddDialog } from './MasterAddDialog/MasterAddDialog'
+import { MasterDeleteDialog } from './MasterDeleteDialog/MasterDeleteDialog'
 
 const PAGE_SIZE = 20
 const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
@@ -45,7 +48,7 @@ export const MastersBlock = () => {
   const saveHandler = useCallback(
     async (master) => {
       const action = await dispatch(putMaster({ master, setEditingMasterId }))
-      if (action.type === 'masters/put/rejected') {
+      if (action.type === MASTERS_PUT_REJECTED) {
         const formSubmitError = normalizeFormSubmitError(action.payload.errors)
         throw new SubmissionError(formSubmitError)
       }
@@ -77,10 +80,9 @@ export const MastersBlock = () => {
     dispatch(setErrorMessage(''))
     setIsAddingMaster(true)
   }, [dispatch])
-  
   const addHandler = useCallback(
-    async (Master) => {
-      const action = await dispatch(postMaster({ Master, setIsAddingMaster }))
+    async (master) => {
+      const action = await dispatch(postMaster({ master, setIsAddingMaster }))
       if (action.type === MASTERS_POST_REJECTED) {
         const formSubmitError = normalizeFormSubmitError(action.payload.errors)
         throw new SubmissionError(formSubmitError)
@@ -97,19 +99,22 @@ export const MastersBlock = () => {
     dispatch(fetchCities())
   }, [dispatch])
 
-  const renderActions = useCallback(({ row }) => {
-    return (
-      <>
-        <IconButton onClick={() => startEditHandler(row.id)}>
-          <EditIcon />
-        </IconButton>
+  const renderActions = useCallback(
+    ({ row }) => {
+      return (
+        <>
+          <IconButton onClick={() => startEditHandler(row.id)}>
+            <EditIcon />
+          </IconButton>
 
-        <IconButton onClick={() => startDeleteHandler(row.id)}>
-          <DeleteIcon />
-        </IconButton>
-      </>
-    )
-  }, [startEditHandler, startDeleteHandler])
+          <IconButton onClick={() => startDeleteHandler(row.id)}>
+            <DeleteIcon />
+          </IconButton>
+        </>
+      )
+    },
+    [startEditHandler, startDeleteHandler]
+  )
 
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },
@@ -128,7 +133,7 @@ export const MastersBlock = () => {
       renderCell: renderActions,
     },
   ]
-  
+
   return (
     <>
       <div className="adminPage__itemsBlock">
@@ -150,7 +155,7 @@ export const MastersBlock = () => {
           masterId={editingMasterId}
         />
 
-        {/* <MasterAddDialog
+        <MasterAddDialog
           caption={'New Master'}
           open={!!isAddingMaster}
           onClose={closeAddHandler}
@@ -162,8 +167,8 @@ export const MastersBlock = () => {
           open={!!deletingMasterId}
           onClose={closeDeleteHandler}
           onDelete={deleteHandler}
-          MasterId={deletingMasterId}
-        /> */}
+          masterId={deletingMasterId}
+        />
       </div>
       <Box p={2} display="flex" justifyContent="center">
         <Button onClick={startAddHandler}>
