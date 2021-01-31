@@ -24,8 +24,8 @@ import {
   USERS_PUT_REJECTED,
 } from '../../../store/actions/actionTypes/users'
 import { UserEditDialog } from './UserEditDialog/UserEditDialog'
-import { UserAddDialog } from './UserAddDialog/UserAddDialog'
-import { UserDeleteDialog } from './UserDeleteDialog/UserDeleteDialog'
+// import { UserAddDialog } from './UserAddDialog/UserAddDialog'
+// import { UserDeleteDialog } from './UserDeleteDialog/UserDeleteDialog'
 
 const PAGE_SIZE = 20
 const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
@@ -118,9 +118,9 @@ export const UsersBlock = () => {
 
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'rating', headerName: 'Rating', width: 70 },
-    { field: 'cityName', headerName: 'City', width: 150 },
+    { field: 'name', headerName: 'Name', width: 100 },
+    { field: 'email', headerName: 'E-mail', width: 100 },
+    { field: 'isAdmin', headerName: 'Admin?', width: 70 },
     { field: 'comment', headerName: 'Comment', flex: 1 },
     {
       field: 'actions',
@@ -155,7 +155,7 @@ export const UsersBlock = () => {
           userId={editingUserId}
         />
 
-        <UserAddDialog
+        {/* <UserAddDialog
           caption={'New User'}
           open={!!isAddingUser}
           onClose={closeAddHandler}
@@ -168,7 +168,7 @@ export const UsersBlock = () => {
           onClose={closeDeleteHandler}
           onDelete={deleteHandler}
           userId={deletingUserId}
-        />
+        /> */}
       </div>
       <Box p={2} display="flex" justifyContent="center">
         <Button onClick={startAddHandler}>
