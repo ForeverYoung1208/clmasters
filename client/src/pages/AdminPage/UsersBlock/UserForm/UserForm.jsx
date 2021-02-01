@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core'
 import { reduxForm, Field } from 'redux-form'
 import { Button } from '../../../../components/Button/Button'
 import { RenderFieldInput } from '../../../../components/ReduxForm/RenderFieldInput/RenderFieldInputMUI'
-import { RenderFieldSelect } from '../../../../components/ReduxForm/RenderFieldSelect/RenderFieldSelectMUI'
+import { RenderFieldCheckbox } from '../../../../components/ReduxForm/RenderFieldCheckbox/RenderFieldCheckboxMUI'
 
 import { validators } from '../../../../shared/validators/baseValidator'
 import { useSelector } from 'react-redux'
@@ -16,19 +16,12 @@ export const RATINGS = [
   { id: '5', name: 'rating 5' },
 ]
 
-let UserForm = ({
-  handleSubmit,
-  master,
-  initialize,
-  pristine,
-  submitting,
-}) => {
+let UserForm = ({ handleSubmit, user, initialize, pristine, submitting }) => {
   useEffect(() => {
-    initialize(master)
+    initialize({ ...user, password: '' })
     // eslint-disable-next-line
   }, [])
-
-  const cities = useSelector(({ cities }) => cities?.data)
+  const isAdmin = useSelector(({ form: { user } }) => user?.values?.isAdmin)
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
@@ -41,30 +34,35 @@ let UserForm = ({
             validate={[validators.required]}
           />
         </div>
-
-        {/* <div>
-          <Field
-            name="cityId"
-            label="City"
-            component={RenderFieldSelect}
-            validate={[validators.required]}
-            options={cities}
-          />
-        </div>
-
         <div>
           <Field
-            name="rating"
-            label="Rating"
-            component={RenderFieldSelect}
+            name="email"
+            label="E-mail"
+            component={RenderFieldInput}
             validate={[validators.required]}
-            options={RATINGS}
           />
-        </div> */}
-
-        <div>
-          <Field label="Comment" name="comment" component={RenderFieldInput} />
         </div>
+        <div>
+          <Field name="comment" label="Comment" component={RenderFieldInput} />
+        </div>
+        <div>
+          <Field
+            name="isAdmin"
+            label="is Admin?"
+            component={RenderFieldCheckbox}
+          />
+        </div>
+        {isAdmin && (
+          <div>
+            <Field
+              name="password"
+              label="Password"
+              component={RenderFieldInput}
+              validate={[validators.required]}
+            />
+          </div>
+        )}
+
         <Box display="flex" justifyContent="center">
           <Button
             color="primary"
@@ -79,5 +77,5 @@ let UserForm = ({
   )
 }
 export default reduxForm({
-  form: 'master',
+  form: 'user',
 })(UserForm)

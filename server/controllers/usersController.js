@@ -1,5 +1,6 @@
 const { check } = require('express-validator')
 const { User } = require('../models')
+const { noTimestamps } = require('../shared/services')
 const { CRUDController } = require('./common/CRUDController')
 
 class UsersController extends CRUDController {
@@ -28,6 +29,21 @@ class UsersController extends CRUDController {
       })
     }
   }
+  
+  // overrides parent CRUDcontroller method
+  async getAll(req, res) {
+    const models = await this.model.findAll({
+      order: [
+        ['id', 'ASC']
+      ]
+    })
+    const data = models.map((m) => {
+      const { password, ...userDataNoPassword } = m.dataValues
+      return noTimestamps(userDataNoPassword)
+    })
+    return (res.status(200).json(data))
+  }
+  
 
   putValidators() {
     return [
