@@ -8,7 +8,6 @@ import { TabPanel } from '../../components/Material/TabPanel/TabPanel'
 import { Card } from '../../components/Card/Card'
 
 import { CitiesBlock } from './CitiesBlock/CitiesBlock'
-import { OrdersBlock } from './OrdersBlock/OrdersBlock'
 import { UsersBlock } from './UsersBlock/UsersBlock'
 import { fetchAdmindata } from '../../store/actions/admin'
 

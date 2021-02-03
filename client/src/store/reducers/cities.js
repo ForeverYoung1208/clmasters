@@ -19,7 +19,6 @@ const initialState = {
 }
 
 const cities = (state = initialState, { type, payload }) => {
-  let newCities = []
   switch (type) {
     case CITIES_FETCH_FULFILLED:
       return {
@@ -29,31 +28,29 @@ const cities = (state = initialState, { type, payload }) => {
       }
 
     case CITIES_PUT_FULFILLED:
-      const newCityIdx = state.data.findIndex(
-        (city) => +city.id === +payload.id
-      )
-      newCities = [...state.data]
-      newCities[newCityIdx] = payload
+      const citiesAfterPut = state.data.map((city) => {
+        if (+city.id === +payload.id) return payload
+        return city
+      })
       return {
         ...state,
-        data: newCities,
+        data: citiesAfterPut,
         error: null,
       }
 
     case CITIES_POST_FULFILLED:
-      newCities = [...state.data]
-      newCities.push(payload)
+      const citiesAfterPost = [...state.data, payload]
       return {
         ...state,
-        data: newCities,
+        data: citiesAfterPost,
         error: null,
       }
 
     case CITIES_DELETE_FULFILLED:
-      newCities = state.data.filter((c) => +c.id !== +payload.cityId)
+      const citiesAfterDelete = state.data.filter((c) => +c.id !== +payload.cityId)
       return {
         ...state,
-        data: newCities,
+        data: citiesAfterDelete,
         error: null,
       }
 

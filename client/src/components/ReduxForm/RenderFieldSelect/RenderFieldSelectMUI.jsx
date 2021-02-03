@@ -22,25 +22,25 @@ export const RenderFieldSelect = ({
 }) => {
   const classes = useStyles()
   const isError = useMemo(() => {
-    return !!(touched && (error || warning))
+    if (!touched) return false
+    if (error || warning) return true
+    return false
   }, [touched, error, warning])
 
   const errorText = useMemo(() => {
-    return (error && error) || (warning && warning)
+    if (error) return error
+    if (warning) return warning
   }, [error, warning])
-  
+
   return (
     <FormControl className={classes.formControl} error={isError}>
       <InputLabel id={`select-label-${label}`}>{label}</InputLabel>
-      <Select
-        labelId={`select-label-${label}`}
-        inputProps={{...input}}
-      >
+      <Select labelId={`select-label-${label}`} inputProps={{ ...input }}>
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
         {options &&
-          options.map(({id, name}) => (
+          options.map(({ id, name }) => (
             <MenuItem key={id} value={id}>
               {name}
             </MenuItem>

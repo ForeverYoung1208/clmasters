@@ -19,7 +19,6 @@ const initialState = {
 }
 
 const masters = (state = initialState, { type, payload }) => {
-  let newMasters = []
   switch (type) {
     case MASTERS_FETCH_FULFILLED:
       return {
@@ -29,31 +28,29 @@ const masters = (state = initialState, { type, payload }) => {
       }
 
     case MASTERS_PUT_FULFILLED:
-      const newMasterIdx = state.data.findIndex(
-        (master) => +master.id === +payload.id
-      )
-      newMasters = [...state.data]
-      newMasters[newMasterIdx] = payload
+      const mastersAfterPut = state.data.map((master) => {
+        if (+master.id === +payload.id) return payload
+        return master
+      })
       return {
         ...state,
-        data: newMasters,
+        data: mastersAfterPut,
         error: null,
       }
 
     case MASTERS_POST_FULFILLED:
-      newMasters = [...state.data]
-      newMasters.push(payload)
+      const mastersAfterPost = [...state.data, payload]
       return {
         ...state,
-        data: newMasters,
+        data: mastersAfterPost,
         error: null,
       }
 
     case MASTERS_DELETE_FULFILLED:
-      newMasters = state.data.filter((c) => +c.id !== +payload.masterId)
+      const mastersAfterDelete = state.data.filter((c) => +c.id !== +payload.masterId)
       return {
         ...state,
-        data: newMasters,
+        data: mastersAfterDelete,
         error: null,
       }
 
