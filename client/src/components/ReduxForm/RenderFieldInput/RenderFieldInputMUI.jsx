@@ -8,13 +8,16 @@ export const RenderFieldInput = ({
   meta: { touched, error, warning },
 }) => {
   const isError = useMemo(() => {
-    return !!(touched && (error || warning))
+    if (!touched) return false
+    if (error || warning) return true
+    return false
   }, [touched, error, warning])
 
   const errorText = useMemo(() => {
-    return (error && error) || (warning && warning)
+    if (error) return error
+    if (warning) return warning
   }, [error, warning])
-  
+
   return (
     <span className="field-wrapper">
       <TextField
