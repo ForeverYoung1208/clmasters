@@ -48,14 +48,16 @@ class UsersController extends CRUDController {
   putValidators() {
     return [
       check('name', 'name must be not empty!').exists().notEmpty(),
-      check('email', 'Email must be an email!').isEmail(),
+      check('email', 'Enter correct Email address.').isEmail(),
+      check('password', 'Must be longer than 2 chars').isLength({ min: 2 }),
     ]
   }
 
   postValidators() {
     return [
       check('name', 'name must be not empty!').exists().notEmpty(),
-      check('email', 'Email must be an email!').isEmail(),
+      check('email', 'Enter correct Email address.').isEmail(),
+      check('password', 'Must be longer than 2 chars').isLength({ min: 2 }),
     ]
   }
 }

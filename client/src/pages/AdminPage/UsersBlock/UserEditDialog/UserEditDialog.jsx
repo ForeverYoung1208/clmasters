@@ -20,7 +20,7 @@ export const UserEditDialog = ({
   let user = useSelector(({ users: { data } }) =>
     data.find((m) => +m.id === +userId)
   )
-
+  
   return (
     <Dialog
       open={open}

@@ -19,7 +19,6 @@ const initialState = {
 }
 
 const users = (state = initialState, { type, payload }) => {
-  let newUsers = []
   switch (type) {
     case USERS_FETCH_FULFILLED:
       return {
@@ -29,31 +28,30 @@ const users = (state = initialState, { type, payload }) => {
       }
 
     case USERS_PUT_FULFILLED:
-      const newUserIdx = state.data.findIndex(
-        (user) => +user.id === +payload.id
-      )
-      newUsers = [...state.data]
-      newUsers[newUserIdx] = payload
+      
+      const usersAfterPut = state.data.map((user) => {
+        if (+user.id === +payload.id) return payload
+        return user
+      })
       return {
         ...state,
-        data: newUsers,
+        data: usersAfterPut,
         error: null,
       }
 
     case USERS_POST_FULFILLED:
-      newUsers = [...state.data]
-      newUsers.push(payload)
+      const usersAfterPost = [...state.data, payload]
       return {
         ...state,
-        data: newUsers,
+        data: usersAfterPost,
         error: null,
       }
 
     case USERS_DELETE_FULFILLED:
-      newUsers = state.data.filter((c) => +c.id !== +payload.userId)
+      const usersAfterDelete = state.data.filter((c) => +c.id !== +payload.userId)
       return {
         ...state,
-        data: newUsers,
+        data: usersAfterDelete,
         error: null,
       }
 

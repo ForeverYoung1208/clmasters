@@ -39,11 +39,8 @@ let UserForm = ({ handleSubmit, user, initialize, pristine, submitting }) => {
             name="email"
             label="E-mail"
             component={RenderFieldInput}
-            validate={[validators.required]}
+            validate={[validators.required, validators.isEmail]}
           />
-        </div>
-        <div>
-          <Field name="comment" label="Comment" component={RenderFieldInput} />
         </div>
         <div>
           <Field
@@ -58,7 +55,7 @@ let UserForm = ({ handleSubmit, user, initialize, pristine, submitting }) => {
               name="password"
               label="Password"
               component={RenderFieldInput}
-              validate={[validators.required]}
+              validate={[validators.required, validators.minLength2]}
             />
           </div>
         )}

@@ -1,21 +1,24 @@
 import React from 'react'
-import MasterForm from '../MasterForm/MasterForm'
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
 } from '@material-ui/core'
 import { DraggablePaper } from '../../../../components/Material/DraggablePaper/DraggablePaper'
+import { withHumanizeError } from '../../../../HOC/withHumanizeError'
+import { ErrorMessageButton } from '../../../../components/ErrorMessage/ErrorMessage'
+const HumanizedErrorMessageButton = withHumanizeError(ErrorMessageButton)
 
-export const MasterAddDialog = ({
+export const UserDeleteDialog = ({
   open,
   onClose: closeHandler,
-  onAdd: addHandler,
+  onDelete: deleteHandler,
   caption,
+  userId,
 }) => {
-  const master = {}
   return (
     <Dialog
       open={open}
@@ -25,13 +28,17 @@ export const MasterAddDialog = ({
     >
       <DialogTitle id="draggable-dialog-title">{caption}</DialogTitle>
       <DialogContent>
-        <MasterForm master={master} onSubmit={addHandler} />
+        <DialogContentText>
+          Please confirm deletion user with id {userId}
+        </DialogContentText>
       </DialogContent>
       <DialogActions>
+        <Button onClick={() => deleteHandler(userId)}> Confirm </Button>
         <Button onClick={closeHandler} color="primary">
           Cancel
         </Button>
       </DialogActions>
+      <HumanizedErrorMessageButton />
     </Dialog>
   )
 }
