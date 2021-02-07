@@ -1,5 +1,5 @@
 import React from 'react'
-import MasterForm from '../MasterForm/MasterForm'
+import OrderForm from '../OrderForm/OrderForm'
 import {
   Button,
   Dialog,
@@ -9,13 +9,13 @@ import {
 } from '@material-ui/core'
 import { DraggablePaper } from '../../../../components/Material/DraggablePaper/DraggablePaper'
 
-export const MasterAddDialog = ({
+export const OrderAddDialog = ({
   open,
   onClose: closeHandler,
   onAdd: addHandler,
   caption,
 }) => {
-  const master = {}
+  const order = {}
   return (
     <Dialog
       open={open}
@@ -25,7 +25,7 @@ export const MasterAddDialog = ({
     >
       <DialogTitle id="draggable-dialog-title">{caption}</DialogTitle>
       <DialogContent>
-        <MasterForm master={master} onSubmit={addHandler} />
+        <OrderForm order={order} onSubmit={addHandler} />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeHandler} color="primary">

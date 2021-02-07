@@ -27,8 +27,8 @@ import { fetchUsers } from '../../../store/actions/users'
 import { fetchClocks } from '../../../store/actions/clocks'
 
 import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
-// import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
-// import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
+import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
+import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
 
 const PAGE_SIZE = 20
 const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
@@ -87,7 +87,7 @@ export const OrdersBlock = () => {
     async (order) => {
       const action = await dispatch(postOrder({ order, setIsAddingOrder }))
       if (action.type === ORDERS_POST_REJECTED) {
-        const formSubmitError = normalizeFormSubmitError(action.payload.errors)
+        const formSubmitError = normalizeFormSubmitError(action.payload?.errors)
         throw new SubmissionError(formSubmitError)
       }
     },
@@ -161,7 +161,7 @@ export const OrdersBlock = () => {
           orderId={editingOrderId}
         />
 
-        {/* <OrderAddDialog
+        <OrderAddDialog
           caption={'New Order'}
           open={!!isAddingOrder}
           onClose={closeAddHandler}
@@ -174,7 +174,7 @@ export const OrdersBlock = () => {
           onClose={closeDeleteHandler}
           onDelete={deleteHandler}
           orderId={deletingOrderId}
-        /> */}
+        />
       </div>
       <Box p={2} display="flex" justifyContent="center">
         <Button onClick={startAddHandler}>

@@ -31,7 +31,7 @@ export const putOrder = createAsyncThunk(
 export const postOrder = createAsyncThunk(
   'orders/post',
   async ({ order, setIsAddingOrder }, { rejectWithValue }) => {
-    const res = await apiPostOrder({ ...order, name: order.name.trim() })
+    const res = await apiPostOrder(order)
     if (res.ok) {
       const resJSON = await res.json()
       setIsAddingOrder && setIsAddingOrder(false)

@@ -12,12 +12,12 @@ import { withHumanizeError } from '../../../../HOC/withHumanizeError'
 import { ErrorMessageButton } from '../../../../components/ErrorMessage/ErrorMessage'
 const HumanizedErrorMessageButton = withHumanizeError(ErrorMessageButton)
 
-export const MasterDeleteDialog = ({
+export const OrderDeleteDialog = ({
   open,
   onClose: closeHandler,
   onDelete: deleteHandler,
   caption,
-  masterId,
+  orderId,
 }) => {
   return (
     <Dialog
@@ -29,11 +29,11 @@ export const MasterDeleteDialog = ({
       <DialogTitle id="draggable-dialog-title">{caption}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Please confirm deletion master with id {masterId}
+          Please confirm deletion order with id {orderId}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => deleteHandler(masterId)}> Confirm </Button>
+        <Button onClick={() => deleteHandler(orderId)}> Confirm </Button>
         <Button onClick={closeHandler} color="primary">
           Cancel
         </Button>
