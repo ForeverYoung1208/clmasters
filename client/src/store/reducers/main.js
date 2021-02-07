@@ -3,12 +3,12 @@ import { SET_ERROR_MESSAGE } from "../actions/actionTypes/errors"
 import { LOADER_HIDE, LOADER_SHOW } from "../actions/actionTypes/loaders"
 import { POST_PREORDER_OK, SAVE_PREORDER } from "../actions/actionTypes/preorders"
 import { REDIRECTION_DONE, REDIRECT_START } from "../actions/actionTypes/redirect"
-import {
-  CLEAR_ORDERS,
-  CLEAR_ORDER_RESULT,
-  GET_ORDERS_OK,
-  POST_ORDER_OK
-} from "../actions/actionTypes/orders"
+// import {
+//   CLEAR_ORDERS,
+//   CLEAR_ORDER_RESULT,
+//   GET_ORDERS_OK,
+//   POST_ORDER_OK
+// } from "../actions/actionTypes/orders"
 
 const initialState = {
   loaders:{
@@ -62,38 +62,38 @@ const main = (state = initialState, action) => {
         preorderResult: action.preorderResult
       }
     
-    case POST_ORDER_OK:
-      return {
-        ...state,
-        preorder: null,
-        preorderResult: null,
-        orderResult: action.orderResult,
-        redirectUrl: action.redirectUrl
-      }
-    
-    case CLEAR_ORDER_RESULT:
-      return {
-        ...state,
-        orderResult: null
-      }
-    
     case SET_ERROR_MESSAGE:
       return {
         ...state,
         errorMessage: action.errorMessage
-      }
+      }    
     
-    case GET_ORDERS_OK:
-      return {
-        ...state,
-        orders: action.orders
-      }
+    // case POST_ORDER_OK:
+    //   return {
+    //     ...state,
+    //     preorder: null,
+    //     preorderResult: null,
+    //     orderResult: action.orderResult,
+    //     redirectUrl: action.redirectUrl
+    //   }
     
-    case CLEAR_ORDERS:
-      return {
-        ...state,
-        orders: null
-      }
+    // case CLEAR_ORDER_RESULT:
+    //   return {
+    //     ...state,
+    //     orderResult: null
+    //   }
+    
+    // case GET_ORDERS_OK:
+    //   return {
+    //     ...state,
+    //     orders: action.orders
+    //   }
+    
+    // case CLEAR_ORDERS:
+    //   return {
+    //     ...state,
+    //     orders: null
+    //   }
     
     
     default:

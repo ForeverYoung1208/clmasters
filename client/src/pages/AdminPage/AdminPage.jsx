@@ -5,17 +5,18 @@ import { useDispatch } from 'react-redux'
 import { Tabs, Tab } from '@material-ui/core'
 import { TabPanel } from '../../components/Material/TabPanel/TabPanel'
 
-import { Card } from '../../components/Card/Card'
+// import { Card } from '../../components/Card/Card'
 
 import { CitiesBlock } from './CitiesBlock/CitiesBlock'
 import { UsersBlock } from './UsersBlock/UsersBlock'
+import { MastersBlock } from './MastersBlock/MastersBlock'
+import { OrdersBlock } from './OrdersBlock/OrdersBlock'
 import { fetchAdmindata } from '../../store/actions/admin'
 
 import './AdminPage.scss'
 import { ErrorMessageButton } from '../../components/ErrorMessage/ErrorMessage'
 import { clearErrorMessage } from '../../store/actions/main'
 import { withHumanizeError } from '../../HOC/withHumanizeError'
-import { MastersBlock } from './MastersBlock/MastersBlock'
 
 const HumanizedErrorMessageButton = withHumanizeError(ErrorMessageButton)
 
@@ -47,10 +48,7 @@ const AdminPage = () => {
         <Tab label="Cities" />
       </Tabs>
       <TabPanel selectedTab={selectedTab} index={0}>
-        <Card header="Orders management">
-          {/* <OrdersBlock /> */}
-          OrdersBlock here (depends on cities, masters)
-        </Card>
+        <OrdersBlock />
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={1}>
         <MastersBlock/>

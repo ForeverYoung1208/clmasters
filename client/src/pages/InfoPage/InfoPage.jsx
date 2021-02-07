@@ -7,9 +7,9 @@ import { OrdersInfo } from "./OrdersInfo/OrdersInfo";
 import { Button } from "../../components/Button/Button";
 
 import {
-  clearOrderResult,
-  clearOrders,
-  getOrdersBy,
+  // clearOrderResult,
+  // clearOrders,
+  // getOrdersBy,
   redirectTo,
 } from "../../store/actions/main";
 import EmailSearchForm from "./EmailSearchForm/EmailSearchForm";
@@ -23,12 +23,12 @@ const InfoPage = () => {
 
   const handleSearchSubmit = ({ searchString }) => {
     setSearchedString(searchString);
-    dispatch(getOrdersBy({ email: searchString }));
+    alert (' dispatch(getOrdersBy({ email: searchString }))')
   };
 
   const handleBackToForm = (e) => {
     e.preventDefault();
-    dispatch(clearOrderResult());
+    // dispatch(clearOrderResult());
     dispatch(redirectTo("/masters/preorder"));
   };
 
@@ -53,7 +53,7 @@ const InfoPage = () => {
           <Button
             className = "orders-info__clear-button"
             onClick={() => {
-              dispatch(clearOrders());
+              alert ('dispatch(clearOrders());')
             }}
           >
             Clear information

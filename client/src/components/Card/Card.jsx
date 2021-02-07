@@ -10,12 +10,4 @@ export const Card = (props) => (
   </div>
 )
 
-Card.propTypes = {
-  header: PT.string,
-  children: PT.oneOfType([
-    PT.arrayOf(PT.node),
-    PT.node
-  ]).isRequired
-};
-
 export default Card;

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Card } from '../../components/Card/Card';
 import { PreorderForm } from './PreorderForm/PreorderForm';
 import OrderForm from './OrderForm/OrderForm';
-import { postOrder } from '../../store/actions/main';
+// import { postOrder } from '../../store/actions/main';
 
 import './MastersPage.scss';
 
@@ -24,7 +24,7 @@ const MastersPage = () => {
   }, [preorderResult, history])
   
   const handlePostOrder = (masterId) => {
-    dispatch(postOrder({ masterId, preorder }))
+    alert ('dispatch(postOrder({ masterId, preorder }))')
   }
 
   return (
