@@ -7,18 +7,58 @@ const sendEmail = require('../shared/mailjet')
 const { utcToZonedTime, format } = require('date-fns-tz')
 const timeZone = 'Europe/Kiev'
 
-
-class OrdersController extends CRUDController{
-  constructor(model){
+class OrdersController extends CRUDController {
+  constructor(model) {
     super(model)
   }
-
   // put(req, res) goes to parent CRUDController
 
-  async post(req, res) { 
+  
+  // overrides parent CRUDcontroller method to add names of associated entities
+  async getAll(req, res) {
+    const orders = await Order.findAll({
+      include: [
+        {
+          model: User,
+          as: 'user',
+        },
+        {
+          model: Master,
+          as: 'master',
+          include: [
+            {
+              model: City,
+              as: 'city',
+            },
+          ],
+        },
+        {
+          model: Clock,
+          as: 'clock',
+        },
+      ],
+      order: [
+        // that is sortring order, not our order entity
+        ['id', 'ASC'],
+      ],
+    })      
+    const data = orders.map((o) => {
+      const { user, master, clock, ...order } = noTimestamps(o.dataValues) // without user, master, clock information
+      order.userName = o.user.name //only userName
+      order.masterName = o.master.name //only masterName
+      order.clockType = o.clock.type //only clockType
+      return order
+    })
+    return res.status(200).json(data)
+  }
+
+  
+  // overrides parent CRUDcontroller method
+  async post(req, res) {
     const errors = validationResult(req)
-    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })    
-    
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() })
+
     const data = req.body
     let user
 
@@ -29,62 +69,59 @@ class OrdersController extends CRUDController{
       // user wasn't logged in (customer) - need to find by email or create
       [user] = await User.findOrCreate({
         where: { email: data.email },
-        defaults: { name: data.name }
+        defaults: { name: data.name },
       })
       user.name = data.name
       user.save()
       data.userId = user.id
     }
-    
+
     try {
       var _newOrder = await Order.create(data)
     } catch (error) {
       return res.status(400).json({
-        error: error.message
-      })      
+        error: error.message,
+      })
     }
 
     const newOrders = await Order.findAll({
-      where: {id: _newOrder.dataValues.id },
+      where: { id: _newOrder.dataValues.id },
       include: [
         {
           model: User,
-          as: 'user'
-        }, {
+          as: 'user',
+        },
+        {
           model: Master,
           as: 'master',
           include: [
             {
               model: City,
-              as: 'city'
-            }
-          ]
-        }, {
+              as: 'city',
+            },
+          ],
+        },
+        {
           model: Clock,
-          as: 'clock'
-        }
+          as: 'clock',
+        },
       ],
-      order: [                  // that is sortring order, not our order entity
-        ['id', 'ASC']
-      ]
+      order: [
+        // that is sortring order, not our order entity
+        ['id', 'ASC'],
+      ],
     })
 
     const { master, clock } = newOrders[0]
 
     const ukrTime = utcToZonedTime(newOrders[0].onTime, timeZone)
-    const ukrTimeStr = format(
-      ukrTime,
-      'dd.MM.yyyy HH:mm',
-      { timeZone: timeZone }
-    )
+    const ukrTimeStr = format(ukrTime, 'dd.MM.yyyy HH:mm', {
+      timeZone: timeZone,
+    })
 
-    console.log(ukrTimeStr)
-
-
-    const emailResult = await sendEmail(
-      {
-        toEmail: user.email,
-        HTMLPart: `
+    const emailResult = await sendEmail({
+      toEmail: user.email,
+      HTMLPart: `
         <h2>Order information</h2>
         <div>Order ID: ${newOrders[0].id}
         <div>User Name: ${user.name}</div>
@@ -96,17 +133,16 @@ class OrdersController extends CRUDController{
           repair time: ${timeStrToWords(clock.repairTime)}
           </div>
         <div>Master: ${master.name}</div>
-        `
-      }
-    )
+        `,
+    })
 
     return res.status(201).json({
       ...noTimestamps(newOrders[0].dataValues),
       user: {
         name: user.name,
-        email: user.email
+        email: user.email,
       },
-      isEmailSent: emailResult.response.ok
+      isEmailSent: emailResult.response.ok,
     })
   }
 
@@ -115,41 +151,41 @@ class OrdersController extends CRUDController{
     let emailQuery = {}
     if (req.query.email) {
       masterQuery = {}
-      emailQuery = req.query 
+      emailQuery = req.query
     }
 
     const orders = await Order.findAll({
-      where: [
-        masterQuery,
-        {'$user.email$':emailQuery.email}],
+      where: [masterQuery, { '$user.email$': emailQuery.email }],
       include: [
         {
           model: User,
-          as: 'user'
-        }, {
+          as: 'user',
+        },
+        {
           model: Master,
           as: 'master',
           include: [
             {
               model: City,
-              as: 'city'
-            }
-          ]
-        }, {
+              as: 'city',
+            },
+          ],
+        },
+        {
           model: Clock,
-          as: 'clock'
-        }
+          as: 'clock',
+        },
       ],
-      order: [                  // that is sortring order, not our order entity
-        ['id', 'ASC']
-      ]
+      order: [
+        // that is sortring order, not our order entity
+        ['id', 'ASC'],
+      ],
     })
 
     const data = orders.map((order) => noTimestamps(order.dataValues))
 
-    return (res.status(200).json(data))
-  }  
-  
+    return res.status(200).json(data)
+  }
 
   putValidators() {
     return [
@@ -157,7 +193,7 @@ class OrdersController extends CRUDController{
       check('clockId', 'clockId must exist!').exists().notEmpty(),
       check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]
-  }  
+  }
 
   postValidators() {
     return [
@@ -165,9 +201,7 @@ class OrdersController extends CRUDController{
       check('clockId', 'clockId must exist!').exists().notEmpty(),
       check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]
-  }  
-
+  }
 }
-
 
 exports.ordersController = new OrdersController(Order)

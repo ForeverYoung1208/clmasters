@@ -6,7 +6,6 @@ import {
   postOrder,
   putOrder,
 } from '../../../store/actions/orders'
-import { fetchCities } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
 import { Box, IconButton } from '@material-ui/core'
 import './OrdersBlock.scss'
@@ -23,6 +22,9 @@ import {
   ORDERS_POST_REJECTED,
   ORDERS_PUT_REJECTED,
 } from '../../../store/actions/actionTypes/orders'
+import { fetchMasters } from '../../../store/actions/masters'
+import { fetchUsers } from '../../../store/actions/users'
+import { fetchClocks } from '../../../store/actions/clocks'
 
 // import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
 // import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
@@ -97,7 +99,9 @@ export const OrdersBlock = () => {
 
   useEffect(() => {
     dispatch(fetchOrders())
-    dispatch(fetchCities())
+    dispatch(fetchClocks())
+    dispatch(fetchMasters())
+    dispatch(fetchUsers())
   }, [dispatch])
 
   const renderActions = useCallback(
@@ -120,9 +124,9 @@ export const OrdersBlock = () => {
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },
     { field: 'onTime', headerName: 'Time', width: 200 },
-    { field: 'clockId', headerName: 'clockId', width: 120 },
-    { field: 'masterId', headerName: 'masterId', width: 120 },
-    { field: 'userId', headerName: 'userId', width: 120 },
+    { field: 'clockType', headerName: 'Clock', width: 120 },
+    { field: 'masterName', headerName: 'Master', width: 120 },
+    { field: 'userName', headerName: 'User', width: 200 },
     { field: 'comment', headerName: 'Comment', flex: 1 },
     {
       field: 'actions',

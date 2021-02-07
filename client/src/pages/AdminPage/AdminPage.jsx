@@ -1,5 +1,4 @@
 import React from 'react'
-import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { Tabs, Tab } from '@material-ui/core'
@@ -11,7 +10,7 @@ import { CitiesBlock } from './CitiesBlock/CitiesBlock'
 import { UsersBlock } from './UsersBlock/UsersBlock'
 import { MastersBlock } from './MastersBlock/MastersBlock'
 import { OrdersBlock } from './OrdersBlock/OrdersBlock'
-import { fetchAdmindata } from '../../store/actions/admin'
+// import { fetchAdmindata } from '../../store/actions/admin'
 
 import './AdminPage.scss'
 import { ErrorMessageButton } from '../../components/ErrorMessage/ErrorMessage'
@@ -23,9 +22,9 @@ const HumanizedErrorMessageButton = withHumanizeError(ErrorMessageButton)
 const AdminPage = () => {
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(fetchAdmindata())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchAdmindata())
+  // }, [dispatch])
 
   const [selectedTab, setSelectedTab] = React.useState(0)
 
