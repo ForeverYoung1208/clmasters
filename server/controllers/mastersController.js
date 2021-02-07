@@ -49,33 +49,37 @@ class MastersController extends CRUDController {
     })
     return res.status(200).json(data)
   }
-  
-  // overrides parent CRUDcontroller method
-  async put(req, res) { 
 
-    const errors = validationResult(req)  
-    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
-      
+  // overrides parent CRUDcontroller method
+  async put(req, res) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() })
+
     let { id, ...data } = req.body
     id = req.params.id
 
     let modelToUpdate = await this.model.findByPk(id)
-    if (!modelToUpdate) return res.status(400).json({
-      message: `Model with id:${id} not found`
-    })
+    if (!modelToUpdate)
+      return res.status(400).json({
+        message: `Model with id:${id} not found`,
+      })
 
     Object.assign(modelToUpdate, data)
 
     try {
       var result = await modelToUpdate.save()
-      result.dataValues.cityName = await City.findByPk(result.dataValues.cityId).then(({name}) => name)
-    } catch ({errors}) {
-      return res.status(400).json({ errors }) 
+      result.dataValues.cityName = await City.findByPk(
+        result.dataValues.cityId
+      ).then(({ name }) => name)
+    } catch ({ errors }) {
+      return res.status(400).json({ errors })
     }
 
-    if (!result) return res.stats(500).json({
-      message: 'CDUD controller error: model not updated'
-    })
+    if (!result)
+      return res.stats(500).json({
+        message: 'CDUD controller error: model not updated',
+      })
 
     return res.status(200).json(noTimestamps(result.dataValues))
   }

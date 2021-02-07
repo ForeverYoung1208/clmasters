@@ -142,6 +142,9 @@ class OrdersController extends CRUDController {
         name: user.name,
         email: user.email,
       },
+      userName: user.name,
+      masterName: master.name,
+      clockType: clock.type,
       isEmailSent: emailResult.response.ok,
     })
   }
