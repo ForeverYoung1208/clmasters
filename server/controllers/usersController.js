@@ -29,27 +29,26 @@ class UsersController extends CRUDController {
       })
     }
   }
-  
+
   // overrides parent CRUDcontroller method
   async getAll(req, res) {
     const models = await this.model.findAll({
-      order: [
-        ['id', 'ASC']
-      ]
+      order: [['id', 'ASC']],
     })
     const data = models.map((m) => {
       const { password, ...userDataNoPassword } = m.dataValues
       return noTimestamps(userDataNoPassword)
     })
-    return (res.status(200).json(data))
+    return res.status(200).json(data)
   }
-  
 
   putValidators() {
     return [
       check('name', 'name must be not empty!').exists().notEmpty(),
       check('email', 'Enter correct Email address.').isEmail(),
-      check('password', 'Must be longer than 2 chars').isLength({ min: 2 }),
+      check('password', 'Must be longer than 2 chars')
+        .if((value, { req }) => req.body.isAdmin)
+        .isLength({ min: 2 }),
     ]
   }
 
@@ -57,7 +56,9 @@ class UsersController extends CRUDController {
     return [
       check('name', 'name must be not empty!').exists().notEmpty(),
       check('email', 'Enter correct Email address.').isEmail(),
-      check('password', 'Must be longer than 2 chars').isLength({ min: 2 }),
+      check('password', 'Must be longer than 2 chars')
+        .if((value, { req }) => req.body.isAdmin)
+        .isLength({ min: 2 }),
     ]
   }
 }
