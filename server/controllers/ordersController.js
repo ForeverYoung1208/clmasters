@@ -145,6 +145,39 @@ class OrdersController extends CRUDController {
       isEmailSent: emailResult.response.ok,
     })
   }
+  
+  // overrides parent CRUDcontroller method
+  async put(req, res) { 
+
+    const errors = validationResult(req)  
+    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
+      
+    let { id, ...data } = req.body
+    id = req.params.id
+
+    let modelToUpdate = await this.model.findByPk(id)
+    if (!modelToUpdate) return res.status(400).json({
+      message: `Model with id:${id} not found`
+    })
+
+    Object.assign(modelToUpdate, data)
+
+    try {
+      var result = await modelToUpdate.save()
+      result.dataValues.masterName = await Master.findByPk(result.dataValues.masterId).then(({name}) => name)
+      result.dataValues.userName = await User.findByPk(result.dataValues.userId).then(({name}) => name)
+      result.dataValues.clockType = await Clock.findByPk(result.dataValues.clockId).then(({type}) => type)
+    } catch ({errors}) {
+      return res.status(400).json({ errors }) 
+    }
+
+    if (!result) return res.stats(500).json({
+      message: 'CDUD controller error: model not updated'
+    })
+
+    return res.status(200).json(noTimestamps(result.dataValues))
+  }
+  
 
   async getAllByParam(req, res) {
     let masterQuery = req.query

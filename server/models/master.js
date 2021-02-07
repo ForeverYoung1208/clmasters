@@ -6,7 +6,10 @@ const roundToMinute = require('date-fns/roundToNearestMinutes')
 
 module.exports = (sequelize, DataTypes) => {
   class Master extends Model {
-    static async freeMastersForOrder(preorderData) {
+
+    // excludeOrderId - to be able save order being eddited.
+    // otherwise, we'll get error that master is busy
+    static async freeMastersForOrder(preorderData, excludeOrderId) {
       const {
         cityId,
         orderDateTime: orderDateTimeStr,
@@ -38,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       const busyMasters = nearestOrders.reduce((acc, order) => {
+        
+        // make exclusion if needed - this oder doesn't make the master busy
+        if (+order.id === +excludeOrderId ) return acc 
+        
         const {
           dataValues: existingOrder,
           clock: { dataValues: existingClock },

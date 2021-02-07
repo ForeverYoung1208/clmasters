@@ -16,7 +16,7 @@ export const fetchOrders = createAsyncThunk('orders/fetch', async () => {
 export const putOrder = createAsyncThunk(
   'orders/put',
   async ({ order, setEditingOrderId }, { rejectWithValue }) => {
-    const res = await apiPutOrder({ ...order, name: order.name.trim() })
+    const res = await apiPutOrder(order)
     if (res.ok) {
       const newOrder = await res.json()
       setEditingOrderId && setEditingOrderId(null)

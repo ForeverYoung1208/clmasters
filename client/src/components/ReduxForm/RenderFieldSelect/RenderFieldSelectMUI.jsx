@@ -40,9 +40,9 @@ export const RenderFieldSelect = ({
           <em>None</em>
         </MenuItem>
         {options &&
-          options.map(({ id, name }) => (
+          options.map(({ id, name, type }) => (
             <MenuItem key={id} value={id}>
-              {name}
+              {name||type}
             </MenuItem>
           ))}
       </Select>

@@ -8,6 +8,7 @@ import cities from './cities'
 import masters from './masters'
 import users from './users'
 import orders from './orders'
+import clocks from './clocks'
 
 import { reducer as formReducer } from 'redux-form'
 
@@ -21,5 +22,6 @@ export default combineReducers({
   masters,
   users,
   orders,
+  clocks,
   form: formReducer
 })

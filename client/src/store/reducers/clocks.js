@@ -2,14 +2,14 @@ import {
   CLOCKS_FETCH_FULFILLED,
   CLOCKS_FETCH_PENDING,
   CLOCKS_FETCH_REJECTED,
-} from '../actions/actionTypes/masters'
+} from '../actions/actionTypes/clocks'
 
 const initialState = {
   data: [],
   error: null,
 }
 
-const masters = (state = initialState, { type, payload }) => {
+const clocks = (state = initialState, { type, payload }) => {
   switch (type) {
     case CLOCKS_FETCH_FULFILLED:
       return {

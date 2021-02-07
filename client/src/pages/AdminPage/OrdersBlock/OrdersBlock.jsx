@@ -26,7 +26,7 @@ import { fetchMasters } from '../../../store/actions/masters'
 import { fetchUsers } from '../../../store/actions/users'
 import { fetchClocks } from '../../../store/actions/clocks'
 
-// import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
+import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
 // import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
 // import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
 
@@ -52,7 +52,7 @@ export const OrdersBlock = () => {
     async (order) => {
       const action = await dispatch(putOrder({ order, setEditingOrderId }))
       if (action.type === ORDERS_PUT_REJECTED) {
-        const formSubmitError = normalizeFormSubmitError(action.payload.errors)
+        const formSubmitError = normalizeFormSubmitError(action.payload?.errors)
         throw new SubmissionError(formSubmitError)
       }
     },
@@ -153,7 +153,7 @@ export const OrdersBlock = () => {
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
         />
 
-        {/* <OrderEditDialog
+        <OrderEditDialog
           caption={'Edit Order'}
           open={!!editingOrderId}
           onClose={closeEditHandler}
@@ -161,7 +161,7 @@ export const OrdersBlock = () => {
           orderId={editingOrderId}
         />
 
-        <OrderAddDialog
+        {/* <OrderAddDialog
           caption={'New Order'}
           open={!!isAddingOrder}
           onClose={closeAddHandler}
