@@ -96,7 +96,6 @@ export const UsersBlock = () => {
 
   useEffect(() => {
     dispatch(fetchUsers())
-    dispatch(fetchCities())
   }, [dispatch])
 
   const renderActions = useCallback(
