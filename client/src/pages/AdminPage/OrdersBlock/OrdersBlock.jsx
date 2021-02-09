@@ -121,9 +121,18 @@ export const OrdersBlock = () => {
     [startEditHandler, startDeleteHandler]
   )
 
+  const transtormDateTime = useCallback(({ row }) =>
+    new Date(row.onTime).toLocaleString('uk')
+  )
+
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },
-    { field: 'onTime', headerName: 'Time', width: 200 },
+    {
+      field: 'onTime',
+      headerName: 'Time',
+      width: 200,
+      renderCell: transtormDateTime,
+    },
     { field: 'clockType', headerName: 'Clock', width: 120 },
     { field: 'masterName', headerName: 'Master', width: 120 },
     { field: 'userName', headerName: 'User', width: 200 },
