@@ -123,7 +123,7 @@ export const OrdersBlock = () => {
 
   const transtormDateTime = useCallback(({ row }) =>
     new Date(row.onTime).toLocaleString('uk')
-  )
+  , [])
 
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },

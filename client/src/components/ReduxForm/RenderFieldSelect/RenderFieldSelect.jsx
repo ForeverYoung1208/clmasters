@@ -2,7 +2,6 @@ import React from 'react'
 import { FieldError } from '../FieldError/FieldError'
 
 export const RenderFieldSelect = ({ className, input, placeholder, meta, options }) => {
-  // const showOptions = [{ id:''}, ...options]
   const showOptions = [...options]
   return (
     <span className='field-wrapper'>

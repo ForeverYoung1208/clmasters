@@ -3,7 +3,7 @@ import React from 'react'
 
 const useStyles = makeStyles({
   root: {
-    marginTop: '2rem',
+    marginTop: '1rem',
   },
 })
 
@@ -13,7 +13,7 @@ export const RenderFieldCheckbox = ({ label, input }) => {
     <FormControlLabel
       classes={classes}
       label={label}
-      control={<Checkbox {...input} checked={!!input.value} color="primary" />}
+      control={<Checkbox {...input} checked={!!input.value} color="primary"/>}
     />
   )
 }

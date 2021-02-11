@@ -5,15 +5,11 @@ import { FormControl, IconButton, InputAdornment } from '@material-ui/core'
 import { AddAlarm as AlarmIcon } from '@material-ui/icons/'
 
 export const RenderFieldTime = ({
+  label,
   input,
   meta: { touched, error, warning },
 }) => {
   const now = useMemo(() => new Date(), [])
-  const [minTime, setMinTime] = useState(new Date())
-  const maxTime = useMemo(() => endOfDay(new Date()), [])
-  
-  const [clearedDate, handleClearedDateChange] = useState(null);
-  const [selectedDate, handleDateChange] = useState(new Date("2019-01-01T18:54"));  
 
   const isError = useMemo(() => {
     if (!touched) return false
@@ -26,32 +22,22 @@ export const RenderFieldTime = ({
     if (warning) return warning
   }, [error, warning])
 
-  const changeDateHandler = useCallback(
-    (value) => {
-      if (isSameDay(value, now)) {
-        setMinTime(now)
-      } else {
-        setMinTime(startOfDay(now))
-      }
-      input.onChange(value)
-    },
-    [input, now]
-  )
-  
-  const dateTransform = useCallback(
-    (date) => new Date(date).toLocaleString('uk')
-  , [])
+  const dateTransform = useCallback((date) => {
+    if (date) return new Date(date).toLocaleString('uk')
+    return ''
+  }, [])
 
   return (
-    <FormControl error={isError}>
+    <FormControl error={isError} margin="normal">
       <DateTimePicker
+        label={label}
         variant="inline"
         autoOk
         disablePast
         hideTabs
         ampm={false}
         value={input.value ? new Date(input.value) : null}
-        onChange={changeDateHandler}
+        onChange={input.onChange}
         allowKeyboardControl={false}
         minDate={now}
         helperText={errorText}

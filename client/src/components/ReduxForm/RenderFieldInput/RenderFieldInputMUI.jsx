@@ -19,15 +19,13 @@ export const RenderFieldInput = ({
   }, [error, warning])
 
   return (
-    <span className="field-wrapper">
-      <TextField
-        {...input}
-        margin="normal"
-        error={isError}
-        label={label}
-        helperText={errorText}
-        placeholder={placeholder}
-      />
-    </span>
+    <TextField
+      {...input}
+      margin="normal"
+      error={isError}
+      label={label}
+      helperText={errorText}
+      placeholder={placeholder}
+    />
   )
 }

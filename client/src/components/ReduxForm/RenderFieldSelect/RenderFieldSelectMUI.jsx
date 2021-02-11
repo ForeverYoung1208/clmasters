@@ -33,7 +33,11 @@ export const RenderFieldSelect = ({
   }, [error, warning])
 
   return (
-    <FormControl className={classes.formControl} error={isError}>
+    <FormControl
+      className={classes.formControl}
+      error={isError}
+      margin="normal"
+    >
       <InputLabel id={`select-label-${label}`}>{label}</InputLabel>
       <Select labelId={`select-label-${label}`} inputProps={{ ...input }}>
         <MenuItem value="">
@@ -42,7 +46,7 @@ export const RenderFieldSelect = ({
         {options &&
           options.map(({ id, name, type }) => (
             <MenuItem key={id} value={id}>
-              {name||type}
+              {name || type}
             </MenuItem>
           ))}
       </Select>

@@ -8,7 +8,6 @@ import { RenderFieldSelect } from '../../../../components/ReduxForm/RenderFieldS
 import { validators } from '../../../../shared/validators/baseValidator'
 import { useSelector } from 'react-redux'
 import { RenderFieldTime } from '../../../../components/ReduxForm/RenderFieldTime/RenderFieldTimeMUI'
-// import { RenderFieldTime } from '../../../../components/ReduxForm/RenderFieldTime/RenderFieldTime'
 
 let OrderForm = ({
   handleSubmit,

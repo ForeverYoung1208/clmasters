@@ -13,11 +13,3 @@ export const ORDERS_FETCH_REJECTED = 'orders/fetch/rejected'
 export const ORDERS_PUT_REJECTED = 'orders/put/rejected'
 export const ORDERS_POST_REJECTED = 'orders/post/rejected'
 export const ORDERS_DELETE_REJECTED = 'orders/delete/rejected'
-
-
-
-
-// export const POST_ORDER_OK = 'main/POST_ORDER_OK'
-// export const CLEAR_ORDER_RESULT = 'main/CLEAR_ORDER_RESULT'
-// export const GET_ORDERS_OK = 'main/GET_ORDERS_OK'
-// export const CLEAR_ORDERS = 'main/CLEAR_ORDERS'
