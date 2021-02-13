@@ -130,12 +130,12 @@ export const OrdersBlock = () => {
     {
       field: 'onTime',
       headerName: 'Time',
-      width: 200,
+      width: 150,
       renderCell: transtormDateTime,
     },
-    { field: 'clockType', headerName: 'Clock', width: 120 },
+    { field: 'clockType', headerName: 'Clock', width: 100 },
     { field: 'masterName', headerName: 'Master', width: 120 },
-    { field: 'userName', headerName: 'User', width: 200 },
+    { field: 'userName', headerName: 'User', width: 150 },
     { field: 'comment', headerName: 'Comment', flex: 1 },
     {
       field: 'actions',
