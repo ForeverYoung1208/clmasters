@@ -3,7 +3,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Card } from '../../components/Card/Card';
-import { PreorderForm } from './PreorderForm/PreorderForm';
+import PreorderForm from './PreorderForm/PreorderForm';
 import OrderForm from './OrderForm/OrderForm';
 // import { postOrder } from '../../store/actions/main';
 

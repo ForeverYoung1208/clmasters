@@ -1,0 +1,19 @@
+@import "../../../shared/styles/variables.scss";
+@import "../../../shared/styles/ui.scss";
+
+.preorder-form{
+  &__form-label{
+    margin-left: 7rem;
+    align-self: start;
+  }
+  &__validation-error{
+    @include error-text;    
+  }
+}
+
+.react-datepicker__input-container{
+  .form-input{
+    width: 100%;
+  }
+}
+
