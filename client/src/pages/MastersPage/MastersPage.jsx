@@ -1,51 +1,58 @@
-import React, { useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react'
+import { Switch, Route, useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { Card } from '../../components/Card/Card';
-import PreorderForm from './PreorderForm/PreorderForm';
-import OrderForm from './OrderForm/OrderForm';
+import { Card } from '../../components/Card/Card'
+import PreorderForm from './PreorderForm/PreorderForm'
+import OrderForm from './OrderForm/OrderForm'
+import { makeStyles } from '@material-ui/core'
 // import { postOrder } from '../../store/actions/main';
 
-import './MastersPage.scss';
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+}))
 
 const MastersPage = () => {
-
-  const { preorderResult, preorder } = useSelector(state=>state.main)
+  const { preorderResult, preorder } = useSelector((state) => state.main)
   const history = useHistory()
   const dispatch = useDispatch()
+  const classes = useStyles()
 
-  useEffect(()=>{
-    if(!preorderResult ) {
+  useEffect(() => {
+    if (!preorderResult) {
       history.push('/masters/preorder')
-    } else{
+    } else {
       history.push('/masters/order')
     }
   }, [preorderResult, history])
-  
-  const handlePostOrder = (masterId) => {
-    alert ('dispatch(postOrder({ masterId, preorder }))')
+
+  const handleSubmitOrder = (masterId) => {
+    alert(`dispatch(postOrder({ ${masterId}, masterId }))`)
   }
+  
+  const handleSubmitPreorder = (preorder) => {
+    console.log('[preorder]', preorder)
+  }
+  
 
   return (
-
-    <div className="mastersPage">
+    <div className={classes.root}>
       <Switch>
-        <Route path='/masters/preorder'>
-          <Card header = "To help us find a master, please give us some information">  
-            <PreorderForm /> 
-          </Card>
+        <Route path="/masters/preorder">
+          <PreorderForm onSubmit={ handleSubmitPreorder}/>
         </Route>
-        <Route path='/masters/order'>
-          <Card header="Please choose master and submit your order">  
-            <OrderForm
-              onSubmit={handlePostOrder}
-            />
+        <Route path="/masters/order">
+          <Card header="Please choose master and submit your order">
+            <OrderForm onSubmit={handleSubmitOrder} />
           </Card>
         </Route>
       </Switch>
     </div>
-  );
-};
+  )
+}
 
-export default MastersPage;
+export default MastersPage

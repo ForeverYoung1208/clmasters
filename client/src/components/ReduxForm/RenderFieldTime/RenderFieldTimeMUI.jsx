@@ -1,8 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { isSameDay, startOfDay, endOfDay } from 'date-fns'
 import { DateTimePicker } from '@material-ui/pickers'
-import { FormControl, IconButton, InputAdornment } from '@material-ui/core'
-import { AddAlarm as AlarmIcon } from '@material-ui/icons/'
+import { FormControl } from '@material-ui/core'
 
 export const RenderFieldTime = ({
   label,
@@ -39,7 +38,7 @@ export const RenderFieldTime = ({
         value={input.value ? new Date(input.value) : null}
         onChange={input.onChange}
         allowKeyboardControl={false}
-        minDate={now}
+        minDate={startOfDay(now)}
         helperText={errorText}
         minutesStep={60}
         labelFunc={dateTransform}

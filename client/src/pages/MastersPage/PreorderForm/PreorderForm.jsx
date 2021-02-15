@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core'
+import { Box, makeStyles, Typography } from '@material-ui/core'
 import { ChevronLeftTwoTone } from '@material-ui/icons'
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,7 +12,21 @@ import { validators } from '../../../shared/validators/baseValidator'
 import { fetchCities } from '../../../store/actions/cities'
 import { fetchClocks } from '../../../store/actions/clocks'
 
-// export const PreorderForm = () => {
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    margin: '1rem',
+    borderRadius: 4,
+    boxShadow: '0px 1px 4px 0px',
+    padding: '1rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
+}))
+
 let PreorderForm = ({
   handleSubmit,
   // preorder,
@@ -29,8 +43,6 @@ let PreorderForm = ({
 
   const cities = useSelector(({ cities }) => cities?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
-
-  console.log('[cities]', cities)
 
   // TODO: implement preorder redux state
   // const preorder = useSelector(({ preorder }) => preorder)
@@ -51,23 +63,21 @@ let PreorderForm = ({
     initialize(preorder)
     // eslint-disable-next-line
   }, [])
+  
+  const classes = useStyles()
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="center">
+    <Box
+      className={classes.root}
+    >
+      <Typography variant='h5'>
+        To find a master, please provide some information:
+      </Typography>
       <form onSubmit={handleSubmit}>
         <div>
           <Field
-            name="onTime"
-            label="On time"
-            component={RenderFieldTime}
-            validate={[validators.required]}
-          />
-        </div>
-
-        <div>
-          <Field
             name="clockId"
-            label="Clock"
+            label="Clock Type"
             component={RenderFieldSelect}
             validate={[validators.required]}
             options={clocks}
@@ -86,7 +96,7 @@ let PreorderForm = ({
 
         <div>
           <Field
-            label="Name"
+            label="Your name"
             name="name"
             component={RenderFieldInput}
             validate={[validators.required, validators.minLength2]}
@@ -94,10 +104,19 @@ let PreorderForm = ({
         </div>
         <div>
           <Field
-            label="Email"
+            label="Your e-mail"
             name="email"
             component={RenderFieldInput}
             validate={[validators.required, validators.isEmail]}
+          />
+        </div>
+
+        <div>
+          <Field
+            name="onTime"
+            label="Desired time"
+            component={RenderFieldTime}
+            validate={[validators.required]}
           />
         </div>
 

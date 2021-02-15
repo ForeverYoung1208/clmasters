@@ -10,7 +10,7 @@ import React, { useMemo } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    minWidth: 120,
+    minWidth: 214,
   },
 }))
 
