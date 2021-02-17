@@ -8,7 +8,7 @@ import {
 } from '../../../store/actions/masters'
 import { fetchCities } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton } from '@material-ui/core'
+import { Box, IconButton, useTheme } from '@material-ui/core'
 import './MastersBlock.scss'
 import {
   Edit as EditIcon,
@@ -26,9 +26,6 @@ import {
 } from '../../../store/actions/actionTypes/masters'
 import { MasterAddDialog } from './MasterAddDialog/MasterAddDialog'
 import { MasterDeleteDialog } from './MasterDeleteDialog/MasterDeleteDialog'
-
-const PAGE_SIZE = 20
-const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
 
 export const MastersBlock = () => {
   const dispatch = useDispatch()
@@ -134,6 +131,10 @@ export const MastersBlock = () => {
     },
   ]
 
+  const {
+    pagination: { pageSize, rowsPerPage },
+  } = useTheme()
+
   return (
     <>
       <div className="adminPage__itemsBlock">
@@ -143,8 +144,8 @@ export const MastersBlock = () => {
           rows={masters}
           columns={columnsDef}
           disableColumnReorder={true}
-          pageSize={PAGE_SIZE}
-          rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+          pageSize={pageSize}
+          rowsPerPageOptions={rowsPerPage}
         />
 
         <MasterEditDialog
