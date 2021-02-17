@@ -1,8 +1,6 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { isSameDay, startOfDay, endOfDay } from 'date-fns'
+import React, { useCallback, useMemo } from 'react'
 import { DateTimePicker } from '@material-ui/pickers'
-import { FormControl, IconButton, InputAdornment } from '@material-ui/core'
-import { AddAlarm as AlarmIcon } from '@material-ui/icons/'
+import { FormControl } from '@material-ui/core'
 
 export const RenderFieldTime = ({
   label,
