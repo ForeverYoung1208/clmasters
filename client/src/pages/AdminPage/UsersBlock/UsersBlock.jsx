@@ -6,9 +6,8 @@ import {
   postUser,
   putUser,
 } from '../../../store/actions/users'
-import { fetchCities } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton } from '@material-ui/core'
+import { Box, IconButton, useTheme } from '@material-ui/core'
 import './UsersBlock.scss'
 import {
   Edit as EditIcon,
@@ -26,9 +25,6 @@ import {
 import { UserEditDialog } from './UserEditDialog/UserEditDialog'
 import { UserAddDialog } from './UserAddDialog/UserAddDialog'
 import { UserDeleteDialog } from './UserDeleteDialog/UserDeleteDialog'
-
-const PAGE_SIZE = 20
-const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
 
 export const UsersBlock = () => {
   const dispatch = useDispatch()
@@ -132,6 +128,10 @@ export const UsersBlock = () => {
     },
   ]
 
+  const {
+    pagination: { pageSize, rowsPerPage },
+  } = useTheme()
+
   return (
     <>
       <div className="adminPage__itemsBlock">
@@ -141,8 +141,8 @@ export const UsersBlock = () => {
           rows={users}
           columns={columnsDef}
           disableColumnReorder={true}
-          pageSize={PAGE_SIZE}
-          rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+          pageSize={pageSize}
+          rowsPerPageOptions={rowsPerPage}
         />
 
         <UserEditDialog

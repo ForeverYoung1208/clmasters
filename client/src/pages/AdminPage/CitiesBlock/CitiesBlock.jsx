@@ -7,7 +7,7 @@ import {
   putCity,
 } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton } from '@material-ui/core'
+import { Box, IconButton, useTheme } from '@material-ui/core'
 import './CitiesBlock.scss'
 
 import {
@@ -23,10 +23,10 @@ import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
 import { CityDeleteDialog } from './CityDeleteDialog/CityDeleteDialog'
 import { CityAddDialog } from './CityAddDialog/CityAddDialog'
-import { CITIES_POST_REJECTED, CITIES_PUT_REJECTED } from '../../../store/actions/actionTypes/cities'
-
-const PAGE_SIZE = 20
-const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
+import {
+  CITIES_POST_REJECTED,
+  CITIES_PUT_REJECTED,
+} from '../../../store/actions/actionTypes/cities'
 
 export const CitiesBlock = () => {
   const dispatch = useDispatch()
@@ -96,19 +96,22 @@ export const CitiesBlock = () => {
     dispatch(fetchCities())
   }, [dispatch])
 
-  const renderActions = useCallback(({ row }) => {
-    return (
-      <>
-        <IconButton onClick={() => startEditHandler(row.id)}>
-          <EditIcon />
-        </IconButton>
+  const renderActions = useCallback(
+    ({ row }) => {
+      return (
+        <>
+          <IconButton onClick={() => startEditHandler(row.id)}>
+            <EditIcon />
+          </IconButton>
 
-        <IconButton onClick={() => startDeleteHandler(row.id)}>
-          <DeleteIcon />
-        </IconButton>
-      </>
-    )
-  }, [startEditHandler, startDeleteHandler])
+          <IconButton onClick={() => startDeleteHandler(row.id)}>
+            <DeleteIcon />
+          </IconButton>
+        </>
+      )
+    },
+    [startEditHandler, startDeleteHandler]
+  )
 
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },
@@ -125,7 +128,11 @@ export const CitiesBlock = () => {
       renderCell: renderActions,
     },
   ]
-  
+
+  const {
+    pagination: { pageSize, rowsPerPage },
+  } = useTheme()
+
   return (
     <>
       <div className="adminPage__itemsBlock">
@@ -135,8 +142,8 @@ export const CitiesBlock = () => {
           rows={cities}
           columns={columnsDef}
           disableColumnReorder={true}
-          pageSize={PAGE_SIZE}
-          rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+          pageSize={pageSize}
+          rowsPerPageOptions={rowsPerPage}
         />
 
         <CityEditDialog
