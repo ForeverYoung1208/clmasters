@@ -2,6 +2,8 @@ const { check, validationResult } = require('express-validator')
 const { Order, User, Master, Clock, City } = require('../models')
 const { CRUDController } = require('./common/CRUDController')
 const { noTimestamps, timeStrToWords } = require('../shared/services')
+const { notInPast } = require('./validators/customValidators')
+
 const sendEmail = require('../shared/mailjet')
 
 const { utcToZonedTime, format } = require('date-fns-tz')
@@ -13,7 +15,6 @@ class OrdersController extends CRUDController {
   }
   // put(req, res) goes to parent CRUDController
 
-  
   // overrides parent CRUDcontroller method to add names of associated entities
   async getAll(req, res) {
     const orders = await Order.findAll({
@@ -41,7 +42,7 @@ class OrdersController extends CRUDController {
         // that is sortring order, not our order entity
         ['id', 'ASC'],
       ],
-    })      
+    })
     const data = orders.map((o) => {
       const { user, master, clock, ...order } = noTimestamps(o.dataValues) // without user, master, clock information
       order.userName = o.user.name //only userName
@@ -52,7 +53,6 @@ class OrdersController extends CRUDController {
     return res.status(200).json(data)
   }
 
-  
   // overrides parent CRUDcontroller method
   async post(req, res) {
     const errors = validationResult(req)
@@ -67,7 +67,7 @@ class OrdersController extends CRUDController {
       user = await User.findByPk(data.userId)
     } else {
       // user wasn't logged in (customer) - need to find by email or create
-      [user] = await User.findOrCreate({
+      ;[user] = await User.findOrCreate({
         where: { email: data.email },
         defaults: { name: data.name },
       })
@@ -148,39 +148,46 @@ class OrdersController extends CRUDController {
       isEmailSent: emailResult.response.ok,
     })
   }
-  
-  // overrides parent CRUDcontroller method
-  async put(req, res) { 
 
-    const errors = validationResult(req)  
-    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
-      
+  // overrides parent CRUDcontroller method
+  async put(req, res) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() })
+
     let { id, ...data } = req.body
     id = req.params.id
 
     let modelToUpdate = await this.model.findByPk(id)
-    if (!modelToUpdate) return res.status(400).json({
-      message: `Model with id:${id} not found`
-    })
+    if (!modelToUpdate)
+      return res.status(400).json({
+        message: `Model with id:${id} not found`,
+      })
 
     Object.assign(modelToUpdate, data)
 
     try {
       var result = await modelToUpdate.save()
-      result.dataValues.masterName = await Master.findByPk(result.dataValues.masterId).then(({name}) => name)
-      result.dataValues.userName = await User.findByPk(result.dataValues.userId).then(({name}) => name)
-      result.dataValues.clockType = await Clock.findByPk(result.dataValues.clockId).then(({type}) => type)
-    } catch ({errors}) {
-      return res.status(400).json({ errors }) 
+      result.dataValues.masterName = await Master.findByPk(
+        result.dataValues.masterId
+      ).then(({ name }) => name)
+      result.dataValues.userName = await User.findByPk(
+        result.dataValues.userId
+      ).then(({ name }) => name)
+      result.dataValues.clockType = await Clock.findByPk(
+        result.dataValues.clockId
+      ).then(({ type }) => type)
+    } catch ({ errors }) {
+      return res.status(400).json({ errors })
     }
 
-    if (!result) return res.stats(500).json({
-      message: 'CDUD controller error: model not updated'
-    })
+    if (!result)
+      return res.stats(500).json({
+        message: 'CDUD controller error: model not updated',
+      })
 
     return res.status(200).json(noTimestamps(result.dataValues))
   }
-  
 
   async getAllByParam(req, res) {
     let masterQuery = req.query
@@ -225,7 +232,7 @@ class OrdersController extends CRUDController {
 
   putValidators() {
     return [
-      check('onTime', 'onTime must exist!').exists().notEmpty(),
+      check('onTime', 'onTime must exist!').exists().notEmpty().custom(notInPast),
       check('clockId', 'clockId must exist!').exists().notEmpty(),
       check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]
@@ -233,7 +240,7 @@ class OrdersController extends CRUDController {
 
   postValidators() {
     return [
-      check('onTime', 'onTime must exist!').exists().notEmpty(),
+      check('onTime', 'onTime must exist!').exists().notEmpty().custom(notInPast),
       check('clockId', 'clockId must exist!').exists().notEmpty(),
       check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]

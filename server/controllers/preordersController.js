@@ -2,29 +2,31 @@ const { check, validationResult } = require('express-validator')
 
 const { Master } = require('../models/index')
 const { CRUDController } = require('./common/CRUDController')
+const { notInPast } = require('./validators/customValidators')
 
-class PreordersController extends CRUDController{
-  
-  // maybe, I should refactore it to masters get call ... 
+class PreordersController extends CRUDController {
+  // maybe, I should refactore it to masters get call ...
   async post(req, res) {
-    const errors = validationResult(req)  
+    const errors = validationResult(req)
     console.log('[errors]', errors)
-    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() })
-  
-    const { preorderData } = req.body
-    const freeMasters = await Master.freeMastersForOrder(preorderData)
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() })
 
-    
-    return (res.status(200).json(freeMasters))
+    const { cityId, clockId, onTime } = req.body
+    const freeMasters = await Master.freeMastersForOrder({
+      cityId,
+      orderDateTimeStr: onTime,
+      clockTypeId: clockId,
+    })
+
+    return res.status(200).json(freeMasters)
   }
 
-  postValidators() { 
-    const now = new Date
+  postValidators() {
     return [
-      check('preorderData.cityId', 'cityId must be specified!').isInt(),
-      check('preorderData.orderDateTime', 'orderDateTime must be a date in the future')
-        .isAfter( now.toISOString()),
-      check('preorderData.clockTypeId', 'clockTypeId must be specified!').isInt(),
+      check('cityId', 'cityId must be specified!').isInt(),
+      check('onTime').custom(notInPast),
+      check('clockId', 'clockId must be specified!').isInt(),
     ]
   }
 }

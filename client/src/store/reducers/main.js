@@ -1,9 +1,10 @@
 import { SET_ERROR_MESSAGE } from '../actions/actionTypes/errors'
 import { LOADER_HIDE, LOADER_SHOW } from '../actions/actionTypes/loaders'
-import {
-  POST_PREORDER_OK,
-  SAVE_PREORDER,
-} from '../actions/actionTypes/preorders'
+// import {
+//   PREORDERS_POST_FULFILLED,
+//   PREORDERS_POST_PENDING,
+//   PREORDERS_POST_REJECTED
+// } from '../actions/actionTypes/preorders'
 import {
   REDIRECTION_DONE,
   REDIRECT_START,
@@ -48,17 +49,17 @@ const main = (state = initialState, action) => {
         redirectUrl: null,
       }
 
-    case SAVE_PREORDER:
-      return {
-        ...state,
-        preorder: action.preorder,
-      }
+    // case SAVE_PREORDER:
+    //   return {
+    //     ...state,
+    //     preorder: action.preorder,
+    //   }
 
-    case POST_PREORDER_OK:
-      return {
-        ...state,
-        preorderResult: action.preorderResult,
-      }
+    // case POST_PREORDER_OK:
+    //   return {
+    //     ...state,
+    //     preorderResult: action.preorderResult,
+    //   }
 
     case SET_ERROR_MESSAGE:
       return {

@@ -2,11 +2,21 @@ import React, { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Card } from '../../components/Card/Card'
 import PreorderForm from './PreorderForm/PreorderForm'
 import OrderForm from './OrderForm/OrderForm'
 import { makeStyles } from '@material-ui/core'
-// import { postOrder } from '../../store/actions/main';
+import {
+  clearFoundMasters,
+  forgetPreorder,
+  memoizePreorder,
+  postPreorder,
+} from '../../store/actions/preorders'
+import { postOrder } from '../../store/actions/orders'
+import { redirectTo } from '../../store/actions/main'
+import { ORDERS_POST_FULFILLED, ORDERS_POST_REJECTED } from '../../store/actions/actionTypes/orders'
+import { normalizeFormSubmitError } from '../../shared/js/common'
+import { SubmissionError } from 'redux-form'
+import { PREORDERS_POST_REJECTED } from '../../store/actions/actionTypes/preorders'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,38 +27,47 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const MastersPage = () => {
-  const { preorderResult, preorder } = useSelector((state) => state.main)
+  const { foundMasters, preorder: memoizedPreorder } = useSelector(
+    ({ preorders }) => preorders
+  )
   const history = useHistory()
   const dispatch = useDispatch()
   const classes = useStyles()
 
   useEffect(() => {
-    if (!preorderResult) {
-      history.push('/masters/preorder')
-    } else {
+    if (!!foundMasters && foundMasters[0]) {
       history.push('/masters/order')
+    } else {
+      history.push('/masters/preorder')
     }
-  }, [preorderResult, history])
+  }, [foundMasters, history])
 
-  const handleSubmitOrder = (masterId) => {
-    alert(`dispatch(postOrder({ ${masterId}, masterId }))`)
+  const handleSubmitOrder = async ({masterId}) => {
+    const result = await dispatch(postOrder({ order: { ...memoizedPreorder, masterId } }))
+    if (result.type === ORDERS_POST_FULFILLED) {
+      dispatch(forgetPreorder())
+      dispatch(clearFoundMasters())
+      dispatch(redirectTo('/info'))
+    }
   }
-  
-  const handleSubmitPreorder = (preorder) => {
-    console.log('[preorder]', preorder)
+
+  const handleSubmitPreorder = async (preorder) => {
+    dispatch(memoizePreorder(preorder))
+    const result = await dispatch(postPreorder(preorder))
+    if (result.type === PREORDERS_POST_REJECTED) {
+      const formSubmitError = normalizeFormSubmitError(result.payload?.errors)
+      throw new SubmissionError(formSubmitError)      
+    }    
   }
-  
 
   return (
     <div className={classes.root}>
       <Switch>
         <Route path="/masters/preorder">
-          <PreorderForm onSubmit={ handleSubmitPreorder}/>
+          <PreorderForm onSubmit={handleSubmitPreorder} />
         </Route>
         <Route path="/masters/order">
-          <Card header="Please choose master and submit your order">
-            <OrderForm onSubmit={handleSubmitOrder} />
-          </Card>
+          <OrderForm onSubmit={handleSubmitOrder} />
         </Route>
       </Switch>
     </div>

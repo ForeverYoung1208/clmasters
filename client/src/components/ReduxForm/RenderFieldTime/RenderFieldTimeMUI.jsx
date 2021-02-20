@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { DateTimePicker } from '@material-ui/pickers'
+import { startOfDay, startOfHour, addHours } from 'date-fns'
 import { FormControl } from '@material-ui/core'
 
 export const RenderFieldTime = ({
@@ -7,7 +8,7 @@ export const RenderFieldTime = ({
   input,
   meta: { touched, error, warning },
 }) => {
-  const now = useMemo(() => new Date(), [])
+  const now = useMemo(() => startOfHour(addHours(new Date(), 1), []))
 
   const isError = useMemo(() => {
     if (!touched) return false
@@ -24,17 +25,19 @@ export const RenderFieldTime = ({
     if (date) return new Date(date).toLocaleString('uk')
     return ''
   }, [])
-
+  
   return (
-    <FormControl error={isError} margin="normal">
+    <FormControl margin="normal">
       <DateTimePicker
+        error={isError}
+        views={["date","hours"]}
         label={label}
         variant="inline"
         autoOk
         disablePast
         hideTabs
         ampm={false}
-        value={input.value ? new Date(input.value) : null}
+        value={input.value ? new Date(input.value) : now}
         onChange={input.onChange}
         allowKeyboardControl={false}
         minDate={startOfDay(now)}

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static async freeMastersForOrder(preorderData, excludeOrderId) {
       const {
         cityId,
-        orderDateTime: orderDateTimeStr,
+        orderDateTimeStr,
         clockTypeId,
       } = preorderData
 

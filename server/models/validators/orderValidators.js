@@ -8,7 +8,7 @@ const checkMasterIsFree = async (sequelize, order) => {
   const freeMasters = await Master.freeMastersForOrder(
     {
       cityId,
-      orderDateTime: onTime,
+      orderDateTimeStr: onTime,
       clockTypeId: clockId,
     },
     order.id

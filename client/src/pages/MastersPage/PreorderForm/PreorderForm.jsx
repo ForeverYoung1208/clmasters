@@ -1,8 +1,6 @@
 import { Box, makeStyles, Typography } from '@material-ui/core'
-import { ChevronLeftTwoTone } from '@material-ui/icons'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import { Field, reduxForm } from 'redux-form'
 import { Button } from '../../../components/Button/Button'
 import { RenderFieldInput } from '../../../components/ReduxForm/RenderFieldInput/RenderFieldInputMUI'
@@ -11,7 +9,6 @@ import { RenderFieldTime } from '../../../components/ReduxForm/RenderFieldTime/R
 import { validators } from '../../../shared/validators/baseValidator'
 import { fetchCities } from '../../../store/actions/cities'
 import { fetchClocks } from '../../../store/actions/clocks'
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,13 +20,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
 }))
 
 let PreorderForm = ({
   handleSubmit,
-  // preorder,
   initialize,
   pristine,
   submitting,
@@ -44,33 +40,18 @@ let PreorderForm = ({
   const cities = useSelector(({ cities }) => cities?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
 
-  // TODO: implement preorder redux state
-  // const preorder = useSelector(({ preorder }) => preorder)
-  // temporary:
-  const preorder = useMemo(
-    () => ({
-      name: '',
-      email: '',
-      onTime: '',
-      clockTypeId: '',
-      cityId: '',
-    }),
-    []
-  )
-  ////
+  const preorder = useSelector(({ preorders }) => preorders?.preorder)
 
   useEffect(() => {
     initialize(preorder)
     // eslint-disable-next-line
   }, [])
-  
+
   const classes = useStyles()
 
   return (
-    <Box
-      className={classes.root}
-    >
-      <Typography variant='h5'>
+    <Box className={classes.root}>
+      <Typography variant="h5">
         To find a master, please provide some information:
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -114,7 +95,7 @@ let PreorderForm = ({
         <div>
           <Field
             name="onTime"
-            label="Desired time"
+            label="Desired date"
             component={RenderFieldTime}
             validate={[validators.required]}
           />
