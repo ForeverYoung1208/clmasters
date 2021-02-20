@@ -7,7 +7,7 @@ import {
   putOrder,
 } from '../../../store/actions/orders'
 import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton } from '@material-ui/core'
+import { Box, IconButton, useTheme } from '@material-ui/core'
 import './OrdersBlock.scss'
 import {
   Edit as EditIcon,
@@ -29,9 +29,6 @@ import { fetchClocks } from '../../../store/actions/clocks'
 import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
 import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
 import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
-
-const PAGE_SIZE = 20
-const ROWS_PER_PAGE_OPTIONS = [10, 20, 50]
 
 export const OrdersBlock = () => {
   const dispatch = useDispatch()
@@ -121,9 +118,10 @@ export const OrdersBlock = () => {
     [startEditHandler, startDeleteHandler]
   )
 
-  const transtormDateTime = useCallback(({ row }) =>
-    new Date(row.onTime).toLocaleString('uk')
-  , [])
+  const transtormDateTime = useCallback(
+    ({ row }) => new Date(row.onTime).toLocaleString('uk'),
+    []
+  )
 
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },
@@ -149,6 +147,10 @@ export const OrdersBlock = () => {
     },
   ]
 
+  const {
+    pagination: { pageSize, rowsPerPage },
+  } = useTheme()
+
   return (
     <>
       <div className="adminPage__itemsBlock">
@@ -158,8 +160,8 @@ export const OrdersBlock = () => {
           rows={orders}
           columns={columnsDef}
           disableColumnReorder={true}
-          pageSize={PAGE_SIZE}
-          rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+          pageSize={pageSize}
+          rowsPerPageOptions={rowsPerPage}
         />
 
         <OrderEditDialog
