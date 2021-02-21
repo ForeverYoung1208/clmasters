@@ -8,7 +8,7 @@ export const RenderFieldTime = ({
   input,
   meta: { touched, error, warning },
 }) => {
-  const now = useMemo(() => startOfHour(addHours(new Date(), 1), []))
+  const now = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
 
   const isError = useMemo(() => {
     if (!touched) return false

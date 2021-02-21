@@ -10,10 +10,11 @@ import {
   forgetPreorder,
   memoizePreorder,
   postPreorder,
+  setRegisteredOrder,
 } from '../../store/actions/preorders'
 import { postOrder } from '../../store/actions/orders'
 import { redirectTo } from '../../store/actions/main'
-import { ORDERS_POST_FULFILLED, ORDERS_POST_REJECTED } from '../../store/actions/actionTypes/orders'
+import { ORDERS_POST_FULFILLED } from '../../store/actions/actionTypes/orders'
 import { normalizeFormSubmitError } from '../../shared/js/common'
 import { SubmissionError } from 'redux-form'
 import { PREORDERS_POST_REJECTED } from '../../store/actions/actionTypes/preorders'
@@ -42,9 +43,12 @@ const MastersPage = () => {
     }
   }, [foundMasters, history])
 
-  const handleSubmitOrder = async ({masterId}) => {
-    const result = await dispatch(postOrder({ order: { ...memoizedPreorder, masterId } }))
+  const handleSubmitOrder = async ({ masterId }) => {
+    const result = await dispatch(
+      postOrder({ order: { ...memoizedPreorder, masterId } })
+    )
     if (result.type === ORDERS_POST_FULFILLED) {
+      dispatch(setRegisteredOrder(result.payload))
       dispatch(forgetPreorder())
       dispatch(clearFoundMasters())
       dispatch(redirectTo('/info'))
@@ -56,8 +60,8 @@ const MastersPage = () => {
     const result = await dispatch(postPreorder(preorder))
     if (result.type === PREORDERS_POST_REJECTED) {
       const formSubmitError = normalizeFormSubmitError(result.payload?.errors)
-      throw new SubmissionError(formSubmitError)      
-    }    
+      throw new SubmissionError(formSubmitError)
+    }
   }
 
   return (

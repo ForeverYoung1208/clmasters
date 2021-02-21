@@ -5,4 +5,5 @@ export const PREORDERS_POST_PENDING = 'preorders/post/pending'
 export const PREORDERS_POST_REJECTED = 'preorders/post/rejected'
 
 export const PREORDERS_MEMOIZE =  'preorders/memoize'
-export const PREORDERS_CLEAR_MASTERS =  'preorders/clearMasters'
+export const PREORDERS_CLEAR_MASTERS = 'preorders/clearMasters'
+

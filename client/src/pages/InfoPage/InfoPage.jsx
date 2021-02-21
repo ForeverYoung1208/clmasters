@@ -1,73 +1,110 @@
-import React from "react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { ErrorMessageTimeout } from "../../components/ErrorMessage/ErrorMessage";
-import { OrdersInfo } from "./OrdersInfo/OrdersInfo";
-import { Button } from "../../components/Button/Button";
-
-import {
-  // clearOrderResult,
-  // clearOrders,
-  // getOrdersBy,
-  redirectTo,
-} from "../../store/actions/main";
-import EmailSearchForm from "./EmailSearchForm/EmailSearchForm";
-
-import "./InfoPage.scss";
+import React from 'react'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { OrdersInfo } from './OrdersInfo/OrdersInfo'
+// import { Button } from '../../components/Button/Button'
+import { redirectTo } from '../../store/actions/main'
+import EmailSearchForm from './EmailSearchForm/EmailSearchForm'
+import { Box, Button, Card } from '@material-ui/core'
+import { setRegisteredOrder } from '../../store/actions/preorders'
 
 const InfoPage = () => {
-  const { orderResult, orders } = useSelector((store) => store.main);
-  const [searchedString, setSearchedString] = useState("");
-  const dispatch = useDispatch();
+  let [registeredOrder, foundOrders] = useSelector(({ orders }) => [
+    orders?.registeredOrder,
+    orders?.foundOrders,
+  ])
 
-  const handleSearchSubmit = ({ searchString }) => {
-    setSearchedString(searchString);
-    alert (' dispatch(getOrdersBy({ email: searchString }))')
-  };
+  registeredOrder = {
+    id: 357,
+    clockId: 1,
+    masterId: 1,
+    userId: 1,
+    comment: null,
+    onTime: '2021-02-21T13:00:00.000Z',
+    deletedAt: null,
+    user: {
+      name: 'Ігор Щербина',
+      email: 'siafin2010@gmail.com',
+    },
+    master: {
+      id: 1,
+      name: 'Master 1',
+      cityId: 1,
+      comment: 'Initial master12121',
+      deletedAt: null,
+      rating: 5,
+      createdAt: '2020-09-02T19:37:23.212Z',
+      updatedAt: '2020-10-11T18:54:11.350Z',
+      city: {
+        id: 1,
+        name: 'Dnipro',
+        comment: 'the best!',
+        createdAt: '2020-09-02T19:37:23.203Z',
+        updatedAt: '2021-01-23T22:42:16.747Z',
+        deletedAt: null,
+      },
+    },
+  }
+
+  const [searchString, setSearchString] = useState('')
+  const dispatch = useDispatch()
 
   const handleBackToForm = (e) => {
-    e.preventDefault();
-    // dispatch(clearOrderResult());
-    dispatch(redirectTo("/masters/preorder"));
-  };
+    // e.preventDefault()
+    dispatch(redirectTo('/masters/preorder'))
+  }
+
+  const handleSearchOrders = ({ searchString }) => {
+    setSearchString(searchString)
+    console.log('dispatch(getOrdersBy({ email: searchString }))')
+  }
+
+  const handleClearRegisteredOrders = () => {
+    dispatch(setRegisteredOrder(null))
+  }
+
+  const handleClearFoundOrders = () => {
+    console.log('dispatch(setFoundOrders(null))')
+  }
 
   return (
-    <div className="infoPage">
-      <ErrorMessageTimeout showTime={5000} />
-      {orderResult && (
-        <div className="orders-info">
-          <h2>Congratulations! New order registered!</h2>
-          <OrdersInfo orders={[orderResult]} />
-          {orderResult.isEmailSent && (
+    <>
+      {registeredOrder && (
+        <Box>
+          <OrdersInfo
+            orders={[registeredOrder]}
+            heading="Congratulations! New order was registered!"
+          />
+          {registeredOrder.isEmailSent && (
             <h3>(order information was also sent to email)</h3>
           )}
-          <Button onClick={handleBackToForm}>Back to form</Button>
-        </div>
+          <Box display='flex' justifyContent='space-between'>
+            <Button onClick={handleBackToForm}>Make another order</Button>
+            <Button onClick={handleClearRegisteredOrders}>Ok</Button>
+          </Box>
+        </Box>
       )}
 
-      {orders && (
-        <div className="orders-info">
-          <h2>We've found the next orders with e-mail "{searchedString}":</h2>
-          <OrdersInfo orders={orders} />
-          <Button
-            className = "orders-info__clear-button"
-            onClick={() => {
-              alert ('dispatch(clearOrders());')
-            }}
+      {foundOrders && (
+        <Card>
+          <h2>We've found the next orders with e-mail "{searchString}":</h2>
+          <OrdersInfo orders={foundOrders} />
+          <Button 
+            className="orders-info__clear-button"
+            onClick={handleClearFoundOrders()}
           >
             Clear information
           </Button>
-        </div>
+        </Card>
       )}
 
-      {!orderResult && (
-        <div className="infoPage__search-email">
-          <EmailSearchForm onSubmit={handleSearchSubmit} />
-        </div>
+      {!foundOrders && !registeredOrder && (
+        <Card className="infoPage__search-email">
+          <EmailSearchForm onSubmit={handleSearchOrders} />
+        </Card>
       )}
-    </div>
-  );
-};
+    </>
+  )
+}
 
-export default InfoPage;
+export default InfoPage

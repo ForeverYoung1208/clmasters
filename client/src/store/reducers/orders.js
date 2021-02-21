@@ -11,6 +11,7 @@ import {
   ORDERS_PUT_FULFILLED,
   ORDERS_PUT_PENDING,
   ORDERS_PUT_REJECTED,
+  ORDERS_SET_REGISTERED_ORDER,
 } from '../actions/actionTypes/orders'
 
 const initialState = {
@@ -18,7 +19,7 @@ const initialState = {
   error: null,
 }
 
-const orders = (state = initialState, { type, payload }) => {
+const orders = (state = initialState, { type, payload, registeredOrder }) => {
   switch (type) {
     case ORDERS_FETCH_FULFILLED:
       return {
@@ -52,6 +53,12 @@ const orders = (state = initialState, { type, payload }) => {
         ...state,
         data: ordersAfterDelete,
         error: null,
+      }
+    
+    case ORDERS_SET_REGISTERED_ORDER:
+      return {
+        ...state,
+        registeredOrder
       }
 
     case ORDERS_FETCH_PENDING:

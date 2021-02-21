@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { apiPostPreorder } from '../../shared/js/api/preorders'
+import { ORDERS_SET_REGISTERED_ORDER } from './actionTypes/orders'
 import {
   PREORDERS_MEMOIZE,
   PREORDERS_CLEAR_MASTERS,
@@ -17,6 +18,15 @@ export const postPreorder = createAsyncThunk(
     }
   }
 )
+
+export const setRegisteredOrder = (registeredOrder) => {
+  console.log('[registeredOrder]', registeredOrder)
+  
+  return {
+    type: ORDERS_SET_REGISTERED_ORDER,
+    registeredOrder,
+  }
+}
 
 export const memoizePreorder = (preorder) => {
   return {
