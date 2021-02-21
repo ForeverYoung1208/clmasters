@@ -1,79 +1,67 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { OrdersInfo } from './OrdersInfo/OrdersInfo'
 import { Button } from '../../components/Button/Button'
 import { redirectTo } from '../../store/actions/main'
 import EmailSearchForm from './EmailSearchForm/EmailSearchForm'
-import { Box, Card } from '@material-ui/core'
+import { Box, Card, makeStyles } from '@material-ui/core'
 import { setRegisteredOrder } from '../../store/actions/preorders'
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    margin: '1rem',
+  },
+  card: {
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: 4,
+    boxShadow: '0px 1px 4px 0px',
+  },
+  controls: {
+    padding: '1rem',
+  },
+}))
 
 const InfoPage = () => {
   let [registeredOrder, foundOrders] = useSelector(({ orders }) => [
     orders?.registeredOrder,
     orders?.foundOrders,
   ])
-
-  // registeredOrder = {
-  //   id: 357,
-  //   clockId: 1,
-  //   clock: {
-  //     type: 'big'
-  //   },
-  //   masterId: 1,
-  //   userId: 1,
-  //   comment: null,
-  //   onTime: '2021-02-21T13:00:00.000Z',
-  //   deletedAt: null,
-  //   user: {
-  //     name: 'Ігор Щербина',
-  //     email: 'siafin2010@gmail.com',
-  //   },
-  //   master: {
-  //     id: 1,
-  //     name: 'Master 1',
-  //     cityId: 1,
-  //     comment: 'Initial master12121',
-  //     deletedAt: null,
-  //     rating: 5,
-  //     createdAt: '2020-09-02T19:37:23.212Z',
-  //     updatedAt: '2020-10-11T18:54:11.350Z',
-  //     city: {
-  //       id: 1,
-  //       name: 'Dnipro',
-  //       comment: 'the best!',
-  //       createdAt: '2020-09-02T19:37:23.203Z',
-  //       updatedAt: '2021-01-23T22:42:16.747Z',
-  //       deletedAt: null,
-  //     },
-  //   },
-  // }
-
   const [searchString, setSearchString] = useState('')
   const dispatch = useDispatch()
 
-  const handleBackToForm = (e) => {
-    // e.preventDefault()
-    dispatch(redirectTo('/masters/preorder'))
-  }
+  const handleBackToForm = useCallback(
+    (e) => {
+      // e.preventDefault()
+      dispatch(redirectTo('/masters/preorder'))
+    },
+    [dispatch]
+  )
 
-  const handleSearchOrders = ({ searchString }) => {
-    setSearchString(searchString)
-    console.log('dispatch(getOrdersBy({ email: searchString }))')
-  }
+  const handleSearchOrders = useCallback(
+    ({ searchString }) => {
+      setSearchString(searchString)
+      console.log('dispatch(searchOrdersBy({ email: searchString }))')
+    },
+    [setSearchString]
+  )
 
-  const handleClearRegisteredOrders = () => {
+  const handleClearRegisteredOrders = useCallback(() => {
     dispatch(setRegisteredOrder(null))
-  }
+  }, [dispatch])
 
-  const handleClearFoundOrders = () => {
+  const handleClearFoundOrders = useCallback(() => {
     console.log('dispatch(setFoundOrders(null))')
-  }
+  }, [dispatch])
 
+  const classes = useStyles()
   return (
-    <>
+    <Box className={classes.root}>
       {registeredOrder && (
-        <Box>
+        <Card className={classes.card}>
           <OrdersInfo
             orders={[registeredOrder]}
             heading="Congratulations! New order was registered!"
@@ -81,31 +69,33 @@ const InfoPage = () => {
           {registeredOrder.isEmailSent && (
             <h3>(order information was also sent to email)</h3>
           )}
-          <Box display='flex' justifyContent='space-between'>
-            <Button onClick={handleBackToForm} variant="text" color='primary'>Make another order</Button>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            className={classes.controls}
+          >
+            <Button onClick={handleBackToForm} variant="text" color="primary">
+              Make another order
+            </Button>
             <Button onClick={handleClearRegisteredOrders}>Ok</Button>
           </Box>
-        </Box>
+        </Card>
       )}
 
       {foundOrders && (
-        <Card>
+        <Card className={classes.card}>
           <h2>We've found the next orders with e-mail "{searchString}":</h2>
           <OrdersInfo orders={foundOrders} />
-          <Button 
-            onClick={handleClearFoundOrders()}
-          >
-            Clear information
-          </Button>
+          <Button onClick={handleClearFoundOrders()}>Clear information</Button>
         </Card>
       )}
 
       {!foundOrders && !registeredOrder && (
-        <Box>
+        <Card className={classes.card}>
           <EmailSearchForm onSubmit={handleSearchOrders} />
-        </Box>
+        </Card>
       )}
-    </>
+    </Box>
   )
 }
 

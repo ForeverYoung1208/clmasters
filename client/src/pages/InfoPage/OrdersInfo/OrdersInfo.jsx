@@ -1,6 +1,5 @@
 import {
-  Card,
-  CardContent,
+  Box,
   makeStyles,
   Table,
   TableBody,
@@ -15,6 +14,9 @@ const useStyles = makeStyles((theme) => {
     root: {
       marginBottom: '1rem',
     },
+    heading: {
+      padding: '1rem'
+    },
     cellLabel: {
       fontWeight: 'bolder',
     },
@@ -26,7 +28,7 @@ export const OrdersInfo = ({ orders, heading }) => {
   const classes = useStyles()
   return (
     <div>
-      <Typography align="center" variant="h5" gutterBottom>
+      <Typography align="center" variant="h6" className={classes.heading}>
         {heading}
       </Typography>
       {orders?.map(
@@ -43,8 +45,7 @@ export const OrdersInfo = ({ orders, heading }) => {
           const onTime = new Date(onTimeStr)
 
           return (
-            <Card key={id} className={classes.root}>
-              <CardContent>
+            <Box key={id} className={classes.root}>
                 <Typography align="center" variant="h6">
                   {`Order # ${id}`}
                 </Typography>
@@ -106,8 +107,7 @@ export const OrdersInfo = ({ orders, heading }) => {
                     </TableRow>
                   </TableBody>
                 </Table>
-              </CardContent>
-            </Card>
+            </Box>
           )
         }
       )}

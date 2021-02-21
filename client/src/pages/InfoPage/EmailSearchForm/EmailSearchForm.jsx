@@ -1,32 +1,40 @@
-import React from "react";
-import { Field, reduxForm } from "redux-form";
-import { Button } from "../../../components/Button/Button";
-import { Form } from "../../../components/Form/Form";
-import { RenderFieldInput } from "../../../components/ReduxForm/RenderFieldInput/RenderFieldInput";
-import { validators } from "../../../shared/validators/baseValidator";
+import { Box, makeStyles, Typography } from '@material-ui/core'
+import React from 'react'
+import { Field, reduxForm } from 'redux-form'
+import { Button } from '../../../components/Button/Button'
+import { Form } from '../../../components/Form/Form'
+import { RenderFieldInput } from '../../../components/ReduxForm/RenderFieldInput/RenderFieldInputMUI'
+import { validators } from '../../../shared/validators/baseValidator'
 
-let EmailSearchForm= ({ handleSubmit, invalid }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: '1rem',
+  },
+}))
+
+let EmailSearchForm = ({ handleSubmit, invalid }) => {
+  const classes = useStyles()
   return (
-    <Form onSubmit={handleSubmit}>
-      <label
-        htmlFor="searchString"
-        className="orders-info__search-form__label"
-      >
-        Enter email to search for registered orders:
-      </label>
-      <Field
-        name="searchString"
-        className={`form-input ${invalid && 'form-input--invalid'}`}
-        component={RenderFieldInput}
-        validate={[validators.isEmail]}
-      />
-      <Button type="submit">Search</Button>
-    </Form>
-  );
+    <Box className = {classes.root}>
+      <Form onSubmit={handleSubmit}>
+        <Typography variant='h6'>
+          Search for registered orders by e-mail:
+        </Typography>
+        <Field
+          name="searchString"
+          label="Enter e-mail"          
+          className={`form-input ${invalid && 'form-input--invalid'}`}
+          component={RenderFieldInput}
+          validate={[validators.isEmail]}
+        />
+        <Button type="submit">Search</Button>
+      </Form>
+    </Box>
+  )
 }
 
 EmailSearchForm = reduxForm({
-  form: 'emailSearch'
+  form: 'emailSearch',
 })(EmailSearchForm)
 
 export default EmailSearchForm
