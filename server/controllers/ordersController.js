@@ -67,7 +67,7 @@ class OrdersController extends CRUDController {
       user = await User.findByPk(data.userId)
     } else {
       // user wasn't logged in (customer) - need to find by email or create
-      ;[user] = await User.findOrCreate({
+      [user] = await User.findOrCreate({
         where: { email: data.email },
         defaults: { name: data.name },
       })
@@ -135,18 +135,18 @@ class OrdersController extends CRUDController {
         <div>Master: ${master.name}</div>
         `,
     })
-
-    return res.status(201).json({
+    
+    const {user:u, master:m, clock:c, ...orderToSend} = {
       ...noTimestamps(newOrders[0].dataValues),
-      user: {
-        name: user.name,
-        email: user.email,
-      },
       userName: user.name,
+      userEmail: user.email,
       masterName: master.name,
+      masterCity: master.city.name,
       clockType: clock.type,
       isEmailSent: emailResult.response.ok,
-    })
+    }
+
+    return res.status(201).json(orderToSend)
   }
 
   // overrides parent CRUDcontroller method

@@ -51,7 +51,7 @@ let PreorderForm = ({
 
   return (
     <Box className={classes.root}>
-      <Typography variant="h5">
+      <Typography variant="h6">
         To find a master, please provide some information:
       </Typography>
       <form onSubmit={handleSubmit}>

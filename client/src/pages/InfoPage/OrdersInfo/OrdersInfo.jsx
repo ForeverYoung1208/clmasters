@@ -11,12 +11,13 @@ import {
 import React from 'react'
 
 const useStyles = makeStyles((theme) => {
-  console.log('[theme]', theme)
   return {
     root: {
       marginBottom: '1rem',
     },
-    cellLabel: {},
+    cellLabel: {
+      fontWeight: 'bolder',
+    },
     cellData: {},
   }
 })
@@ -29,7 +30,16 @@ export const OrdersInfo = ({ orders, heading }) => {
         {heading}
       </Typography>
       {orders?.map(
-        ({ id, onTime: onTimeStr, user, clock, master, comment }) => {
+        ({
+          id,
+          onTime: onTimeStr,
+          userEmail,
+          userName,
+          clockType,
+          masterName,
+          masterCity,
+          comment,
+        }) => {
           const onTime = new Date(onTimeStr)
 
           return (
@@ -45,7 +55,7 @@ export const OrdersInfo = ({ orders, heading }) => {
                         Client name:
                       </TableCell>
                       <TableCell className={classes.cellData}>
-                        {user?.name}
+                        {userName}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -53,7 +63,7 @@ export const OrdersInfo = ({ orders, heading }) => {
                         Client email:
                       </TableCell>
                       <TableCell className={classes.cellData}>
-                        {user?.email}
+                        {userEmail}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -61,7 +71,7 @@ export const OrdersInfo = ({ orders, heading }) => {
                         Clock Type:
                       </TableCell>
                       <TableCell className={classes.cellData}>
-                        {clock?.type}
+                        {clockType}
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -69,13 +79,13 @@ export const OrdersInfo = ({ orders, heading }) => {
                         Master:
                       </TableCell>
                       <TableCell className={classes.cellData}>
-                        {master?.name}
+                        {masterName}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell className={classes.cellLabel}>City:</TableCell>
                       <TableCell className={classes.cellData}>
-                        {master?.city?.name}
+                        {masterCity}
                       </TableCell>
                     </TableRow>
                     <TableRow>
