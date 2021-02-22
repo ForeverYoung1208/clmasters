@@ -56,9 +56,7 @@ const AdminPage = () => {
         <MastersBlock/>
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={2}>
-        <Card header="Users management">
-          <UsersBlock />
-        </Card>
+        <UsersBlock />
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={3}>
         <CitiesBlock />

@@ -1,0 +1,8 @@
+.purple-borders-datagrid div .MuiDataGrid-cell,
+.purple-borders-datagrid div .MuiDataGrid-columnsContainer
+{
+  border-bottom-color: #662e9165;
+  .MuiDataGrid-columnSeparator{
+    color: #662e9165;
+  }
+}
