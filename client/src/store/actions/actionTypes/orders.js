@@ -14,4 +14,10 @@ export const ORDERS_PUT_REJECTED = 'orders/put/rejected'
 export const ORDERS_POST_REJECTED = 'orders/post/rejected'
 export const ORDERS_DELETE_REJECTED = 'orders/delete/rejected'
 
+export const ORDERS_SEARCH_FULFILLED = 'orders/search/fulfilled'
+export const ORDERS_SEARCH_PENDING = 'orders/search/pending'
+export const ORDERS_SEARCH_REJECTED = 'orders/search/rejected'
+
+export const CLEAR_FOUND_ORDERS = 'orders/clearFoundOrders'
+
 export const ORDERS_SET_REGISTERED_ORDER = 'orders/setRegisteredOrder'

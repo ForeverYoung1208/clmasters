@@ -1,4 +1,5 @@
 import {
+  CLEAR_FOUND_ORDERS,
   ORDERS_DELETE_FULFILLED,
   ORDERS_DELETE_PENDING,
   ORDERS_DELETE_REJECTED,
@@ -11,6 +12,9 @@ import {
   ORDERS_PUT_FULFILLED,
   ORDERS_PUT_PENDING,
   ORDERS_PUT_REJECTED,
+  ORDERS_SEARCH_FULFILLED,
+  ORDERS_SEARCH_PENDING,
+  ORDERS_SEARCH_REJECTED,
   ORDERS_SET_REGISTERED_ORDER,
 } from '../actions/actionTypes/orders'
 
@@ -55,6 +59,19 @@ const orders = (state = initialState, { type, payload, registeredOrder }) => {
         error: null,
       }
     
+    case ORDERS_SEARCH_FULFILLED:
+      return {
+        ...state,
+        foundOrders: payload,
+        error: null,
+      }
+    
+    case CLEAR_FOUND_ORDERS:
+      return {
+        ...state,
+        foundOrders:null,
+      }
+    
     case ORDERS_SET_REGISTERED_ORDER:
       return {
         ...state,
@@ -65,6 +82,7 @@ const orders = (state = initialState, { type, payload, registeredOrder }) => {
     case ORDERS_PUT_PENDING:
     case ORDERS_POST_PENDING:
     case ORDERS_DELETE_PENDING:
+    case ORDERS_SEARCH_PENDING:
       return {
         ...state,
         error: null,
@@ -74,6 +92,7 @@ const orders = (state = initialState, { type, payload, registeredOrder }) => {
     case ORDERS_PUT_REJECTED:
     case ORDERS_POST_REJECTED:
     case ORDERS_DELETE_REJECTED:
+    case ORDERS_SEARCH_REJECTED:
       return {
         ...state,
         error: payload,

@@ -5,11 +5,21 @@ import {
   apiPostOrder,
   apiPutOrder,
 } from '../../shared/js/api/orders'
+import { CLEAR_FOUND_ORDERS } from './actionTypes/orders'
 import { setErrorMessage } from './main'
 
 
 export const fetchOrders = createAsyncThunk('orders/fetch', async () => {
   const orders = await apiGetOrders()
+  return orders
+})
+
+export const searchOrdersBy = createAsyncThunk('orders/search', async (queryObject) => {
+  let queryStr=''
+  for (const key in queryObject) {
+    queryStr+=key+'='+queryObject[key]
+  }
+  const orders = await apiGetOrders(queryStr)
   return orders
 })
 
@@ -57,3 +67,9 @@ export const deleteOrder = createAsyncThunk(
     }
   }
 )
+
+export const clearFoundOrders = () => {
+  return {
+    type: CLEAR_FOUND_ORDERS
+  }  
+}

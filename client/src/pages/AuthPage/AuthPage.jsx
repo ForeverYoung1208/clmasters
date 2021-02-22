@@ -1,38 +1,38 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
-import AuthForm from './AuthForm/AuthForm';
-import { Card } from '../../components/Card/Card';
-import { authLoginUser } from '../../store/actions/auth';
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import AuthForm from './AuthForm/AuthForm'
+import { authLoginUser } from '../../store/actions/auth'
 import withCurrentUser from '../../HOC/withCurrentUser'
+import { makeStyles } from '@material-ui/core'
 
-import './AuthPage.scss'
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+}))
 
-const AuthPage = (props) => {
-  const { currentUser } = props
+const AuthPage = ({ currentUser }) => {
   const history = useHistory()
-
   useEffect(() => {
     currentUser?.email && history.push('/admin')
     // eslint-disable-next-line
   }, [currentUser])
 
   const dispatch = useDispatch()
-  
+
   const submitAuthData = (formData) => {
     dispatch(authLoginUser(formData))
   }
+  const classes = useStyles()
 
   return (
-    < div className='authPage' >
-      <Card
-        header="Authentication"
-      >
-        <AuthForm onSubmit={submitAuthData} />
-      </Card>
-    </div >
+    <div className={classes.root}>
+      <AuthForm onSubmit={submitAuthData} />
+    </div>
   )
 }
 
-export default withCurrentUser(AuthPage);
+export default withCurrentUser(AuthPage)

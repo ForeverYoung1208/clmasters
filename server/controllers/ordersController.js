@@ -67,7 +67,7 @@ class OrdersController extends CRUDController {
       user = await User.findByPk(data.userId)
     } else {
       // user wasn't logged in (customer) - need to find by email or create
-      [user] = await User.findOrCreate({
+      ;[user] = await User.findOrCreate({
         where: { email: data.email },
         defaults: { name: data.name },
       })
@@ -135,8 +135,8 @@ class OrdersController extends CRUDController {
         <div>Master: ${master.name}</div>
         `,
     })
-    
-    const {user:u, master:m, clock:c, ...orderToSend} = {
+
+    const { user: u, master: m, clock: c, ...orderToSend } = {
       ...noTimestamps(newOrders[0].dataValues),
       userName: user.name,
       userEmail: user.email,
@@ -225,14 +225,25 @@ class OrdersController extends CRUDController {
       ],
     })
 
-    const data = orders.map((order) => noTimestamps(order.dataValues))
-
+    const data = orders.map((o) => {
+      const { user, master, clock, ...order } = noTimestamps(o.dataValues) // without user, master, clock information
+      //add certain values
+      order.userName = o.user.name 
+      order.userEmail = o.user.email
+      order.masterName = o.master.name 
+      order.clockType = o.clock.type 
+      order.masterCity = o.master.city.name
+      return order
+    })
     return res.status(200).json(data)
   }
 
   putValidators() {
     return [
-      check('onTime', 'onTime must exist!').exists().notEmpty().custom(notInPast),
+      check('onTime', 'onTime must exist!')
+        .exists()
+        .notEmpty()
+        .custom(notInPast),
       check('clockId', 'clockId must exist!').exists().notEmpty(),
       check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]
@@ -240,7 +251,10 @@ class OrdersController extends CRUDController {
 
   postValidators() {
     return [
-      check('onTime', 'onTime must exist!').exists().notEmpty().custom(notInPast),
+      check('onTime', 'onTime must exist!')
+        .exists()
+        .notEmpty()
+        .custom(notInPast),
       check('clockId', 'clockId must exist!').exists().notEmpty(),
       check('masterId', 'masterId must exist!').exists().notEmpty(),
     ]

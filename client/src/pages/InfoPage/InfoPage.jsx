@@ -7,6 +7,7 @@ import { redirectTo } from '../../store/actions/main'
 import EmailSearchForm from './EmailSearchForm/EmailSearchForm'
 import { Box, Card, makeStyles } from '@material-ui/core'
 import { setRegisteredOrder } from '../../store/actions/preorders'
+import { clearFoundOrders, searchOrdersBy } from '../../store/actions/orders'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,9 +45,9 @@ const InfoPage = () => {
   const handleSearchOrders = useCallback(
     ({ searchString }) => {
       setSearchString(searchString)
-      console.log('dispatch(searchOrdersBy({ email: searchString }))')
+      dispatch(searchOrdersBy({ email: searchString }))
     },
-    [setSearchString]
+    [setSearchString, dispatch]
   )
 
   const handleClearRegisteredOrders = useCallback(() => {
@@ -54,7 +55,7 @@ const InfoPage = () => {
   }, [dispatch])
 
   const handleClearFoundOrders = useCallback(() => {
-    console.log('dispatch(setFoundOrders(null))')
+    dispatch(clearFoundOrders())
   }, [dispatch])
 
   const classes = useStyles()
@@ -84,9 +85,17 @@ const InfoPage = () => {
 
       {foundOrders && (
         <Card className={classes.card}>
-          <h2>We've found the next orders with e-mail "{searchString}":</h2>
-          <OrdersInfo orders={foundOrders} />
-          <Button onClick={handleClearFoundOrders()}>Clear information</Button>
+          <OrdersInfo
+            orders={foundOrders}
+            heading={`We've found the next orders with e-mail "${searchString}"`}
+          />
+          <Box
+            display="flex"
+            justifyContent="center"
+            className={classes.controls}
+          >
+            <Button onClick={handleClearFoundOrders}>Clear information</Button>
+          </Box>
         </Card>
       )}
 
