@@ -15,11 +15,8 @@ export const RenderFieldTime = ({
     return false
   }, [touched, error, warning])
 
-  const errorText = useMemo(() => {
-    if (error) return error
-    if (warning) return warning
-  }, [error, warning])
-
+  const errorText = useMemo(() => error || warning, [error, warning])
+  
   const dateTransform = useCallback((date) => {
     if (date) return new Date(date).toLocaleString('uk')
     return ''
