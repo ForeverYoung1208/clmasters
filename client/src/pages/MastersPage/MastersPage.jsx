@@ -24,7 +24,6 @@ const MastersPage = () => {
   }, [preorderResult, history])
   
   const handlePostOrder = (masterId) => {
-    alert ('dispatch(postOrder({ masterId, preorder }))')
   }
 
   return (
