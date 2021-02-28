@@ -27,7 +27,7 @@ import {
 import { MasterAddDialog } from './MasterAddDialog/MasterAddDialog'
 import { MasterDeleteDialog } from './MasterDeleteDialog/MasterDeleteDialog'
 
-export const MastersBlock = () => {
+export const MastersBlock = ({classes}) => {
   const dispatch = useDispatch()
   const masters = useSelector(({ masters }) => masters?.data)
 
@@ -137,7 +137,7 @@ export const MastersBlock = () => {
 
   return (
     <>
-      <div className="adminPage__itemsBlock">
+      <div className={classes}>
         <DataGrid
           className="purple-borders-datagrid"
           showToolbar

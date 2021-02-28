@@ -28,7 +28,7 @@ import {
   CITIES_PUT_REJECTED,
 } from '../../../store/actions/actionTypes/cities'
 
-export const CitiesBlock = () => {
+export const CitiesBlock = ({classes}) => {
   const dispatch = useDispatch()
   const cities = useSelector(({ cities }) => cities?.data)
 
@@ -135,7 +135,7 @@ export const CitiesBlock = () => {
 
   return (
     <>
-      <div className="adminPage__itemsBlock">
+      <div className={classes}>
         <DataGrid
           className="purple-borders-datagrid"
           showToolbar

@@ -7,7 +7,7 @@ import {
   putOrder,
 } from '../../../store/actions/orders'
 import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton, useTheme } from '@material-ui/core'
+import { Box, Card, IconButton, useMediaQuery, useTheme } from '@material-ui/core'
 import './OrdersBlock.scss'
 import {
   Edit as EditIcon,
@@ -29,8 +29,9 @@ import { fetchClocks } from '../../../store/actions/clocks'
 import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
 import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
 import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
+import DataCards from '../../../components/DataCards/DataCards'
 
-export const OrdersBlock = () => {
+export const OrdersBlock = ({ classes }) => {
   const dispatch = useDispatch()
   const orders = useSelector(({ orders }) => orders?.data)
 
@@ -146,23 +147,68 @@ export const OrdersBlock = () => {
       renderCell: renderActions,
     },
   ]
+  
+  const compactOrders = [
+    {
+      id: 1,
+      order: orders[0]
+    }
+  ]
+
+  const renderCompactOrder = () => {
+    return (
+      <div>
+        <Card>asfa</Card> 
+        <Card>asfafasf</Card>
+      </div>
+    )
+  }
+
+  const compactColumnsDef = [
+    {
+      field: 'order',
+      headerName: 'Order',
+      flex: 1,
+      renderCell: renderCompactOrder, 
+    },
+    
+  ]
+  
 
   const {
     pagination: { pageSize, rowsPerPage },
+    breakpoints,
   } = useTheme()
+  
+  const matchesUpMd = useMediaQuery(breakpoints.up('md'));
 
   return (
     <>
-      <div className="adminPage__itemsBlock">
-        <DataGrid
-          className="purple-borders-datagrid"
-          showToolbar
-          rows={orders}
-          columns={columnsDef}
-          disableColumnReorder={true}
-          pageSize={pageSize}
-          rowsPerPageOptions={rowsPerPage}
-        />
+      <div className={classes}>
+        {matchesUpMd
+          ? <DataGrid
+            rowHeight="50"
+            className="purple-borders-datagrid"
+            showToolbar
+            rows={orders}
+            columns={columnsDef}
+            disableColumnReorder={true}
+            pageSize={pageSize}
+            rowsPerPageOptions={rowsPerPage}
+          />
+          : <DataGrid
+            rowHeight="200"
+            className="purple-borders-datagrid"
+            rows={compactOrders}
+            columns={compactColumnsDef}
+            disableColumnReorder={true}
+            pageSize={pageSize}
+            rowsPerPageOptions={rowsPerPage}
+           
+          />
+        
+        }
+        
 
         <OrderEditDialog
           caption={'Edit Order'}

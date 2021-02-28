@@ -26,7 +26,7 @@ import { UserEditDialog } from './UserEditDialog/UserEditDialog'
 import { UserAddDialog } from './UserAddDialog/UserAddDialog'
 import { UserDeleteDialog } from './UserDeleteDialog/UserDeleteDialog'
 
-export const UsersBlock = () => {
+export const UsersBlock = ({classes}) => {
   const dispatch = useDispatch()
   const users = useSelector(({ users }) => users?.data)
 
@@ -134,7 +134,7 @@ export const UsersBlock = () => {
 
   return (
     <>
-      <div className="adminPage__itemsBlock">
+      <div className={classes}>
         <DataGrid
           className="purple-borders-datagrid"
           showToolbar

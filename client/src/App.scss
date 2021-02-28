@@ -8,6 +8,7 @@
   min-width: 950px;
   
   &__header{
+    position:sticky;
     background-color: $main-color-dark;
     // background-color: rgb(148, 130, 96);;
   }
