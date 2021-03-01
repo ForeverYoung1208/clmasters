@@ -8,14 +8,11 @@ import {
 } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
 import { Box, IconButton, useTheme } from '@material-ui/core'
-import './CitiesBlock.scss'
-
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   Add as AddIcon,
 } from '@material-ui/icons'
-
 import { CityEditDialog } from './CityEditDialog/CityEditDialog'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'

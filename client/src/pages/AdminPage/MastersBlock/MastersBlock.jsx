@@ -9,7 +9,6 @@ import {
 import { fetchCities } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
 import { Box, IconButton, useTheme } from '@material-ui/core'
-import './MastersBlock.scss'
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,

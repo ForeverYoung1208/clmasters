@@ -8,7 +8,6 @@ import {
 } from '../../../store/actions/users'
 import { DataGrid } from '@material-ui/data-grid'
 import { Box, IconButton, useTheme } from '@material-ui/core'
-import './UsersBlock.scss'
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,

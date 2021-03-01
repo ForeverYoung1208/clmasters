@@ -8,7 +8,6 @@ import {
 } from '../../../store/actions/orders'
 import { DataGrid } from '@material-ui/data-grid'
 import { Box, Card, IconButton, useMediaQuery, useTheme } from '@material-ui/core'
-import './OrdersBlock.scss'
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -29,7 +28,6 @@ import { fetchClocks } from '../../../store/actions/clocks'
 import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
 import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
 import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
-import DataCards from '../../../components/DataCards/DataCards'
 
 export const OrdersBlock = ({ classes }) => {
   const dispatch = useDispatch()
@@ -174,7 +172,6 @@ export const OrdersBlock = ({ classes }) => {
     
   ]
   
-
   const {
     pagination: { pageSize, rowsPerPage },
     breakpoints,
@@ -206,9 +203,7 @@ export const OrdersBlock = ({ classes }) => {
             rowsPerPageOptions={rowsPerPage}
            
           />
-        
         }
-        
 
         <OrderEditDialog
           caption={'Edit Order'}

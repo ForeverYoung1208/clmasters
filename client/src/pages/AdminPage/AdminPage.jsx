@@ -11,17 +11,20 @@ import { ErrorMessageButton } from '../../components/ErrorMessage/ErrorMessage'
 import { clearErrorMessage } from '../../store/actions/main'
 import { withHumanizeError } from '../../HOC/withHumanizeError'
 
+import './AdminPage.scss'
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     [theme.breakpoints.down('md')]: {
-      width: '80vh',
+      width: '90vh',
     },    
     [theme.breakpoints.up('md')]: {
-      width: theme.breakpoints.values.md-theme.spacing(2),
+      width: theme.breakpoints.values.md - theme.spacing(2),
     },
     [theme.breakpoints.up('lg')]: {
-      width: theme.breakpoints.values.lg-theme.spacing(2)
+      width: theme.breakpoints.values.lg - theme.spacing(2)
     },    
   },
   itemsBlock: {
