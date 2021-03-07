@@ -6,8 +6,11 @@ import { RenderFieldInput } from '../../../../components/ReduxForm/RenderFieldIn
 import { RenderFieldSelect } from '../../../../components/ReduxForm/RenderFieldSelect/RenderFieldSelectMUI'
 
 import { validators } from '../../../../shared/validators/baseValidator'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RenderFieldTime } from '../../../../components/ReduxForm/RenderFieldTime/RenderFieldTimeMUI'
+import { fetchClocks } from '../../../../store/actions/clocks'
+import { fetchMasters } from '../../../../store/actions/masters'
+import { fetchUsers } from '../../../../store/actions/users'
 
 let OrderForm = ({
   handleSubmit,
@@ -16,11 +19,17 @@ let OrderForm = ({
   pristine,
   submitting,
 }) => {
+  
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     initialize(order)
+    dispatch(fetchClocks())
+    dispatch(fetchMasters())
+    dispatch(fetchUsers())
     // eslint-disable-next-line
-  }, [])
-
+  }, [dispatch, initialize])
+  
   const users = useSelector(({ users }) => users?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
   const masters = useSelector(({ masters }) => masters?.data)

@@ -21,9 +21,6 @@ import {
   ORDERS_POST_REJECTED,
   ORDERS_PUT_REJECTED,
 } from '../../../store/actions/actionTypes/orders'
-import { fetchMasters } from '../../../store/actions/masters'
-import { fetchUsers } from '../../../store/actions/users'
-import { fetchClocks } from '../../../store/actions/clocks'
 
 import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
 import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
@@ -95,9 +92,6 @@ export const OrdersBlock = ({ classes }) => {
 
   useEffect(() => {
     dispatch(fetchOrders())
-    dispatch(fetchClocks())
-    dispatch(fetchMasters())
-    dispatch(fetchUsers())
   }, [dispatch])
 
   const renderActions = useCallback(
