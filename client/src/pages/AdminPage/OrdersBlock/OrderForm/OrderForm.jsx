@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Box } from '@material-ui/core'
 import { reduxForm, Field } from 'redux-form'
 import { Button } from '../../../../components/Button/Button'
@@ -8,6 +8,13 @@ import { RenderFieldSelect } from '../../../../components/ReduxForm/RenderFieldS
 import { validators } from '../../../../shared/validators/baseValidator'
 import { useSelector } from 'react-redux'
 import { RenderFieldTime } from '../../../../components/ReduxForm/RenderFieldTime/RenderFieldTimeMUI'
+<<<<<<< Updated upstream
+=======
+import { fetchClocks } from '../../../../store/actions/clocks'
+import { fetchMasters } from '../../../../store/actions/masters'
+import { fetchUsers } from '../../../../store/actions/users'
+import { addHours, startOfHour } from 'date-fns'
+>>>>>>> Stashed changes
 
 let OrderForm = ({
   handleSubmit,
@@ -16,8 +23,23 @@ let OrderForm = ({
   pristine,
   submitting,
 }) => {
+<<<<<<< Updated upstream
   useEffect(() => {
     initialize(order)
+=======
+  
+  const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])  
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    initialize({
+      ...order,
+      onTime: order?.onTime || nowHour
+    })
+    dispatch(fetchClocks())
+    dispatch(fetchMasters())
+    dispatch(fetchUsers())
+>>>>>>> Stashed changes
     // eslint-disable-next-line
   }, [])
 
@@ -28,14 +50,6 @@ let OrderForm = ({
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
       <form onSubmit={handleSubmit}>
-        <div>
-          <Field
-            name="onTime"
-            label="On time"
-            component={RenderFieldTime}
-            validate={[validators.required]}
-          />
-        </div>
 
         <div>
           <Field
@@ -66,7 +80,14 @@ let OrderForm = ({
             options={users}
           />
         </div>
-
+        <div>
+          <Field
+            name="onTime"
+            label="On time"
+            component={RenderFieldTime}
+            validate={[validators.required]}
+          />
+        </div>        
         <div>
           <Field label="Comment" name="comment" component={RenderFieldInput} />
         </div>

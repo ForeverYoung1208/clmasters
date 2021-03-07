@@ -1,5 +1,6 @@
 import { Box, makeStyles, Typography } from '@material-ui/core'
-import React, { useEffect } from 'react'
+import { addHours, startOfHour } from 'date-fns'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { Button } from '../../../components/Button/Button'
@@ -31,23 +32,23 @@ let PreorderForm = ({
   submitting,
 }) => {
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchCities())
-    dispatch(fetchClocks())
-  }, [dispatch])
-
+  const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
+  const preorder = useSelector(({ preorders }) => preorders?.preorder)
   const cities = useSelector(({ cities }) => cities?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
-
-  const preorder = useSelector(({ preorders }) => preorders?.preorder)
+  const classes = useStyles()
+  
 
   useEffect(() => {
-    initialize(preorder)
+    initialize({
+      ...preorder,
+      onTime:preorder?.onTime || nowHour
+    })
+    dispatch(fetchCities())
+    dispatch(fetchClocks())
     // eslint-disable-next-line
-  }, [])
+  }, [dispatch])
 
-  const classes = useStyles()
 
   return (
     <Box className={classes.root}>

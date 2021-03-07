@@ -54,6 +54,7 @@ let UserForm = ({ handleSubmit, user, initialize, pristine, submitting }) => {
             <Field
               name="password"
               label="Password"
+              type="password"
               component={RenderFieldInput}
               validate={[validators.required, validators.minLength2]}
             />

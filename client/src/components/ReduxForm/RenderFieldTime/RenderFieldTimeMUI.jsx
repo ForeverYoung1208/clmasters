@@ -8,7 +8,7 @@ export const RenderFieldTime = ({
   input,
   meta: { touched, error, warning },
 }) => {
-  const now = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
+  const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
 
   const isError = useMemo(() => {
     if (!touched) return false
@@ -22,7 +22,8 @@ export const RenderFieldTime = ({
     if (date) return new Date(date).toLocaleString('uk')
     return ''
   }, [])
-  
+ 
+ 
   return (
     <FormControl margin="normal">
       <DateTimePicker
@@ -34,10 +35,10 @@ export const RenderFieldTime = ({
         disablePast
         hideTabs
         ampm={false}
-        value={input.value ? new Date(input.value) : now}
+        value={input.value ? new Date(input.value) : nowHour}
         onChange={input.onChange}
         allowKeyboardControl={false}
-        minDate={startOfDay(now)}
+        minDate={startOfDay(nowHour)}
         helperText={errorText}
         minutesStep={60}
         labelFunc={dateTransform}
