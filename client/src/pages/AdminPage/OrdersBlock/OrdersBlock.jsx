@@ -7,12 +7,8 @@ import {
   putOrder,
 } from '../../../store/actions/orders'
 import { DataGrid } from '@material-ui/data-grid'
-import { Box, Card, IconButton, useMediaQuery, useTheme } from '@material-ui/core'
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Add as AddIcon,
-} from '@material-ui/icons'
+import { Box, useMediaQuery, useTheme } from '@material-ui/core'
+import { Add as AddIcon } from '@material-ui/icons'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'
 import { Button } from '../../../components/Button/Button'
@@ -25,6 +21,8 @@ import {
 import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
 import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
 import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
+import CompactOrder from './CompactOrder/CompactOrder'
+import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
 
 export const OrdersBlock = ({ classes }) => {
   const dispatch = useDispatch()
@@ -94,23 +92,6 @@ export const OrdersBlock = ({ classes }) => {
     dispatch(fetchOrders())
   }, [dispatch])
 
-  const renderActions = useCallback(
-    ({ row }) => {
-      return (
-        <>
-          <IconButton onClick={() => startEditHandler(row.id)}>
-            <EditIcon />
-          </IconButton>
-
-          <IconButton onClick={() => startDeleteHandler(row.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </>
-      )
-    },
-    [startEditHandler, startDeleteHandler]
-  )
-
   const transtormDateTime = useCallback(
     ({ row }) => new Date(row.onTime).toLocaleString('uk'),
     []
@@ -136,49 +117,38 @@ export const OrdersBlock = ({ classes }) => {
       filterable: false,
       sortable: false,
       width: 120,
-      renderCell: renderActions,
+      renderCell: ({ row: { id } }) => (
+        <EditDeleteBtns
+          id={id}
+          startEditHandler={startEditHandler}
+          startDeleteHandler={startDeleteHandler}
+        />
+      ),
     },
   ]
-  
-  const compactOrders = [
-    {
-      id: 1,
-      order: orders[0]
-    }
-  ]
-
-  const renderCompactOrder = () => {
-    return (
-      <div>
-        <Card>asfa</Card> 
-        <Card>asfafasf</Card>
-      </div>
-    )
-  }
 
   const compactColumnsDef = [
     {
       field: 'order',
       headerName: 'Order',
       flex: 1,
-      renderCell: renderCompactOrder, 
+      renderCell: CompactOrder,
     },
-    
   ]
-  
+
   const {
     pagination: { pageSize, rowsPerPage },
     breakpoints,
   } = useTheme()
-  
-  const matchesUpMd = useMediaQuery(breakpoints.up('md'));
+
+  const matchesUpMd = useMediaQuery(breakpoints.up('md'))
 
   return (
     <>
       <div className={classes}>
-        {matchesUpMd
-          ? <DataGrid
-            rowHeight="50"
+        {matchesUpMd ? (
+          <DataGrid
+            rowHeight="45"
             className="purple-borders-datagrid"
             showToolbar
             rows={orders}
@@ -187,17 +157,18 @@ export const OrdersBlock = ({ classes }) => {
             pageSize={pageSize}
             rowsPerPageOptions={rowsPerPage}
           />
-          : <DataGrid
-            rowHeight="200"
+        ) : (
+            <DataGrid
+            disableColumnMenu
+            rowHeight="123"
             className="purple-borders-datagrid"
-            rows={compactOrders}
+            rows={orders}
             columns={compactColumnsDef}
             disableColumnReorder={true}
             pageSize={pageSize}
             rowsPerPageOptions={rowsPerPage}
-           
           />
-        }
+        )}
 
         <OrderEditDialog
           caption={'Edit Order'}
