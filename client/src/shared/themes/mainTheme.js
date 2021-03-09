@@ -27,6 +27,9 @@ const theme = createMuiTheme({
     pageSize: 20,
     rowsPerPage: [10, 20, 50],
   },
+  sizes: {
+    headerHeight: 350,
+  }
 })
 
 export default theme

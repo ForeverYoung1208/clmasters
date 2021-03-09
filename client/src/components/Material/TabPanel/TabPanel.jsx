@@ -4,9 +4,11 @@ import { Box, makeStyles } from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    margin: '1rem',
-    borderRadius: 4,
-    boxShadow: '0px 1px 4px 0px',
+    margin: theme.spacing(1),
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: theme.shadows[3],
+    display: 'flex',
+    flexDirection: 'column'
   },
 }))
 

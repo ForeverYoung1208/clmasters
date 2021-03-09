@@ -18,7 +18,7 @@ import './AdminPage.scss'
 const useStyles = makeStyles((theme) => ({
   root: {
     [theme.breakpoints.down('md')]: {
-      width: '90vh',
+      width: '100%',
     },    
     [theme.breakpoints.up('md')]: {
       width: theme.breakpoints.values.md - theme.spacing(2),
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   itemsBlock: {
     display: 'flex',
-    height: 'calc(100vh - 350px)',
+    // height: `calc(100vh - ${theme.sizes.headerHeight}px)`,
     minHeight: '300px',
   },
 }))
