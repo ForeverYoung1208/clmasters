@@ -5,6 +5,7 @@ export const RenderFieldInput = ({
   label,
   input,
   placeholder,
+  type,
   meta: { touched, error, warning },
 }) => {
   const isError = useMemo(() => {
@@ -24,6 +25,7 @@ export const RenderFieldInput = ({
       margin="normal"
       error={isError}
       label={label}
+      type={type}
       helperText={errorText}
       placeholder={placeholder}
     />
