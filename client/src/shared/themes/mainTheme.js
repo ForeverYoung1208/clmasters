@@ -27,6 +27,12 @@ const theme = createMuiTheme({
     pageSize: 20,
     rowsPerPage: [10, 20, 50],
   },
+  sizes: {
+    adminTableRowHeight: {
+      normal: 45,
+      large: 123,
+    }
+  }
 })
 
 export default theme

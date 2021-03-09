@@ -130,15 +130,31 @@ export const OrdersBlock = ({ classes }) => {
   const compactColumnsDef = [
     {
       field: 'order',
-      headerName: 'Order',
+      headerName: 'Orders',
       flex: 1,
       renderCell: CompactOrder,
+    },{
+      field: 'actions',
+      headerName: 'Actions',
+      disableClickEventBubbling: true,
+      disableColumnMenu: true,
+      filterable: false,
+      sortable: false,
+      width: 120,
+      renderCell: ({ row: { id } }) => (
+        <EditDeleteBtns
+          id={id}
+          startEditHandler={startEditHandler}
+          startDeleteHandler={startDeleteHandler}
+        />
+      ),
     },
   ]
 
   const {
     pagination: { pageSize, rowsPerPage },
     breakpoints,
+    sizes: { adminTableRowHeight },
   } = useTheme()
 
   const matchesUpMd = useMediaQuery(breakpoints.up('md'))
@@ -148,23 +164,24 @@ export const OrdersBlock = ({ classes }) => {
       <div className={classes}>
         {matchesUpMd ? (
           <DataGrid
-            rowHeight="45"
-            className="purple-borders-datagrid"
             showToolbar
+            disableColumnReorder
+            disableDensitySelector
+            rowHeight={adminTableRowHeight.normal}
+            className="purple-borders-datagrid"
             rows={orders}
             columns={columnsDef}
-            disableColumnReorder={true}
             pageSize={pageSize}
             rowsPerPageOptions={rowsPerPage}
           />
         ) : (
             <DataGrid
             disableColumnMenu
-            rowHeight="123"
+            disableColumnReorder
+            rowHeight={adminTableRowHeight.large}
             className="purple-borders-datagrid"
             rows={orders}
             columns={compactColumnsDef}
-            disableColumnReorder={true}
             pageSize={pageSize}
             rowsPerPageOptions={rowsPerPage}
           />

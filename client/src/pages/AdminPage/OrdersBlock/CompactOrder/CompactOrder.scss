@@ -1,6 +1,13 @@
 .compact-order{
-  padding: 1rem;
   .compact-order__row{
+    margin: 0.1rem;
     line-height: normal;
+    display: flex;
+    span:first-of-type{
+      text-align: end;
+      width: 100px;
+      font-weight: bold;
+      margin-right: 1rem;
+    }
   }
 }
