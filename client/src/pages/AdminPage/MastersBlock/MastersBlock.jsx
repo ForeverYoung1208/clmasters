@@ -6,7 +6,6 @@ import {
   postMaster,
   putMaster,
 } from '../../../store/actions/masters'
-import { fetchCities } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
 import { Box, IconButton, useTheme } from '@material-ui/core'
 import './MastersBlock.scss'
@@ -93,7 +92,6 @@ export const MastersBlock = () => {
 
   useEffect(() => {
     dispatch(fetchMasters())
-    dispatch(fetchCities())
   }, [dispatch])
 
   const renderActions = useCallback(

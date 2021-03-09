@@ -6,7 +6,8 @@ import { RenderFieldInput } from '../../../../components/ReduxForm/RenderFieldIn
 import { RenderFieldSelect } from '../../../../components/ReduxForm/RenderFieldSelect/RenderFieldSelectMUI'
 
 import { validators } from '../../../../shared/validators/baseValidator'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchCities } from '../../../../store/actions/cities'
 
 export const RATINGS = [
   { id: '1', name: 'rating 1' },
@@ -23,10 +24,12 @@ let MasterForm = ({
   pristine,
   submitting,
 }) => {
+  const dispatch = useDispatch()
   useEffect(() => {
     initialize(master)
+    dispatch(fetchCities())
     // eslint-disable-next-line
-  }, [])
+  }, [dispatch, initialize])
 
   const cities = useSelector(({ cities }) => cities?.data)
 
