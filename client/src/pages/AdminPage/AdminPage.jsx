@@ -25,12 +25,14 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('lg')]: {
       width: theme.breakpoints.values.lg - theme.spacing(2)
-    },    
+    },
+    display: 'flex',
+    flexDirection: 'column',
   },
   itemsBlock: {
     display: 'flex',
-    // height: `calc(100vh - ${theme.sizes.headerHeight}px)`,
     minHeight: '300px',
+    flexGrow: 1,
   },
 }))
 
