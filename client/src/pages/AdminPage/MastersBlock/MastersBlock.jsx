@@ -6,9 +6,8 @@ import {
   postMaster,
   putMaster,
 } from '../../../store/actions/masters'
-import { DataGrid } from '@material-ui/data-grid'
-import { Box, useMediaQuery, useTheme } from '@material-ui/core'
-import { Add as AddIcon,} from '@material-ui/icons'
+import { Box } from '@material-ui/core'
+import { Add as AddIcon } from '@material-ui/icons'
 import { MasterEditDialog } from './MasterEditDialog/MasterEditDialog'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'
@@ -22,8 +21,9 @@ import { MasterAddDialog } from './MasterAddDialog/MasterAddDialog'
 import { MasterDeleteDialog } from './MasterDeleteDialog/MasterDeleteDialog'
 import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
 import CompactMaster from './CompactMaster/CompactMaster'
+import ResponsiveDataGrid from '../../../components/Material/ResponsiveDataGrid/ResponsiveDataGrid'
 
-export const MastersBlock = ({classes}) => {
+export const MastersBlock = ({ classes }) => {
   const dispatch = useDispatch()
   const masters = useSelector(({ masters }) => masters?.data)
 
@@ -77,7 +77,7 @@ export const MastersBlock = ({classes}) => {
     async (master) => {
       const action = await dispatch(postMaster({ master, setIsAddingMaster }))
       if (action.type === MASTERS_POST_REJECTED) {
-        const formSubmitError = normalizeFormSubmitError(action.payload.errors)
+        const formSubmitError = normalizeFormSubmitError(action.payload?.errors)
         throw new SubmissionError(formSubmitError)
       }
     },
@@ -91,94 +91,71 @@ export const MastersBlock = ({classes}) => {
     dispatch(fetchMasters())
   }, [dispatch])
 
-  const columnsDef = useMemo(() => [
-    { field: 'id', headerName: 'Id', width: 70 },
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'rating', headerName: 'Rating', width: 100 },
-    { field: 'cityName', headerName: 'City', width: 150 },
-    { field: 'comment', headerName: 'Comment', flex: 1 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      disableClickEventBubbling: true,
-      disableColumnMenu: true,
-      filterable: false,
-      sortable: false,
-      width: 120,
-      renderCell: ({ row: { id } }) => (
-        <EditDeleteBtns
-          id={id}
-          startEditHandler={startEditHandler}
-          startDeleteHandler={startDeleteHandler}
-        />
-      ),
-    },
-  ], [startEditHandler, startDeleteHandler])
-  
-  const compactColumnsDef = useMemo(() => [
-    {
-      field: 'master',
-      headerName: 'Masters',
-      flex: 1,
-      renderCell: CompactMaster,
-      filterable: false,
-      sortable: false,      
-    },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      disableClickEventBubbling: true,
-      disableColumnMenu: true,
-      filterable: false,
-      sortable: false,
-      width: 120,
-      renderCell: ({ row: { id } }) => (
-        <EditDeleteBtns
-          id={id}
-          startEditHandler={startEditHandler}
-          startDeleteHandler={startDeleteHandler}
-        />
-      ),
-    },
-  ], [startEditHandler, startDeleteHandler])
-  
+  const columnsDef = useMemo(
+    () => [
+      { field: 'id', headerName: 'Id', width: 70 },
+      { field: 'name', headerName: 'Name', width: 150 },
+      { field: 'rating', headerName: 'Rating', width: 100 },
+      { field: 'cityName', headerName: 'City', width: 150 },
+      { field: 'comment', headerName: 'Comment', flex: 1 },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        disableClickEventBubbling: true,
+        disableColumnMenu: true,
+        filterable: false,
+        sortable: false,
+        width: 120,
+        renderCell: ({ row: { id } }) => (
+          <EditDeleteBtns
+            id={id}
+            startEditHandler={startEditHandler}
+            startDeleteHandler={startDeleteHandler}
+          />
+        ),
+      },
+    ],
+    [startEditHandler, startDeleteHandler]
+  )
 
-  const {
-    pagination: { pageSize, rowsPerPage },
-    breakpoints,
-    sizes: { adminTableRowsHeight },
-  } = useTheme()
-  
-  const matchesUpMd = useMediaQuery(breakpoints.up('md'))
+  const compactColumnsDef = useMemo(
+    () => [
+      {
+        field: 'master',
+        headerName: 'Masters',
+        flex: 1,
+        filterable: false,
+        sortable: false,
+        renderCell: CompactMaster,
+      },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        disableClickEventBubbling: true,
+        disableColumnMenu: true,
+        filterable: false,
+        sortable: false,
+        width: 120,
+        renderCell: ({ row: { id } }) => (
+          <EditDeleteBtns
+            id={id}
+            startEditHandler={startEditHandler}
+            startDeleteHandler={startDeleteHandler}
+          />
+        ),
+      },
+    ],
+    [startEditHandler, startDeleteHandler]
+  )
 
   return (
     <>
       <div className={classes}>
-        {matchesUpMd ? (        
-          <DataGrid
-            showToolbar
-            disableColumnReorder
-            disableDensitySelector
-            rowHeight={adminTableRowsHeight.normal}
-            className="purple-borders-datagrid"
-            rows={masters}
-            columns={columnsDef}
-            pageSize={pageSize}
-            rowsPerPageOptions={rowsPerPage}
-          />
-        ) : (
-          <DataGrid
-            disableColumnMenu
-            disableColumnReorder
-            showToolbar={false}
-            rowHeight={adminTableRowsHeight.large}
-            className="purple-borders-datagrid"
-            rows={masters}
-            columns={compactColumnsDef}
-            pageSize={pageSize}
-            rowsPerPageOptions={rowsPerPage}
-          />
-        )}          
+        <ResponsiveDataGrid
+          rows={masters}
+          columnsDef={columnsDef}
+          compactColumnsDef={compactColumnsDef}
+        />
 
         <MasterEditDialog
           caption={'Edit Master'}

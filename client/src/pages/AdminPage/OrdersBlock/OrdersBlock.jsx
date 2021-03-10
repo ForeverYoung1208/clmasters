@@ -6,8 +6,7 @@ import {
   postOrder,
   putOrder,
 } from '../../../store/actions/orders'
-import { DataGrid } from '@material-ui/data-grid'
-import { Box, useMediaQuery, useTheme } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'
@@ -23,6 +22,7 @@ import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
 import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
 import CompactOrder from './CompactOrder/CompactOrder'
 import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
+import ResponsiveDataGrid from '../../../components/Material/ResponsiveDataGrid/ResponsiveDataGrid'
 
 export const OrdersBlock = ({ classes }) => {
   const dispatch = useDispatch()
@@ -97,99 +97,78 @@ export const OrdersBlock = ({ classes }) => {
     []
   )
 
-  const columnsDef = useMemo(() => [
-    { field: 'id', headerName: 'Id', width: 70 },
-    {
-      field: 'onTime',
-      headerName: 'Time',
-      width: 150,
-      renderCell: transtormDateTime,
-    },
-    { field: 'clockType', headerName: 'Clock', width: 100 },
-    { field: 'masterName', headerName: 'Master', width: 120 },
-    { field: 'userName', headerName: 'User', width: 150 },
-    { field: 'comment', headerName: 'Comment', flex: 1 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      disableClickEventBubbling: true,
-      disableColumnMenu: true,
-      filterable: false,
-      sortable: false,
-      width: 120,
-      renderCell: ({ row: { id } }) => (
-        <EditDeleteBtns
-          id={id}
-          startEditHandler={startEditHandler}
-          startDeleteHandler={startDeleteHandler}
-        />
-      ),
-    },
-  ],[startEditHandler, startDeleteHandler, transtormDateTime])
+  const columnsDef = useMemo(
+    () => [
+      { field: 'id', headerName: 'Id', width: 70 },
+      {
+        field: 'onTime',
+        headerName: 'Time',
+        width: 150,
+        renderCell: transtormDateTime,
+      },
+      { field: 'clockType', headerName: 'Clock', width: 100 },
+      { field: 'masterName', headerName: 'Master', width: 120 },
+      { field: 'userName', headerName: 'User', width: 150 },
+      { field: 'comment', headerName: 'Comment', flex: 1 },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        disableClickEventBubbling: true,
+        disableColumnMenu: true,
+        filterable: false,
+        sortable: false,
+        width: 120,
+        renderCell: ({ row: { id } }) => (
+          <EditDeleteBtns
+            id={id}
+            startEditHandler={startEditHandler}
+            startDeleteHandler={startDeleteHandler}
+          />
+        ),
+      },
+    ],
+    [startEditHandler, startDeleteHandler, transtormDateTime]
+  )
 
-  const compactColumnsDef = useMemo(() => [
-    {
-      field: 'order',
-      headerName: 'Orders',
-      flex: 1,
-      renderCell: CompactOrder,
-      filterable: false,
-      sortable: false,      
-    },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      disableClickEventBubbling: true,
-      disableColumnMenu: true,
-      filterable: false,
-      sortable: false,
-      width: 120,
-      renderCell: ({ row: { id } }) => (
-        <EditDeleteBtns
-          id={id}
-          startEditHandler={startEditHandler}
-          startDeleteHandler={startDeleteHandler}
-        />
-      ),
-    },
-  ],[startEditHandler, startDeleteHandler])
-
-  const {
-    pagination: { pageSize, rowsPerPage },
-    breakpoints,
-    sizes: { adminTableRowsHeight },
-  } = useTheme()
-
-  const matchesUpMd = useMediaQuery(breakpoints.up('md'))
+  const compactColumnsDef = useMemo(
+    () => [
+      {
+        field: 'order',
+        headerName: 'Orders',
+        flex: 1,
+        filterable: false,
+        sortable: false,
+        renderCell: CompactOrder,
+      },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        disableClickEventBubbling: true,
+        disableColumnMenu: true,
+        filterable: false,
+        sortable: false,
+        width: 120,
+        renderCell: ({ row: { id } }) => (
+          <EditDeleteBtns
+            id={id}
+            startEditHandler={startEditHandler}
+            startDeleteHandler={startDeleteHandler}
+          />
+        ),
+      },
+    ],
+    [startEditHandler, startDeleteHandler]
+  )
+  console.log('[orders]', orders)
 
   return (
     <>
       <div className={classes}>
-        {matchesUpMd ? (
-          <DataGrid
-            showToolbar
-            disableColumnReorder
-            disableDensitySelector
-            rowHeight={adminTableRowsHeight.normal}
-            className="purple-borders-datagrid"
-            rows={orders}
-            columns={columnsDef}
-            pageSize={pageSize}
-            rowsPerPageOptions={rowsPerPage}
-          />
-        ) : (
-          <DataGrid
-            disableColumnMenu
-            disableColumnReorder
-            showToolbar={false}
-            rowHeight={adminTableRowsHeight.large}
-            className="purple-borders-datagrid"
-            rows={orders}
-            columns={compactColumnsDef}
-            pageSize={pageSize}
-            rowsPerPageOptions={rowsPerPage}
-          />
-        )}
+        <ResponsiveDataGrid
+          rows={orders}
+          columnsDef={columnsDef}
+          compactColumnsDef={compactColumnsDef}
+        />
 
         <OrderEditDialog
           caption={'Edit Order'}
