@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   deleteMaster,
@@ -7,12 +7,8 @@ import {
   putMaster,
 } from '../../../store/actions/masters'
 import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton, useTheme } from '@material-ui/core'
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Add as AddIcon,
-} from '@material-ui/icons'
+import { Box, useMediaQuery, useTheme } from '@material-ui/core'
+import { Add as AddIcon,} from '@material-ui/icons'
 import { MasterEditDialog } from './MasterEditDialog/MasterEditDialog'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/common'
@@ -24,6 +20,8 @@ import {
 } from '../../../store/actions/actionTypes/masters'
 import { MasterAddDialog } from './MasterAddDialog/MasterAddDialog'
 import { MasterDeleteDialog } from './MasterDeleteDialog/MasterDeleteDialog'
+import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
+import CompactMaster from './CompactMaster/CompactMaster'
 
 export const MastersBlock = ({classes}) => {
   const dispatch = useDispatch()
@@ -93,27 +91,10 @@ export const MastersBlock = ({classes}) => {
     dispatch(fetchMasters())
   }, [dispatch])
 
-  const renderActions = useCallback(
-    ({ row }) => {
-      return (
-        <>
-          <IconButton onClick={() => startEditHandler(row.id)}>
-            <EditIcon />
-          </IconButton>
-
-          <IconButton onClick={() => startDeleteHandler(row.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </>
-      )
-    },
-    [startEditHandler, startDeleteHandler]
-  )
-
-  const columnsDef = [
+  const columnsDef = useMemo(() => [
     { field: 'id', headerName: 'Id', width: 70 },
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'rating', headerName: 'Rating', width: 70 },
+    { field: 'rating', headerName: 'Rating', width: 100 },
     { field: 'cityName', headerName: 'City', width: 150 },
     { field: 'comment', headerName: 'Comment', flex: 1 },
     {
@@ -124,26 +105,80 @@ export const MastersBlock = ({classes}) => {
       filterable: false,
       sortable: false,
       width: 120,
-      renderCell: renderActions,
+      renderCell: ({ row: { id } }) => (
+        <EditDeleteBtns
+          id={id}
+          startEditHandler={startEditHandler}
+          startDeleteHandler={startDeleteHandler}
+        />
+      ),
     },
-  ]
+  ], [startEditHandler, startDeleteHandler])
+  
+  const compactColumnsDef = useMemo(() => [
+    {
+      field: 'master',
+      headerName: 'Masters',
+      flex: 1,
+      renderCell: CompactMaster,
+      filterable: false,
+      sortable: false,      
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      disableClickEventBubbling: true,
+      disableColumnMenu: true,
+      filterable: false,
+      sortable: false,
+      width: 120,
+      renderCell: ({ row: { id } }) => (
+        <EditDeleteBtns
+          id={id}
+          startEditHandler={startEditHandler}
+          startDeleteHandler={startDeleteHandler}
+        />
+      ),
+    },
+  ], [startEditHandler, startDeleteHandler])
+  
 
   const {
     pagination: { pageSize, rowsPerPage },
+    breakpoints,
+    sizes: { adminTableRowsHeight },
   } = useTheme()
+  
+  const matchesUpMd = useMediaQuery(breakpoints.up('md'))
 
   return (
     <>
       <div className={classes}>
-        <DataGrid
-          className="purple-borders-datagrid"
-          showToolbar
-          rows={masters}
-          columns={columnsDef}
-          disableColumnReorder={true}
-          pageSize={pageSize}
-          rowsPerPageOptions={rowsPerPage}
-        />
+        {matchesUpMd ? (        
+          <DataGrid
+            showToolbar
+            disableColumnReorder
+            disableDensitySelector
+            rowHeight={adminTableRowsHeight.normal}
+            className="purple-borders-datagrid"
+            rows={masters}
+            columns={columnsDef}
+            pageSize={pageSize}
+            rowsPerPageOptions={rowsPerPage}
+          />
+        ) : (
+          <DataGrid
+            disableColumnMenu
+            disableColumnReorder
+            showToolbar={false}
+            rowHeight={adminTableRowsHeight.large}
+            className="purple-borders-datagrid"
+            rows={masters}
+            columns={compactColumnsDef}
+            pageSize={pageSize}
+            rowsPerPageOptions={rowsPerPage}
+          />
+        )}          
 
         <MasterEditDialog
           caption={'Edit Master'}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   deleteOrder,
@@ -97,7 +97,7 @@ export const OrdersBlock = ({ classes }) => {
     []
   )
 
-  const columnsDef = [
+  const columnsDef = useMemo(() => [
     { field: 'id', headerName: 'Id', width: 70 },
     {
       field: 'onTime',
@@ -125,15 +125,18 @@ export const OrdersBlock = ({ classes }) => {
         />
       ),
     },
-  ]
+  ],[startEditHandler, startDeleteHandler, transtormDateTime])
 
-  const compactColumnsDef = [
+  const compactColumnsDef = useMemo(() => [
     {
       field: 'order',
       headerName: 'Orders',
       flex: 1,
       renderCell: CompactOrder,
-    },{
+      filterable: false,
+      sortable: false,      
+    },
+    {
       field: 'actions',
       headerName: 'Actions',
       disableClickEventBubbling: true,
@@ -149,12 +152,12 @@ export const OrdersBlock = ({ classes }) => {
         />
       ),
     },
-  ]
+  ],[startEditHandler, startDeleteHandler])
 
   const {
     pagination: { pageSize, rowsPerPage },
     breakpoints,
-    sizes: { adminTableRowHeight },
+    sizes: { adminTableRowsHeight },
   } = useTheme()
 
   const matchesUpMd = useMediaQuery(breakpoints.up('md'))
@@ -167,7 +170,7 @@ export const OrdersBlock = ({ classes }) => {
             showToolbar
             disableColumnReorder
             disableDensitySelector
-            rowHeight={adminTableRowHeight.normal}
+            rowHeight={adminTableRowsHeight.normal}
             className="purple-borders-datagrid"
             rows={orders}
             columns={columnsDef}
@@ -175,10 +178,11 @@ export const OrdersBlock = ({ classes }) => {
             rowsPerPageOptions={rowsPerPage}
           />
         ) : (
-            <DataGrid
+          <DataGrid
             disableColumnMenu
             disableColumnReorder
-            rowHeight={adminTableRowHeight.large}
+            showToolbar={false}
+            rowHeight={adminTableRowsHeight.large}
             className="purple-borders-datagrid"
             rows={orders}
             columns={compactColumnsDef}

@@ -28,7 +28,7 @@ const theme = createMuiTheme({
     rowsPerPage: [10, 20, 50],
   },
   sizes: {
-    adminTableRowHeight: {
+    adminTableRowsHeight: {
       normal: 45,
       large: 123,
     }
