@@ -159,7 +159,6 @@ export const OrdersBlock = ({ classes }) => {
     ],
     [startEditHandler, startDeleteHandler]
   )
-  console.log('[orders]', orders)
 
   return (
     <>
