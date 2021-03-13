@@ -15,7 +15,7 @@ import {
 import { postOrder } from '../../store/actions/orders'
 import { redirectTo } from '../../store/actions/main'
 import { ORDERS_POST_FULFILLED } from '../../store/actions/actionTypes/orders'
-import { normalizeFormSubmitError } from '../../shared/js/common'
+import { normalizeFormSubmitError } from '../../shared/js/normalizeFormSubmitError'
 import { SubmissionError } from 'redux-form'
 import { PREORDERS_POST_REJECTED } from '../../store/actions/actionTypes/preorders'
 

@@ -16,6 +16,9 @@ const normalizeFormSubmitError = (someErrors) => {
       if (e.path === 'isMasterFree') {
         normalErrors['onTime'] = e.message
       }
+      if (e.param === 'order' && /.*master is busy at given time.*/.test(e.msg)) {
+        normalErrors['onTime'] = 'Master is busy at this time'
+      }
       
     })
 

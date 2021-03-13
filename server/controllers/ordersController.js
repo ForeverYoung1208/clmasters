@@ -80,7 +80,10 @@ class OrdersController extends CRUDController {
       var _newOrder = await Order.create(data)
     } catch (error) {
       return res.status(400).json({
-        error: error.message,
+        errors:[{
+          'param': 'order',
+          'msg': error.message,
+        }]
       })
     }
 

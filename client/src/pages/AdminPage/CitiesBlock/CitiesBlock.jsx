@@ -15,7 +15,7 @@ import {
 } from '@material-ui/icons'
 import { CityEditDialog } from './CityEditDialog/CityEditDialog'
 import { SubmissionError } from 'redux-form'
-import { normalizeFormSubmitError } from '../../../shared/js/common'
+import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
 import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
 import { CityDeleteDialog } from './CityDeleteDialog/CityDeleteDialog'

@@ -10,7 +10,7 @@ import { Box } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { MasterEditDialog } from './MasterEditDialog/MasterEditDialog'
 import { SubmissionError } from 'redux-form'
-import { normalizeFormSubmitError } from '../../../shared/js/common'
+import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
 import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
 import {
