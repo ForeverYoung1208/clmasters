@@ -1,23 +1,15 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import AccountCircle from '@material-ui/icons/AccountCircle'
 
 import logoImg from '../../img/glow_clock2.png'
 import Menu from './Menu/Menu'
-import UserInfo from './UserInfo/UserInfo'
 
-// import './Header.scss';
 import withCurrentUser from '../../HOC/withCurrentUser'
-import {
-  AppBar,
-  Box,
-  IconButton,
-  Toolbar,
-} from '@material-ui/core'
-
-const handleProfileMenuOpen = (event) => {
-  console.log('[event.target]', event.target)
-}
+import { AppBar, Box, Toolbar, useMediaQuery, useTheme } from '@material-ui/core'
+import { authLogoutUser } from '../../store/actions/auth'
+import { useDispatch } from 'react-redux'
+import UserInfoWide from './UserInfoWide/UserInfoWide'
+import UserInfoNarrow from './UserInfoNarrow/UserInfoNarrow'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,14 +22,14 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems:'center',
+    alignItems: 'center',
   },
   logeImg: {
     height: theme.spacing(9),
     width: theme.spacing(9),
   },
   logoText: {
-    width: theme.spacing(9)
+    width: theme.spacing(9),
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -47,13 +39,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ProfileMenu = () => {
-  return <UserInfo />
-}
-
 const Header = ({ currentUser }) => {
   const classes = useStyles()
-
+  const dispatch = useDispatch()
+  const theme = useTheme()
+  const largerMD = useMediaQuery(theme.breakpoints.up('md'));
+  
+  const handleLogout = useCallback(() => {
+    dispatch(authLogoutUser())
+  }, [dispatch])
+  
   return (
     <AppBar position="static" className={classes.root}>
       <Toolbar className={classes.toolBar}>
@@ -64,37 +59,16 @@ const Header = ({ currentUser }) => {
 
         <Menu className={classes.menu} />
 
-        {currentUser && (
-          <IconButton
-            edge="end"
-            onClick={handleProfileMenuOpen}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
+        {currentUser?.email ? (
+          largerMD
+            ? <UserInfoWide handleLogout={handleLogout} currentUser={currentUser} />
+            : <UserInfoNarrow handleLogout={handleLogout} currentUser={currentUser} />
+        ) : (
+          <div>&nbsp;</div>
         )}
       </Toolbar>
     </AppBar>
   )
 }
-
-// const Header = (props) => {
-//   const {currentUser} = props
-
-//   return (
-//       <div className="header">
-// <div className="header__logo">
-//   <img src={logoImg} alt="logo"/>
-//   <div className="caption"> Clock Masters</div>
-// </div>
-//         <div className="header__menu">
-//           <Menu/>
-//         </div>
-//         <div className="header__user-info">
-//             <UserInfoAnimated key='userInfo' isShown = {!!currentUser}/>
-//         </div>
-//       </div>
-//   );
-// };
 
 export default withCurrentUser(Header)

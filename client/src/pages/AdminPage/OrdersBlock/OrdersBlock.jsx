@@ -107,7 +107,7 @@ export const OrdersBlock = ({ classes }) => {
         renderCell: transtormDateTime,
       },
       { field: 'clockType', headerName: 'Clock', width: 100 },
-      { field: 'masterName', headerName: 'Master', width: 120 },
+      { field: 'masterName', headerName: 'Master', width: 150 },
       { field: 'userName', headerName: 'User', width: 150 },
       { field: 'comment', headerName: 'Comment', flex: 1 },
       {
