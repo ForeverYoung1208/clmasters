@@ -5,7 +5,13 @@ import logoImg from '../../img/glow_clock2.png'
 import Menu from './Menu/Menu'
 
 import withCurrentUser from '../../HOC/withCurrentUser'
-import { AppBar, Box, Toolbar, useMediaQuery, useTheme } from '@material-ui/core'
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core'
 import { authLogoutUser } from '../../store/actions/auth'
 import { useDispatch } from 'react-redux'
 import UserInfoWide from './UserInfoWide/UserInfoWide'
@@ -43,12 +49,12 @@ const Header = ({ currentUser }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const theme = useTheme()
-  const largerMD = useMediaQuery(theme.breakpoints.up('md'));
-  
+  const largerMD = useMediaQuery(theme.breakpoints.up('md'))
+
   const handleLogout = useCallback(() => {
     dispatch(authLogoutUser())
   }, [dispatch])
-  
+
   return (
     <AppBar position="static" className={classes.root}>
       <Toolbar className={classes.toolBar}>
@@ -58,14 +64,20 @@ const Header = ({ currentUser }) => {
         </Box>
 
         <Menu className={classes.menu} />
-
-        {currentUser?.email ? (
-          largerMD
-            ? <UserInfoWide handleLogout={handleLogout} currentUser={currentUser} />
-            : <UserInfoNarrow handleLogout={handleLogout} currentUser={currentUser} />
-        ) : (
-          <div>&nbsp;</div>
-        )}
+        <div>
+          {currentUser?.email &&
+            (largerMD ? (
+              <UserInfoWide
+                handleLogout={handleLogout}
+                currentUser={currentUser}
+              />
+            ) : (
+              <UserInfoNarrow
+                handleLogout={handleLogout}
+                currentUser={currentUser}
+              />
+            ))}
+        </div>
       </Toolbar>
     </AppBar>
   )

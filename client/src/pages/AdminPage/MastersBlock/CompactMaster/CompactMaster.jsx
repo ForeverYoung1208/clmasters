@@ -1,17 +1,14 @@
 import React from 'react'
+import CompactItemRow from '../../../../components/CompactItemRow/CompactItemRow'
 
-const CompactMaster = ({
-  row: { id, name, rating, cityName, comment },
-}) => {
+const CompactMaster = ({ row }) => {
+  const shownData = ['id', 'name', 'rating', 'cityName', 'comment']
   return (
-    <div className="admin-page__item--compact">
-      <div className="admin-page__item--compact__row"><span>Id:</span> <span>{id} </span></div>
-      <div className="admin-page__item--compact__row"><span>Master:</span> <span>{name} </span></div>
-      <div className="admin-page__item--compact__row"><span>Master:</span> <span>{rating} </span></div>
-      <div className="admin-page__item--compact__row"><span>User:</span> <span>{cityName} </span></div>
-      <div className="admin-page__item--compact__row"><span>Comment:</span> <span>{comment} </span></div>
+    <div>
+      {shownData.map((key) => (
+        <CompactItemRow key={key} label={key} value={row[key]} />
+      ))}
     </div>
-)
+  )
 }
-
 export default CompactMaster

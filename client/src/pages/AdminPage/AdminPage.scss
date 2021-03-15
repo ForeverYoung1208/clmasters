@@ -1,22 +1,8 @@
 .purple-borders-datagrid div .MuiDataGrid-cell,
-.purple-borders-datagrid div .MuiDataGrid-columnsContainer
-{
+.purple-borders-datagrid div .MuiDataGrid-columnsContainer {
   border-bottom-color: #662e9165;
-  .MuiDataGrid-columnSeparator{
-    color: #662e9165;
-  }
-}
 
-.admin-page__item--compact{
-  .admin-page__item--compact__row{
-    margin: 0.1rem;
-    line-height: normal;
-    display: flex;
-    span:first-of-type{
-      text-align: end;
-      width: 100px;
-      font-weight: bold;
-      margin-right: 1rem;
-    }
+  .MuiDataGrid-columnSeparator {
+    color: #662e9165;
   }
 }
