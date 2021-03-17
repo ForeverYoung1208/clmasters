@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: 4,
     boxShadow: '0px 1px 4px 0px',
+    maxHeight: '80vh',
+    overflow: 'auto',
   },
   controls: {
     padding: '1rem',
@@ -71,9 +73,9 @@ const InfoPage = () => {
             <h3>(order information was also sent to email)</h3>
           )}
           <Box
+            className={classes.controls}
             display="flex"
             justifyContent="space-between"
-            className={classes.controls}
           >
             <Button onClick={handleBackToForm} variant="text" color="primary">
               Make another order
@@ -89,13 +91,6 @@ const InfoPage = () => {
             orders={foundOrders}
             heading={`We've found the next orders with e-mail "${searchString}"`}
           />
-          <Box
-            display="flex"
-            justifyContent="center"
-            className={classes.controls}
-          >
-            <Button onClick={handleClearFoundOrders}>Clear information</Button>
-          </Box>
         </Card>
       )}
 
@@ -103,6 +98,16 @@ const InfoPage = () => {
         <Card className={classes.card}>
           <EmailSearchForm onSubmit={handleSearchOrders} />
         </Card>
+      )}
+
+      {foundOrders && (
+        <Box
+          className={classes.controls}
+          display="flex"
+          alignSelf="center"
+        >
+          <Button onClick={handleClearFoundOrders}>Clear information</Button>
+        </Box>
       )}
     </Box>
   )

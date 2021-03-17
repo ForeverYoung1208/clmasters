@@ -1,33 +1,86 @@
-import React from 'react';
+import React, { useCallback } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 
-import logoImg from '../../img/glow_clock2.png';
-import Menu from './Menu/Menu';
-import UserInfo from './UserInfo/UserInfo';
+import logoImg from '../../img/glow_clock2.png'
+import Menu from './Menu/Menu'
 
-import './Header.scss';
-import withAppear from '../../HOC/withAnimationAppear';
-import withCurrentUser from '../../HOC/withCurrentUser';
+import withCurrentUser from '../../HOC/withCurrentUser'
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core'
+import { authLogoutUser } from '../../store/actions/auth'
+import { useDispatch } from 'react-redux'
+import UserInfoWide from './UserInfoWide/UserInfoWide'
+import UserInfoNarrow from './UserInfoNarrow/UserInfoNarrow'
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  toolBar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  logo: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  logeImg: {
+    height: theme.spacing(9),
+    width: theme.spacing(9),
+  },
+  logoText: {
+    width: theme.spacing(9),
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  menu: {
+    flexGrow: 1,
+  },
+}))
 
-const UserInfoAnimated = withAppear(UserInfo);
+const Header = ({ currentUser }) => {
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const theme = useTheme()
+  const largerMD = useMediaQuery(theme.breakpoints.up('md'))
 
-const Header = (props) => {
-  const {currentUser} = props
+  const handleLogout = useCallback(() => {
+    dispatch(authLogoutUser())
+  }, [dispatch])
 
   return (
-      <div className="header">
-        <div className="header__logo">
-          <img src={logoImg} alt="logo"/>
-          <div className="caption"> Clock Masters</div>
+    <AppBar position="static" className={classes.root}>
+      <Toolbar className={classes.toolBar}>
+        <Box className={classes.logo}>
+          <img className={classes.logeImg} src={logoImg} alt="logo" />
+          <div className={classes.logoText}> Clock Masters</div>
+        </Box>
+
+        <Menu className={classes.menu} />
+        <div>
+          {currentUser?.email &&
+            (largerMD ? (
+              <UserInfoWide
+                handleLogout={handleLogout}
+                currentUser={currentUser}
+              />
+            ) : (
+              <UserInfoNarrow
+                handleLogout={handleLogout}
+                currentUser={currentUser}
+              />
+            ))}
         </div>
-        <div className="header__menu">
-          <Menu/>
-        </div>
-        <div className="header__user-info">
-            <UserInfoAnimated key='userInfo' isShown = {!!currentUser}/>
-        </div>
-      </div>
-  );
-};
+      </Toolbar>
+    </AppBar>
+  )
+}
 
 export default withCurrentUser(Header)

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   deleteMaster,
@@ -6,17 +6,11 @@ import {
   postMaster,
   putMaster,
 } from '../../../store/actions/masters'
-import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton, useTheme } from '@material-ui/core'
-import './MastersBlock.scss'
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Add as AddIcon,
-} from '@material-ui/icons'
+import { Box } from '@material-ui/core'
+import { Add as AddIcon } from '@material-ui/icons'
 import { MasterEditDialog } from './MasterEditDialog/MasterEditDialog'
 import { SubmissionError } from 'redux-form'
-import { normalizeFormSubmitError } from '../../../shared/js/common'
+import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
 import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
 import {
@@ -25,8 +19,11 @@ import {
 } from '../../../store/actions/actionTypes/masters'
 import { MasterAddDialog } from './MasterAddDialog/MasterAddDialog'
 import { MasterDeleteDialog } from './MasterDeleteDialog/MasterDeleteDialog'
+import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
+import CompactMaster from './CompactMaster/CompactMaster'
+import ResponsiveDataGrid from '../../../components/Material/ResponsiveDataGrid/ResponsiveDataGrid'
 
-export const MastersBlock = () => {
+export const MastersBlock = ({ classes }) => {
   const dispatch = useDispatch()
   const masters = useSelector(({ masters }) => masters?.data)
 
@@ -80,7 +77,7 @@ export const MastersBlock = () => {
     async (master) => {
       const action = await dispatch(postMaster({ master, setIsAddingMaster }))
       if (action.type === MASTERS_POST_REJECTED) {
-        const formSubmitError = normalizeFormSubmitError(action.payload.errors)
+        const formSubmitError = normalizeFormSubmitError(action.payload?.errors)
         throw new SubmissionError(formSubmitError)
       }
     },
@@ -94,56 +91,70 @@ export const MastersBlock = () => {
     dispatch(fetchMasters())
   }, [dispatch])
 
-  const renderActions = useCallback(
-    ({ row }) => {
-      return (
-        <>
-          <IconButton onClick={() => startEditHandler(row.id)}>
-            <EditIcon />
-          </IconButton>
-
-          <IconButton onClick={() => startDeleteHandler(row.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </>
-      )
-    },
+  const columnsDef = useMemo(
+    () => [
+      { field: 'id', headerName: 'Id', width: 70 },
+      { field: 'name', headerName: 'Name', width: 150 },
+      { field: 'rating', headerName: 'Rating', width: 100 },
+      { field: 'cityName', headerName: 'City', width: 150 },
+      { field: 'comment', headerName: 'Comment', flex: 1 },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        disableClickEventBubbling: true,
+        disableColumnMenu: true,
+        filterable: false,
+        sortable: false,
+        width: 120,
+        renderCell: ({ row: { id } }) => (
+          <EditDeleteBtns
+            id={id}
+            startEditHandler={startEditHandler}
+            startDeleteHandler={startDeleteHandler}
+          />
+        ),
+      },
+    ],
     [startEditHandler, startDeleteHandler]
   )
 
-  const columnsDef = [
-    { field: 'id', headerName: 'Id', width: 70 },
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'rating', headerName: 'Rating', width: 70 },
-    { field: 'cityName', headerName: 'City', width: 150 },
-    { field: 'comment', headerName: 'Comment', flex: 1 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      disableClickEventBubbling: true,
-      disableColumnMenu: true,
-      filterable: false,
-      sortable: false,
-      width: 120,
-      renderCell: renderActions,
-    },
-  ]
-
-  const {
-    pagination: { pageSize, rowsPerPage },
-  } = useTheme()
+  const compactColumnsDef = useMemo(
+    () => [
+      {
+        field: 'master',
+        headerName: 'Masters',
+        flex: 1,
+        filterable: false,
+        sortable: false,
+        renderCell: CompactMaster,
+      },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        disableClickEventBubbling: true,
+        disableColumnMenu: true,
+        filterable: false,
+        sortable: false,
+        width: 120,
+        renderCell: ({ row: { id } }) => (
+          <EditDeleteBtns
+            id={id}
+            startEditHandler={startEditHandler}
+            startDeleteHandler={startDeleteHandler}
+          />
+        ),
+      },
+    ],
+    [startEditHandler, startDeleteHandler]
+  )
 
   return (
     <>
-      <div className="adminPage__itemsBlock">
-        <DataGrid
-          className="purple-borders-datagrid"
-          showToolbar
+      <div className={classes}>
+        <ResponsiveDataGrid
           rows={masters}
-          columns={columnsDef}
-          disableColumnReorder={true}
-          pageSize={pageSize}
-          rowsPerPageOptions={rowsPerPage}
+          columnsDef={columnsDef}
+          compactColumnsDef={compactColumnsDef}
         />
 
         <MasterEditDialog

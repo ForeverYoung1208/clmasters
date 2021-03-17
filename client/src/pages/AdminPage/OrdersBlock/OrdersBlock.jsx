@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   deleteOrder,
@@ -6,16 +6,10 @@ import {
   postOrder,
   putOrder,
 } from '../../../store/actions/orders'
-import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton, useTheme } from '@material-ui/core'
-import './OrdersBlock.scss'
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Add as AddIcon,
-} from '@material-ui/icons'
+import { Box } from '@material-ui/core'
+import { Add as AddIcon } from '@material-ui/icons'
 import { SubmissionError } from 'redux-form'
-import { normalizeFormSubmitError } from '../../../shared/js/common'
+import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
 import { Button } from '../../../components/Button/Button'
 import { setErrorMessage } from '../../../store/actions/main'
 import {
@@ -26,8 +20,11 @@ import {
 import { OrderEditDialog } from './OrderEditDialog/OrderEditDialog'
 import { OrderAddDialog } from './OrderAddDialog/OrderAddDialog'
 import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
+import CompactOrder from './CompactOrder/CompactOrder'
+import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
+import ResponsiveDataGrid from '../../../components/Material/ResponsiveDataGrid/ResponsiveDataGrid'
 
-export const OrdersBlock = () => {
+export const OrdersBlock = ({ classes }) => {
   const dispatch = useDispatch()
   const orders = useSelector(({ orders }) => orders?.data)
 
@@ -95,67 +92,81 @@ export const OrdersBlock = () => {
     dispatch(fetchOrders())
   }, [dispatch])
 
-  const renderActions = useCallback(
-    ({ row }) => {
-      return (
-        <>
-          <IconButton onClick={() => startEditHandler(row.id)}>
-            <EditIcon />
-          </IconButton>
-
-          <IconButton onClick={() => startDeleteHandler(row.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </>
-      )
-    },
-    [startEditHandler, startDeleteHandler]
-  )
-
   const transtormDateTime = useCallback(
     ({ row }) => new Date(row.onTime).toLocaleString('uk'),
     []
   )
 
-  const columnsDef = [
-    { field: 'id', headerName: 'Id', width: 70 },
-    {
-      field: 'onTime',
-      headerName: 'Time',
-      width: 150,
-      renderCell: transtormDateTime,
-    },
-    { field: 'clockType', headerName: 'Clock', width: 100 },
-    { field: 'masterName', headerName: 'Master', width: 120 },
-    { field: 'userName', headerName: 'User', width: 150 },
-    { field: 'comment', headerName: 'Comment', flex: 1 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      disableClickEventBubbling: true,
-      disableColumnMenu: true,
-      filterable: false,
-      sortable: false,
-      width: 120,
-      renderCell: renderActions,
-    },
-  ]
+  const columnsDef = useMemo(
+    () => [
+      { field: 'id', headerName: 'Id', width: 70 },
+      {
+        field: 'onTime',
+        headerName: 'Time',
+        width: 150,
+        renderCell: transtormDateTime,
+      },
+      { field: 'clockType', headerName: 'Clock', width: 100 },
+      { field: 'masterName', headerName: 'Master', width: 150 },
+      { field: 'userName', headerName: 'User', width: 150 },
+      { field: 'comment', headerName: 'Comment', flex: 1 },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        disableClickEventBubbling: true,
+        disableColumnMenu: true,
+        filterable: false,
+        sortable: false,
+        width: 120,
+        renderCell: ({ row: { id } }) => (
+          <EditDeleteBtns
+            id={id}
+            startEditHandler={startEditHandler}
+            startDeleteHandler={startDeleteHandler}
+          />
+        ),
+      },
+    ],
+    [startEditHandler, startDeleteHandler, transtormDateTime]
+  )
 
-  const {
-    pagination: { pageSize, rowsPerPage },
-  } = useTheme()
+  const compactColumnsDef = useMemo(
+    () => [
+      {
+        field: 'order',
+        headerName: 'Orders',
+        flex: 1,
+        filterable: false,
+        sortable: false,
+        renderCell: CompactOrder,
+      },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        disableClickEventBubbling: true,
+        disableColumnMenu: true,
+        filterable: false,
+        sortable: false,
+        width: 120,
+        renderCell: ({ row: { id } }) => (
+          <EditDeleteBtns
+            id={id}
+            startEditHandler={startEditHandler}
+            startDeleteHandler={startDeleteHandler}
+          />
+        ),
+      },
+    ],
+    [startEditHandler, startDeleteHandler]
+  )
 
   return (
     <>
-      <div className="adminPage__itemsBlock">
-        <DataGrid
-          className="purple-borders-datagrid"
-          showToolbar
+      <div className={classes}>
+        <ResponsiveDataGrid
           rows={orders}
-          columns={columnsDef}
-          disableColumnReorder={true}
-          pageSize={pageSize}
-          rowsPerPageOptions={rowsPerPage}
+          columnsDef={columnsDef}
+          compactColumnsDef={compactColumnsDef}
         />
 
         <OrderEditDialog

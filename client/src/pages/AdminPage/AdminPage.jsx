@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Tabs, Tab } from '@material-ui/core'
+import { Tabs, Tab, Box, makeStyles } from '@material-ui/core'
 import { TabPanel } from '../../components/Material/TabPanel/TabPanel'
 import { CitiesBlock } from './CitiesBlock/CitiesBlock'
 import { UsersBlock } from './UsersBlock/UsersBlock'
@@ -13,6 +13,29 @@ import { withHumanizeError } from '../../HOC/withHumanizeError'
 
 import './AdminPage.scss'
 
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },    
+    [theme.breakpoints.up('md')]: {
+      width: theme.breakpoints.values.md - theme.spacing(2),
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: theme.breakpoints.values.lg - theme.spacing(2)
+    },
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  itemsBlock: {
+    display: 'flex',
+    minHeight: '300px',
+    flexGrow: 1,
+  },
+}))
+
 const HumanizedErrorMessageButton = withHumanizeError(ErrorMessageButton)
 
 const AdminPage = () => {
@@ -22,9 +45,10 @@ const AdminPage = () => {
     setSelectedTab(newValue)
     dispatch(clearErrorMessage())
   }
+  const classes = useStyles()
 
   return (
-    <div className="adminPage">
+    <Box className={classes.root}>
       <Tabs value={selectedTab} onChange={handleTabChange} centered>
         <Tab label="Orders" />
         <Tab label="Masters" />
@@ -32,19 +56,19 @@ const AdminPage = () => {
         <Tab label="Cities" />
       </Tabs>
       <TabPanel selectedTab={selectedTab} index={0}>
-        <OrdersBlock />
+        <OrdersBlock classes={classes.itemsBlock} />
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={1}>
-        <MastersBlock />
+        <MastersBlock classes={classes.itemsBlock} />
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={2}>
-        <UsersBlock />
+        <UsersBlock classes={classes.itemsBlock} />
       </TabPanel>
       <TabPanel selectedTab={selectedTab} index={3}>
-        <CitiesBlock />
+        <CitiesBlock classes={classes.itemsBlock} />
       </TabPanel>
       <HumanizedErrorMessageButton />
-    </div>
+    </Box>
   )
 }
 

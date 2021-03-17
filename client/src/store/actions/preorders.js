@@ -20,8 +20,6 @@ export const postPreorder = createAsyncThunk(
 )
 
 export const setRegisteredOrder = (registeredOrder) => {
-  console.log('[registeredOrder]', registeredOrder)
-  
   return {
     type: ORDERS_SET_REGISTERED_ORDER,
     registeredOrder,

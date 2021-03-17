@@ -6,8 +6,7 @@ import withCurrentUser from '../../../HOC/withCurrentUser';
 
 import './Menu.scss';
 
-const Menu = (props) => {
-  const { currentUser } = props
+const Menu = ({ currentUser }) => {
   const { menuItems, updateMenuItems } = useMenu(currentUser);
   useEffect(()=>{
       updateMenuItems(currentUser)
