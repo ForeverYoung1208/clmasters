@@ -79,7 +79,12 @@ let OrderForm = ({
             component={RenderFieldTime}
             validate={[validators.required]}
           />
-        </div>        
+        </div>
+        
+        <div>
+          <Field label="Price (calculated)" name="price" component={RenderFieldInput} disabled={true} />
+        </div>
+        
         <div>
           <Field label="Comment" name="comment" component={RenderFieldInput} />
         </div>

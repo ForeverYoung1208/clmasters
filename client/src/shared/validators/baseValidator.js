@@ -27,9 +27,18 @@ export const required = (value) => {
   }
 }
 
+export const isDecimal = (value) => {
+  if (/^\d{1,6}(\.\d{1,2})?$/.test(value)) {
+    return null
+  } else {
+    return 'Must be a decimal number'
+  }
+}
+
 export const validators = {
   minLength2,
   isEmail,
   selected,
   required,
+  isDecimal,
 }

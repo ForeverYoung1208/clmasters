@@ -114,6 +114,7 @@ export const CitiesBlock = ({classes}) => {
     { field: 'id', headerName: 'Id', width: 70 },
     { field: 'name', headerName: 'City Name', width: 150 },
     { field: 'comment', headerName: 'Comment', flex: 1 },
+    { field: 'isActive', headerName: 'Active', width: 100 },
     {
       field: 'actions',
       headerName: 'Actions',

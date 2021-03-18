@@ -96,8 +96,10 @@ export const MastersBlock = ({ classes }) => {
       { field: 'id', headerName: 'Id', width: 70 },
       { field: 'name', headerName: 'Name', width: 150 },
       { field: 'rating', headerName: 'Rating', width: 100 },
+      { field: 'hourRate', headerName: 'Hour Rate', width: 150 },
       { field: 'cityName', headerName: 'City', width: 150 },
       { field: 'comment', headerName: 'Comment', flex: 1 },
+      { field: 'isActive', headerName: 'Active', width: 100 },      
       {
         field: 'actions',
         headerName: 'Actions',

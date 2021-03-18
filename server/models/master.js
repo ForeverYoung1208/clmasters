@@ -90,6 +90,8 @@ module.exports = (sequelize, DataTypes) => {
       comment: DataTypes.STRING,
       deletedAt: DataTypes.DATE,
       rating: DataTypes.INTEGER,
+      hourRate: DataTypes.DECIMAL,
+      isActive: DataTypes.BOOLEAN,
     },
     {
       sequelize,

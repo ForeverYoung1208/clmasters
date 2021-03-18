@@ -6,7 +6,7 @@ const CompactUser = ({ row }) => {
   return (
     <div>
       {shownData.map((key) => (
-        <CompactItemRow key={key} label={key} value={row[key]} />
+        <CompactItemRow key={key} label={key} value={String(row[key])} />
       ))}
     </div>
   )

@@ -110,6 +110,7 @@ export const OrdersBlock = ({ classes }) => {
       { field: 'masterName', headerName: 'Master', width: 150 },
       { field: 'userName', headerName: 'User', width: 150 },
       { field: 'comment', headerName: 'Comment', flex: 1 },
+      { field: 'price', headerName: 'Price', width: 100 },
       {
         field: 'actions',
         headerName: 'Actions',

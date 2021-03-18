@@ -8,6 +8,7 @@ const CompactOrder = ({ row }) => {
     'masterName',
     'userName',
     'onTime',
+    'price',
     'comment',
   ]
   return (

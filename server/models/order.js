@@ -68,6 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       comment: DataTypes.STRING,
       onTime: DataTypes.DATE,
       deletedAt: DataTypes.DATE,
+      price: DataTypes.DECIMAL
     },
     {
       sequelize,

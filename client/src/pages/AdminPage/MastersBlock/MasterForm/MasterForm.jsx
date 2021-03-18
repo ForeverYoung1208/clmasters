@@ -8,6 +8,7 @@ import { RenderFieldSelect } from '../../../../components/ReduxForm/RenderFieldS
 import { validators } from '../../../../shared/validators/baseValidator'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCities } from '../../../../store/actions/cities'
+import { RenderFieldCheckbox } from '../../../../components/ReduxForm/RenderFieldCheckbox/RenderFieldCheckboxMUI'
 
 export const RATINGS = [
   { id: '1', name: 'rating 1' },
@@ -66,8 +67,26 @@ let MasterForm = ({
         </div>
 
         <div>
+          <Field
+            label="Hour rate"
+            name="hourRate"
+            component={RenderFieldInput}
+            validate={validators.isDecimal}
+          />
+        </div>
+
+        <div>
           <Field label="Comment" name="comment" component={RenderFieldInput} />
         </div>
+
+        <div>
+          <Field
+            name="isActive"
+            label="is Active?"
+            component={RenderFieldCheckbox}
+          />
+        </div>
+
         <Box display="flex" justifyContent="center">
           <Button
             color="primary"

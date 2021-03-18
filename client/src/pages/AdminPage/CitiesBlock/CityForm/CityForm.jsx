@@ -5,6 +5,7 @@ import { Button } from '../../../../components/Button/Button'
 import { RenderFieldInput } from '../../../../components/ReduxForm/RenderFieldInput/RenderFieldInputMUI'
 
 import { validators } from '../../../../shared/validators/baseValidator'
+import { RenderFieldCheckbox } from '../../../../components/ReduxForm/RenderFieldCheckbox/RenderFieldCheckboxMUI'
 
 let CityForm = ({ handleSubmit, city, initialize, pristine, submitting }) => {
   useEffect(() => {
@@ -27,6 +28,15 @@ let CityForm = ({ handleSubmit, city, initialize, pristine, submitting }) => {
         <div>
           <Field label="Comment" name="comment" component={RenderFieldInput} />
         </div>
+
+        <div>
+          <Field
+            name="isActive"
+            label="is Active?"
+            component={RenderFieldCheckbox}
+          />
+        </div>
+
         <Box display="flex" justifyContent="center">
           <Button
             color="primary"
