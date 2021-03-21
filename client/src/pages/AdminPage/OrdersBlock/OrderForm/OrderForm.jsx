@@ -12,6 +12,7 @@ import { fetchClocks } from '../../../../store/actions/clocks'
 import { fetchMasters } from '../../../../store/actions/masters'
 import { fetchUsers } from '../../../../store/actions/users'
 import { addHours, startOfHour } from 'date-fns'
+import { timeStrToHours } from '../../../../shared/js/myFunctions'
 
 let OrderForm = ({
   handleSubmit,
@@ -19,47 +20,78 @@ let OrderForm = ({
   initialize,
   pristine,
   submitting,
+  change,
 }) => {
-  
-  const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])  
-  const dispatch = useDispatch();
-  
+  const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
+  const dispatch = useDispatch()
+
   useEffect(() => {
     initialize({
       ...order,
-      onTime: order?.onTime || nowHour
+      onTime: order?.onTime || nowHour,
     })
     dispatch(fetchClocks())
     dispatch(fetchMasters())
     dispatch(fetchUsers())
     // eslint-disable-next-line
   }, [dispatch, initialize])
-  
+
   const users = useSelector(({ users }) => users?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
   const masters = useSelector(({ masters }) => masters?.data)
+  const [
+    selectedMasterId,
+    selectedClockId,
+  ] = useSelector(({ form: { order } }) => [
+    order?.values?.masterId,
+    order?.values?.clockId,
+  ])
+
+  const clocksOptions = useMemo(() => {
+    return clocks.map((clock) => ({
+      ...clock,
+      type: `${clock.type} (time: ${clock.repairTime})`,
+    }))
+  }, [clocks])
+
+  const mastersOptions = useMemo(() => {
+    return masters
+      .filter((master) => master.isActive === true)
+      .map((master) => ({
+        ...master,
+        name: `${master.name} (hour rate: ${master.hourRate})`,
+      }))
+  }, [masters])
+
+  useEffect(() => {
+    const selectedMaster = masters.find((m) => +m.id === selectedMasterId)
+    const selectedClock = clocks.find((c) => +c.id === selectedClockId)
+    let repairHours = timeStrToHours(selectedClock?.repairTime)
+    if (selectedMaster?.hourRate && repairHours) {
+      change('price', +selectedMaster.hourRate * repairHours)
+    }
+  }, [selectedMasterId, selectedClockId, masters, clocks, change])
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
       <form onSubmit={handleSubmit}>
-
         <div>
           <Field
             name="clockId"
             label="Clock"
             component={RenderFieldSelect}
             validate={[validators.required]}
-            options={clocks}
+            options={clocksOptions}
           />
         </div>
-        
+
         <div>
           <Field
             name="masterId"
             label="Master"
             component={RenderFieldSelect}
             validate={[validators.required]}
-            options={masters}
+            options={mastersOptions}
           />
         </div>
 
@@ -80,11 +112,16 @@ let OrderForm = ({
             validate={[validators.required]}
           />
         </div>
-        
+
         <div>
-          <Field label="Price (calculated)" name="price" component={RenderFieldInput} disabled={true} />
+          <Field
+            label="Price (calculated)"
+            name="price"
+            component={RenderFieldInput}
+            disabled={true}
+          />
         </div>
-        
+
         <div>
           <Field label="Comment" name="comment" component={RenderFieldInput} />
         </div>

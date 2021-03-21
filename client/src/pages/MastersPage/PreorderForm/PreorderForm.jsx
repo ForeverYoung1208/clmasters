@@ -25,30 +25,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-let PreorderForm = ({
-  handleSubmit,
-  initialize,
-  pristine,
-  submitting,
-}) => {
+let PreorderForm = ({ handleSubmit, initialize, pristine, submitting }) => {
   const dispatch = useDispatch()
   const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
   const preorder = useSelector(({ preorders }) => preorders?.preorder)
   const cities = useSelector(({ cities }) => cities?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
   const classes = useStyles()
-  
 
   useEffect(() => {
     initialize({
       ...preorder,
-      onTime:preorder?.onTime || nowHour
+      onTime: preorder?.onTime || nowHour,
     })
     dispatch(fetchCities())
     dispatch(fetchClocks())
     // eslint-disable-next-line
   }, [dispatch])
 
+  const citiesOptions = useMemo(() => {
+    return cities.filter((city) => city.isActive === true)
+  }, [cities])
+
+  const clocksOptions = useMemo(() => {
+    return clocks.map((clock) => ({
+      ...clock,
+      type: `${clock.type} (time: ${clock.repairTime})`,
+    }))
+  }, [clocks])
 
   return (
     <Box className={classes.root}>
@@ -62,7 +66,7 @@ let PreorderForm = ({
             label="Clock Type"
             component={RenderFieldSelect}
             validate={[validators.required]}
-            options={clocks}
+            options={clocksOptions}
           />
         </div>
 
@@ -72,7 +76,7 @@ let PreorderForm = ({
             label="City"
             component={RenderFieldSelect}
             validate={[validators.required]}
-            options={cities}
+            options={citiesOptions}
           />
         </div>
 

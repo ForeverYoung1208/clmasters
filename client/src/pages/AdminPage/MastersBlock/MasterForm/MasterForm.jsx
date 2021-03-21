@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Box } from '@material-ui/core'
 import { reduxForm, Field } from 'redux-form'
 import { Button } from '../../../../components/Button/Button'
@@ -33,6 +33,9 @@ let MasterForm = ({
   }, [dispatch, initialize])
 
   const cities = useSelector(({ cities }) => cities?.data)
+  const citiesOptions = useMemo(() => {
+    return cities.filter((city) => city.isActive === true)
+  }, [cities])
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center">
@@ -52,7 +55,7 @@ let MasterForm = ({
             label="City"
             component={RenderFieldSelect}
             validate={[validators.required]}
-            options={cities}
+            options={citiesOptions}
           />
         </div>
 
