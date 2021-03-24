@@ -33,7 +33,7 @@ let OrderForm = ({
     dispatch(fetchMasters())
     dispatch(fetchUsers())
     // eslint-disable-next-line
-  }, [dispatch, initialize])
+  }, [])
   
   const users = useSelector(({ users }) => users?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)

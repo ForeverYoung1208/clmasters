@@ -7,7 +7,7 @@ import { Button } from '../../../components/Button/Button'
 import { Form } from '../../../components/Form/Form'
 import { validators } from '../../../shared/validators/baseValidator'
 import { RenderFieldRadioGroup } from '../../../components/ReduxForm/RenderFieldRadioGroup/RenderFieldRadioGroupMUI'
-import { Card, CardActions, CardContent, makeStyles } from '@material-ui/core'
+import { Box, Card, CardActions, CardContent, makeStyles, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,9 +50,14 @@ let OrderForm = ({ handleSubmit }) => {
           </CardActions>
         </Form>
       ) : (
-        <div>
-          No free masters in the given city at specified time was found.
-        </div>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Typography gutterBottom>
+            No free masters in the given city at specified time was found.
+          </Typography>
+          <NavLink to="/masters/preorder" className="order-form__change-link">
+            <Button variant="outlined">Change preorder data</Button>
+          </NavLink>
+        </Box>
       )}
     </Card>
   )
