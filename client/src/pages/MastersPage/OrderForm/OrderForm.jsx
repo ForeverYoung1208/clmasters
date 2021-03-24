@@ -30,7 +30,7 @@ let OrderForm = ({ handleSubmit }) => {
   const { foundMasters } = useSelector(({ preorders }) => preorders)
   const classes = useStyles()
   const mastersOptions = foundMasters
-    ?.filter((master) => master.isActive === true)
+    ?.filter((master) => master.isActive)
     .map(({ id, name, rating, hourRate }) => ({
       id,
       name: `${name}, rating:${rating}, rate:${hourRate} `,

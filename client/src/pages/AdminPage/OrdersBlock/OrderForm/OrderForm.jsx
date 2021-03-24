@@ -20,7 +20,7 @@ let OrderForm = ({
   initialize,
   pristine,
   submitting,
-  change,
+  change: changeFormData,
 }) => {
   const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
   const dispatch = useDispatch()
@@ -56,7 +56,7 @@ let OrderForm = ({
 
   const mastersOptions = useMemo(() => {
     return masters
-      .filter((master) => master.isActive === true)
+      .filter((master) => master.isActive)
       .map((master) => ({
         ...master,
         name: `${master.name} (hour rate: ${master.hourRate})`,
@@ -68,9 +68,9 @@ let OrderForm = ({
     const selectedClock = clocks.find((c) => +c.id === selectedClockId)
     let repairHours = timeStrToHours(selectedClock?.repairTime)
     if (selectedMaster?.hourRate && repairHours) {
-      change('price', +selectedMaster.hourRate * repairHours)
+      changeFormData('price', +selectedMaster.hourRate * repairHours)
     }
-  }, [selectedMasterId, selectedClockId, masters, clocks, change])
+  }, [selectedMasterId, selectedClockId, masters, clocks, changeFormData])
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center">

@@ -34,7 +34,7 @@ let MasterForm = ({
 
   const cities = useSelector(({ cities }) => cities?.data)
   const citiesOptions = useMemo(() => {
-    return cities.filter((city) => city.isActive === true)
+    return cities.filter((city) => city.isActive)
   }, [cities])
 
   return (

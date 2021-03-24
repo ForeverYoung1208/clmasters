@@ -44,7 +44,7 @@ let PreorderForm = ({ handleSubmit, initialize, pristine, submitting }) => {
   }, [dispatch])
 
   const citiesOptions = useMemo(() => {
-    return cities.filter((city) => city.isActive === true)
+    return cities.filter((city) => city.isActive)
   }, [cities])
 
   const clocksOptions = useMemo(() => {
