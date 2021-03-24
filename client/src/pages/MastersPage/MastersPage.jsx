@@ -36,7 +36,7 @@ const MastersPage = () => {
   const classes = useStyles()
 
   useEffect(() => {
-    if (!!foundMasters && foundMasters[0]) {
+    if (!!foundMasters) {
       history.push('/masters/order')
     } else {
       history.push('/masters/preorder')

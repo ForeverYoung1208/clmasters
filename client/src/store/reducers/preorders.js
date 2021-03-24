@@ -7,8 +7,8 @@ import {
 } from '../actions/actionTypes/preorders'
 
 const initialState = {
-  preorder: {},
-  foundMasters: [],
+  preorder: null,
+  foundMasters: null,
   error: null,
 }
 
