@@ -12,7 +12,8 @@ import { fetchClocks } from '../../../../store/actions/clocks'
 import { fetchMasters } from '../../../../store/actions/masters'
 import { fetchUsers } from '../../../../store/actions/users'
 import { addHours, startOfHour } from 'date-fns'
-import { timeStrToHours } from '../../../../shared/js/myFunctions'
+
+const ONE_HOUR_MSEC = new Date('1970-01-01T01:00:00Z')
 
 let OrderForm = ({
   handleSubmit,
@@ -35,7 +36,7 @@ let OrderForm = ({
     dispatch(fetchUsers())
     // eslint-disable-next-line
   }, [])
-  
+
   const users = useSelector(({ users }) => users?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
   const masters = useSelector(({ masters }) => masters?.data)
@@ -66,9 +67,15 @@ let OrderForm = ({
   useEffect(() => {
     const selectedMaster = masters.find((m) => +m.id === selectedMasterId)
     const selectedClock = clocks.find((c) => +c.id === selectedClockId)
-    let repairHours = timeStrToHours(selectedClock?.repairTime)
-    if (selectedMaster?.hourRate && repairHours) {
-      changeFormData('price', +selectedMaster.hourRate * repairHours)
+    if (selectedMaster?.hourRate && selectedClock?.repairTime) {
+      const price =
+        Math.round(
+          (selectedMaster.hourRate / ONE_HOUR_MSEC) *
+            new Date(`1970-01-01T${selectedClock.repairTime}Z`) *
+            100
+        ) / 100
+
+      changeFormData('price', price)
     }
   }, [selectedMasterId, selectedClockId, masters, clocks, changeFormData])
 

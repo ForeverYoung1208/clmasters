@@ -9,6 +9,8 @@ const sendEmail = require('../shared/mailjet')
 const { utcToZonedTime, format } = require('date-fns-tz')
 const timeZone = 'Europe/Kiev'
 
+const ONE_HOUR_MSEC = new Date('1970-01-01T01:00:00Z')
+
 class OrdersController extends CRUDController {
   constructor(model) {
     super(model)
@@ -59,9 +61,21 @@ class OrdersController extends CRUDController {
     if (!errors.isEmpty())
       return res.status(422).json({ errors: errors.array() })
 
-    const data = req.body
-    let user
+    const { price: wipedPrice, ...data } = req.body
 
+    const { clockId, masterId } = data
+
+    const masterFromRequest = await Master.findByPk(masterId)
+    const clockFromRequest = await Clock.findByPk(clockId)
+
+    data.price =
+      Math.round(
+        (masterFromRequest.hourRate / ONE_HOUR_MSEC) *
+          new Date(`1970-01-01T${clockFromRequest.repairTime}Z`) *
+          100
+      ) / 100
+
+    let user
     if (data.userId) {
       // user was logged in (administrator) - so we have userId
       user = await User.findByPk(data.userId)
@@ -80,10 +94,12 @@ class OrdersController extends CRUDController {
       var _newOrder = await Order.create(data)
     } catch (error) {
       return res.status(400).json({
-        errors:[{
-          'param': 'order',
-          'msg': error.message,
-        }]
+        errors: [
+          {
+            param: 'order',
+            msg: error.message,
+          },
+        ],
       })
     }
 
@@ -158,7 +174,19 @@ class OrdersController extends CRUDController {
     if (!errors.isEmpty())
       return res.status(422).json({ errors: errors.array() })
 
-    let { id, ...data } = req.body
+    let { id, price: wipedPrice, ...data } = req.body
+
+    const { masterId, clockId } = data
+    const masterFromRequest = await Master.findByPk(masterId)
+    const clockFromRequest = await Clock.findByPk(clockId)
+
+    data.price =
+      Math.round(
+        (masterFromRequest.hourRate / ONE_HOUR_MSEC) *
+          new Date(`1970-01-01T${clockFromRequest.repairTime}Z`) *
+          100
+      ) / 100
+
     id = req.params.id
 
     let modelToUpdate = await this.model.findByPk(id)
@@ -231,10 +259,10 @@ class OrdersController extends CRUDController {
     const data = orders.map((o) => {
       const { user, master, clock, ...order } = noTimestamps(o.dataValues) // without user, master, clock information
       //add certain values
-      order.userName = o.user.name 
+      order.userName = o.user.name
       order.userEmail = o.user.email
-      order.masterName = o.master.name 
-      order.clockType = o.clock.type 
+      order.masterName = o.master.name
+      order.clockType = o.clock.type
       order.masterCity = o.master.city.name
       return order
     })
