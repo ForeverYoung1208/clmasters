@@ -51,6 +51,31 @@ class MastersController extends CRUDController {
   }
 
   // overrides parent CRUDcontroller method
+  async post(req, res) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() })
+
+    const data = req.body
+    try {
+      var newModel = await this.model.create(data)
+    } catch ({ errors }) {
+      return res.status(400).json({ errors })
+    }
+
+    if (!newModel)
+      return res.status(500).json({
+        message: 'masters controller error: not created',
+      })
+
+    newModel.dataValues.cityName = await City.findByPk(
+      newModel.dataValues.cityId
+    ).then(({ name }) => name)
+
+    return res.status(201).json(noTimestamps(newModel.dataValues))
+  }
+
+  // overrides parent CRUDcontroller method
   async put(req, res) {
     const errors = validationResult(req)
     if (!errors.isEmpty())
