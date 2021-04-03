@@ -19,32 +19,63 @@ class OrdersController extends CRUDController {
 
   // overrides parent CRUDcontroller method to add names of associated entities
   async getAll(req, res) {
-    const orders = await Order.findAll({
-      include: [
-        {
-          model: User,
-          as: 'user',
-        },
-        {
-          model: Master,
-          as: 'master',
-          include: [
-            {
-              model: City,
-              as: 'city',
-            },
-          ],
-        },
-        {
-          model: Clock,
-          as: 'clock',
-        },
-      ],
-      order: [
-        // that is sortring order, not our order entity
-        ['id', 'ASC'],
-      ],
-    })
+    const { page, pageSize } = req.query
+
+    if (page && !pageSize) {
+      res.status(400).json({
+        errors: [
+          {
+            param: 'orders',
+            msg: 'pageSizw must be specified!',
+          },
+        ],
+      })
+    }
+
+    if (pageSize && !page) {
+      return res.status(400).json({
+        errors: [
+          {
+            param: 'orders',
+            msg: 'page must be specified!',
+          },
+        ],
+      })
+    }
+
+    const { totalCount, currentPage, rows: orders } = await Order.findAllPaginated(
+      {
+        include: [
+          {
+            model: User,
+            as: 'user',
+          },
+          {
+            model: Master,
+            as: 'master',
+            include: [
+              {
+                model: City,
+                as: 'city',
+              },
+            ],
+          },
+          {
+            model: Clock,
+            as: 'clock',
+          },
+        ],
+        order: [
+          // that is sortring order, not our order entity
+          ['id', 'ASC'],
+        ],
+      },
+      {
+        page: 1,
+        pageSize: 10,
+      }
+    )
+
     const data = orders.map((o) => {
       const { user, master, clock, ...order } = noTimestamps(o.dataValues) // without user, master, clock information
       order.userName = o.user.name //only userName
@@ -52,7 +83,7 @@ class OrdersController extends CRUDController {
       order.clockType = o.clock.type //only clockType
       return order
     })
-    return res.status(200).json(data)
+    return res.status(200).json({totalCount, currentPage, data })
   }
 
   // overrides parent CRUDcontroller method
@@ -103,6 +134,9 @@ class OrdersController extends CRUDController {
       })
     }
 
+    
+    // TODO: not to forget paginate responce!!!!
+    
     const newOrders = await Order.findAll({
       where: { id: _newOrder.dataValues.id },
       include: [

@@ -28,7 +28,9 @@ const orders = (state = initialState, { type, payload, registeredOrder }) => {
     case ORDERS_FETCH_FULFILLED:
       return {
         ...state,
-        data: [...payload],
+        data: [...payload.data],
+        totalCount: payload.totalCount,
+        currentPage: payload.currentPage,
         error: null,
       }
 
