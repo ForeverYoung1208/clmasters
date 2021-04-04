@@ -64,8 +64,10 @@ const orders = (state = initialState, { type, payload, registeredOrder }) => {
     case ORDERS_SEARCH_FULFILLED:
       return {
         ...state,
-        foundOrders: payload,
-        error: null,
+        foundOrders: [...payload.data],
+        totalCount: payload.totalCount,
+        currentPage: payload.currentPage,
+        error: null,        
       }
     
     case CLEAR_FOUND_ORDERS:
