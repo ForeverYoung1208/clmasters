@@ -5,11 +5,6 @@ const { accessTokenToEmail } = require('../middleware/accessTokenToEmail')
 
 const router = Router()
 
-// router.get(
-//   '/query',
-//   async (req, res) => ordersController.getAllByParam(req, res)
-// )
-
 router.get(
   '/',
   async (req, res) => ordersController.getAll(req, res)

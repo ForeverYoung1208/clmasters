@@ -1,5 +1,4 @@
 'use strict'
-// const { Model, Op } = require('sequelize')
 const {Op } = require('sequelize')
 const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
 const { startOfDay, endOfDay } = require('date-fns')
