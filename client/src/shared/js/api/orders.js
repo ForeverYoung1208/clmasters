@@ -1,7 +1,7 @@
 import { myHttp } from "../myHttp"
 
 export const apiGetOrders = async (query) => {
-  const queryStr = query ? `/query?${query}` : ''
+  const queryStr = query ? `?${query}` : ''
   const orders = await myHttp('/api/orders'+queryStr, 'GET').then(m => m.json())
   return orders
 }

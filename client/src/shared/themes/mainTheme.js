@@ -24,8 +24,8 @@ const theme = createMuiTheme({
       'Comfortaa, cursive, Arial, Helvetica, sans-serif, Raleway, Arial',
   },
   pagination: {
-    pageSize: 20,
-    rowsPerPage: [10, 20, 50],
+    pageSize: 10,
+    rowsPerPageOptions: [5, 10, 20, 100],
   },
   sizes: {
     adminTableRowsHeight: {

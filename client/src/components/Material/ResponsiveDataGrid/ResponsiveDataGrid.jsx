@@ -2,9 +2,19 @@ import { useMediaQuery, useTheme } from '@material-ui/core'
 import { DataGrid } from '@material-ui/data-grid'
 import React from 'react'
 
-const ResponsiveDataGrid = ({ rows, columnsDef, compactColumnsDef }) => {
+import './ResponsiveDataGrid.scss'
+
+const ResponsiveDataGrid = ({
+  rows,
+  columnsDef,
+  compactColumnsDef,
+  paginationMode,
+  onPageChange,
+  onPageSizeChange,
+  rowCount
+}) => {
   const {
-    pagination: { pageSize, rowsPerPage },
+    pagination: { pageSize, rowsPerPageOptions },
     breakpoints,
     sizes: { adminTableRowsHeight },
   } = useTheme()
@@ -13,27 +23,37 @@ const ResponsiveDataGrid = ({ rows, columnsDef, compactColumnsDef }) => {
     <>
       {matchesUpMd ? (
         <DataGrid
-          showToolbar
-          disableColumnReorder
           disableDensitySelector
           rowHeight={adminTableRowsHeight.normal}
-          className="purple-borders-datagrid"
-          rows={rows}
           columns={columnsDef}
+          disableColumnMenu={false}
+
+          className="purple-borders-datagrid"
+          disableColumnReorder={true}
+          rows={rows}
           pageSize={pageSize}
-          rowsPerPageOptions={rowsPerPage}
+          rowsPerPageOptions={rowsPerPageOptions}
+          paginationMode={paginationMode}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+          rowCount={rowCount}
         />
       ) : (
         <DataGrid
           disableColumnMenu
-          disableColumnReorder
-          showToolbar={false}
           rowHeight={adminTableRowsHeight.large}
-          className="purple-borders-datagrid"
-          rows={rows}
           columns={compactColumnsDef}
+          disableColumnMenu={true}  
+
+          className="purple-borders-datagrid"
+          disableColumnReorder={true}
+          rows={rows}
           pageSize={pageSize}
-          rowsPerPageOptions={rowsPerPage}
+          rowsPerPageOptions={rowsPerPageOptions}
+          paginationMode={paginationMode}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+          rowCount={rowCount}
         />
       )}
     </>

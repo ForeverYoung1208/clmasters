@@ -7,12 +7,8 @@ import {
   putCity,
 } from '../../../store/actions/cities'
 import { DataGrid } from '@material-ui/data-grid'
-import { Box, IconButton, useTheme } from '@material-ui/core'
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Add as AddIcon,
-} from '@material-ui/icons'
+import { Box, useTheme } from '@material-ui/core'
+import { Add as AddIcon } from '@material-ui/icons'
 import { CityEditDialog } from './CityEditDialog/CityEditDialog'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
@@ -24,8 +20,9 @@ import {
   CITIES_POST_REJECTED,
   CITIES_PUT_REJECTED,
 } from '../../../store/actions/actionTypes/cities'
+import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
 
-export const CitiesBlock = ({classes}) => {
+export const CitiesBlock = ({ classes }) => {
   const dispatch = useDispatch()
   const cities = useSelector(({ cities }) => cities?.data)
 
@@ -93,23 +90,6 @@ export const CitiesBlock = ({classes}) => {
     dispatch(fetchCities())
   }, [dispatch])
 
-  const renderActions = useCallback(
-    ({ row }) => {
-      return (
-        <>
-          <IconButton onClick={() => startEditHandler(row.id)}>
-            <EditIcon />
-          </IconButton>
-
-          <IconButton onClick={() => startDeleteHandler(row.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </>
-      )
-    },
-    [startEditHandler, startDeleteHandler]
-  )
-
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },
     { field: 'name', headerName: 'City Name', width: 150 },
@@ -123,12 +103,18 @@ export const CitiesBlock = ({classes}) => {
       filterable: false,
       sortable: false,
       width: 120,
-      renderCell: renderActions,
+      renderCell: ({ row: { id } }) => (
+        <EditDeleteBtns
+          id={id}
+          startEditHandler={startEditHandler}
+          startDeleteHandler={startDeleteHandler}
+        />
+      ),
     },
   ]
 
   const {
-    pagination: { pageSize, rowsPerPage },
+    pagination: { pageSize, rowsPerPageOptions },
   } = useTheme()
 
   return (
@@ -141,7 +127,7 @@ export const CitiesBlock = ({classes}) => {
           columns={columnsDef}
           disableColumnReorder={true}
           pageSize={pageSize}
-          rowsPerPageOptions={rowsPerPage}
+          rowsPerPageOptions={rowsPerPageOptions}
         />
 
         <CityEditDialog

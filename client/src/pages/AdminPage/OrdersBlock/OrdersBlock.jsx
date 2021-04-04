@@ -6,7 +6,7 @@ import {
   postOrder,
   putOrder,
 } from '../../../store/actions/orders'
-import { Box } from '@material-ui/core'
+import { Box, useTheme } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
@@ -26,7 +26,10 @@ import ResponsiveDataGrid from '../../../components/Material/ResponsiveDataGrid/
 
 export const OrdersBlock = ({ classes }) => {
   const dispatch = useDispatch()
-  const orders = useSelector(({ orders }) => orders?.data)
+  const { data: orders, totalCount } = useSelector(({ orders }) => orders)
+  const {
+    pagination: { pageSize: pageSizeDefault },
+  } = useTheme()
 
   const [editingOrderId, setEditingOrderId] = useState(null)
   const [deletingOrderId, setDeletingOrderId] = useState(null)
@@ -88,13 +91,20 @@ export const OrdersBlock = ({ classes }) => {
     setIsAddingOrder(false)
   }, [setIsAddingOrder])
 
-  useEffect(() => {
-    dispatch(fetchOrders())
-  }, [dispatch])
-
   const transtormDateTime = useCallback(
     ({ row }) => new Date(row.onTime).toLocaleString('uk'),
     []
+  )
+
+  useEffect(() => {
+    dispatch(fetchOrders({ page: 0, pageSize: pageSizeDefault }))
+  }, [dispatch, pageSizeDefault])
+
+  const handlePageChange = useCallback(
+    ({ page, pageSize }) => {
+      dispatch(fetchOrders({ page, pageSize }))
+    },
+    [dispatch]
   )
 
   const columnsDef = useMemo(
@@ -168,6 +178,10 @@ export const OrdersBlock = ({ classes }) => {
           rows={orders}
           columnsDef={columnsDef}
           compactColumnsDef={compactColumnsDef}
+          paginationMode="server"
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageChange}
+          rowCount={totalCount}
         />
 
         <OrderEditDialog

@@ -26,7 +26,7 @@ class OrdersController extends CRUDController {
         errors: [
           {
             param: 'orders',
-            msg: 'pageSizw must be specified!',
+            msg: 'pageSize must be specified!',
           },
         ],
       })
@@ -43,7 +43,11 @@ class OrdersController extends CRUDController {
       })
     }
 
-    const { totalCount, currentPage, rows: orders } = await Order.findAllPaginated(
+    const {
+      count: totalCount,
+      page: currentPage,
+      rows: orders,
+    } = await Order.findAllPaginated(
       {
         include: [
           {
@@ -71,8 +75,8 @@ class OrdersController extends CRUDController {
         ],
       },
       {
-        page: 1,
-        pageSize: 10,
+        page,
+        pageSize,
       }
     )
 
@@ -83,7 +87,7 @@ class OrdersController extends CRUDController {
       order.clockType = o.clock.type //only clockType
       return order
     })
-    return res.status(200).json({totalCount, currentPage, data })
+    return res.status(200).json({ totalCount, currentPage, data })
   }
 
   // overrides parent CRUDcontroller method
@@ -91,7 +95,7 @@ class OrdersController extends CRUDController {
     const errors = validationResult(req)
     if (!errors.isEmpty())
       return res.status(422).json({ errors: errors.array() })
-
+    
     const { price: wipedPrice, ...data } = req.body
 
     const { clockId, masterId } = data
@@ -134,36 +138,35 @@ class OrdersController extends CRUDController {
       })
     }
 
-    
-    // TODO: not to forget paginate responce!!!!
-    
-    const newOrders = await Order.findAll({
-      where: { id: _newOrder.dataValues.id },
-      include: [
-        {
-          model: User,
-          as: 'user',
-        },
-        {
-          model: Master,
-          as: 'master',
-          include: [
-            {
-              model: City,
-              as: 'city',
-            },
-          ],
-        },
-        {
-          model: Clock,
-          as: 'clock',
-        },
-      ],
-      order: [
-        // that is sortring order, not our order entity
-        ['id', 'ASC'],
-      ],
-    })
+    const newOrders = await Order.findAll(
+      {
+        where: { id: _newOrder.dataValues.id },
+        include: [
+          {
+            model: User,
+            as: 'user',
+          },
+          {
+            model: Master,
+            as: 'master',
+            include: [
+              {
+                model: City,
+                as: 'city',
+              },
+            ],
+          },
+          {
+            model: Clock,
+            as: 'clock',
+          },
+        ],
+        order: [
+          // that is sortring order, not our order entity
+          ['id', 'ASC'],
+        ],
+      }
+    )
 
     const { master, clock } = newOrders[0]
 
@@ -254,54 +257,58 @@ class OrdersController extends CRUDController {
     return res.status(200).json(noTimestamps(result.dataValues))
   }
 
-  async getAllByParam(req, res) {
-    let masterQuery = req.query
-    let emailQuery = {}
-    if (req.query.email) {
-      masterQuery = {}
-      emailQuery = req.query
-    }
+  // async getAllByParam(req, res) {
+  //   let masterQuery = req.query
+  //   let emailQuery = {}
+  //   if (req.query.email) {
+  //     masterQuery = {}
+  //     emailQuery = req.query
+  //   }
 
-    const orders = await Order.findAll({
-      where: [masterQuery, { '$user.email$': emailQuery.email }],
-      include: [
-        {
-          model: User,
-          as: 'user',
-        },
-        {
-          model: Master,
-          as: 'master',
-          include: [
-            {
-              model: City,
-              as: 'city',
-            },
-          ],
-        },
-        {
-          model: Clock,
-          as: 'clock',
-        },
-      ],
-      order: [
-        // that is sortring order, not our order entity
-        ['id', 'ASC'],
-      ],
-    })
+  //   const {
+  //     count: totalCount,
+  //     page: currentPage,
+  //     rows: orders,
+  //   } = await Order.findAndCountAll({
+  //     where: [masterQuery, { '$user.email$': emailQuery.email }],
+  //     include: [
+  //       {
+  //         model: User,
+  //         as: 'user',
+  //       },
+  //       {
+  //         model: Master,
+  //         as: 'master',
+  //         include: [
+  //           {
+  //             model: City,
+  //             as: 'city',
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         model: Clock,
+  //         as: 'clock',
+  //       },
+  //     ],
+  //     order: [
+  //       // that is sortring order, not our order entity
+  //       ['id', 'ASC'],
+  //     ],
+  //   })
 
-    const data = orders.map((o) => {
-      const { user, master, clock, ...order } = noTimestamps(o.dataValues) // without user, master, clock information
-      //add certain values
-      order.userName = o.user.name
-      order.userEmail = o.user.email
-      order.masterName = o.master.name
-      order.clockType = o.clock.type
-      order.masterCity = o.master.city.name
-      return order
-    })
-    return res.status(200).json(data)
-  }
+  //   const data = orders.map((o) => {
+  //     const { user, master, clock, ...order } = noTimestamps(o.dataValues) // without user, master, clock information
+  //     //add certain values
+  //     order.userName = o.user.name
+  //     order.userEmail = o.user.email
+  //     order.masterName = o.master.name
+  //     order.clockType = o.clock.type
+  //     order.masterCity = o.master.city.name
+  //     return order
+  //   })
+  //   return res.status(200).json({ totalCount, currentPage, data })
+  // }
 
   putValidators() {
     return [

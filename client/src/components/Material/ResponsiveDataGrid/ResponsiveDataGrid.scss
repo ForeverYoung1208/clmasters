@@ -1,0 +1,10 @@
+p.MuiTablePagination-caption{
+  // material-ui datagrid pagination uses "id"
+  // selector to hide this element for display < 960px (md)
+  // WHY?? I don't know. But to show it, we must use !important statement (((
+  display: block !important;
+}
+
+div.MuiTablePagination-input {
+  display: block;
+}

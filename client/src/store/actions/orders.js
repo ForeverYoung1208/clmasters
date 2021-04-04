@@ -9,8 +9,12 @@ import { CLEAR_FOUND_ORDERS } from './actionTypes/orders'
 import { setErrorMessage } from './main'
 
 
-export const fetchOrders = createAsyncThunk('orders/fetch', async () => {
-  const orders = await apiGetOrders()
+export const fetchOrders = createAsyncThunk('orders/fetch', async (queryObject) => {
+  let queryStr=''
+  for (const key in queryObject) {
+    queryStr+=key+'='+queryObject[key]+'&'
+  }
+  const orders = await apiGetOrders(queryStr)
   return orders
 })
 
