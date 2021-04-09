@@ -30,7 +30,7 @@ let MasterForm = ({
     initialize(master)
     dispatch(fetchCities())
     // eslint-disable-next-line
-  }, [dispatch, initialize])
+  }, [])
 
   const cities = useSelector(({ cities }) => cities?.data)
   const citiesOptions = useMemo(() => {
