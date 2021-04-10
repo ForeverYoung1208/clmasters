@@ -6,7 +6,7 @@ import {
   postMaster,
   putMaster,
 } from '../../../store/actions/masters'
-import { Box } from '@material-ui/core'
+import { Box, useTheme } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { MasterEditDialog } from './MasterEditDialog/MasterEditDialog'
 import { SubmissionError } from 'redux-form'
@@ -25,7 +25,11 @@ import ResponsiveDataGrid from '../../../components/Material/ResponsiveDataGrid/
 
 export const MastersBlock = ({ classes }) => {
   const dispatch = useDispatch()
-  const masters = useSelector(({ masters }) => masters?.data)
+
+  const { data: masters, totalCount } = useSelector(({ masters }) => masters)
+  const {
+    pagination: { pageSize: pageSizeDefault },
+  } = useTheme()
 
   const [editingMasterId, setEditingMasterId] = useState(null)
   const [deletingMasterId, setDeletingMasterId] = useState(null)
@@ -88,8 +92,15 @@ export const MastersBlock = ({ classes }) => {
   }, [setIsAddingMaster])
 
   useEffect(() => {
-    dispatch(fetchMasters())
-  }, [dispatch])
+    dispatch(fetchMasters({ page: 0, pageSize: pageSizeDefault }))
+  }, [dispatch, pageSizeDefault])
+
+  const handlePageChange = useCallback(
+    ({ page, pageSize }) => {
+      dispatch(fetchMasters({ page, pageSize }))
+    },
+    [dispatch]
+  )
 
   const columnsDef = useMemo(
     () => [
@@ -99,7 +110,7 @@ export const MastersBlock = ({ classes }) => {
       { field: 'hourRate', headerName: 'Hour Rate', width: 150 },
       { field: 'cityName', headerName: 'City', width: 150 },
       { field: 'comment', headerName: 'Comment', flex: 1 },
-      { field: 'isActive', headerName: 'Active', width: 100 },      
+      { field: 'isActive', headerName: 'Active', width: 100 },
       {
         field: 'actions',
         headerName: 'Actions',
@@ -157,6 +168,10 @@ export const MastersBlock = ({ classes }) => {
           rows={masters}
           columnsDef={columnsDef}
           compactColumnsDef={compactColumnsDef}
+          paginationMode="server"
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageChange}
+          rowCount={totalCount}          
         />
 
         <MasterEditDialog

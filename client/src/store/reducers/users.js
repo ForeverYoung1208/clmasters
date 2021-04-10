@@ -23,7 +23,9 @@ const users = (state = initialState, { type, payload }) => {
     case USERS_FETCH_FULFILLED:
       return {
         ...state,
-        data: [...payload],
+        data: [...payload.data],
+        totalCount: payload.totalCount,
+        currentPage: payload.currentPage,
         error: null,
       }
 

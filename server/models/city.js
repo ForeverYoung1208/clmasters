@@ -1,5 +1,5 @@
 'use strict'
-const { Model } = require('sequelize')
+const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
 module.exports = (sequelize, DataTypes) => {
   class City extends Model {
     /**

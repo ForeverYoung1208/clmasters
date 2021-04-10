@@ -1,7 +1,8 @@
 import { myHttp } from "../myHttp"
 
-export const apiGetMasters = async () => {
-  const masters = await myHttp('/api/masters', 'GET').then(m => m.json())
+export const apiGetMasters = async (query) => {
+  const queryStr = query ? `?${query}` : ''  
+  const masters = await myHttp('/api/masters'+queryStr, 'GET').then(c => c.json())
   return masters
 }
 

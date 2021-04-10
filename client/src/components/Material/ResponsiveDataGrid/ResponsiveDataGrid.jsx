@@ -11,7 +11,7 @@ const ResponsiveDataGrid = ({
   paginationMode,
   onPageChange,
   onPageSizeChange,
-  rowCount
+  rowCount,
 }) => {
   const {
     pagination: { pageSize, rowsPerPageOptions },
@@ -27,7 +27,6 @@ const ResponsiveDataGrid = ({
           rowHeight={adminTableRowsHeight.normal}
           columns={columnsDef}
           disableColumnMenu={false}
-
           className="purple-borders-datagrid"
           disableColumnReorder={true}
           rows={rows}
@@ -40,11 +39,9 @@ const ResponsiveDataGrid = ({
         />
       ) : (
         <DataGrid
-          disableColumnMenu
           rowHeight={adminTableRowsHeight.large}
           columns={compactColumnsDef}
-          disableColumnMenu={true}  
-
+          disableColumnMenu={true}
           className="purple-borders-datagrid"
           disableColumnReorder={true}
           rows={rows}

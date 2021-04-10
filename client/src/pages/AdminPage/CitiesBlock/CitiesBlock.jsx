@@ -24,7 +24,12 @@ import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
 
 export const CitiesBlock = ({ classes }) => {
   const dispatch = useDispatch()
-  const cities = useSelector(({ cities }) => cities?.data)
+
+  const { data: cities, totalCount } = useSelector(({ cities }) => cities)
+  const {
+    pagination: { pageSize: pageSizeDefault },
+  } = useTheme()
+  
 
   const [editingCityId, setEditingCityId] = useState(null)
   const [deletingCityId, setDeletingCityId] = useState(null)
@@ -87,8 +92,15 @@ export const CitiesBlock = ({ classes }) => {
   }, [setIsAddingCity])
 
   useEffect(() => {
-    dispatch(fetchCities())
-  }, [dispatch])
+    dispatch(fetchCities({ page: 0, pageSize: pageSizeDefault }))
+  }, [dispatch, pageSizeDefault])
+
+  const handlePageChange = useCallback(
+    ({ page, pageSize }) => {
+      dispatch(fetchCities({ page, pageSize }))
+    },
+    [dispatch]
+  )
 
   const columnsDef = [
     { field: 'id', headerName: 'Id', width: 70 },
@@ -128,6 +140,10 @@ export const CitiesBlock = ({ classes }) => {
           disableColumnReorder={true}
           pageSize={pageSize}
           rowsPerPageOptions={rowsPerPageOptions}
+          paginationMode="server"
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageChange}
+          rowCount={totalCount}          
         />
 
         <CityEditDialog

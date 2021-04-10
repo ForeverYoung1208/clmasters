@@ -8,8 +8,12 @@ import {
 import { setErrorMessage } from './main'
 
 
-export const fetchCities = createAsyncThunk('cities/fetch', async () => {
-  const cities = await apiGetCities()
+export const fetchCities = createAsyncThunk('cities/fetch', async (queryObject) => {
+  let queryStr=''
+  for (const key in queryObject) {
+    queryStr+=key+'='+queryObject[key]+'&'
+  }
+  const cities = await apiGetCities(queryStr)
   return cities
 })
 

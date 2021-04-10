@@ -6,7 +6,7 @@ import {
   postUser,
   putUser,
 } from '../../../store/actions/users'
-import { Box } from '@material-ui/core'
+import { Box, useTheme } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
@@ -25,8 +25,12 @@ import CompactUser from './CompactUser/CompactUser'
 
 export const UsersBlock = ({ classes }) => {
   const dispatch = useDispatch()
-  const users = useSelector(({ users }) => users?.data)
 
+  const { data: users, totalCount } = useSelector(({ users }) => users)
+  const {
+    pagination: { pageSize: pageSizeDefault },
+  } = useTheme()  
+  
   const [editingUserId, setEditingUserId] = useState(null)
   const [deletingUserId, setDeletingUserId] = useState(null)
   const [isAddingUser, setIsAddingUser] = useState(null)
@@ -88,8 +92,15 @@ export const UsersBlock = ({ classes }) => {
   }, [setIsAddingUser])
 
   useEffect(() => {
-    dispatch(fetchUsers())
-  }, [dispatch])
+    dispatch(fetchUsers({ page: 0, pageSize: pageSizeDefault }))
+  }, [dispatch, pageSizeDefault])
+
+  const handlePageChange = useCallback(
+    ({ page, pageSize }) => {
+      dispatch(fetchUsers({ page, pageSize }))
+    },
+    [dispatch]
+  )
 
   const columnsDef = useMemo(
     () => [
@@ -154,6 +165,10 @@ export const UsersBlock = ({ classes }) => {
           rows={users}
           columnsDef={columnsDef}
           compactColumnsDef={compactColumnsDef}
+          paginationMode="server"
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageChange}
+          rowCount={totalCount}          
         />
 
         <UserEditDialog

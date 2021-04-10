@@ -14,7 +14,9 @@ const clocks = (state = initialState, { type, payload }) => {
     case CLOCKS_FETCH_FULFILLED:
       return {
         ...state,
-        data: [...payload],
+        data: [...payload.data],
+        totalCount: payload.totalCount,
+        currentPage: payload.currentPage,
         error: null,
       }
 

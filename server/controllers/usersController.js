@@ -32,14 +32,44 @@ class UsersController extends CRUDController {
 
   // overrides parent CRUDcontroller method
   async getAll(req, res) {
-    const models = await this.model.findAll({
-      order: [['id', 'ASC']],
-    })
-    const data = models.map((m) => {
-      const { password, ...userDataNoPassword } = m.dataValues
+    const { page, pageSize } = req.query
+    if (page && !pageSize) {
+      res.status(400).json({
+        errors: [
+          {
+            param: 'users',
+            msg: 'pageSize must be specified!',
+          },
+        ],
+      })
+    }
+    if (pageSize && !page) {
+      return res.status(400).json({
+        errors: [
+          {
+            param: 'users',
+            msg: 'page must be specified!',
+          },
+        ],
+      })
+    }
+
+    const {
+      count: totalCount,
+      page: currentPage,
+      rows,
+    } = await this.model.findAllPaginated(
+      { order: [['id', 'ASC']] },
+      {
+        page,
+        pageSize,
+      }
+    )
+    const data = rows.map((m) => {
+      const { wipedPassword, ...userDataNoPassword } = m.dataValues
       return noTimestamps(userDataNoPassword)
     })
-    return res.status(200).json(data)
+    return res.status(200).json({ totalCount, currentPage, data })
   }
 
   putValidators() {

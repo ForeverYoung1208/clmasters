@@ -23,7 +23,9 @@ const masters = (state = initialState, { type, payload }) => {
     case MASTERS_FETCH_FULFILLED:
       return {
         ...state,
-        data: [...payload],
+        data: [...payload.data],
+        totalCount: payload.totalCount,
+        currentPage: payload.currentPage,
         error: null,
       }
 

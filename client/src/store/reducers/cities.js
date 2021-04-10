@@ -23,7 +23,9 @@ const cities = (state = initialState, { type, payload }) => {
     case CITIES_FETCH_FULFILLED:
       return {
         ...state,
-        data: [...payload],
+        data: [...payload.data],
+        totalCount: payload.totalCount,
+        currentPage: payload.currentPage,
         error: null,
       }
 

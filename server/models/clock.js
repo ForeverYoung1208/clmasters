@@ -1,5 +1,5 @@
 'use strict'
-const { Model } = require('sequelize')
+const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
 const { timestrToMSec } = require('../shared/services')
 
 module.exports = (sequelize, DataTypes) => {

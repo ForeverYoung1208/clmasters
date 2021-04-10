@@ -32,22 +32,56 @@ class MastersController extends CRUDController {
 
   // overrides parent CRUDcontroller method
   async getAll(req, res) {
-    const masters = await this.model.findAll({
-      order: [['id', 'ASC']],
-      include: [
-        {
-          model: City,
-          as: 'city',
-        },
-      ],
-    })
+    const { page, pageSize } = req.query
 
-    const data = masters.map((m) => {
-      const { city, ...master } = noTimestamps(m.dataValues) // without city information
+    if (page && !pageSize) {
+      res.status(400).json({
+        errors: [
+          {
+            param: 'masters',
+            msg: 'pageSize must be specified!',
+          },
+        ],
+      })
+    }
+
+    if (pageSize && !page) {
+      return res.status(400).json({
+        errors: [
+          {
+            param: 'masters',
+            msg: 'page must be specified!',
+          },
+        ],
+      })
+    }
+
+    const {
+      count: totalCount,
+      page: currentPage,
+      rows,
+    } = await this.model.findAllPaginated(
+      {
+        order: [['id', 'ASC']],
+        include: [
+          {
+            model: City,
+            as: 'city',
+          },
+        ],
+      },
+      {
+        page,
+        pageSize,
+      }
+    )
+
+    const data = rows.map((m) => {
+      const { wipedCity, ...master } = noTimestamps(m.dataValues) // without city information
       master.cityName = m.city.name //only cityName
       return master
     })
-    return res.status(200).json(data)
+    return res.status(200).json({ totalCount, currentPage, data })
   }
 
   // overrides parent CRUDcontroller method

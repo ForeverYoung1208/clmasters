@@ -1,4 +1,4 @@
-const { Model } = require('sequelize')
+const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
 const bcrypt = require('bcryptjs')
 
 module.exports = (sequelize, DataTypes) => {

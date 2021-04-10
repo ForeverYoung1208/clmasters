@@ -8,8 +8,12 @@ import {
 import { setErrorMessage } from './main'
 
 
-export const fetchUsers = createAsyncThunk('users/fetch', async () => {
-  const users = await apiGetUsers()
+export const fetchUsers = createAsyncThunk('users/fetch', async (queryObject) => {
+  let queryStr=''
+  for (const key in queryObject) {
+    queryStr+=key+'='+queryObject[key]+'&'
+  }
+  const users = await apiGetUsers(queryStr)
   return users
 })
 

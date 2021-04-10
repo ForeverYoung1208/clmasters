@@ -51,7 +51,7 @@ class OrdersController extends CRUDController {
     const {
       count: totalCount,
       page: currentPage,
-      rows: orders,
+      rows,
     } = await Order.findAllPaginated(
       {
         ...whereOptions,
@@ -86,13 +86,15 @@ class OrdersController extends CRUDController {
       }
     )
 
-    const data = orders.map((o) => {
-      const { user, master, clock, ...order } = noTimestamps(o.dataValues) // without user, master, clock information
+    const data = rows.map((o) => {
+      const { wipedUser, wipedMaster, wipedClock, ...order } = noTimestamps(
+        o.dataValues
+      ) // without user, master, clock information
       order.userName = o.user.name
-      order.userEmail = o.user.email      
+      order.userEmail = o.user.email
       order.masterName = o.master.name
       order.clockType = o.clock.type
-      order.masterCity = o.master.city.name      
+      order.masterCity = o.master.city.name
       return order
     })
     return res.status(200).json({ totalCount, currentPage, data })
@@ -198,7 +200,12 @@ class OrdersController extends CRUDController {
         `,
     })
 
-    const { user: u, master: m, clock: c, ...orderToSend } = {
+    const {
+      user: wipedUser,
+      master: wipedMaster,
+      clock: wipedClock,
+      ...orderToSend
+    } = {
       ...noTimestamps(newOrders[0].dataValues),
       userName: user.name,
       userEmail: user.email,
