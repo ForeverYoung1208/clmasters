@@ -5,6 +5,7 @@ import AuthForm from './AuthForm/AuthForm'
 import { authLoginUser } from '../../store/actions/auth'
 import withCurrentUser from '../../HOC/withCurrentUser'
 import { makeStyles } from '@material-ui/core'
+import { Login, Logout } from '../../components/GoogleAuth/GoogleAuth'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,9 @@ const AuthPage = ({ currentUser }) => {
   return (
     <div className={classes.root}>
       <AuthForm onSubmit={submitAuthData} />
+      or
+      <Login />
+      <Logout/> 
     </div>
   )
 }
