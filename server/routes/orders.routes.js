@@ -25,6 +25,7 @@ router.post(
 
 router.delete(
   '/:id', accessTokenToEmail,
+  accessTokenToEmail,
   async (req, res) => ordersController.delete(req, res)
 )
 

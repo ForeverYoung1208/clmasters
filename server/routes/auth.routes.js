@@ -24,7 +24,7 @@ router.post(
 
 router.post(
   '/byGoogleToken',
-  (req, res) => authController.byGoogleToken(req, res)
+  (req, res) => authController.loginByGoogleToken(req, res)
 )
 
 

@@ -5,8 +5,6 @@
 import React from 'react'
 import { useGoogleLogin, useGoogleLogout } from 'react-google-login'
 import { useDispatch } from 'react-redux'
-import { LS } from '../../shared/js/ls'
-import { myHttp } from '../../shared/js/myHttp'
 import { authLoginGoogleUser, authLogoutUser } from '../../store/actions/auth'
 import { Button } from '../Button/Button'
 
@@ -27,7 +25,7 @@ export const Login = () => {
     onSuccess,
     onFailure,
     clientId,
-    isSignedIn: true,
+    // isSignedIn: true,
     accessType: 'offline',
   })
 

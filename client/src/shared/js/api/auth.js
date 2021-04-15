@@ -14,15 +14,19 @@ export const apiLoginUser = async (credentials) => {
 }
 
 export const apiLoginGoogleUser = async (tokenId) => {
-  console.log('api call here')
-  TODO: implement api on server-side!!!
-  
-    // const authResult = await myHttp(
-    //   'api/auth/byGoogleToken',
-    //   'POST',
-    //   { tokenId: googleResult.tokenId }
-    // )
-
+  try{
+    const authResult = await myHttp(
+      'api/auth/byGoogleToken',
+      'POST',
+      { tokenId }
+    )
+    const { user, message } = await authResult.json()
+    console.log('[user,message]', user, message)
+    if (!authResult.ok) return message
+    return user
+  } catch (error) {
+    return error
+  }  
 }
 
 export const apiAuthUserByToken = async () => {
