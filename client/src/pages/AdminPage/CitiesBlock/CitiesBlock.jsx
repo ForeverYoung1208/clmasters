@@ -13,7 +13,10 @@ import { CityEditDialog } from './CityEditDialog/CityEditDialog'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
 import { Button } from '../../../components/Button/Button'
-import { setErrorMessage } from '../../../store/actions/main'
+import {
+  setErrorMessage,
+  setPaginationPageSize,
+} from '../../../store/actions/main'
 import { CityDeleteDialog } from './CityDeleteDialog/CityDeleteDialog'
 import { CityAddDialog } from './CityAddDialog/CityAddDialog'
 import {
@@ -26,14 +29,13 @@ export const CitiesBlock = ({ classes }) => {
   const dispatch = useDispatch()
 
   const { data: cities, totalCount } = useSelector(({ cities }) => cities)
-  const {
-    pagination: { pageSize: pageSizeDefault },
-  } = useTheme()
-  
+  const { paginationPageSize } = useSelector(({ main }) => main)
 
   const [editingCityId, setEditingCityId] = useState(null)
   const [deletingCityId, setDeletingCityId] = useState(null)
   const [isAddingCity, setIsAddingCity] = useState(null)
+
+  const [currentPage, setCurrentPage] = useState(0)
 
   const startEditHandler = useCallback(
     (id) => {
@@ -92,14 +94,23 @@ export const CitiesBlock = ({ classes }) => {
   }, [setIsAddingCity])
 
   useEffect(() => {
-    dispatch(fetchCities({ page: 0, pageSize: pageSizeDefault }))
-  }, [dispatch, pageSizeDefault])
+    dispatch(fetchCities({ page: 0, pageSize: paginationPageSize }))
+  }, [dispatch, paginationPageSize])
 
   const handlePageChange = useCallback(
     ({ page, pageSize }) => {
+      setCurrentPage(page)
       dispatch(fetchCities({ page, pageSize }))
     },
-    [dispatch]
+    [dispatch, setCurrentPage]
+  )
+  const handlePageSizeChange = useCallback(
+    ({ pageSize }) => {
+      dispatch(fetchCities({ page: 0, pageSize }))
+      dispatch(setPaginationPageSize(pageSize))
+      setCurrentPage(0)
+    },
+    [dispatch, setCurrentPage]
   )
 
   const columnsDef = [
@@ -126,7 +137,7 @@ export const CitiesBlock = ({ classes }) => {
   ]
 
   const {
-    pagination: { pageSize, rowsPerPageOptions },
+    pagination: { rowsPerPageOptions },
   } = useTheme()
 
   return (
@@ -138,12 +149,13 @@ export const CitiesBlock = ({ classes }) => {
           rows={cities}
           columns={columnsDef}
           disableColumnReorder={true}
-          pageSize={pageSize}
           rowsPerPageOptions={rowsPerPageOptions}
           paginationMode="server"
           onPageChange={handlePageChange}
-          onPageSizeChange={handlePageChange}
-          rowCount={totalCount}          
+          onPageSizeChange={handlePageSizeChange}
+          rowCount={totalCount}
+          page={currentPage}
+          pageSize={paginationPageSize}
         />
 
         <CityEditDialog

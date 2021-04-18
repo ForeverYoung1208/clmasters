@@ -41,7 +41,7 @@ const masters = (state = initialState, { type, payload }) => {
       }
 
     case MASTERS_POST_FULFILLED:
-      const mastersAfterPost = [...state.data, payload]
+      const mastersAfterPost = [payload, ...state.data]
       return {
         ...state,
         data: mastersAfterPost,
