@@ -1,6 +1,7 @@
 import { LOADER_HIDE, LOADER_SHOW } from './actionTypes/loaders'
 import { SET_ERROR_MESSAGE } from './actionTypes/errors'
 import { REDIRECTION_DONE, REDIRECT_START } from './actionTypes/redirect'
+import { SET_PAGINATION_PAGE_SIZE } from './actionTypes/pagination'
 
 export const loaderShow = (name) => {
   return {
@@ -40,4 +41,11 @@ export const redirectTo = (redirectUrl) => {
     type: REDIRECT_START,
     redirectUrl,
   }
+}
+
+export const setPaginationPageSize = (paginationPageSize) => {
+  return {
+    type: SET_PAGINATION_PAGE_SIZE,
+    paginationPageSize,
+  }  
 }

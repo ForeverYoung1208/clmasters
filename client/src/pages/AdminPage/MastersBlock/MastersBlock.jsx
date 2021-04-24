@@ -6,13 +6,13 @@ import {
   postMaster,
   putMaster,
 } from '../../../store/actions/masters'
-import { Box, useTheme } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { MasterEditDialog } from './MasterEditDialog/MasterEditDialog'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
 import { Button } from '../../../components/Button/Button'
-import { setErrorMessage } from '../../../store/actions/main'
+import { setErrorMessage, setPaginationPageSize } from '../../../store/actions/main'
 import {
   MASTERS_POST_REJECTED,
   MASTERS_PUT_REJECTED,
@@ -27,13 +27,13 @@ export const MastersBlock = ({ classes }) => {
   const dispatch = useDispatch()
 
   const { data: masters, totalCount } = useSelector(({ masters }) => masters)
-  const {
-    pagination: { pageSize: pageSizeDefault },
-  } = useTheme()
+  const { paginationPageSize } = useSelector(({ main }) => main)
 
   const [editingMasterId, setEditingMasterId] = useState(null)
   const [deletingMasterId, setDeletingMasterId] = useState(null)
   const [isAddingMaster, setIsAddingMaster] = useState(null)
+
+  const [currentPage, setCurrentPage] = useState(0)
 
   const startEditHandler = useCallback(
     (id) => {
@@ -92,14 +92,23 @@ export const MastersBlock = ({ classes }) => {
   }, [setIsAddingMaster])
 
   useEffect(() => {
-    dispatch(fetchMasters({ page: 0, pageSize: pageSizeDefault }))
-  }, [dispatch, pageSizeDefault])
+    dispatch(fetchMasters({ page: 0, pageSize: paginationPageSize }))
+  }, [dispatch, paginationPageSize])
 
   const handlePageChange = useCallback(
     ({ page, pageSize }) => {
+      setCurrentPage(page)
       dispatch(fetchMasters({ page, pageSize }))
     },
-    [dispatch]
+    [dispatch, setCurrentPage]
+  )
+  const handlePageSizeChange = useCallback(
+    ({ pageSize }) => {
+      dispatch(fetchMasters({ page: 0, pageSize }))
+      dispatch(setPaginationPageSize(pageSize))      
+      setCurrentPage(0)
+    },
+    [dispatch, setCurrentPage]
   )
 
   const columnsDef = useMemo(
@@ -170,8 +179,10 @@ export const MastersBlock = ({ classes }) => {
           compactColumnsDef={compactColumnsDef}
           paginationMode="server"
           onPageChange={handlePageChange}
-          onPageSizeChange={handlePageChange}
-          rowCount={totalCount}          
+          onPageSizeChange={handlePageSizeChange}
+          rowCount={totalCount}
+          page={currentPage}
+          pageSize={paginationPageSize}
         />
 
         <MasterEditDialog

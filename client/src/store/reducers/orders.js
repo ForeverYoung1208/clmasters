@@ -46,7 +46,7 @@ const orders = (state = initialState, { type, payload, registeredOrder }) => {
       }
 
     case ORDERS_POST_FULFILLED:
-      const ordersAfterPost = [...state.data, payload]
+      const ordersAfterPost = [ payload, ...state.data]
       return {
         ...state,
         data: ordersAfterPost,
