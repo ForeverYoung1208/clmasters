@@ -12,12 +12,15 @@ const ResponsiveDataGrid = ({
   onPageChange,
   onPageSizeChange,
   rowCount,
+  page,
+  pageSize,
 }) => {
   const {
-    pagination: { pageSize, rowsPerPageOptions },
+    pagination: { rowsPerPageOptions },
     breakpoints,
     sizes: { adminTableRowsHeight },
   } = useTheme()
+  
   const matchesUpMd = useMediaQuery(breakpoints.up('md'))
   return (
     <>
@@ -36,6 +39,7 @@ const ResponsiveDataGrid = ({
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
           rowCount={rowCount}
+          page={page}
         />
       ) : (
         <DataGrid
@@ -51,6 +55,7 @@ const ResponsiveDataGrid = ({
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
           rowCount={rowCount}
+          page={page}
         />
       )}
     </>

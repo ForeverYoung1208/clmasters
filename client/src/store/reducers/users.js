@@ -42,7 +42,7 @@ const users = (state = initialState, { type, payload }) => {
       }
 
     case USERS_POST_FULFILLED:
-      const usersAfterPost = [...state.data, payload]
+      const usersAfterPost = [payload, ...state.data]
       return {
         ...state,
         data: usersAfterPost,

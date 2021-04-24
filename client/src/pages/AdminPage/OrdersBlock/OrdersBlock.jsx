@@ -6,7 +6,7 @@ import {
   postOrder,
   putOrder,
 } from '../../../store/actions/orders'
-import { Box, useTheme } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
@@ -23,17 +23,18 @@ import { OrderDeleteDialog } from './OrderDeleteDialog/OrderDeleteDialog'
 import CompactOrder from './CompactOrder/CompactOrder'
 import EditDeleteBtns from '../../../components/EditDeleteBtns/EditDeleteBtns'
 import ResponsiveDataGrid from '../../../components/Material/ResponsiveDataGrid/ResponsiveDataGrid'
+import { setPaginationPageSize } from '../../../store/actions/main'
 
 export const OrdersBlock = ({ classes }) => {
   const dispatch = useDispatch()
   const { data: orders, totalCount } = useSelector(({ orders }) => orders)
-  const {
-    pagination: { pageSize: pageSizeDefault },
-  } = useTheme()
+  const { paginationPageSize } = useSelector(({ main }) => main)
 
   const [editingOrderId, setEditingOrderId] = useState(null)
   const [deletingOrderId, setDeletingOrderId] = useState(null)
   const [isAddingOrder, setIsAddingOrder] = useState(null)
+
+  const [currentPage, setCurrentPage] = useState(0)
 
   const startEditHandler = useCallback(
     (id) => {
@@ -97,14 +98,23 @@ export const OrdersBlock = ({ classes }) => {
   )
 
   useEffect(() => {
-    dispatch(fetchOrders({ page: 0, pageSize: pageSizeDefault }))
-  }, [dispatch, pageSizeDefault])
+    dispatch(fetchOrders({ page: 0, pageSize: paginationPageSize }))
+  }, [dispatch, paginationPageSize])
 
   const handlePageChange = useCallback(
     ({ page, pageSize }) => {
+      setCurrentPage(page)
       dispatch(fetchOrders({ page, pageSize }))
     },
-    [dispatch]
+    [dispatch, setCurrentPage]
+  )
+  const handlePageSizeChange = useCallback(
+    ({ pageSize }) => {
+      dispatch(fetchOrders({ page: 0, pageSize }))
+      dispatch(setPaginationPageSize(pageSize))
+      setCurrentPage(0)
+    },
+    [dispatch, setCurrentPage]
   )
 
   const columnsDef = useMemo(
@@ -180,8 +190,10 @@ export const OrdersBlock = ({ classes }) => {
           compactColumnsDef={compactColumnsDef}
           paginationMode="server"
           onPageChange={handlePageChange}
-          onPageSizeChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
           rowCount={totalCount}
+          page={currentPage}
+          pageSize={paginationPageSize}
         />
 
         <OrderEditDialog

@@ -41,7 +41,7 @@ const cities = (state = initialState, { type, payload }) => {
       }
 
     case CITIES_POST_FULFILLED:
-      const citiesAfterPost = [...state.data, payload]
+      const citiesAfterPost = [payload, ...state.data]
       return {
         ...state,
         data: citiesAfterPost,

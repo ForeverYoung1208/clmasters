@@ -1,5 +1,6 @@
 import { SET_ERROR_MESSAGE } from '../actions/actionTypes/errors'
 import { LOADER_HIDE, LOADER_SHOW } from '../actions/actionTypes/loaders'
+import { SET_PAGINATION_PAGE_SIZE } from '../actions/actionTypes/pagination'
 // import {
 //   PREORDERS_POST_FULFILLED,
 //   PREORDERS_POST_PENDING,
@@ -15,9 +16,8 @@ const initialState = {
     vocabluaries: false,
     preorder: false,
   },
-  preorder: {},
-  preorderResult: null,
-  errorMessage: null,
+  paginationPageSize: 5,
+
 }
 
 const main = (state = initialState, action) => {
@@ -49,22 +49,16 @@ const main = (state = initialState, action) => {
         redirectUrl: null,
       }
 
-    // case SAVE_PREORDER:
-    //   return {
-    //     ...state,
-    //     preorder: action.preorder,
-    //   }
-
-    // case POST_PREORDER_OK:
-    //   return {
-    //     ...state,
-    //     preorderResult: action.preorderResult,
-    //   }
-
     case SET_ERROR_MESSAGE:
       return {
         ...state,
         errorMessage: action.errorMessage,
+      }
+    
+    case SET_PAGINATION_PAGE_SIZE:
+      return {
+        ...state,
+        paginationPageSize: action.paginationPageSize,
       }
 
     default:

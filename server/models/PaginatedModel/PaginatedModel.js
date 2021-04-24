@@ -14,6 +14,7 @@ class PaginatedModel extends Model {
       addOptions = {
         offset: page * pageSize - pageSize,
         limit: pageSize,
+        order: [['id', 'DESC']]
       }
     }
    

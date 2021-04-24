@@ -6,12 +6,12 @@ import {
   postUser,
   putUser,
 } from '../../../store/actions/users'
-import { Box, useTheme } from '@material-ui/core'
+import { Box } from '@material-ui/core'
 import { Add as AddIcon } from '@material-ui/icons'
 import { SubmissionError } from 'redux-form'
 import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
 import { Button } from '../../../components/Button/Button'
-import { setErrorMessage } from '../../../store/actions/main'
+import { setErrorMessage, setPaginationPageSize } from '../../../store/actions/main'
 import {
   USERS_POST_REJECTED,
   USERS_PUT_REJECTED,
@@ -27,13 +27,13 @@ export const UsersBlock = ({ classes }) => {
   const dispatch = useDispatch()
 
   const { data: users, totalCount } = useSelector(({ users }) => users)
-  const {
-    pagination: { pageSize: pageSizeDefault },
-  } = useTheme()  
-  
+  const { paginationPageSize } = useSelector(({ main }) => main)
+
   const [editingUserId, setEditingUserId] = useState(null)
   const [deletingUserId, setDeletingUserId] = useState(null)
   const [isAddingUser, setIsAddingUser] = useState(null)
+
+  const [currentPage, setCurrentPage] = useState(0)
 
   const startEditHandler = useCallback(
     (id) => {
@@ -92,14 +92,23 @@ export const UsersBlock = ({ classes }) => {
   }, [setIsAddingUser])
 
   useEffect(() => {
-    dispatch(fetchUsers({ page: 0, pageSize: pageSizeDefault }))
-  }, [dispatch, pageSizeDefault])
+    dispatch(fetchUsers({ page: 0, pageSize: paginationPageSize }))
+  }, [dispatch, paginationPageSize])
 
   const handlePageChange = useCallback(
     ({ page, pageSize }) => {
+      setCurrentPage(page)
       dispatch(fetchUsers({ page, pageSize }))
     },
-    [dispatch]
+    [dispatch, setCurrentPage]
+  )
+  const handlePageSizeChange = useCallback(
+    ({ pageSize }) => {
+      dispatch(fetchUsers({ page: 0, pageSize }))
+      dispatch(setPaginationPageSize(pageSize))      
+      setCurrentPage(0)
+    },
+    [dispatch, setCurrentPage]
   )
 
   const columnsDef = useMemo(
@@ -167,8 +176,10 @@ export const UsersBlock = ({ classes }) => {
           compactColumnsDef={compactColumnsDef}
           paginationMode="server"
           onPageChange={handlePageChange}
-          onPageSizeChange={handlePageChange}
-          rowCount={totalCount}          
+          onPageSizeChange={handlePageSizeChange}
+          rowCount={totalCount}
+          page={currentPage}
+          pageSize={paginationPageSize}
         />
 
         <UserEditDialog
