@@ -39,6 +39,13 @@ const Routes = (props) => {
           <AdminPage/>
         </Route>
       }
+
+      {/* uncomment for testing unauthorized access cases: */}
+      {/* { <Route path="/admin" >
+          <AdminPage/>
+        </Route>
+      } */}
+      
       <Redirect to = "/info"/>
     </Switch>
   ) 

@@ -5,9 +5,11 @@ export const useMenu = (currentUser) => {
     return([
       { name:'Info', path:'/info', isShown:true},
       { name:'Find master', path:'/masters', isShown:true},
-      { name:'Login', path:'/login', isShown:!(cu?.email)},
-      // { name:'User page', path:'/user', isShown:!!(cu?.email)},
-      { name:'Administration', path:'/admin', isShown:!!(cu?.isAdmin)}
+      { name: 'Login', path: '/login', isShown: !(cu?.email) },
+      { name: 'Administration', path: '/admin', isShown: !!(cu?.isAdmin) },
+
+      // uncomment for testing unauthorized access cases:
+      // { name:'Administration', path:'/admin', isShown:true}
     ])
   };
   
