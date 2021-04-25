@@ -61,7 +61,7 @@ class AuthController {
     let user = await User.getByEmail(email)
     // if no such a user in our database - create new user from google auth data
     if (!user.email) {
-      user = await User.create({ name, email, isAdmin: false })
+      user = await User.create({ name, email, password: USER_DEFAULT_PASSWORD, isAdmin: false })
     }
 
     // eslint-disable-next-line no-unused-vars
@@ -101,7 +101,7 @@ class AuthController {
         .status(403)
         .json({ message: 'no email - maybe, bad access token' })
     const user = await User.getByEmail(email)
-    const { password: pwd, ...userDataNoPassword } = user.dataValues
+    const { password: wipedPassword, ...userDataNoPassword } = user.dataValues
     return res
       .status(200)
       .json({ user: { ...noTimestamps(userDataNoPassword) } })
