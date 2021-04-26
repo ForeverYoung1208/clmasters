@@ -7,15 +7,16 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core'
-import React from 'react'
+import React, { useMemo } from 'react'
+import OrderToGoogleCalendarBtn from '../../../components/OrderToGoogleCalendarBtn/OrderToGoogleCalendarBtn'
 
 const useStyles = makeStyles((theme) => {
   return {
     root: {
-      marginBottom: '1rem',
+      marginBottom: '2rem',
     },
     heading: {
-      padding: '1rem'
+      padding: '1rem',
     },
     cellLabel: {
       fontWeight: 'bolder',
@@ -26,91 +27,54 @@ const useStyles = makeStyles((theme) => {
 
 export const OrdersInfo = ({ orders, heading }) => {
   const classes = useStyles()
+  const fieldsToShow = useMemo(
+    () => ({
+      userName: 'Client name:',
+      userEmail: 'Client email:',
+      clockType: 'Clock Type:',
+      masterName: 'Master:',
+      masterCity: 'City:',
+      onTimeStr: 'On Time:',
+      comment: 'Comment',
+    }),
+    []
+  )
+
   return (
     <div>
       <Typography align="center" variant="h6" className={classes.heading}>
         {heading}
       </Typography>
-      {orders?.map(
-        ({
-          id,
-          onTime: onTimeStr,
-          userEmail,
-          userName,
-          clockType,
-          masterName,
-          masterCity,
-          comment,
-        }) => {
-          const onTime = new Date(onTimeStr)
+      {orders?.map((order) => {
 
-          return (
-            <Box key={id} className={classes.root}>
-                <Typography align="center" variant="h6">
-                  {`Order # ${id}`}
-                </Typography>
-                <Table size="small">
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className={classes.cellLabel}>
-                        Client name:
-                      </TableCell>
-                      <TableCell className={classes.cellData}>
-                        {userName}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className={classes.cellLabel}>
-                        Client email:
-                      </TableCell>
-                      <TableCell className={classes.cellData}>
-                        {userEmail}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className={classes.cellLabel}>
-                        Clock Type:
-                      </TableCell>
-                      <TableCell className={classes.cellData}>
-                        {clockType}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className={classes.cellLabel}>
-                        Master:
-                      </TableCell>
-                      <TableCell className={classes.cellData}>
-                        {masterName}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className={classes.cellLabel}>City:</TableCell>
-                      <TableCell className={classes.cellData}>
-                        {masterCity}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className={classes.cellLabel}>
-                        On Time:
-                      </TableCell>
-                      <TableCell className={classes.cellData}>
-                        {onTime?.toLocaleString('uk')}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className={classes.cellLabel}>
-                        Comment:
-                      </TableCell>
-                      <TableCell className={classes.cellData}>
-                        {comment}
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-            </Box>
-          )
-        }
-      )}
+        order.onTimeStr = (new Date(order.onTime)).toLocaleString('uk')
+
+        return (
+          <Box key={order.id} className={classes.root}>
+            <Typography align="center" variant="h6">
+              {`Order # ${order.id}`}
+            </Typography>
+            
+            <Table size="small">
+              <TableBody>
+                {Object.keys(fieldsToShow).map((field) => (
+                  <TableRow key={field}>
+                    <TableCell className={classes.cellLabel}>
+                      {fieldsToShow[field]}
+                    </TableCell>
+                    <TableCell className={classes.cellData}>
+                      {order[field]}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            
+            <OrderToGoogleCalendarBtn order={order}/>
+            
+          </Box>
+        )
+      })}
     </div>
   )
 }
