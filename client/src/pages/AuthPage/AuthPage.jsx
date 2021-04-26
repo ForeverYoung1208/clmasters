@@ -5,12 +5,13 @@ import AuthForm from './AuthForm/AuthForm'
 import { authLoginUser } from '../../store/actions/auth'
 import withCurrentUser from '../../HOC/withCurrentUser'
 import { makeStyles } from '@material-ui/core'
+import { LoginWithGoogle } from '../../components/GoogleAuth/GoogleAuth'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
 }))
 
@@ -31,6 +32,8 @@ const AuthPage = ({ currentUser }) => {
   return (
     <div className={classes.root}>
       <AuthForm onSubmit={submitAuthData} />
+      or
+      <LoginWithGoogle/>
     </div>
   )
 }

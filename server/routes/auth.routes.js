@@ -22,5 +22,10 @@ router.post(
   (req, res) => authController.refreshTokens(req, res)
 )
 
+router.post(
+  '/byGoogleToken',
+  (req, res) => authController.loginByGoogleToken(req, res)
+)
+
 
 module.exports = router

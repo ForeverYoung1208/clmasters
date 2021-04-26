@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const { ordersController } = require('../controllers/ordersController')
 const { accessTokenToEmail } = require('../middleware/accessTokenToEmail')
+const { checkEmailIsAdmin } = require('../middleware/checkEmailIsAdmin')
 
 
 const router = Router()
@@ -13,6 +14,7 @@ router.get(
 router.put(
   '/:id',
   accessTokenToEmail,
+  checkEmailIsAdmin,
   ordersController.putValidators(),
   async (req, res) => ordersController.put(req, res)
 )
@@ -25,6 +27,8 @@ router.post(
 
 router.delete(
   '/:id', accessTokenToEmail,
+  accessTokenToEmail,
+  checkEmailIsAdmin,
   async (req, res) => ordersController.delete(req, res)
 )
 

@@ -16,6 +16,7 @@ import { authLogoutUser } from '../../store/actions/auth'
 import { useDispatch } from 'react-redux'
 import UserInfoWide from './UserInfoWide/UserInfoWide'
 import UserInfoNarrow from './UserInfoNarrow/UserInfoNarrow'
+import { useGoogleLogout } from 'react-google-login'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,10 +51,18 @@ const Header = ({ currentUser }) => {
   const dispatch = useDispatch()
   const theme = useTheme()
   const largerMD = useMediaQuery(theme.breakpoints.up('md'))
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
   const handleLogout = useCallback(() => {
     dispatch(authLogoutUser())
-  }, [dispatch])
+  }, [dispatch])  
+  
+  const { signOut: signOutFromGoogle } = useGoogleLogout({
+    clientId,
+    onLogoutSuccess: handleLogout,
+    onFailure: () => { throw new Error('Google logout fails')}
+  })
+  
 
   return (
     <AppBar position="static" className={classes.root}>
@@ -68,7 +77,7 @@ const Header = ({ currentUser }) => {
           {currentUser?.email &&
             (largerMD ? (
               <UserInfoWide
-                handleLogout={handleLogout}
+                handleLogout={signOutFromGoogle}
                 currentUser={currentUser}
               />
             ) : (

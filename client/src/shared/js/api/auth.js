@@ -13,6 +13,22 @@ export const apiLoginUser = async (credentials) => {
   }
 }
 
+export const apiLoginGoogleUser = async (tokenId) => {
+  try{
+    const authResult = await myHttp(
+      'api/auth/byGoogleToken',
+      'POST',
+      { tokenId }
+    )
+    const { user, message } = await authResult.json()
+    console.log('[user,message]', user, message)
+    if (!authResult.ok) return message
+    return user
+  } catch (error) {
+    return error
+  }  
+}
+
 export const apiAuthUserByToken = async () => {
   try {
     const { user } = await myHttp('/api/auth/byToken', 'GET').then(u => u.json())
