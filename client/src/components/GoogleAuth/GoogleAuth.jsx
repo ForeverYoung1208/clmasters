@@ -27,6 +27,7 @@ export const LoginWithGoogle = () => {
     isSignedIn: false,
     fetchBasicProfile: false,
     accessType: 'offline',
+    scope: 'https://www.googleapis.com/auth/userinfo.profile'
   })
 
   return <Button onClick={signIn}>Login with Google</Button>
