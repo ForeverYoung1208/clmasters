@@ -21,7 +21,6 @@ export const apiLoginGoogleUser = async (tokenId) => {
       { tokenId }
     )
     const { user, message } = await authResult.json()
-    console.log('[user,message]', user, message)
     if (!authResult.ok) return message
     return user
   } catch (error) {
