@@ -3,9 +3,18 @@ const {Op } = require('sequelize')
 const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
 const { startOfDay, endOfDay } = require('date-fns')
 const orderValidators = require('./validators/orderValidators')
+const { makeGoogleCalendarEvent } = require('../shared/googleCalendarUtils')
 
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
+    
+    putToGoogleCalendar() {
+      const eventData = {
+        /// TODO compose data from this.
+      }
+      makeGoogleCalendarEvent(eventData)
+    }
+    
     static async getAtDate(dateStr) {
       const { startOfDay, endOfDay } = require('date-fns')
       const givenDateTime = new Date(dateStr)
