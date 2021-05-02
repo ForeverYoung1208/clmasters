@@ -9,9 +9,21 @@ module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     
     putToGoogleCalendar() {
+      console.log('[this]', this)
       const eventData = {
-        /// TODO compose data from this.
+        'summary': 'Google I/O 2015',
+        'location': '800 Howard St., San Francisco, CA 94103',
+        'description': 'A chance to hear more about Google\'s developer products.',
+        'start': {
+          'dateTime': '2015-05-28T09:00:00-07:00',
+          'timeZone': 'America/Los_Angeles',
+        },
+        'end': {
+          'dateTime': '2015-05-28T17:00:00-07:00',
+          'timeZone': 'America/Los_Angeles',
+        }
       }
+      
       makeGoogleCalendarEvent(eventData)
     }
     

@@ -1,3 +1,5 @@
+// remove this component if move functionality  to  backend
+
 import { Box } from '@material-ui/core'
 import React from 'react'
 import { Button } from '../Button/Button'

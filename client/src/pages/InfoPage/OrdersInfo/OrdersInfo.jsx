@@ -69,8 +69,8 @@ export const OrdersInfo = ({ orders, heading }) => {
                 ))}
               </TableBody>
             </Table>
-            
-            <OrderToGoogleCalendarBtn order={order}/>
+            {/* considered to move to backend */}
+            {/* <OrderToGoogleCalendarBtn order={order}/> */}
             
           </Box>
         )

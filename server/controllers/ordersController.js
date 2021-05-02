@@ -148,6 +148,7 @@ class OrdersController extends CRUDController {
       })
     }
 
+    //get created order from DB with all associated models
     const newOrders = await Order.findAll({
       where: { id: _newOrder.dataValues.id },
       include: [
@@ -175,14 +176,18 @@ class OrdersController extends CRUDController {
         ['id', 'ASC'],
       ],
     })
-
+    
+    //put created order to google calendar
+    newOrders[0].putToGoogleCalendar()
+    
+    // gather information for email
     const { master, clock } = newOrders[0]
-
     const ukrTime = utcToZonedTime(newOrders[0].onTime, timeZone)
     const ukrTimeStr = format(ukrTime, 'dd.MM.yyyy HH:mm', {
       timeZone: timeZone,
     })
-
+    
+    //send order by e-mail  
     const emailResult = await sendEmail({
       toEmail: user.email,
       HTMLPart: `
@@ -199,7 +204,8 @@ class OrdersController extends CRUDController {
         <div>Master: ${master.name}</div>
         `,
     })
-
+    
+    //prepare data to send as responce
     const {
       user: wipedUser,
       master: wipedMaster,
