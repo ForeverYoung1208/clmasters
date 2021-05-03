@@ -8,23 +8,19 @@ const { makeGoogleCalendarEvent } = require('../shared/googleCalendarUtils')
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     
-    putToGoogleCalendar() {
-      console.log('[this]', this)
+    async putToGoogleCalendar() {
       const eventData = {
-        'summary': 'Google I/O 2015',
-        'location': '800 Howard St., San Francisco, CA 94103',
+        'summary': 'Google I/O 2021',
         'description': 'A chance to hear more about Google\'s developer products.',
         'start': {
-          'dateTime': '2015-05-28T09:00:00-07:00',
-          'timeZone': 'America/Los_Angeles',
+          'dateTime': '2021-05-04T06:00:00.000Z',
         },
         'end': {
-          'dateTime': '2015-05-28T17:00:00-07:00',
-          'timeZone': 'America/Los_Angeles',
+          'dateTime': '2021-05-04T07:00:00.000Z',
         }
       }
       
-      makeGoogleCalendarEvent(eventData)
+      await makeGoogleCalendarEvent(eventData)
     }
     
     static async getAtDate(dateStr) {

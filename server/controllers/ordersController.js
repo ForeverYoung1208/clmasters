@@ -268,10 +268,14 @@ class OrdersController extends CRUDController {
       return res.status(400).json({ errors })
     }
 
-    if (!result)
+    if (!result) {
       return res.stats(500).json({
         message: 'CDUD controller error: model not updated',
       })
+    }
+    
+    //put created order to google calendar
+    result.putToGoogleCalendar()
 
     return res.status(200).json(noTimestamps(result.dataValues))
   }
