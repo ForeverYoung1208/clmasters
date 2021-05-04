@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         'summary': 'Google I/O 2021',
         'description': 'A chance to hear more about Google\'s developer products.',
         'start': {
-          'dateTime': '2021-05-04T06:00:00.000Z',
+          'dateTime': '2021-05-05T06:00:00.000Z',
         },
         'end': {
-          'dateTime': '2021-05-04T07:00:00.000Z',
+          'dateTime': '2021-05-05T07:00:00.000Z',
         }
       }
       
