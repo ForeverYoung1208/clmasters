@@ -50,18 +50,6 @@ class CRUDController {
     return res.status(200).json({ totalCount, currentPage, data })
   }
 
-  // async getAll(req, res) {
-  //   const models = await this.model.findAll({
-  //     order: [
-  //       ['id', 'ASC']
-  //     ]
-  //   })
-  //   const data = models.map((m) => {
-  //     return noTimestamps(m.dataValues)
-  //   })
-  //   return (res.status(200).json(data))
-  // }
-
   async put(req, res) {
     const errors = validationResult(req)
     if (!errors.isEmpty())

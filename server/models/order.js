@@ -1,5 +1,5 @@
 'use strict'
-const {Op } = require('sequelize')
+const { Op } = require('sequelize')
 const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
 const { startOfDay, endOfDay } = require('date-fns')
 const orderValidators = require('./validators/orderValidators')
@@ -7,22 +7,38 @@ const { makeGoogleCalendarEvent } = require('../shared/googleCalendarUtils')
 
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
-    
     async putToGoogleCalendar() {
-      const eventData = {
-        'summary': 'Google I/O 2021',
-        'description': 'A chance to hear more about Google\'s developer products.',
-        'start': {
-          'dateTime': '2021-05-05T06:00:00.000Z',
-        },
-        'end': {
-          'dateTime': '2021-05-05T07:00:00.000Z',
-        }
-      }
+      const { clock, user, master, comment, onTime } = this
       
-      await makeGoogleCalendarEvent(eventData)
+      const endTime = new Date(
+        onTime.valueOf() +
+        (new Date(`1970-01-01T${clock.repairTime}Z`)).valueOf()
+      )
+
+      const eventData = {
+        summary: `${clock.type} clock repair`,
+        description: `
+          ${clock.type} clock repair (${clock.repairTime}),
+          city: ${master.city.name}, master:${master.name},
+          user: ${user.name},
+          comment:${comment} 
+        `,
+        start: {
+          dateTime: onTime,
+        },
+        end: {
+          dateTime: endTime,
+        },
+      }
+
+      const calendarEventId = await makeGoogleCalendarEvent(eventData)
+      this.calendarEventId =calendarEventId
+      //TODO: I CAN'T UNDERSTAND WHY calendarEventId IS NULL/UNDEFINED HERE
+      const result = await this.save()
+      console.log('[result]', result)
+      
     }
-    
+
     static async getAtDate(dateStr) {
       const { startOfDay, endOfDay } = require('date-fns')
       const givenDateTime = new Date(dateStr)
@@ -86,7 +102,8 @@ module.exports = (sequelize, DataTypes) => {
       comment: DataTypes.STRING,
       onTime: DataTypes.DATE,
       deletedAt: DataTypes.DATE,
-      price: DataTypes.DECIMAL
+      price: DataTypes.DECIMAL,
+      calendarEventId: DataTypes.STRING,
     },
     {
       sequelize,
