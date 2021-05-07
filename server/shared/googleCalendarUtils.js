@@ -19,7 +19,6 @@ const calendar = google.calendar({
 
 const makeGoogleCalendarEvent = async (eventData) => {
   const newCalendarEvent = await calendar.events.insert({
-    auth: auth,
     calendarId: CALENDAR_ID,
     resource: eventData,
   })
@@ -28,7 +27,6 @@ const makeGoogleCalendarEvent = async (eventData) => {
 
 const deleteGoogleCalendarEvent = async (eventId) => {
   calendar.events.delete({
-    auth: auth,
     calendarId: CALENDAR_ID,
     eventId,
   })

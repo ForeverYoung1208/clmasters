@@ -15,7 +15,6 @@ class OrdersController extends CRUDController {
   constructor(model) {
     super(model)
   }
-  // put(req, res) goes to parent CRUDController
 
   // overrides parent CRUDcontroller method to add names of associated entities
   async getAll(req, res) {
@@ -91,6 +90,7 @@ class OrdersController extends CRUDController {
         user: wipedUser,
         master: wipedMaster,
         clock: wipedClock,
+        calendarEventId: wipedCalendarEventId,
         ...order
       } = noTimestamps(o.dataValues) // without user, master, clock information
       order.userName = o.user.name
@@ -213,6 +213,7 @@ class OrdersController extends CRUDController {
       user: wipedUser,
       master: wipedMaster,
       clock: wipedClock,
+      calendarEventId: wipedCalendarEventId,      
       ...orderToSend
     } = {
       ...noTimestamps(newOrders[0].dataValues),
@@ -233,7 +234,8 @@ class OrdersController extends CRUDController {
     if (!errors.isEmpty())
       return res.status(422).json({ errors: errors.array() })
 
-    let { id, price: wipedPrice, ...data } = req.body
+    const { id: wipedId, price: wipedPrice, ...data } = req.body
+    const id = req.params.id
 
     const { masterId, clockId } = data
     const masterFromRequest = await Master.findByPk(masterId)
@@ -246,27 +248,21 @@ class OrdersController extends CRUDController {
           100
       ) / 100
 
-    id = req.params.id
-
+    // find corresponding record from DB
     let orderToUpdate = await this.model.findByPk(id)
     if (!orderToUpdate)
       return res.status(400).json({
         message: `Model with id:${id} not found`,
       })
 
+    // delete old google calendar event    
+    await orderToUpdate.deleteFromGoogleCalendar()
+    
+    // update record with new data
     Object.assign(orderToUpdate, data)
 
     try {
       var updateResult = await orderToUpdate.save()
-      // updateResult.dataValues.masterName = await Master.findByPk(
-      //   updateResult.dataValues.masterId
-      // ).then(({ name }) => name)
-      // updateResult.dataValues.userName = await User.findByPk(
-      //   updateResult.dataValues.userId
-      // ).then(({ name }) => name)
-      // updateResult.dataValues.clockType = await Clock.findByPk(
-      //   updateResult.dataValues.clockId
-      // ).then(({ type }) => type)
     } catch ({ errors }) {
       return res.status(400).json({ errors })
     }
@@ -322,6 +318,7 @@ class OrdersController extends CRUDController {
       user: wipedUser,
       master: wipedMaster,
       clock: wipedClock,
+      calendarEventId: wipedCalendarEventId,
       ...orderToSend
     } = {
       ...noTimestamps(updatedOrders[0].dataValues),

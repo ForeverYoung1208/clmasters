@@ -1,22 +1,24 @@
 'use strict'
 const { Op } = require('sequelize')
 const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
-const { startOfDay, endOfDay } = require('date-fns')
+const { startOfDay, endOfDay, isThisYear } = require('date-fns')
 const orderValidators = require('./validators/orderValidators')
-const { makeGoogleCalendarEvent } = require('../shared/googleCalendarUtils')
+const {
+  makeGoogleCalendarEvent,
+  deleteGoogleCalendarEvent,
+} = require('../shared/googleCalendarUtils')
 
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     async putToGoogleCalendar() {
-      const { clock, user, master, comment, onTime } = this
-      
+      const { clock, user, master, comment, onTime, id } = this
+
       const endTime = new Date(
-        onTime.valueOf() +
-        (new Date(`1970-01-01T${clock.repairTime}Z`)).valueOf()
+        onTime.valueOf() + new Date(`1970-01-01T${clock.repairTime}Z`).valueOf()
       )
 
       const eventData = {
-        summary: `${clock.type} clock repair`,
+        summary: `Order ${id} (${clock.type} clock repair)`,
         description: `
           ${clock.type} clock repair (${clock.repairTime}),
           city: ${master.city.name}, master:${master.name},
@@ -31,9 +33,18 @@ module.exports = (sequelize, DataTypes) => {
         },
       }
 
-      let { data: {id} } = await makeGoogleCalendarEvent(eventData)
-      this.calendarEventId = id
+      const {
+        data: { id:eventId },
+      } = await makeGoogleCalendarEvent(eventData)
+      this.calendarEventId = eventId
       await this.save()
+    }
+
+    async deleteFromGoogleCalendar() {
+      const { calendarEventId } = this
+      if (calendarEventId) {
+        await deleteGoogleCalendarEvent(calendarEventId)
+      }
     }
 
     static async getAtDate(dateStr) {
@@ -111,12 +122,17 @@ module.exports = (sequelize, DataTypes) => {
           await orderValidators.checkMasterIsFree(sequelize, this)
         },
       },
+      hooks: {
+        beforeDestroy: (order) => {
+          order.deleteGoogleCalendarEvent()
+        }
+      }
     }
   )
 
   // example of defining hooks. Great thing, for future knowledge.
   // Order.addHook('beforeCreate', 'checkMasterBeforeCreate', order => orderValidators.checkMasterIsFree(sequelize,order))
-  // Order.addHook('beforeUpdate', 'checkMasterBeforeUpdate', order => orderValidators.checkMasterIsFree(sequelize,order))
+  // Order.addHook('beforeDestroy', 'removeGoogleCalendarEvent', order => order.deleteGoogleCalendarEvent())
 
   return Order
 }
