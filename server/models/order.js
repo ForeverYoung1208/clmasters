@@ -31,12 +31,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       }
 
-      const calendarEventId = await makeGoogleCalendarEvent(eventData)
-      this.calendarEventId =calendarEventId
-      //TODO: I CAN'T UNDERSTAND WHY calendarEventId IS NULL/UNDEFINED HERE
-      const result = await this.save()
-      console.log('[result]', result)
-      
+      let { data: {id} } = await makeGoogleCalendarEvent(eventData)
+      this.calendarEventId = id
+      await this.save()
     }
 
     static async getAtDate(dateStr) {

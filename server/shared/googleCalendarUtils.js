@@ -7,7 +7,6 @@
 const { google } = require('googleapis')
 const CALENDAR_ID = 'uq3drdoc4lgcb7cgqr7m3dn3g0@group.calendar.google.com'
 
-
 const auth = new google.auth.GoogleAuth({
   keyFile: 'google_service_keys.json',
   scopes: ['https://www.googleapis.com/auth/calendar'],
@@ -19,35 +18,23 @@ const calendar = google.calendar({
 })
 
 const makeGoogleCalendarEvent = async (eventData) => {
-  let newEventId
-  await calendar.events.insert(
-    {
-      auth: auth,
-      calendarId: CALENDAR_ID,
-      resource: eventData,
-    },
-    function (err, event) {
-      if (err) throw new Error('There was an error contacting the Calendar service: ' + err)
-
-      console.log('Event created: %s', JSON.stringify(event.data))
-      newEventId = event.data.id
-    }
-  )
-  return newEventId
+  const newCalendarEvent = await calendar.events.insert({
+    auth: auth,
+    calendarId: CALENDAR_ID,
+    resource: eventData,
+  })
+  return newCalendarEvent
 }
 
 const deleteGoogleCalendarEvent = async (eventId) => {
-  calendar.events.delete(
-    {
-      auth: auth,
-      calendarId: CALENDAR_ID,
-      eventId
-    }
-  )
+  calendar.events.delete({
+    auth: auth,
+    calendarId: CALENDAR_ID,
+    eventId,
+  })
 }
-
 
 module.exports = {
   makeGoogleCalendarEvent,
-  deleteGoogleCalendarEvent
+  deleteGoogleCalendarEvent,
 }
