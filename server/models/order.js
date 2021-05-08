@@ -1,7 +1,7 @@
 'use strict'
 const { Op } = require('sequelize')
 const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
-const { startOfDay, endOfDay, isThisYear } = require('date-fns')
+const { startOfDay, endOfDay } = require('date-fns')
 const orderValidators = require('./validators/orderValidators')
 const {
   makeGoogleCalendarEvent,
@@ -11,7 +11,32 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     async putToGoogleCalendar() {
-      const { clock, user, master, comment, onTime, id } = this
+      let {
+        clock,
+        clockId,
+        user,
+        userId,
+        master,
+        masterId,
+        comment,
+        onTime,
+        id,
+      } = this
+
+      // in case if this method was called on instance without bound associations
+      if (!clock) clock = await sequelize.models.Clock.findByPk(clockId)
+      if (!user) user = await sequelize.models.User.findByPk(userId)
+      if (!master){
+        master = await sequelize.models.Master.findOne({
+          where: { id: masterId },
+          include: [
+            {
+              model: sequelize.models.City,
+              as: 'city',
+            },
+          ],
+        })
+      }
 
       const endTime = new Date(
         onTime.valueOf() + new Date(`1970-01-01T${clock.repairTime}Z`).valueOf()
@@ -34,10 +59,12 @@ module.exports = (sequelize, DataTypes) => {
       }
 
       const {
-        data: { id:eventId },
+        data: { id: eventId },
       } = await makeGoogleCalendarEvent(eventData)
       this.calendarEventId = eventId
-      await this.save()
+      
+      //should ignore hooks to prevent infinite loop
+      await this.save({ hooks: false })
     }
 
     async deleteFromGoogleCalendar() {
@@ -123,14 +150,26 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       hooks: {
-        beforeDestroy: (order) => {
-          order.deleteGoogleCalendarEvent()
-        }
-      }
+        beforeUpdate: (order) => {
+          order.deleteFromGoogleCalendar()
+        },
+        afterUpdate: (order) => {
+          order.putToGoogleCalendar()
+        },
+        afterDestroy: (order) => {
+          order.deleteFromGoogleCalendar()
+        },
+        afterCreate: (order) => {
+          order.putToGoogleCalendar()
+        },
+
+        // no need in 'afterBulkDestroy' hook because we are using
+        // {individualHooks: true } on delete calls
+      },
     }
   )
 
-  // example of defining hooks. Great thing, for future knowledge.
+  // example of the other way to define hooks (with name). Great thing, for future knowledge.
   // Order.addHook('beforeCreate', 'checkMasterBeforeCreate', order => orderValidators.checkMasterIsFree(sequelize,order))
   // Order.addHook('beforeDestroy', 'removeGoogleCalendarEvent', order => order.deleteGoogleCalendarEvent())
 

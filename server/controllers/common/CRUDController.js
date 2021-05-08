@@ -102,8 +102,10 @@ class CRUDController {
 
   async delete(req, res) {
     const { id } = req.params
-
-    const deletedRows = await this.model.destroy({ where: { id } })
+    
+    // should use individualHooks: true  to invoke individual hooks on instances that use
+    // hooks (for example, orders, to delete events from calendar)
+    const deletedRows = await this.model.destroy({ where: { id }, individualHooks: true })
 
     if (deletedRows < 1)
       return res.status(500).json({

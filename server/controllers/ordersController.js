@@ -180,8 +180,8 @@ class OrdersController extends CRUDController {
       ],
     })
 
-    //put created order to google calendar
-    newOrders[0].putToGoogleCalendar()
+    //put created order to google calendar //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // newOrders[0].putToGoogleCalendar()
 
     // gather information for email
     const { master, clock } = newOrders[0]
@@ -256,7 +256,7 @@ class OrdersController extends CRUDController {
       })
 
     // delete old google calendar event    
-    await orderToUpdate.deleteFromGoogleCalendar()
+    // await orderToUpdate.deleteFromGoogleCalendar()  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     // update record with new data
     Object.assign(orderToUpdate, data)
@@ -302,15 +302,15 @@ class OrdersController extends CRUDController {
       ],
     })
 
-    //put created order to google calendar
-    try {
-      updatedOrders[0].putToGoogleCalendar()
-    } catch (error) {
-      return res.stats(500).json({
-        message: 'Error registering event at google calendar',
-        error,
-      })
-    }
+    //put created order to google calendar     //////////////////////////////////////////////////////////////////
+    // try {
+    //   updatedOrders[0].putToGoogleCalendar()
+    // } catch (error) {
+    //   return res.stats(500).json({
+    //     message: 'Error registering event at google calendar',
+    //     error,
+    //   })
+    // }
 
     //prepare data to send as responce
     const { master, clock, user } = updatedOrders[0]

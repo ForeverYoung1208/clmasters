@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@material-ui/core'
 import React, { useMemo } from 'react'
-import OrderToGoogleCalendarBtn from '../../../components/OrderToGoogleCalendarBtn/OrderToGoogleCalendarBtn'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -69,9 +68,6 @@ export const OrdersInfo = ({ orders, heading }) => {
                 ))}
               </TableBody>
             </Table>
-            {/* considered to move to backend */}
-            {/* <OrderToGoogleCalendarBtn order={order}/> */}
-            
           </Box>
         )
       })}

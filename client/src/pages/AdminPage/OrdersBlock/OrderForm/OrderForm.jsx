@@ -12,7 +12,6 @@ import { fetchClocks } from '../../../../store/actions/clocks'
 import { fetchMasters } from '../../../../store/actions/masters'
 import { fetchUsers } from '../../../../store/actions/users'
 import { addHours, startOfHour } from 'date-fns'
-import OrderToGoogleCalendarBtn from '../../../../components/OrderToGoogleCalendarBtn/OrderToGoogleCalendarBtn'
 
 const ONE_HOUR_MSEC = new Date('1970-01-01T01:00:00Z')
 
