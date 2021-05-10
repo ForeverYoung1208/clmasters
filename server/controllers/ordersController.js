@@ -97,6 +97,7 @@ class OrdersController extends CRUDController {
       order.userEmail = o.user.email
       order.masterName = o.master.name
       order.clockType = o.clock.type
+      order.repairTime = o.clock.repairTime
       order.masterCity = o.master.city.name
       return order
     })

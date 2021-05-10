@@ -1,5 +1,7 @@
 import { Box, makeStyles, Typography } from '@material-ui/core'
+import { getDate, getHours } from 'date-fns'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -20,7 +22,11 @@ const useStyles = makeStyles((theme) => ({
   },
   td: {
     border: `solid 1px ${theme.palette.primary.light}`,
-  }
+  },
+  firstColumnHeader: {
+    width: '40px',
+    borderRight: `solid 1px ${theme.palette.primary.light}`,
+  },
 }))
 
 const days = Array.from(Array(31), (el, i) => i + 1)
@@ -28,6 +34,39 @@ const hours = Array.from(Array(24), (el, i) => i + 1)
 
 export const DashboardBlock = () => {
   const classes = useStyles()
+  const orders = useSelector(({ orders }) => orders.data)
+  
+  //todo: make as useCallback
+  const ordersByMonths = orders.reduce((accumulator, order) => {
+    const orderDateTime = new Date(order.onTime);
+    const orderMonth = orderDateTime.toLocaleString('default', { month: 'long' })
+    const orderData = {
+      orderDay: getDate(orderDateTime),
+      orderStart: getHours(orderDateTime),
+      orderEnd: getHours(new Date(
+        orderDateTime.valueOf() +
+        (new Date(`1970-01-01T${order.repairTime}Z`)).valueOf()
+      ))
+    }
+    const i = accumulator.findIndex(a => a.month === orderMonth)
+    if (i > 0) {
+      accumulator[i].orders.push(orderData)
+    } else {
+      accumulator.push({
+        month: orderMonth,
+        orders: [orderData]
+      })
+    }
+    return [ ...accumulator ]
+  }, [])
+  // desired structure:
+  // [{ month:'January' , orders: [{},{},{}] }])
+  
+  // todo: issue: months are not agregated, need to debug!!!! or refactor... 
+
+  console.log('[ordersByMonths]', ordersByMonths)
+
+  
   return (
     <div>
       <Box className={classes.googleLink}>
@@ -46,7 +85,10 @@ export const DashboardBlock = () => {
         <table className={classes.table}>
           <thead>
             <tr>
-              <th style={{minWidth:'50px'}}>day</th>
+                <th className={classes.firstColumnHeader} rowSpan='2'> days</th>
+                <th colSpan='24'>Hours</th>
+            </tr>
+            <tr>
               {hours.map((hour) => (
                 <th key={hour}>{hour}</th>
               ))}
