@@ -223,6 +223,7 @@ class OrdersController extends CRUDController {
       masterName: master.name,
       masterCity: master.city.name,
       clockType: clock.type,
+      repairTime: clock.repairTime,
       isEmailSent: emailResult.response.ok,
     }
 
@@ -327,6 +328,7 @@ class OrdersController extends CRUDController {
       userEmail: user.email,
       masterName: master.name,
       masterCity: master.city.name,
+      repairTime: clock.repairTime,
       clockType: clock.type,
     }
 

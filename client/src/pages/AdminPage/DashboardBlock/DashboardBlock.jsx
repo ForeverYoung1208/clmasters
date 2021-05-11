@@ -1,6 +1,6 @@
 import { Box, makeStyles, Typography } from '@material-ui/core'
 import { getDate, getHours } from 'date-fns'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '1rem',
     textAlign: 'center',
   },
-  dashboard: {margin:'1rem'},
+  dashboard: { margin: '1rem' },
   table: {
     tableLayout: 'fixed',
     width: '100%',
@@ -35,38 +35,43 @@ const hours = Array.from(Array(24), (el, i) => i + 1)
 export const DashboardBlock = () => {
   const classes = useStyles()
   const orders = useSelector(({ orders }) => orders.data)
-  
+  const [month, setMonth] = useState()
+  const [ordersByMonths, setOrdersByMonths] = useState()
+
   //todo: make as useCallback
-  const ordersByMonths = orders.reduce((accumulator, order) => {
-    const orderDateTime = new Date(order.onTime);
-    const orderMonth = orderDateTime.toLocaleString('default', { month: 'long' })
-    const orderData = {
-      orderDay: getDate(orderDateTime),
-      orderStart: getHours(orderDateTime),
-      orderEnd: getHours(new Date(
-        orderDateTime.valueOf() +
-        (new Date(`1970-01-01T${order.repairTime}Z`)).valueOf()
-      ))
-    }
-    const i = accumulator.findIndex(a => a.month === orderMonth)
-    if (i > 0) {
-      accumulator[i].orders.push(orderData)
-    } else {
-      accumulator.push({
-        month: orderMonth,
-        orders: [orderData]
+  useEffect(() => {
+    const _ordersByMonths = orders.reduce((accumulator, order) => {
+      const orderDateTime = new Date(order.onTime)
+      const orderMonth = orderDateTime.toLocaleString('default', {
+        month: 'long',
       })
+      const orderData = {
+        orderDay: getDate(orderDateTime),
+        orderStart: getHours(orderDateTime),
+        orderEnd:
+          getHours(
+            new Date(
+              orderDateTime.valueOf() +
+                new Date(`1970-01-01T${order.repairTime}Z`).valueOf()
+            )
+          ) - 1,
+      }
+      if (accumulator[orderMonth]) {
+        accumulator[orderMonth].push(orderData)
+      } else {
+        accumulator[orderMonth] = [orderData]
+      }
+      return accumulator
+    }, {}) // reduce
+
+    if (_ordersByMonths[0]) {
+      setOrdersByMonths(_ordersByMonths)
+      setMonth(_ordersByMonths[0].month)
     }
-    return [ ...accumulator ]
-  }, [])
-  // desired structure:
-  // [{ month:'January' , orders: [{},{},{}] }])
-  
-  // todo: issue: months are not agregated, need to debug!!!! or refactor... 
+  }, [orders]) //useEffect
+  // result structure:
+  // { 'January': [{},{},{}] })
 
-  console.log('[ordersByMonths]', ordersByMonths)
-
-  
   return (
     <div>
       <Box className={classes.googleLink}>
@@ -85,8 +90,11 @@ export const DashboardBlock = () => {
         <table className={classes.table}>
           <thead>
             <tr>
-                <th className={classes.firstColumnHeader} rowSpan='2'> days</th>
-                <th colSpan='24'>Hours</th>
+              <th className={classes.firstColumnHeader} rowSpan="2">
+                {' '}
+                days
+              </th>
+              <th colSpan="24">Hours</th>
             </tr>
             <tr>
               {hours.map((hour) => (
@@ -99,7 +107,8 @@ export const DashboardBlock = () => {
               <tr key={day}>
                 <td>{day}</td>
                 {hours.map((hour) => (
-                  <td className={classes.td}
+                  <td
+                    className={classes.td}
                     key={hour}
                     data-day={day}
                     data-hour={hour}
