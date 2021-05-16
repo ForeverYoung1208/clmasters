@@ -15,7 +15,6 @@ router.put(
   '/:id',
   accessTokenToEmail,
   checkEmailIsAdmin,
-  // TODO: add admin authorization check, here and other routes
   citiesController.putValidators(),
   async (req, res) => citiesController.put(req, res)
 )

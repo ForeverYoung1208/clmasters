@@ -43,22 +43,3 @@ module.exports = {
     await queryInterface.dropTable('Masters')
   }
 }
-
-// To create an attribute with a foreign key relationship, use the "references" and "referencesKey" fields:
-
-// For example, the following would create a users table, and a user_emails table which references the users table.
-
-// queryInterface.createTable('users', {
-//   id: {
-//     type: Sequelize.INTEGER,
-//     primaryKey: true,
-//     autoIncrement: true
-//   }
-// }).then(function() {
-//   queryInterface.createTable('user_emails', {
-//     userId: {
-//       type: Sequelize.INTEGER,
-//       references: { model: 'users', key: 'id' }
-//     }
-//   })
-// });
