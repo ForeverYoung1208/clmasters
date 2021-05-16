@@ -1,7 +1,9 @@
 import { Box, makeStyles, Typography } from '@material-ui/core'
-import { getDate, getHours } from 'date-fns'
-import React, { useEffect, useState } from 'react'
+import { getDate, getDaysInMonth, getHours } from 'date-fns'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
+import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -29,20 +31,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const days = Array.from(Array(31), (el, i) => i + 1)
-const hours = Array.from(Array(24), (el, i) => i + 1)
 
 export const DashboardBlock = () => {
   const classes = useStyles()
   const orders = useSelector(({ orders }) => orders.data)
+  const days = useCallback((monthAndYear) => {
+    const d = new Date(monthAndYear)
+    return Array.from(Array(getDaysInMonth(d)), (el, i) => i + 1)
+  }, [])
+
+  const hours = Array.from(Array(24), (el, i) => i + 1)
+
+
   const [month, setMonth] = useState()
   const [ordersByMonths, setOrdersByMonths] = useState()
 
-  //todo: make as useCallback
   useEffect(() => {
-    const _ordersByMonths = orders.reduce((accumulator, order) => {
+    let orderMonth = 'No Orders'
+
+    const _ordersByMonths = orders
+      .sort((o1, o2) => (new Date(o1.onTime)).valueOf() - (new Date(o2.onTime)).valueOf())
+      .reduce((accumulator, order) => {
       const orderDateTime = new Date(order.onTime)
-      const orderMonth = orderDateTime.toLocaleString('default', {
+      orderMonth = orderDateTime.toLocaleString('default', {
+        year: 'numeric',
         month: 'long',
       })
       const orderData = {
@@ -63,14 +75,14 @@ export const DashboardBlock = () => {
       }
       return accumulator
     }, {}) // reduce
-
-    if (_ordersByMonths[0]) {
-      setOrdersByMonths(_ordersByMonths)
-      setMonth(_ordersByMonths[0].month)
-    }
+    // result structure:
+    // { 'January 2021': [{orderDay, orderStart, orderEnd },{...},{...}, ... ] })
+    
+    setMonth(orderMonth)
+    setOrdersByMonths(_ordersByMonths)
+    
   }, [orders]) //useEffect
-  // result structure:
-  // { 'January': [{},{},{}] })
+
 
   return (
     <div>
@@ -87,40 +99,47 @@ export const DashboardBlock = () => {
         </Typography>
       </Box>
       <div className={classes.dashboard}>
-        <table className={classes.table}>
-          <thead>
-            <tr>
-              <th className={classes.firstColumnHeader} rowSpan="2">
-                {' '}
-                days
-              </th>
-              <th colSpan="24">Hours</th>
-            </tr>
-            <tr>
-              {hours.map((hour) => (
-                <th key={hour}>{hour}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {days.map((day) => (
-              <tr key={day}>
-                <td>{day}</td>
+        <>
+          <Typography align="center">
+            <ArrowLeftIcon /> {month} <ArrowRightIcon />{' '}
+          </Typography>
+          <table className={classes.table}>
+            <thead>
+              <tr>
+                <th className={classes.firstColumnHeader} rowSpan="2">
+                  {' '}
+                  days
+                </th>
+                <th colSpan="24">Hours</th>
+              </tr>
+              <tr>
                 {hours.map((hour) => (
-                  <td
-                    className={classes.td}
-                    key={hour}
-                    data-day={day}
-                    data-hour={hour}
-                    onClick={(e) => console.log(e.target.dataset)}
-                  >
-                    &nbsp;
-                  </td>
+                  <th key={hour}>{hour}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {days('May 2021').map((day) => (
+                <tr key={day}>
+                  <td>{day}</td>
+                  {hours.map((hour) => (
+                    <td
+                      className={classes.td}
+                      key={hour}
+                      data-day={day}
+                      data-hour={hour}
+                      onClick={(e) => console.log(e.target.dataset)}
+                    >
+                      
+                      // TODO: conditional rendering
+                      &nbsp;
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
       </div>
     </div>
   )
