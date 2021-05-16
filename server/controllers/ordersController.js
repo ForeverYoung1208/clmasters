@@ -181,9 +181,6 @@ class OrdersController extends CRUDController {
       ],
     })
 
-    //put created order to google calendar //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // newOrders[0].putToGoogleCalendar()
-
     // gather information for email
     const { master, clock } = newOrders[0]
     const ukrTime = utcToZonedTime(newOrders[0].onTime, timeZone)
@@ -214,7 +211,7 @@ class OrdersController extends CRUDController {
       user: wipedUser,
       master: wipedMaster,
       clock: wipedClock,
-      calendarEventId: wipedCalendarEventId,      
+      calendarEventId: wipedCalendarEventId,
       ...orderToSend
     } = {
       ...noTimestamps(newOrders[0].dataValues),
@@ -257,9 +254,6 @@ class OrdersController extends CRUDController {
         message: `Model with id:${id} not found`,
       })
 
-    // delete old google calendar event    
-    // await orderToUpdate.deleteFromGoogleCalendar()  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     // update record with new data
     Object.assign(orderToUpdate, data)
 
@@ -304,16 +298,6 @@ class OrdersController extends CRUDController {
       ],
     })
 
-    //put created order to google calendar     //////////////////////////////////////////////////////////////////
-    // try {
-    //   updatedOrders[0].putToGoogleCalendar()
-    // } catch (error) {
-    //   return res.stats(500).json({
-    //     message: 'Error registering event at google calendar',
-    //     error,
-    //   })
-    // }
-
     //prepare data to send as responce
     const { master, clock, user } = updatedOrders[0]
     const {
@@ -333,8 +317,6 @@ class OrdersController extends CRUDController {
     }
 
     return res.status(200).json(orderToSend)
-
-    // return res.status(200).json(noTimestamps(updatedOrder.dataValues))
   }
 
   putValidators() {

@@ -9,7 +9,6 @@ export const MenuItem = (props) => {
     props.isShown &&
       <NavLink
         to={props.path}
-        // exact=true
         className="menu__menuItem"
         activeClassName="menu__menuItem__active"
       >
