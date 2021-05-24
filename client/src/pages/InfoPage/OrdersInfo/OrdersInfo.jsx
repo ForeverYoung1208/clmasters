@@ -38,7 +38,7 @@ export const OrdersInfo = ({ orders, heading }) => {
     }),
     []
   )
-
+  
   return (
     <div>
       <Typography align="center" variant="h6" className={classes.heading}>

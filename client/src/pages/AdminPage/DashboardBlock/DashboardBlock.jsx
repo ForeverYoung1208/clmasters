@@ -1,16 +1,11 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
 import { getDate, getDaysInMonth, getHours } from 'date-fns'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import { HourCell } from './HourCell/HourCell'
-import { setErrorMessage } from '../../../store/actions/main'
-import { putOrder } from '../../../store/actions/orders'
-import { ORDERS_PUT_REJECTED } from '../../../store/actions/actionTypes/orders'
-import { normalizeFormSubmitError } from '../../../shared/js/normalizeFormSubmitError'
-import { SubmissionError } from 'redux-form'
-import { OrderEditDialog } from '../OrdersBlock/OrderEditDialog/OrderEditDialog'
+import { OrderInfoDialog } from './OrderInfoDialog/OrderInfoDialog'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const DashboardBlock = () => {
   const classes = useStyles()
-  const dispatch=useDispatch()
   const orders = useSelector(({ orders }) => orders.data)
   const daysOfMonth = useCallback((monthAndYear) => {
     if (!monthAndYear) return []
@@ -49,29 +43,8 @@ export const DashboardBlock = () => {
 
   const [month, setMonth] = useState()
   const [ordersByMonths, setOrdersByMonths] = useState()
-  const [editingOrderId, setEditingOrderId] = useState(null)
-  
-  const startEditHandler = useCallback(
-    (id) => {
-      dispatch(setErrorMessage(''))
-      setEditingOrderId(id)
-    },
-    [dispatch]
-  )
-  const saveHandler = useCallback(
-    async (order) => {
-      const action = await dispatch(putOrder({ order, setEditingOrderId }))
-      if (action.type === ORDERS_PUT_REJECTED) {
-        const formSubmitError = normalizeFormSubmitError(action.payload?.errors)
-        throw new SubmissionError(formSubmitError)
-      }
-    },
-    [dispatch]
-  )
-  const closeEditHandler = useCallback(() => {
-    setEditingOrderId(null)
-  }, [setEditingOrderId])  
-  
+  const [shownOrderId, setShownOrderId] = useState(null)
+ 
   const handleMonthChange = useCallback((direction) => {
     const usedMonths = Object.keys(ordersByMonths)
     const monthIndex = usedMonths.findIndex(m => m === month)
@@ -171,7 +144,7 @@ export const DashboardBlock = () => {
                       currentHour={hour}
                       currentDay={day}
                       ordersInDay={ordersByMonths[month].filter(o => o.orderDay === day)}
-                      startEditHandler={startEditHandler}
+                      clickHandler={(orderId) => {setShownOrderId(orderId)}}
                     />
                   ))}
                 </tr>
@@ -181,12 +154,10 @@ export const DashboardBlock = () => {
         </>
       </div>
       
-      <OrderEditDialog
-        caption={'Edit Order'}
-        open={!!editingOrderId}
-        onClose={closeEditHandler}
-        onSave={saveHandler}
-        orderId={editingOrderId}
+      <OrderInfoDialog
+        open={!!shownOrderId}
+        orderId={shownOrderId}
+        closeDialogHandler={() => setShownOrderId(null)}
       />
       
     </div>
