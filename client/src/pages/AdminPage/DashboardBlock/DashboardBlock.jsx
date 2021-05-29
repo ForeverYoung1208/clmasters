@@ -1,11 +1,12 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
 import { getDate, getDaysInMonth, getHours } from 'date-fns'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import { HourCell } from './HourCell/HourCell'
 import { OrderInfoDialog } from './OrderInfoDialog/OrderInfoDialog'
+import { fetchOrders } from '../../../store/actions/orders'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export const DashboardBlock = () => {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const orders = useSelector(({ orders }) => orders.data)
   const daysOfMonth = useCallback((monthAndYear) => {
@@ -97,6 +99,10 @@ export const DashboardBlock = () => {
     setMonth(ordersMonth)
     setOrdersByMonths(_ordersByMonths)
   }, [orders]) //useEffect
+  
+  useEffect(() => {
+    dispatch(fetchOrders())
+  }, [dispatch])
 
   return (
     <div>
