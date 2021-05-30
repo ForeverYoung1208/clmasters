@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react'
-import { Box } from '@material-ui/core'
+import React, { useCallback, useEffect, useMemo } from 'react'
+import { Box, makeStyles, Typography } from '@material-ui/core'
 import { reduxForm, Field } from 'redux-form'
 import { Button } from '../../../../components/Button/Button'
 import { RenderFieldInput } from '../../../../components/ReduxForm/RenderFieldInput/RenderFieldInputMUI'
@@ -12,8 +12,18 @@ import { fetchClocks } from '../../../../store/actions/clocks'
 import { fetchMasters } from '../../../../store/actions/masters'
 import { fetchUsers } from '../../../../store/actions/users'
 import { addHours, startOfHour } from 'date-fns'
+import { showUploadWidget } from '../../../../shared/js/myCloudinaryUtils'
 
 const ONE_HOUR_MSEC = new Date('1970-01-01T01:00:00Z')
+const useStyles = makeStyles(() => ({
+  photo: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    border: 'solid 1px',
+    alignItems: 'center',
+  }
+}))
 
 let OrderForm = ({
   handleSubmit,
@@ -25,6 +35,7 @@ let OrderForm = ({
 }) => {
   const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   useEffect(() => {
     initialize({
@@ -40,13 +51,13 @@ let OrderForm = ({
   const users = useSelector(({ users }) => users?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
   const masters = useSelector(({ masters }) => masters?.data)
-  const [
-    selectedMasterId,
-    selectedClockId,
-  ] = useSelector(({ form: { order } }) => [
-    order?.values?.masterId,
-    order?.values?.clockId,
-  ])
+  const [selectedMasterId, selectedClockId, thumbnailUrl] = useSelector(
+    ({ form: { order } }) => [
+      order?.values?.masterId,
+      order?.values?.clockId,
+      order?.values?.thumbnailUrl,
+    ]
+  )
 
   const clocksOptions = useMemo(() => {
     return clocks.map((clock) => ({
@@ -63,6 +74,20 @@ let OrderForm = ({
         name: `${master.name} (hour rate: ${master.hourRate})`,
       }))
   }, [masters])
+
+  const photoUploadedHandler = useCallback(
+    (photoInfo) => {
+      const { thumbnail_url: thumbnailUrl, public_id: photoPublicId } =
+        photoInfo
+      changeFormData('thumbnailUrl', thumbnailUrl)
+      changeFormData('photoPublicId', photoPublicId)
+    },
+    [changeFormData]
+  )
+
+  const errorHandler = useCallback((error) => {
+    console.log('[error]', error)
+  }, [])
 
   useEffect(() => {
     const selectedMaster = masters.find((m) => +m.id === selectedMasterId)
@@ -132,7 +157,33 @@ let OrderForm = ({
         <div>
           <Field label="Comment" name="comment" component={RenderFieldInput} />
         </div>
-        <Box display="flex" justifyContent="center">
+
+        <Typography>Photo:</Typography>
+          <Field
+            name="thumbnailUrl"
+            component={RenderFieldInput}
+            display="none"
+          />
+          <Field
+            name="photoPublicId"
+            component={RenderFieldInput}
+            display="none"
+          />
+          
+        <Box className={classes.photo}>
+          {thumbnailUrl ? <img src={thumbnailUrl} alt="Clock"/> : <Typography>Not found</Typography> }
+          
+          <Button
+            variant="text"
+            onClick={() => {
+              showUploadWidget(photoUploadedHandler, errorHandler)
+            }}
+          >
+            {thumbnailUrl ? 'Change' : 'Upload'}
+          </Button>
+        </Box>
+
+        <Box display="flex" justifyContent="center" marginTop="1em">
           <Button
             color="primary"
             type="submit"
@@ -140,9 +191,6 @@ let OrderForm = ({
           >
             Save
           </Button>
-        </Box>
-        <Box display="flex" justifyContent="center">
-          {/* <OrderToGoogleCalendarBtn order={order} /> */}
         </Box>
       </form>
     </Box>

@@ -7,6 +7,7 @@ export const RenderFieldInput = ({
   placeholder,
   type,
   disabled,
+  display,
   meta: { touched, error, warning },
 }) => {
   const isError = useMemo(() => {
@@ -23,7 +24,9 @@ export const RenderFieldInput = ({
   return (
     <TextField
       {...input}
-      disabled={disabled }
+      disabled={disabled}
+      
+      style={display === 'none' ? { display: 'none' } : null}
       margin="normal"
       error={isError}
       label={label}

@@ -139,6 +139,8 @@ module.exports = (sequelize, DataTypes) => {
       deletedAt: DataTypes.DATE,
       price: DataTypes.DECIMAL,
       calendarEventId: DataTypes.STRING,
+      thumbnailUrl: DataTypes.STRING,
+      photoPublicId: DataTypes.STRING,
     },
     {
       sequelize,
