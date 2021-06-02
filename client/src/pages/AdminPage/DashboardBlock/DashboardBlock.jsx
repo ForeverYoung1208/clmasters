@@ -6,6 +6,7 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import DashboardDay from './DashboardDay/DashboardDay'
 import { fetchOrders } from '../../../store/actions/orders'
+import { OrderInfoDialog } from './OrderInfoDialog/OrderInfoDialog'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +30,7 @@ export const DashboardBlock = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   const orders = useSelector(({ orders }) => orders.data)
+  const [shownOrderId, setShownOrderId] = useState(null)
   const [currentMonthStr, setCurrentMonth] = useState(
     new Date().toLocaleString('default', {
       year: 'numeric',
@@ -106,10 +108,22 @@ export const DashboardBlock = () => {
         </Typography>
         <Box className={classes.days}>
           {daysOfMonth(currentMonthStr).map((day) => (
-            <DashboardDay key={day} orders={orders} day={day} />
+            <DashboardDay
+              key={day}
+              orders={orders}
+              day={day}
+              setShownOrderId={setShownOrderId}
+            />
           ))}
         </Box>
       </div>
+      
+      <OrderInfoDialog
+        open={!!shownOrderId}
+        orderId={shownOrderId}
+        closeDialogHandler={() => setShownOrderId(null)}
+      />
+      
     </div>
   )
 }

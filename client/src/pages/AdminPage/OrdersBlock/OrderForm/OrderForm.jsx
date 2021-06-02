@@ -141,9 +141,6 @@ let OrderForm = ({
             Save
           </Button>
         </Box>
-        <Box display="flex" justifyContent="center">
-          {/* <OrderToGoogleCalendarBtn order={order} /> */}
-        </Box>
       </form>
     </Box>
   )

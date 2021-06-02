@@ -1,6 +1,7 @@
 import { Box, makeStyles } from '@material-ui/core'
+import { format } from 'date-fns'
 import { getDate } from 'date-fns/esm'
-import React from 'react'
+import React, { useCallback } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,20 +12,46 @@ const useStyles = makeStyles((theme) => ({
     padding: '0.1rem',
     margin: '0.1rem',
     overflow: 'auto',
+    fontSize: 'smaller',
+  },
+  dayHeader: {
+    width: '100%',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: theme.palette.primary.dark
+    
+  },
+  order: {
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
 }))
 
-const DashboardDay = ({ orders=[], day }) => {
+const DashboardDay = ({ orders = [], day, setShownOrderId }) => {
   const classes = useStyles()
-  const dailyOrders = orders.filter(o => +getDate(new Date(o.onTime)) === +day)
+  const dailyOrders = orders.filter((o) => +getDate(new Date(o.onTime)) === +day)
+  
   return (
     <Box className={classes.root}>
-      {dailyOrders.map((o) => (
-        <div key={o.id}>
-          <li>{o.id}</li>
-          <li>{o.masterName}</li>
-        </div>
-      ))}
+      <div className={classes.dayHeader}>{day}</div>
+      
+      {dailyOrders && dailyOrders
+        .sort(
+          (a, b) => new Date(a.onTime).valueOf() - new Date(b.onTime).valueOf()
+        )
+        .map((o) => (
+          <div
+            key={o.id}
+            className={classes.order}
+            onClick={() => {
+              setShownOrderId(o.id)
+            }}
+          >
+            {format(new Date(o.onTime), 'HH:mm')}, ({o.masterName})
+          </div>
+        ))}
     </Box>
   )
 }
