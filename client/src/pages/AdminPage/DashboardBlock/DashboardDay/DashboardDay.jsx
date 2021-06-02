@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'inline-block',
     width: '176px',
-    height: '150px',
+    height: '100px',
     border: '1px solid',
     padding: '0.1rem',
     margin: '0.1rem',

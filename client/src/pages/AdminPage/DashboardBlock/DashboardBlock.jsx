@@ -1,10 +1,11 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
 import { addMonths, getDaysInMonth } from 'date-fns'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import DashboardDay from './DashboardDay/DashboardDay'
+import { fetchOrders } from '../../../store/actions/orders'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,10 +68,9 @@ export const DashboardBlock = () => {
     [setCurrentMonth, currentMonthStr]
   )
 
-  // useEffect(() => {
-  //   // TODO: check backend to process such a request correctly
-  //   dispatch(fetchOrders({ monthStr: currentMonthStr }))
-  // }, [dispatch, currentMonthStr])
+  useEffect(() => {
+    dispatch(fetchOrders({ monthStr: currentMonthStr }))
+  }, [dispatch, currentMonthStr])
 
   return (
     <div>
