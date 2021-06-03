@@ -1,5 +1,5 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
-import { addMonths, getDaysInMonth } from 'date-fns'
+import { addMonths, format, getDaysInMonth } from 'date-fns'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
@@ -9,8 +9,7 @@ import { fetchOrders } from '../../../store/actions/orders'
 import { OrderInfoDialog } from './OrderInfoDialog/OrderInfoDialog'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+  root: {},
   googleLink: {
     backgroundColor: theme.palette.background.paper,
     margin: '1rem',
@@ -23,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   days: {
     display: 'flex',
     flexWrap: 'wrap',
-  }
+  },
 }))
 
 export const DashboardBlock = () => {
@@ -32,10 +31,7 @@ export const DashboardBlock = () => {
   const orders = useSelector(({ orders }) => orders.data)
   const [shownOrderId, setShownOrderId] = useState(null)
   const [currentMonthStr, setCurrentMonth] = useState(
-    new Date().toLocaleString('default', {
-      year: 'numeric',
-      month: 'long',
-    })
+    format(new Date(), 'yyyy-MM')
   )
   const daysOfMonth = useCallback((monthStr) => {
     if (!monthStr) return []
@@ -60,10 +56,7 @@ export const DashboardBlock = () => {
           monthDate = new Date()
           break
       }
-      const monthStr = monthDate.toLocaleString('default', {
-        year: 'numeric',
-        month: 'long',
-      })
+      const monthStr = format(monthDate, 'yyyy-MM')
 
       setCurrentMonth(monthStr)
     },
@@ -97,7 +90,10 @@ export const DashboardBlock = () => {
           >
             <ArrowLeftIcon />
           </Button>
-          {currentMonthStr}
+          {new Date(currentMonthStr).toLocaleDateString('default', {
+            year: 'numeric',
+            month: 'long',
+          })}
           <Button
             onClick={() => {
               handleMonthChange('inc')
@@ -117,13 +113,12 @@ export const DashboardBlock = () => {
           ))}
         </Box>
       </div>
-      
+
       <OrderInfoDialog
         open={!!shownOrderId}
         orderId={shownOrderId}
         closeDialogHandler={() => setShownOrderId(null)}
       />
-      
     </div>
   )
 }

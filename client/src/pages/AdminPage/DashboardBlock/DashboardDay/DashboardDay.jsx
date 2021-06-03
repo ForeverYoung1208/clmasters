@@ -1,7 +1,7 @@
 import { Box, makeStyles } from '@material-ui/core'
 import { format } from 'date-fns'
 import { getDate } from 'date-fns/esm'
-import React, { useCallback } from 'react'
+import React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
