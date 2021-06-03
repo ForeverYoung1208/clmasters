@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Box, makeStyles, Typography } from '@material-ui/core'
 import { reduxForm, Field } from 'redux-form'
 import { Button } from '../../../../components/Button/Button'
@@ -13,16 +13,18 @@ import { fetchMasters } from '../../../../store/actions/masters'
 import { fetchUsers } from '../../../../store/actions/users'
 import { addHours, startOfHour } from 'date-fns'
 import { showUploadWidget } from '../../../../shared/js/myCloudinaryUtils'
+import { PhotoModal } from '../../../../components/PhotoModal/PhotoModal'
 
 const ONE_HOUR_MSEC = new Date('1970-01-01T01:00:00Z')
-const useStyles = makeStyles(() => ({
-  photo: {
+const useStyles = makeStyles((theme) => ({
+  photoSmall: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
     border: 'solid 1px',
     alignItems: 'center',
-  }
+    cursor: 'pointer',
+  },
 }))
 
 let OrderForm = ({
@@ -36,6 +38,7 @@ let OrderForm = ({
   const nowHour = useMemo(() => startOfHour(addHours(new Date(), 1)), [])
   const dispatch = useDispatch()
   const classes = useStyles()
+  const [isBigPhotoShown, setIsBigPhotoShown] = useState(false)
 
   useEffect(() => {
     initialize({
@@ -51,13 +54,13 @@ let OrderForm = ({
   const users = useSelector(({ users }) => users?.data)
   const clocks = useSelector(({ clocks }) => clocks?.data)
   const masters = useSelector(({ masters }) => masters?.data)
-  const [selectedMasterId, selectedClockId, thumbnailUrl] = useSelector(
-    ({ form: { order } }) => [
+  const [selectedMasterId, selectedClockId, thumbnailUrl, photoPublicId] =
+    useSelector(({ form: { order } }) => [
       order?.values?.masterId,
       order?.values?.clockId,
       order?.values?.thumbnailUrl,
-    ]
-  )
+      order?.values?.photoPublicId,
+    ])
 
   const clocksOptions = useMemo(() => {
     return clocks.map((clock) => ({
@@ -77,10 +80,9 @@ let OrderForm = ({
 
   const photoUploadedHandler = useCallback(
     (photoInfo) => {
-      const { thumbnail_url: thumbnailUrl, public_id: photoPublicId } =
-        photoInfo
-      changeFormData('thumbnailUrl', thumbnailUrl)
-      changeFormData('photoPublicId', photoPublicId)
+      const { thumbnail_url, public_id } = photoInfo
+      changeFormData('thumbnailUrl', thumbnail_url)
+      changeFormData('photoPublicId', public_id)
     },
     [changeFormData]
   )
@@ -159,20 +161,28 @@ let OrderForm = ({
         </div>
 
         <Typography>Photo:</Typography>
-          <Field
-            name="thumbnailUrl"
-            component={RenderFieldInput}
-            display="none"
-          />
-          <Field
-            name="photoPublicId"
-            component={RenderFieldInput}
-            display="none"
-          />
-          
-        <Box className={classes.photo}>
-          {thumbnailUrl ? <img src={thumbnailUrl} alt="Clock"/> : <Typography>Not found</Typography> }
-          
+        <Field
+          name="thumbnailUrl"
+          component={RenderFieldInput}
+          display="none"
+        />
+        <Field
+          name="photoPublicId"
+          component={RenderFieldInput}
+          display="none"
+        />
+
+        <Box className={classes.photoSmall}>
+          {thumbnailUrl ? (
+            <img
+              src={thumbnailUrl}
+              alt="Clock"
+              onClick={() => setIsBigPhotoShown(true)}
+            />
+          ) : (
+            <Typography>Not found</Typography>
+          )}
+
           <Button
             variant="text"
             onClick={() => {
@@ -193,6 +203,14 @@ let OrderForm = ({
           </Button>
         </Box>
       </form>
+
+      <PhotoModal
+        isOpen={isBigPhotoShown}
+        closeHandler={() => {
+          setIsBigPhotoShown(false)
+        }}
+        photoPublicId={photoPublicId}
+      />
     </Box>
   )
 }
