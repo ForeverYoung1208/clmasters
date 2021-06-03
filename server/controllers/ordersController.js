@@ -7,6 +7,8 @@ const { notInPast } = require('./validators/customValidators')
 const sendEmail = require('../shared/mailjet')
 
 const { utcToZonedTime, format } = require('date-fns-tz')
+const { addMonths } = require('date-fns')
+const { Op } = require('sequelize')
 const timeZone = 'Europe/Kiev'
 
 const ONE_HOUR_MSEC = new Date('1970-01-01T01:00:00Z')
@@ -18,7 +20,7 @@ class OrdersController extends CRUDController {
 
   // overrides parent CRUDcontroller method to add names of associated entities
   async getAll(req, res) {
-    const { page, pageSize, email: emailQuery } = req.query
+    const { page, pageSize, email: emailQuery, monthStr: monthQuery } = req.query
 
     if (page && !pageSize) {
       res.status(400).json({
@@ -46,7 +48,18 @@ class OrdersController extends CRUDController {
     if (emailQuery) {
       whereOptions.where.push({ '$user.email$': emailQuery })
     }
-
+    
+    if (monthQuery) {
+      const monthStart = new Date(monthQuery)
+      const monthEnd = addMonths(new Date(monthQuery), 1)
+      
+      whereOptions.where.push({
+        onTime: {
+          [Op.between]: [monthStart, monthEnd]
+        }
+      })
+    }
+    
     const {
       count: totalCount,
       page: currentPage,
