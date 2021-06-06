@@ -7,6 +7,7 @@ const {
   makeGoogleCalendarEvent,
   deleteGoogleCalendarEvent,
 } = require('../shared/googleCalendarUtils')
+const cloudinary = require('cloudinary').v2
 
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
@@ -26,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       // in case if this method was called on instance without bound associations
       if (!clock) clock = await sequelize.models.Clock.findByPk(clockId)
       if (!user) user = await sequelize.models.User.findByPk(userId)
-      if (!master){
+      if (!master) {
         master = await sequelize.models.Master.findOne({
           where: { id: masterId },
           include: [
@@ -62,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
         data: { id: eventId },
       } = await makeGoogleCalendarEvent(eventData)
       this.calendarEventId = eventId
-      
+
       //should ignore hooks to prevent infinite loop
       await this.save({ hooks: false })
     }
@@ -71,6 +72,35 @@ module.exports = (sequelize, DataTypes) => {
       const { calendarEventId } = this
       if (calendarEventId) {
         await deleteGoogleCalendarEvent(calendarEventId)
+      }
+    }
+
+    deleteFromCloudinary() {
+      const { photoPublicId } = this
+      if (photoPublicId) {
+        cloudinary.api.delete_resources(
+          [photoPublicId],
+          function (error, result) {
+            if (error) {
+              console.log('cloudinary error:', error)
+              throw new Error(error)
+            }
+          }
+        )
+      }
+    }
+
+    checkForPhotoCleanup(order) {
+      if (order._changed.has('photoPublicId') && order._previousDataValues.photoPublicId) {
+        cloudinary.api.delete_resources(
+          [order._previousDataValues.photoPublicId],
+          function (error, result) {
+            if (error) {
+              console.log('cloudinary error:', error)
+              throw new Error(error)
+            }
+          }
+        )
       }
     }
 
@@ -157,9 +187,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         afterUpdate: (order) => {
           order.putToGoogleCalendar()
+          order.checkForPhotoCleanup(order)
         },
         afterDestroy: (order) => {
           order.deleteFromGoogleCalendar()
+          order.deleteFromCloudinary()
         },
         afterCreate: (order) => {
           order.putToGoogleCalendar()

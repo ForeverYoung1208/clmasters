@@ -41,7 +41,6 @@ export const showUploadWidget = (processResult, processError) => {
         console.log('error: ', err)
         processError(err)
       } else {
-        console.log('Upload Widget event - ', info)
         if (info.event === 'success') {
           processResult(info.info)
         }
