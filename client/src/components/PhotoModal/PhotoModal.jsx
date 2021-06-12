@@ -26,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     maxHeight: '90vh',
     maxWidth: '90vw',
-    overflow: 'auto',       
+  },
+  img: {
+    width: '100%',
+    objectFit: 'scale-down'
   },
 }))
 
@@ -38,7 +41,7 @@ export const PhotoModal = ({ isOpen, closeHandler, photoPublicId }) => {
   return (
     <Modal open={isOpen} onClose={closeHandler} className={classes.modal}>
       <Box variant="outlined" className={classes.photoBig}>
-        <img src={bigPhoto.toURL()} alt='big clock' />
+        <img className={classes.img} src={bigPhoto.toURL()} alt='big clock' />
       </Box>
     </Modal>
   )
