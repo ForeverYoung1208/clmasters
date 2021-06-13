@@ -103,6 +103,10 @@ module.exports = (sequelize, DataTypes) => {
         )
       }
     }
+    
+    isPayed() {
+      return ( Math.abs(this.payedSum - this.price) < 0.01)
+    }
 
     static async getAtDate(dateStr) {
       const { startOfDay, endOfDay } = require('date-fns')
@@ -171,6 +175,7 @@ module.exports = (sequelize, DataTypes) => {
       calendarEventId: DataTypes.STRING,
       thumbnailUrl: DataTypes.STRING,
       photoPublicId: DataTypes.STRING,
+      payedSum: DataTypes.DECIMAL,
     },
     {
       sequelize,

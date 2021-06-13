@@ -18,6 +18,7 @@ import { ORDERS_POST_FULFILLED } from '../../store/actions/actionTypes/orders'
 import { normalizeFormSubmitError } from '../../shared/js/normalizeFormSubmitError'
 import { SubmissionError } from 'redux-form'
 import { PREORDERS_POST_REJECTED } from '../../store/actions/actionTypes/preorders'
+import PaymentBlock from './PaymentBlock/PaymentBlock'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +52,7 @@ const MastersPage = () => {
       dispatch(setRegisteredOrder(result.payload))
       dispatch(forgetPreorder())
       dispatch(clearFoundMasters())
-      dispatch(redirectTo('/info'))
+      dispatch(redirectTo('/masters/payment'))
     }
   }
 
@@ -72,6 +73,9 @@ const MastersPage = () => {
         </Route>
         <Route path="/masters/order">
           <OrderForm onSubmit={handleSubmitOrder} />
+        </Route>
+        <Route path="/masters/payment">
+          <PaymentBlock />
         </Route>
       </Switch>
     </div>

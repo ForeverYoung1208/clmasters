@@ -7,7 +7,8 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core'
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Button } from '../../../components/Button/Button'
 import { PhotoModal } from '../../../components/PhotoModal/PhotoModal'
 
 const useStyles = makeStyles((theme) => {
@@ -41,9 +42,15 @@ export const OrdersInfo = ({ orders, heading }) => {
       masterCity: 'City:',
       onTimeStr: 'On Time:',
       comment: 'Comment',
+      price: 'Price',
     }),
     []
   )
+  
+  const onClickPay = useCallback((order) => {
+    console.log('go Pay!!!!!')
+    console.log('[order]', order)
+  },[])
 
   return (
     <div>
@@ -71,6 +78,23 @@ export const OrdersInfo = ({ orders, heading }) => {
                     </TableCell>
                   </TableRow>
                 ))}
+                
+                <TableRow>
+                  <TableCell className={classes.cellLabel} >
+                    Payed sum
+                  </TableCell>
+                  <TableCell className={classes.cellData} >
+                    {order.payedSum ? order.payedSum : '0'}
+                    &nbsp;
+                    {(Math.abs(order.payedSum - order.price) < 0.009)
+                      ? null
+                      : <Button align="center" onClick={() => onClickPay(order)}>
+                          make a payment
+                        </Button>
+                    }
+                  </TableCell>
+                </TableRow>
+                
                 <TableRow>
                   <TableCell className={classes.cellLabel}>Photo</TableCell>
                   <TableCell className={classes.cellData}>
