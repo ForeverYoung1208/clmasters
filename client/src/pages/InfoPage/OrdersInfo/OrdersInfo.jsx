@@ -7,9 +7,10 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Button } from '../../../components/Button/Button'
 import { PhotoModal } from '../../../components/PhotoModal/PhotoModal'
+import PaymentBlock from '../../MastersPage/PaymentBlock/PaymentBlock'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -32,6 +33,8 @@ const useStyles = makeStyles((theme) => {
 export const OrdersInfo = ({ orders, heading }) => {
   const classes = useStyles()
   const [photoPublicId, setPhotoPublicId] = useState(null)
+  const [orderForPay, setOrderForPay] = useState(null)
+  
 
   const fieldsToShow = useMemo(
     () => ({
@@ -47,11 +50,6 @@ export const OrdersInfo = ({ orders, heading }) => {
     []
   )
   
-  const onClickPay = useCallback((order) => {
-    console.log('go Pay!!!!!')
-    console.log('[order]', order)
-  },[])
-
   return (
     <div>
       <Typography align="center" variant="h6" className={classes.heading}>
@@ -88,7 +86,7 @@ export const OrdersInfo = ({ orders, heading }) => {
                     &nbsp;
                     {(Math.abs(order.payedSum - order.price) < 0.009)
                       ? null
-                      : <Button align="center" onClick={() => onClickPay(order)}>
+                      : <Button align="center" onClick={() => setOrderForPay(order)}>
                           make a payment
                         </Button>
                     }
@@ -121,6 +119,13 @@ export const OrdersInfo = ({ orders, heading }) => {
           setPhotoPublicId(null)
         }}
         photoPublicId={photoPublicId}
+      />
+      <PaymentBlock
+        isOpen={!!orderForPay}
+        closeHandler={() => {
+          setOrderForPay(null)
+        }}
+        orderForPay = {orderForPay}
       />
     </div>
   )

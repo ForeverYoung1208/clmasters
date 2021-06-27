@@ -25,7 +25,7 @@ class PaymentController {
                 name: 'TEST Stubborn Attachments', //TODO: change!!!
                 images: ['https://i.imgur.com/EHyR2nP.png'], //TODO: change!!!
               },
-              unit_amount: 2, //TODO: change!!!
+              unit_amount: 200, //TODO: change!!!
             },
             quantity: 3, //TODO: change!!!
           },
@@ -46,4 +46,4 @@ class PaymentController {
   }
 }
 
-exports.authController = new PaymentController()
+exports.paymentController = new PaymentController()

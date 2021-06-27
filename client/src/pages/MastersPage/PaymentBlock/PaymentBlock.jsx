@@ -1,24 +1,66 @@
 // https://stripe.com/docs/development/quickstart
 // https://stripe.com/docs/checkout/integration-builder
+// https://stripe.com/docs/payments/accept-a-payment?platform=web&ui=checkout#redirect-customers
 
 import React from 'react'
-import { makeStyles } from '@material-ui/core'
-import { loadStripe } from "@stripe/stripe-js";
+import { Box, makeStyles, Modal, Typography } from '@material-ui/core'
+import { loadStripe } from '@stripe/stripe-js'
+import { Button } from '../../../components/Button/Button'
+import { apiPaymentCreateSession } from '../../../shared/js/api/payment'
 
-const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
+const REACT_APP_STRIPE_PK =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_STRIPE_PK_PRODUCTION
+    : process.env.REACT_APP_STRIPE_PK_DEVELOPMENT
+
+const stripePromise = loadStripe(REACT_APP_STRIPE_PK)
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  modal: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    maxWidth: '80%',
+    padding: theme.spacing(1)
+  }
 }))
 
-const PaymentBlock = () => {
+const PaymentBlock = ({ orderForPay, isOpen, closeHandler }) => {
   const classes = useStyles()
+
+  const handlePaymentClick = async (event) => {
+    const stripe = await stripePromise
+    const session = await apiPaymentCreateSession()
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    })
+
+    if (result.error) {
+      console.log('Payment error:')
+      console.log('[result]', result)
+      // If `redirectToCheckout` fails due to a browser or network
+      // error, display the localized error message to your customer
+      // using `result.error.message`.
+    }
+  }
+  
   return (
-    <div className={classes.root}>
-      payment widget here
-      
-    </div>
+    <Modal open={isOpen} onClose={closeHandler} className={classes.modal}>
+      <Box className={classes.root}>
+        <Typography variant="h6" align="center">Check order details:</Typography>
+        <Typography align="center">{JSON.stringify(orderForPay)}</Typography>
+        <Box alignContent="center" align="center">
+          <Button onClick={handlePaymentClick}>
+            All correct, make a payment
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
   )
 }
 
