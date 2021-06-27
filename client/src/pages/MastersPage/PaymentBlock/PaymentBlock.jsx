@@ -7,6 +7,7 @@ import { Box, makeStyles, Modal, Typography } from '@material-ui/core'
 import { loadStripe } from '@stripe/stripe-js'
 import { Button } from '../../../components/Button/Button'
 import { apiPaymentCreateSession } from '../../../shared/js/api/payment'
+import { OrdersInfo } from '../../InfoPage/OrdersInfo/OrdersInfo'
 
 const REACT_APP_STRIPE_PK =
   process.env.NODE_ENV === 'production'
@@ -34,7 +35,7 @@ const PaymentBlock = ({ orderForPay, isOpen, closeHandler }) => {
 
   const handlePaymentClick = async (event) => {
     const stripe = await stripePromise
-    const session = await apiPaymentCreateSession()
+    const session = await apiPaymentCreateSession(orderForPay.id)
 
     const result = await stripe.redirectToCheckout({
       sessionId: session.id,
@@ -52,11 +53,16 @@ const PaymentBlock = ({ orderForPay, isOpen, closeHandler }) => {
   return (
     <Modal open={isOpen} onClose={closeHandler} className={classes.modal}>
       <Box className={classes.root}>
-        <Typography variant="h6" align="center">Check order details:</Typography>
-        <Typography align="center">{JSON.stringify(orderForPay)}</Typography>
+        <Typography variant="h6" align="center"></Typography>
+          <OrdersInfo
+            orders={[orderForPay]}
+            heading={'Submit order for payment?'}
+            showPaymentInfo = {false}
+          />
+
         <Box alignContent="center" align="center">
           <Button onClick={handlePaymentClick}>
-            All correct, make a payment
+            Ok
           </Button>
         </Box>
       </Box>

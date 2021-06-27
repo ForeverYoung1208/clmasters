@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => {
   }
 })
 
-export const OrdersInfo = ({ orders, heading }) => {
+export const OrdersInfo = ({ orders, heading, showPaymentInfo = true }) => {
   const classes = useStyles()
   const [photoPublicId, setPhotoPublicId] = useState(null)
   const [orderForPay, setOrderForPay] = useState(null)
@@ -77,7 +77,7 @@ export const OrdersInfo = ({ orders, heading }) => {
                   </TableRow>
                 ))}
                 
-                <TableRow>
+                {showPaymentInfo && <TableRow>
                   <TableCell className={classes.cellLabel} >
                     Payed sum
                   </TableCell>
@@ -87,11 +87,11 @@ export const OrdersInfo = ({ orders, heading }) => {
                     {(Math.abs(order.payedSum - order.price) < 0.009)
                       ? null
                       : <Button align="center" onClick={() => setOrderForPay(order)}>
-                          make a payment
+                        make a payment
                         </Button>
                     }
                   </TableCell>
-                </TableRow>
+                </TableRow>}
                 
                 <TableRow>
                   <TableCell className={classes.cellLabel}>Photo</TableCell>
