@@ -4,7 +4,7 @@ const routes = require('./routes')
 const cors = require('cors')
 require('dotenv').config()
 
-const {APP_BUILD_FOLDER} = process.env
+const { APP_BUILD_FOLDER } = process.env
 
 let PORT
 switch (process.env.NODE_ENV) {
@@ -19,29 +19,29 @@ default:
   PORT = 5000
 }
 
-
 const app = express()
-
 
 app.use(cors())
 
 app.use(express.json({ extended: true }))
 
-app.use('/api/auth', routes.auth )
-app.use('/api/cities', routes.cities )
-app.use('/api/clocks', routes.clocks )
+app.use('/api/auth', routes.auth)
+app.use('/api/cities', routes.cities)
+app.use('/api/clocks', routes.clocks)
 app.use('/api/preorder', routes.preorder)
-app.use('/api/orders', routes.orders )
-app.use('/api/masters', routes.masters )
-app.use('/api/users', routes.users )
+app.use('/api/orders', routes.orders)
+app.use('/api/masters', routes.masters)
+app.use('/api/users', routes.users)
+app.use('/api/payment', routes.payment)
 
-//  SERVING FRONTEND 
-if(process.env.NODE_ENV === 'production'){
-  app.use('/', express.static( path.join(__dirname, APP_BUILD_FOLDER ) ))
-  app.get('*', (req, res)=>{
+//  SERVING FRONTEND
+if (process.env.NODE_ENV === 'production') {
+  app.use('/', express.static(path.join(__dirname, APP_BUILD_FOLDER)))
+  app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, APP_BUILD_FOLDER, 'index.html'))
   })
 }
 
-
-app.listen(PORT, ()=>{ console.log(`App has been started on port ${PORT}`) })
+app.listen(PORT, () => {
+  console.log(`App has been started on port ${PORT}`)
+})

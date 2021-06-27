@@ -3,13 +3,11 @@ const { paymentController } = require('../controllers/paymentController')
 
 const router = Router()
 
-
 router.post(
-  '/payment',
+  '/createSession',
   // paymentController.loginUserValidators(),
-  
-  (req, res) => paymentController.loginUser(req, res)
-)
 
+  (req, res) => paymentController.createPaymentSession(req, res)
+)
 
 module.exports = router
