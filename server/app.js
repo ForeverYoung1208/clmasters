@@ -4,6 +4,7 @@ const routes = require('./routes')
 const cors = require('cors')
 require('dotenv').config()
 
+
 const { APP_BUILD_FOLDER } = process.env
 
 let PORT
@@ -23,7 +24,14 @@ const app = express()
 
 app.use(cors())
 
-app.use(express.json({ extended: true }))
+app.use(
+  express.json({
+    extended: true,
+    verify: (req, res, buf) => {
+      req.rawBody = buf
+    },
+  })
+)
 
 app.use('/api/auth', routes.auth)
 app.use('/api/cities', routes.cities)
