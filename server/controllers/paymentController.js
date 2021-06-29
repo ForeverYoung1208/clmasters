@@ -15,11 +15,6 @@ const ENDPOINT_SECRET =
     ? process.env.PRODUCTION_STRIPE_ENDPOINT_SECRET
     : process.env.DEVELOPMENT_STRIPE_ENDPOINT_SECRET
 
-// const APP_PORT =
-//   process.env.NODE_ENV === 'production'
-//     ? process.env.APP_PORT_PROD
-//     : process.env.APP_PORT_DEV
-
 class PaymentController {
   async createPaymentSession(req, res) {
     const errors = validationResult(req)
@@ -43,13 +38,16 @@ class PaymentController {
               currency: 'usd',
               product_data: {
                 name: `clock repair (order Id ${order.id})`,
-                images: [order.thumbnailUrl], //TODO: change!!!
+                images: [order.thumbnailUrl],
               },
-              unit_amount: +order.price * 100, //TODO: change!!!
+              unit_amount: +order.price * 100,
             },
-            quantity: 1, //TODO: change!!!
+            quantity: 1,
           },
         ],
+        metadata: {
+          orderId: order.id
+        },
         mode: 'payment',
         success_url: `${APP_DOMAIN}/info/payment/successfull`,
         cancel_url: `${APP_DOMAIN}/info/payment/canceled`,
@@ -75,25 +73,26 @@ class PaymentController {
     }
 
     // Handle the event
-    const payment = {}
-    switch (event.type) {
-    case 'payment_intent.succeeded':
-      payment.intent = event.data.object
-      console.log('PaymentIntent was successful!')
-      break
-    case 'payment_method.attached':
-      payment.method = event.data.object
-      console.log('PaymentMethod was attached to a Customer!')
-      break
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object
+      if (session.payment_status!=='paid') throw new Error({message:'something wrong - session payment status !== paid'})
+
+      const order = Order.findByPk(session.metadata.orderId)
       
-        TODO ... handle other event types
-        
-    default:
-      console.log(`Unhandled event type ${event.type}`)
+      TODO: Implement!!!
+      //////
+      order.payedDoneOnSum(session.amount_total / 100)
+      //////
+      
+      
+      console.log('checkout.session.completed [session]:', session)
     }
     
-    console.log('[payment]', payment)
-
+    if (event.type === 'charge.succeeded') {
+      console.log('charge.succeeded [event]', event)
+    }
+    
+   
     // Return a response to acknowledge receipt of the event
     res.json({ received: true })
 
