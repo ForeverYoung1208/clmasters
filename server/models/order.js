@@ -107,6 +107,13 @@ module.exports = (sequelize, DataTypes) => {
     isPayed() {
       return ( Math.abs(this.payedSum - this.price) < 0.01)
     }
+    
+    async payedDoneOnSum(payedSum) {
+      this.payedSum = payedSum
+      const updatedOrder = await this.save()
+      return updatedOrder
+    }
+    
 
     static async getAtDate(dateStr) {
       const { startOfDay, endOfDay } = require('date-fns')

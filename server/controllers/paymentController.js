@@ -72,30 +72,14 @@ class PaymentController {
       res.status(400).message(`Webhook Error: ${err.message}`)
     }
 
-    // Handle the event
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object
       if (session.payment_status!=='paid') throw new Error({message:'something wrong - session payment status !== paid'})
-
-      const order = Order.findByPk(session.metadata.orderId)
-      
-      TODO: Implement!!!
-      //////
-      order.payedDoneOnSum(session.amount_total / 100)
-      //////
-      
-      
-      console.log('checkout.session.completed [session]:', session)
+      const order = await Order.findByPk(session.metadata.orderId)
+      await order.payedDoneOnSum(session.amount_total / 100)
     }
     
-    if (event.type === 'charge.succeeded') {
-      console.log('charge.succeeded [event]', event)
-    }
-    
-   
-    // Return a response to acknowledge receipt of the event
     res.json({ received: true })
-
   }
 
   createPaymentSessionValidators() {

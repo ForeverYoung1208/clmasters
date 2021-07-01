@@ -1,5 +1,7 @@
 import React from 'react'
-import {makeStyles} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
+import { PaymentSuccessful } from "./PaymentSuccessful/PaymentSuccessful"
+import { PaymentNotSuccessful } from "./PaymentNotSuccessful/PaymentNotSuccessful"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,8 +13,8 @@ const PaymentInfo = ({isSuccessful}) => {
   return (
     <div className={classes.root}>
       {isSuccessful
-        ? "isSuccessful"
-        : "NOT isSuccessful"
+        ? <PaymentSuccessful/>
+        : <PaymentNotSuccessful/>
       }
       
     </div>
