@@ -155,6 +155,13 @@ let OrderForm = ({
             disabled={true}
           />
         </div>
+        <div>
+          <Field
+            label="Payed sum"
+            name="payedSum"
+            component={RenderFieldInput}
+          />
+        </div>
 
         <div>
           <Field label="Comment" name="comment" component={RenderFieldInput} />

@@ -18,7 +18,6 @@ import { ORDERS_POST_FULFILLED } from '../../store/actions/actionTypes/orders'
 import { normalizeFormSubmitError } from '../../shared/js/normalizeFormSubmitError'
 import { SubmissionError } from 'redux-form'
 import { PREORDERS_POST_REJECTED } from '../../store/actions/actionTypes/preorders'
-import PaymentBlock from './PaymentBlock/PaymentBlock'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,7 +51,7 @@ const MastersPage = () => {
       dispatch(setRegisteredOrder(result.payload))
       dispatch(forgetPreorder())
       dispatch(clearFoundMasters())
-      dispatch(redirectTo('/masters/payment'))
+      dispatch(redirectTo('/info'))
     }
   }
 

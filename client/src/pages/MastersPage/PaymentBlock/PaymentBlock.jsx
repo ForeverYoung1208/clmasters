@@ -33,7 +33,6 @@ const PaymentBlock = ({ orderForPay, isOpen, closeHandler }) => {
   const dispatch = useDispatch()
 
   const handlePaymentClick = async (event) => {
-    debugger
     const stripe = await stripePromise
     const session = await apiPaymentCreateSession(orderForPay.id)
 
