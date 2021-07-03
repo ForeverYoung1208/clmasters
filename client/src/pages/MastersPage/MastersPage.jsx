@@ -74,9 +74,9 @@ const MastersPage = () => {
         <Route path="/masters/order">
           <OrderForm onSubmit={handleSubmitOrder} />
         </Route>
-        <Route path="/masters/payment">
+        {/* <Route path="/masters/payment">
           <PaymentBlock/>
-        </Route>
+        </Route> */}
       </Switch>
     </div>
   )

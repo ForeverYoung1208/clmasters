@@ -9,7 +9,9 @@ import { Box, Card, makeStyles } from '@material-ui/core'
 import { setRegisteredOrder } from '../../store/actions/preorders'
 import { clearFoundOrders, searchOrdersBy } from '../../store/actions/orders'
 import { Route, Switch } from 'react-router'
-import PaymentInfo from './PaymentInfo/PaymentInfo'
+import { ShowSuccess } from './PaymentInfo/ShowSuccess/ShowSuccess'
+import { ShowFail } from './PaymentInfo/ShowFail/ShowFail'
+import { useLocation } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
     padding: '1rem',
   },
 }))
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search)
+}
 
 const InfoPage = () => {
   let [registeredOrder, foundOrders] = useSelector(({ orders }) => [
@@ -63,73 +69,73 @@ const InfoPage = () => {
   }, [dispatch])
 
   const classes = useStyles()
+  const query = useQuery()
+
   return (
-    <>
+    <Box className={classes.root}>
       <Switch>
-        <Route path="/info/payment/successfull">
-          <PaymentInfo isSuccessful={true} />
+        <Route path="/info/payment/showSuccess">
+          <Card className={classes.card}>
+            <ShowSuccess orderId={query.get('order_id')} />
+          </Card>
         </Route>
-        <Route path="/info/payment/canceled">
-          <PaymentInfo isSuccessful={false} />
+        <Route path="/info/payment/showFail">
+          <Card className={classes.card}>
+            <ShowFail orderId={query.get('order_id')} />
+          </Card>
         </Route>
         <Route path="/info">
-          <Box className={classes.root}>
-            {registeredOrder && (
-              <Card className={classes.card}>
-                <OrdersInfo
-                  orders={[registeredOrder]}
-                  heading="Congratulations! New order was registered!"
-                />
-                {registeredOrder.isEmailSent && (
-                  <h3>(order information was also sent to email)</h3>
-                )}
-                <Box
-                  className={classes.controls}
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <Button
-                    onClick={handleBackToForm}
-                    variant="text"
-                    color="primary"
-                  >
-                    Make another order
-                  </Button>
-                  <Button onClick={handleClearRegisteredOrders}>Ok</Button>
-                </Box>
-              </Card>
-            )}
-
-            {foundOrders && (
-              <Card className={classes.card}>
-                <OrdersInfo
-                  orders={foundOrders}
-                  heading={`We've found the next orders with e-mail "${searchString}"`}
-                />
-              </Card>
-            )}
-
-            {!foundOrders && !registeredOrder && (
-              <Card className={classes.card}>
-                <EmailSearchForm onSubmit={handleSearchOrders} />
-              </Card>
-            )}
-
-            {foundOrders && (
+          {registeredOrder && (
+            <Card className={classes.card}>
+              <OrdersInfo
+                orders={[registeredOrder]}
+                heading="Congratulations! New order was registered!"
+              />
+              {registeredOrder.isEmailSent && (
+                <h3>(order information was also sent to email)</h3>
+              )}
               <Box
                 className={classes.controls}
                 display="flex"
-                alignSelf="center"
+                justifyContent="space-between"
               >
-                <Button onClick={handleClearFoundOrders}>
-                  Clear information
+                <Button
+                  onClick={handleBackToForm}
+                  variant="text"
+                  color="primary"
+                >
+                  Make another order
                 </Button>
+                <Button onClick={handleClearRegisteredOrders}>Ok</Button>
               </Box>
-            )}
-          </Box>
+            </Card>
+          )}
+
+          {foundOrders && (
+            <Card className={classes.card}>
+              <OrdersInfo
+                orders={foundOrders}
+                heading={`We've found the next orders with e-mail "${searchString}"`}
+              />
+            </Card>
+          )}
+
+          {!foundOrders && !registeredOrder && (
+            <Card className={classes.card}>
+              <EmailSearchForm onSubmit={handleSearchOrders} />
+            </Card>
+          )}
+
+          {foundOrders && (
+            <Box className={classes.controls} display="flex" alignSelf="center">
+              <Button onClick={handleClearFoundOrders}>
+                Clear information
+              </Button>
+            </Box>
+          )}
         </Route>
       </Switch>
-    </>
+    </Box>
   )
 }
 
