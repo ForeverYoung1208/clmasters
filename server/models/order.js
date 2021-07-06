@@ -9,6 +9,8 @@ const {
 } = require('../shared/googleCalendarUtils')
 const cloudinary = require('cloudinary').v2
 
+const EQUALITY_THRESHOLD = 0.009
+
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     async putToGoogleCalendar() {
@@ -105,7 +107,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     
     isPayed() {
-      return ( Math.abs(this.payedSum - this.price) < 0.01)
+      return ( Math.abs(this.payedSum - this.price) < EQUALITY_THRESHOLD)
     }
     
     async payedDoneOnSum(payedSum) {

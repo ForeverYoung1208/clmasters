@@ -10,7 +10,9 @@ import {
 import React, { useMemo, useState } from 'react'
 import { Button } from '../../../components/Button/Button'
 import { PhotoModal } from '../../../components/PhotoModal/PhotoModal'
-import PaymentBlock from '../../MastersPage/PaymentBlock/PaymentBlock'
+import PaymentBlock from '../../../components/PaymentBlock/PaymentBlock'
+
+const EQUALITY_THRESHOLD = 0.009
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -82,11 +84,10 @@ export const OrdersInfo = ({ orders, heading, showPaymentInfo = true }) => {
                     Payed sum
                   </TableCell>
                   <TableCell className={classes.cellData} >
-                    {order.payedSum ? order.payedSum : '0'}
+                    {order.payedSum || '0'}
                     &nbsp;
-                    {(Math.abs(order.payedSum - order.price) < 0.009)
-                      ? null
-                      : <Button align="center" onClick={() => setOrderForPay(order)}>
+                    {(Math.abs(order.payedSum - order.price) > EQUALITY_THRESHOLD)
+                      && <Button align="center" onClick={() => setOrderForPay(order)}>
                         make a payment
                         </Button>
                     }

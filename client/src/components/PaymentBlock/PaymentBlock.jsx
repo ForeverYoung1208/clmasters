@@ -1,11 +1,11 @@
 import React from 'react'
 import { Box, makeStyles, Modal, Typography } from '@material-ui/core'
 import { loadStripe } from '@stripe/stripe-js'
-import { Button } from '../../../components/Button/Button'
-import { apiPaymentCreateSession } from '../../../shared/js/api/payment'
-import { OrdersInfo } from '../../InfoPage/OrdersInfo/OrdersInfo'
+import { Button } from '../Button/Button'
+import { apiPaymentCreateSession } from '../../shared/js/api/payment'
+import { OrdersInfo } from '../../pages/InfoPage/OrdersInfo/OrdersInfo'
 import { useDispatch } from 'react-redux'
-import { setErrorMessage } from '../../../store/actions/main'
+import { setErrorMessage } from '../../store/actions/main'
 
 const REACT_APP_STRIPE_PK =
   process.env.NODE_ENV === 'production'
@@ -41,7 +41,7 @@ const PaymentBlock = ({ orderForPay, isOpen, closeHandler }) => {
     })
 
     if (result.error) {
-      console.log('Payment error [result]: ',result)
+      console.log('Payment error [result]: ', result)
       dispatch(setErrorMessage(JSON.stringify(result.error)))
     }
   }
@@ -55,7 +55,6 @@ const PaymentBlock = ({ orderForPay, isOpen, closeHandler }) => {
           heading={'Submit order for payment?'}
           showPaymentInfo={false}
         />
-
         <Box alignContent="center" align="center">
           <Button onClick={handlePaymentClick}>Ok</Button>
         </Box>

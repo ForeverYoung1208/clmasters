@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function useQuery() {
+const useQuery = () => {
   return new URLSearchParams(useLocation().search)
 }
 
