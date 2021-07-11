@@ -35,10 +35,9 @@ const Routes = (props) => {
       <Route path="/login" >
         <AuthPage/>
       </Route>
-      { currentUser?.isAdmin && <Route path="/admin" >
-          <AdminPage/>
-        </Route>
-      }
+      <Route path="/admin" >
+        {currentUser?.isAdmin && <AdminPage />}
+      </Route>
 
       <Redirect to = "/info"/>
     </Switch>
