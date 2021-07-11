@@ -83,12 +83,16 @@ class PaymentController {
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object
-      if (session.payment_status!=='paid') throw new Error({message:'something wrong - session payment status !== paid'})
-      const order = await Order.findByPk(session.metadata.orderId)
-      await order.payedDoneOnSum(session.amount_total / 100)
+      if (session.payment_status === 'paid') {
+        const order = await Order.findByPk(session.metadata.orderId)
+        await order.payedDoneOnSum(session.amount_total / 100)
+        res.status(200).json({ received: true })
+      } else {
+        console.log('payment error - [session.payment_status]', session.payment_status)
+        // throw new Error({ message: 'something wrong - session payment status !== paid' })
+        res.status(200).json({ received: false })
+      }
     }
-    
-    res.json({ received: true })
   }
 
   createPaymentSessionValidators() {
