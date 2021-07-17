@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const PaymentBlock = ({ orderForPay, isOpen, closeHandler }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const {payedSum, price} = orderForPay
 
   const handlePaymentClick = async (event) => {
     const stripe = await stripePromise
@@ -56,7 +57,9 @@ const PaymentBlock = ({ orderForPay, isOpen, closeHandler }) => {
           showPaymentInfo={false}
         />
         <Box alignContent="center" align="center">
-          <Button onClick={handlePaymentClick}>Ok</Button>
+          <Button onClick={handlePaymentClick}>
+            Submit ${price - payedSum} for pay
+          </Button>
         </Box>
       </Box>
     </Modal>
