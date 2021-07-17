@@ -15,8 +15,8 @@ const APP_URL =
     ? process.env.APP_URL_PROD
     : process.env.APP_URL_DEV
 
-const NO_IMAGE_PICTURE_ROUTE = 'https://res.cloudinary.com/fyoung-dp-ua/image/upload/v1625334309/clMasters/static/no_image_dxpjjo.png'
-
+const NO_IMAGE_PICTURE_ROUTE =
+  'https://res.cloudinary.com/fyoung-dp-ua/image/upload/v1625334309/clMasters/static/no_image_dxpjjo.png'
 
 const ENDPOINT_SECRET =
   process.env.NODE_ENV === 'production'
@@ -38,7 +38,7 @@ class PaymentController {
       return res.status(401).json({ errors: errors.array() })
 
     try {
-      const images = [order.thumbnailUrl || NO_IMAGE_PICTURE_ROUTE ]
+      const images = [order.thumbnailUrl || NO_IMAGE_PICTURE_ROUTE]
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [
@@ -49,7 +49,7 @@ class PaymentController {
                 name: `clock repair (order Id ${order.id})`,
                 images,
               },
-              unit_amount: +order.price * 100,
+              unit_amount: (+order.price - order.payedSum) * 100,
             },
             quantity: 1,
           },
@@ -85,10 +85,13 @@ class PaymentController {
       const session = event.data.object
       if (session.payment_status === 'paid') {
         const order = await Order.findByPk(session.metadata.orderId)
-        await order.payedDoneOnSum(session.amount_total / 100)
+        await order.payedDoneOnSum(+session.amount_total / 100)
         res.status(200).json({ received: true })
       } else {
-        console.log('payment error - [session.payment_status]', session.payment_status)
+        console.log(
+          'payment error - [session.payment_status]',
+          session.payment_status
+        )
         // throw new Error({ message: 'something wrong - session payment status !== paid' })
         res.status(200).json({ received: false })
       }

@@ -93,7 +93,10 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     checkForPhotoCleanup(order) {
-      if (order._changed.has('photoPublicId') && order._previousDataValues.photoPublicId) {
+      if (
+        order._changed.has('photoPublicId') &&
+        order._previousDataValues.photoPublicId
+      ) {
         cloudinary.api.delete_resources(
           [order._previousDataValues.photoPublicId],
           function (error, result) {
@@ -105,17 +108,16 @@ module.exports = (sequelize, DataTypes) => {
         )
       }
     }
-    
+
     isPayed() {
-      return ( Math.abs(this.payedSum - this.price) < EQUALITY_THRESHOLD)
+      return Math.abs(this.payedSum - this.price) < EQUALITY_THRESHOLD
     }
-    
+
     async payedDoneOnSum(payedSum) {
-      this.payedSum = payedSum
+      this.payedSum = +this.payedSum + payedSum
       const updatedOrder = await this.save()
       return updatedOrder
     }
-    
 
     static async getAtDate(dateStr) {
       const { startOfDay, endOfDay } = require('date-fns')
