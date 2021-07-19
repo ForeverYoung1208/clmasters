@@ -17,6 +17,8 @@ import { useDispatch } from 'react-redux'
 import UserInfoWide from './UserInfoWide/UserInfoWide'
 import UserInfoNarrow from './UserInfoNarrow/UserInfoNarrow'
 import { useGoogleLogout } from 'react-google-login'
+import { redirectTo } from '../../store/actions/main'
+import { useLocation } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,10 +54,14 @@ const Header = ({ currentUser }) => {
   const theme = useTheme()
   const largerMD = useMediaQuery(theme.breakpoints.up('md'))
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
+  const location = useLocation()
 
   const handleLogout = useCallback(() => {
     dispatch(authLogoutUser())
-  }, [dispatch])  
+    if (location.pathname === '/admin') {
+      dispatch(redirectTo('/'))
+    }
+  }, [dispatch, location])  
   
   const { signOut: signOutFromGoogle } = useGoogleLogout({
     clientId,
