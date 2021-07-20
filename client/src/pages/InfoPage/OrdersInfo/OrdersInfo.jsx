@@ -47,7 +47,7 @@ export const OrdersInfo = ({ orders, heading, showPaymentInfo = true }) => {
       masterCity: 'City:',
       onTimeStr: 'On Time:',
       comment: 'Comment',
-      price: 'Price',
+      price: 'Full price',
     }),
     []
   )
@@ -79,7 +79,7 @@ export const OrdersInfo = ({ orders, heading, showPaymentInfo = true }) => {
                   </TableRow>
                 ))}
                 
-                {showPaymentInfo && <TableRow>
+                <TableRow>
                   <TableCell className={classes.cellLabel} >
                     Payed sum
                   </TableCell>
@@ -87,12 +87,13 @@ export const OrdersInfo = ({ orders, heading, showPaymentInfo = true }) => {
                     {order.payedSum || '0'}
                     &nbsp;
                     {(Math.abs(order.payedSum - order.price) > EQUALITY_THRESHOLD)
+                      && showPaymentInfo
                       && <Button align="center" onClick={() => setOrderForPay(order)}>
-                        make a payment
-                        </Button>
+                        make a payment (${order.price-order.payedSum})
+                      </Button>
                     }
                   </TableCell>
-                </TableRow>}
+                </TableRow>
                 
                 <TableRow>
                   <TableCell className={classes.cellLabel}>Photo</TableCell>
@@ -121,13 +122,13 @@ export const OrdersInfo = ({ orders, heading, showPaymentInfo = true }) => {
         }}
         photoPublicId={photoPublicId}
       />
-      <PaymentBlock
+      {!!orderForPay && <PaymentBlock
         isOpen={!!orderForPay}
         closeHandler={() => {
           setOrderForPay(null)
         }}
-        orderForPay = {orderForPay}
-      />
+        orderForPay={orderForPay}
+      />}
     </div>
   )
 }
