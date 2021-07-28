@@ -59,7 +59,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (process.env.NODE_ENV === 'test') {
-  console.log('App has been prepeared for testing')
+  //App has been prepeared for testing
   module.exports = app
 } else {
   app.listen(PORT, () => {
