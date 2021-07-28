@@ -8,15 +8,15 @@ const {
 
 const configDB = 
 {
-  'development': {
+  'test': {
     'username': DB_USER,
     'password': DB_PASS,
-    'database': 'clmasters_development',
+    'database': 'clmasters_test',
     'host': DB_HOST,
     'port': DB_PORT,
     'dialect': 'postgres'
   },
-  'test': {
+  'development': {
     'username': DB_USER,
     'password': DB_PASS,
     'database': 'clmasters_development',
