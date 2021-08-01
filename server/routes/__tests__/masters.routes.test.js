@@ -52,9 +52,9 @@ const masterData = {
 }
 
 beforeAll(async () => {
-  await User.truncate({ cascade: true })
-  await Master.truncate({ cascade: true })
-  await City.truncate()
+  await User.truncate({ cascade: true, force: true })
+  await Master.truncate({ cascade: true, force: true  })
+  await City.truncate( {cascade: true, force: true} )
   await City.create(cityData)
   await User.create(userAdmin)
   await User.create(userPlain)
@@ -322,5 +322,63 @@ describe('masters DELETE endpoint', () => {
     const checkIsMasterDeleted = await Master.findByPk(oldMaster.id)
 
     expect(checkIsMasterDeleted).toBe(null)
+  })
+})
+
+
+
+describe('masters GET endpoint', () => {
+  let master1, master2
+  beforeAll(async () => {
+    await Master.truncate({ cascade: true, force: true  })
+    const city = await City.findOne()
+    master1 = await Master.create({
+      ...masterData,
+      cityId: city.id,
+      name: faker.name.firstName()
+    })
+    master2 = await Master.create({
+      ...masterData,
+      cityId: city.id,
+      name: faker.name.firstName()
+    })
+  })
+  
+  it('should respond with masters array without pagination', async () => {
+    const response = await request
+      .get('/api/masters')
+      .expect(200)
+    
+    expect(response.body).toMatchObject({
+      'currentPage': null,
+      data:
+        [{
+          city: {
+            'cityId': expect.any(Number),
+            'cityName': cityData.name,
+            'comment': master1.comment,
+            'deletedAt': null,
+            'hourRate': expect.any(String),
+            'id': expect.any(Number),
+            'isActive': true,
+            'name': master1.name,
+            'rating': master1.rating,
+          }
+        },
+        {
+          city: {
+            'cityId': expect.any(Number),
+            'cityName': cityData.name,
+            'comment': master2.comment,
+            'deletedAt': null,
+            'hourRate': expect.any(String),
+            'id': expect.any(Number),
+            'isActive': true,
+            'name': master2.name,
+            'rating': master2.rating,
+          }
+        },
+        ]
+    })
   })
 })

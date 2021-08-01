@@ -42,11 +42,6 @@ app.use('/api/masters', routes.masters)
 app.use('/api/users', routes.users)
 app.use('/api/payment', routes.payment)
 
-//endpoint for tests debugging
-app.get('/test', async (req, res) => {
-  res.json({message: 'pass!'})
-})
-
 // SERVING STATIC IMAGES
 app.use('/img/', express.static(path.join(__dirname, APP_BUILD_FOLDER)))
 
