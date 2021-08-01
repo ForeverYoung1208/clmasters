@@ -51,20 +51,16 @@ const masterData = {
   isActive: true,
 }
 
-beforeAll(() => {
-  //...
+beforeAll(async () => {
+  await User.truncate({ cascade: true })
+  await Master.truncate({ cascade: true })
+  await City.truncate()
+  await City.create(cityData)
+  await User.create(userAdmin)
+  await User.create(userPlain)
 })
 
 describe('masters POST endpoint', () => {
-  beforeAll(async () => {
-    await User.truncate({ cascade: true })
-    await Master.truncate({ cascade: true })
-    await City.truncate()
-    await City.create(cityData)
-    await User.create(userAdmin)
-    await User.create(userPlain)
-  })
-
   it('should fail when accessing with invalid token', async () => {
     const response = await request
       .post('/api/masters')
@@ -116,13 +112,13 @@ describe('masters POST endpoint', () => {
   })
 
   it('should fail when got valid token and admin account but "cityId" not specified', async () => {
-    const noNameMaster = {
+    const noCityMaster = {
       ...masterData,
       cityId: null,
     }
     const response = await request
       .post('/api/masters')
-      .send(noNameMaster)
+      .send(noCityMaster)
       .set('authorization', `bearer ${userAdmin.validAccessToken}`)
       .expect(422)
 
@@ -141,13 +137,13 @@ describe('masters POST endpoint', () => {
 
   it('should create master when got valid token and admin account and valid data', async () => {
     const city =await City.findOne()
-    const noNameMaster = {
+    const newMaster = {
       ...masterData,
       cityId: city.id,
     }
     const response = await request
       .post('/api/masters')
-      .send(noNameMaster)
+      .send(newMaster)
       .set('authorization', `bearer ${userAdmin.validAccessToken}`)
       .expect(201)
 
@@ -162,6 +158,116 @@ describe('masters POST endpoint', () => {
       'name': masterData.name,
       'rating': masterData.rating,
     })
+  })
+})
 
+describe('masters PUT endpoint', () => {
+  let oldMaster
+  beforeAll(async () => {
+    const city =await City.findOne()
+    oldMaster = await Master.create({
+      ...masterData,
+      cityId: city.id,
+    })
+  })
+  
+  it('should fail when accessing with invalid token', async () => {
+    const response = await request
+      .put(`/api/masters/${oldMaster.id}`)
+      .set('authorization', 'bearer INVALID-ACCESS-TOKEN')
+      .expect(401)
+
+    expect(response.body).toMatchObject({
+      error: {
+        message: 'jwt malformed',
+        name: 'JsonWebTokenError',
+      },
+    })
+  })
+
+  it('should fail when accessing with non-admin account', async () => {
+    const response = await request
+      .put(`/api/masters/${oldMaster.id}`)
+      .set('authorization', `bearer ${userPlain.validAccessToken}`)
+      .expect(401)
+
+    expect(response.body).toMatchObject({
+      error: 'not authorized',
+    })
+  })
+
+  it('should fail when got valid token and admin account but master\'s "name" not specified', async () => {
+    const city =await City.findOne()
+    const noNameMaster = {
+      ...masterData,
+      cityId: city.id,
+      name: null,
+    }
+    const response = await request
+      .put(`/api/masters/${oldMaster.id}`)
+      .send(noNameMaster)
+      .set('authorization', `bearer ${userAdmin.validAccessToken}`)
+      .expect(422)
+
+    expect(response.body).toMatchObject({
+      errors: [
+        {
+          location: 'body',
+          msg: 'name must be not empty!',
+          param: 'name',
+          value: null,
+        },
+      ],
+    })
+  })
+
+  it('should fail when got valid token and admin account but "cityId" not specified', async () => {
+    const noCityMaster = {
+      ...masterData,
+      cityId: null,
+    }
+    const response = await request
+      .put(`/api/masters/${oldMaster.id}`)
+      .send(noCityMaster)
+      .set('authorization', `bearer ${userAdmin.validAccessToken}`)
+      .expect(422)
+
+    expect(response.body).toMatchObject({
+      errors: [
+        {
+          location: 'body',
+          msg: 'cityId must exist!',
+          param: 'cityId',
+          value: null,
+        },
+      ],
+    })
+  })
+
+  it('should update master when got valid token and admin account and valid data', async () => {
+    const city =await City.findOne()
+    const newNameMaster = {
+      ...masterData,
+      name: 'new Master name',
+      cityId: city.id,
+    }
+    
+    const response = await request
+      .post('/api/masters')
+      .send(newNameMaster)
+      .set('authorization', `bearer ${userAdmin.validAccessToken}`)
+      .expect(201)
+
+    expect(response.body).toMatchObject({
+      'cityId': expect.any(Number),
+      'cityName': cityData.name,
+      'comment': masterData.comment,
+      'deletedAt': null,
+      'hourRate': expect.any(String),
+      'id': expect.any(Number),
+      'isActive': true,
+      'name': newNameMaster.name,
+      'rating': masterData.rating,
+    })
   })
 })
