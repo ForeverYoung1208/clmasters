@@ -60,6 +60,8 @@ beforeAll(async () => {
   await User.create(userPlain)
 })
 
+
+
 describe('masters POST endpoint', () => {
   it('should fail when accessing with invalid token', async () => {
     const response = await request
@@ -160,6 +162,8 @@ describe('masters POST endpoint', () => {
     })
   })
 })
+
+
 
 describe('masters PUT endpoint', () => {
   let oldMaster
@@ -269,5 +273,54 @@ describe('masters PUT endpoint', () => {
       'name': newNameMaster.name,
       'rating': masterData.rating,
     })
+  })
+})
+
+
+
+describe('masters DELETE endpoint', () => {
+  let oldMaster
+  beforeAll(async () => {
+    const city =await City.findOne()
+    oldMaster = await Master.create({
+      ...masterData,
+      cityId: city.id,
+    })
+  })
+  
+  it('should fail when accessing with invalid token', async () => {
+    const response = await request
+      .delete(`/api/masters/${oldMaster.id}`)
+      .set('authorization', 'bearer INVALID-ACCESS-TOKEN')
+      .expect(401)
+
+    expect(response.body).toMatchObject({
+      error: {
+        message: 'jwt malformed',
+        name: 'JsonWebTokenError',
+      },
+    })
+  })
+
+  it('should fail when accessing with non-admin account', async () => {
+    const response = await request
+      .delete(`/api/masters/${oldMaster.id}`)
+      .set('authorization', `bearer ${userPlain.validAccessToken}`)
+      .expect(401)
+
+    expect(response.body).toMatchObject({
+      error: 'not authorized',
+    })
+  })
+
+  it('should delete master when got valid token and admin account', async () => {
+    await request
+      .delete(`/api/masters/${oldMaster.id}`)
+      .set('authorization', `bearer ${userAdmin.validAccessToken}`)
+      .expect(204)
+    
+    const checkIsMasterDeleted = await Master.findByPk(oldMaster.id)
+
+    expect(checkIsMasterDeleted).toBe(null)
   })
 })
