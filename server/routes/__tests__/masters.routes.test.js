@@ -344,7 +344,7 @@ describe('masters GET endpoint', () => {
     })
   })
   
-  it('should respond with masters array without pagination', async () => {
+  it('should respond with masters array without pagination if no pagination params given', async () => {
     const response = await request
       .get('/api/masters')
       .expect(200)
@@ -353,32 +353,95 @@ describe('masters GET endpoint', () => {
       'currentPage': null,
       data:
         [{
-          city: {
-            'cityId': expect.any(Number),
-            'cityName': cityData.name,
-            'comment': master1.comment,
-            'deletedAt': null,
-            'hourRate': expect.any(String),
-            'id': expect.any(Number),
-            'isActive': true,
-            'name': master1.name,
-            'rating': master1.rating,
-          }
+          'cityId': expect.any(Number),
+          'cityName': cityData.name,
+          'comment': master1.comment,
+          'deletedAt': null,
+          'hourRate': expect.any(String),
+          'id': expect.any(Number),
+          'isActive': true,
+          'name': master1.name,
+          'rating': master1.rating,
         },
         {
-          city: {
-            'cityId': expect.any(Number),
-            'cityName': cityData.name,
-            'comment': master2.comment,
-            'deletedAt': null,
-            'hourRate': expect.any(String),
-            'id': expect.any(Number),
-            'isActive': true,
-            'name': master2.name,
-            'rating': master2.rating,
-          }
+          'cityId': expect.any(Number),
+          'cityName': cityData.name,
+          'comment': master2.comment,
+          'deletedAt': null,
+          'hourRate': expect.any(String),
+          'id': expect.any(Number),
+          'isActive': true,
+          'name': master2.name,
+          'rating': master2.rating,
         },
         ]
     })
   })
+  
+  it('should fail if page given but page size not given', async () => {
+    const response = await request
+      .get('/api/masters?page=1')
+      .expect(400)
+    
+    expect(response.body).toMatchObject({
+      errors: [
+        {
+          msg: 'pageSize must be specified!',
+          param: 'masters',
+        },
+      ],
+    })
+  })
+  
+  it('should fail if page size given but page not given', async () => {
+    const response = await request
+      .get('/api/masters?pageSize=3')
+      .expect(400)
+    
+    expect(response.body).toMatchObject({
+      errors: [
+        {
+          msg: 'page must be specified!',
+          param: 'masters',
+        },
+      ],
+    })
+  })
+  
+  it('should respond with paginated masters array if pagination params given', async () => {
+    const city = await City.findOne()
+    const master3 = await Master.create({
+      ...masterData,
+      cityId: city.id,
+      name: faker.name.firstName()
+    })
+    const master4 = await Master.create({
+      ...masterData,
+      cityId: city.id,
+      name: faker.name.firstName()
+    })
+
+    const response = await request
+      .get('/api/masters?page=1&pageSize=3')
+      .expect(200)
+    
+    expect(response.body).toMatchObject({
+      'currentPage': 2,
+      'totalCount': 4,
+      data:
+        [{
+          'cityId': expect.any(Number),
+          'cityName': cityData.name,
+          'comment': master1.comment,
+          'deletedAt': null,
+          'hourRate': expect.any(String),
+          'id': expect.any(Number),
+          'isActive': true,
+          'name': master1.name,
+          'rating': master1.rating,
+        }]
+    })
+  })  
+  
+  
 })

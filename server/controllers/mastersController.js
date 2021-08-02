@@ -35,7 +35,7 @@ class MastersController extends CRUDController {
     const { page, pageSize } = req.query
 
     if (page && !pageSize) {
-      res.status(400).json({
+      return res.status(400).json({
         errors: [
           {
             param: 'masters',
@@ -77,7 +77,7 @@ class MastersController extends CRUDController {
     )
 
     const data = rows.map((m) => {
-      const { wipedCity, ...master } = noTimestamps(m.dataValues) // without city information
+      const { city: wipedCity, ...master } = noTimestamps(m.dataValues) // without city information
       master.cityName = m.city.name //only cityName
       return master
     })
