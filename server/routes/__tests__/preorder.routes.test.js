@@ -1,8 +1,10 @@
 const app = require('../../app') // Link to server file
 const supertest = require('supertest')
+var addHours = require('date-fns/addHours')
 const request = supertest(app)
 const faker = require('faker')
 const { User, City, Master, Clock, Order } = require('../../models')
+
 
 
 // Building fake data
@@ -20,8 +22,8 @@ const clockData = {
 }
 
 const userData = {
-  name: 'plainUser',
-  email: 'siafin1111@gmail.com',
+  name: faker.random.word(),
+  email: faker.internet.email(),
   passwordRaw: '1234567',
   isAdmin: false,
 }
@@ -125,7 +127,28 @@ describe('preorder POST endpoint', () => {
   })
   
   it('should fail if onTime in the past', async () => {
-    // expect(true).toBe(true)
+    const nowMinusHour = addHours(new Date(), -1)
+    const response = await request
+      .post('/api/preorder')
+      .send({
+        ...preorderData,
+        onTime: nowMinusHour.toISOString(),
+        cityId: city.id,
+        clockId: clock.id,
+      })
+      .expect(422)
+
+    expect(response.body).toMatchObject({
+      errors: [
+        {
+          location: 'body',
+          msg: 'Order date can\'t be in the past ',
+          param: 'onTime',
+          value: expect.any(String),
+        },
+      ],
+    })
+
   })
 
   it('should fail if there is no free master in the given city at given time', async () => {

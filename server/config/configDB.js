@@ -14,7 +14,8 @@ const configDB =
     'database': 'clmasters_test',
     'host': DB_HOST,
     'port': DB_PORT,
-    'dialect': 'postgres'
+    'dialect': 'postgres',
+    'logging': false,
   },
   'development': {
     'username': DB_USER,
@@ -22,7 +23,7 @@ const configDB =
     'database': 'clmasters_development',
     'host': DB_HOST,
     'port': DB_PORT,
-    'dialect': 'postgres'
+    'dialect': 'postgres',
   },
   'production': {
     'username': DB_USER,
@@ -30,7 +31,8 @@ const configDB =
     'database': 'clmasters_production',
     'host': DB_HOST,
     'port': DB_PORT,
-    'dialect': 'postgres'
+    'dialect': 'postgres',
+    'logging': false,
   }
 }
 
