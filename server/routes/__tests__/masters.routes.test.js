@@ -47,7 +47,7 @@ const masterData = {
   comment: faker.random.words(5),
   deletedAt: null,
   rating: faker.datatype.number(5),
-  hourRate: faker.finance.amount(0, 10, 2),
+  hourRate: '9.46',
   isActive: true,
 }
 

@@ -44,14 +44,14 @@ const orderData = {
   comment: faker.random.words(4),
   price: 3,
   payedSum: 2,
-  onTime: '2021-08-08T22:00'
+  onTime: '2021-09-08T22:00'
 
 }
 
 const preorderData = {
   cityId: '--- assign later, when records created ---',
-  orderDateTimeStr: '2021-08-08 22:00',
-  clockTypeId: '--- assign later, when records created ---',
+  onTime: '2021-09-08T22:00',
+  clockId: '--- assign later, when records created ---',
 }
 
 
@@ -151,12 +151,34 @@ describe('preorder POST endpoint', () => {
 
   })
 
-  it('should fail if there is no free master in the given city at given time', async () => {
-    // expect(true).toBe(true)
+  
+  it('should return empty array if there is no free master in the given city at given time', async () => {
+    const response = await request
+      .post('/api/preorder')
+      .send({
+        ...preorderData,
+        onTime: orderData.onTime,  // use existing order onTime to imitate that master is busy
+        cityId: city.id,
+        clockId: clock.id,
+      })
+      .expect(200)
+
+    expect(response.body).toEqual([])
   })
   
   it('should return free masters when request is correct and there are free masters', async () => {
-    // expect(true).toBe(true)
+    const timeAfterOrder= addHours(new Date(orderData.onTime), 3) // add max order duration to get free master
+    const response = await request
+      .post('/api/preorder')
+      .send({
+        ...preorderData,
+        onTime: timeAfterOrder.toISOString(), 
+        cityId: city.id,
+        clockId: clock.id,
+      })
+      .expect(200)
+
+    expect(response.body.length).toEqual(1)
   })
 
   
