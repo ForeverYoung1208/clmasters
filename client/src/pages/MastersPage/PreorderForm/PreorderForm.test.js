@@ -1,15 +1,18 @@
 import React from 'react'
+import {render} from 'react-dom'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 import PreorderForm from './PreorderForm'
 import thunk from 'redux-thunk'
-
-import { render, screen, userEvent, fireEvent } from '@testing-library/react'
-// import {userEvent, fireEvent} from '@testing-library/react'
-
 import DateFnsUtils from '@date-io/date-fns'
 import { uk } from 'date-fns/locale'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import pretty from "pretty";
+
+// import { render, screen, userEvent, fireEvent } from '@testing-library/react'
+// import {userEvent, fireEvent} from '@testing-library/react'
+
+import { act } from 'react-dom/test-utils'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -37,43 +40,48 @@ const initialState = {
   },
 }
 
+let container
+
 describe('testing PreorderForm', () => {
   beforeEach(() => {
-    const props = {
-      handleSubmit: jest.fn(),
-    }
-    render(
-      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={uk}>
-        <Provider store={mockStore(initialState)}>
-          <PreorderForm {...props} dispatch={mockDispatchfn}></PreorderForm>
-        </Provider>
-      </MuiPickersUtilsProvider>
-    )
+    container = document.createElement('div')
+    document.body.appendChild(container)
+  })
+  afterEach(() => {
+    document.body.removeChild(container)
+    container = null
   })
 
   it('renders and has text "please provide some information" with class "MuiTypography-h6" ', async () => {
-    // const el = await screen.findByText(/please provide some information/)
-    const el = screen.getByText(/please provide some information/)
-    expect(el).toHaveClass('MuiTypography-h6')
-  })
-
-  it('requires name when it is empty', async () => {
-    
-    const el = document.querySelectorAll('[name=clockId]')[0]
-
-    await fireEvent.change(
-      el,
-      {value: '1'}
-    )
-    console.log('[el.value]', el.value)
-    
-    await fireEvent.change(
-      el,
-      {
-        target: { value: '2' },
+    act(() => {
+      const props = {
+        handleSubmit: jest.fn(),
       }
-    )
-    console.log('[el.value]', el.value)
+      render(
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={uk}>
+          <Provider store={mockStore(initialState)}>
+            <PreorderForm {...props} dispatch={mockDispatchfn}></PreorderForm>
+          </Provider>
+        </MuiPickersUtilsProvider>,
+        container
+      )
+      
+      container.
+      
+      console.log('[container]', pretty(container.innerHTML))
+      
+    })
+
+    
+    
+    
+    
     
   })
+
+  // it('requires name when it is empty', async () => {
+    // const [clockSelect, citySelect, nameInput, emailInput, datePicker] = container.querySelectorAll('input')
+    // ReactTestUtils.Simulate.keyDown(inputs[0], {key: "Enter", keyCode: 13, which: 13});
+
+  // })
 })

@@ -29,3 +29,6 @@ https://www.youtube.com/watch?v=JKOwJUM4_RM
 
 https://testing-library.com/docs/react-testing-library/example-intro
 https://www.robinwieruch.de/react-testing-library
+
+
+https://stackoverflow.com/questions/56617679/how-to-test-redux-form-using-react-testing-library

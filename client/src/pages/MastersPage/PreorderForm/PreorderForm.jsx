@@ -62,6 +62,7 @@ let PreorderForm = ({ handleSubmit, initialize, pristine, submitting }) => {
       <form onSubmit={handleSubmit}>
         <div>
           <Field
+            data-testid="clockId"
             name="clockId"
             label="Clock Type"
             component={RenderFieldSelect}
