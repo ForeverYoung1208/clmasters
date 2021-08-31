@@ -16,20 +16,9 @@ if (config.use_env_variable) {
     config.database,
     config.username,
     config.password,
-    config
+    config,
   )
 }
-
-// test connection
-async function testConnection() {
-  try {
-    await sequelize.authenticate()
-    console.log('Connection has been established successfully.')
-  } catch (error) {
-    console.error('Unable to connect to the database:', error)
-  }
-}
-testConnection()
 
 fs.readdirSync(__dirname)
   .filter((file) => {

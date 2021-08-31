@@ -53,6 +53,8 @@ REACT_APP_DEVELOPMENT_URL=http://localhost:5000
 
 3. Update configuration data in .env file according to you system configuration, for example:
 ```
+APP_URL_DEV='http://localhost:5000'
+APP_URL_PROD='http://clmasters.fyoung.dp.ua:5001'
 APP_PORT_DEV=5000
 APP_PORT_PROD=5001
 APP_BUILD_FOLDER="../client/build"
@@ -61,8 +63,24 @@ DB_PORT=5432
 DB_USER="clm"
 DB_PASS="120880"
 SECUR_SALTROUNDS=3
-SECUR_JWTSECRET="jwt Secret for token security"
-SECUR_JWTSECRET_REFRESH="another jwt Secret for refresh token security"
+SECUR_JWTSECRET="jwt Secret for token security --CENSORED--"
+SECUR_JWTSECRET_REFRESH="another jwt Secret for refresh token security --CENSORED--"
+MJ_APIKEY_PUBLIC=5--CENSORED--e
+MJ_APIKEY_PRIVATE=8--CENSORED--2
+
+GOOGLE_CLIENT_ID=1--CENSORED--9.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=Y--CENSORED--E
+
+CLOUDINARY_URL=cloudinary://6--CENSORED--8:G--CENSORED--A@fyoung-dp-ua
+
+STRIPE_KEY_PUBLIC=pk_test_5--CENSORED--a
+STRIPE_KEY_SECRET=sk_test_5--CENSORED--d
+
+PRODUCTION_STRIPE_ENDPOINT_SECRET=w--CENSORED--i
+DEVELOPMENT_STRIPE_ENDPOINT_SECRET=w--CENSORED--Z
+
+CLIENT_PRODUCTION_DOMAIN='http://clmasters.fyoung.dp.ua'
+CLIENT_DEVELOPMENT_DOMAIN='http://localhost:3000'
 ```
 
 5. With psql, create user according to the credentials in .env file (DB_USER, DB_PASS),
@@ -76,7 +94,7 @@ create databases "clmasters_production" and/or "clmasters_development" and grant
     - $npx sequelize-cli db:migrate:all
 
     6.2. for production mode:
-    - $NODE_ENV=production npx sequelize-cli db:migrate:all
+    - $NODE_ENV=production npx sequelize-cli db:migrate
 
 7. Seed the database with initial values through running seeders with sequelize-cli tool:
 

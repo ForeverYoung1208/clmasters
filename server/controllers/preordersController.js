@@ -5,7 +5,6 @@ const { CRUDController } = require('./common/CRUDController')
 const { notInPast } = require('./validators/customValidators')
 
 class PreordersController extends CRUDController {
-  // maybe, I should refactore it to masters get call ...
   async post(req, res) {
     const errors = validationResult(req)
     if (!errors.isEmpty())
