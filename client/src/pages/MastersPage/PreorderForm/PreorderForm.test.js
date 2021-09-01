@@ -9,7 +9,10 @@ import { shallow, mount, render } from 'enzyme'
 import { reducer as formReducer } from 'redux-form';
 import { compose, applyMiddleware, createStore } from 'redux'
 
+import { Select } from '@material-ui/core'
+
 const mockDispatchfn = jest.fn()
+const mockOnClickfn = jest.fn()
 
 const initialState = {
   cities: {
@@ -45,13 +48,18 @@ describe('testing PreorderForm', () => {
 
     const props = {
       handleSubmit: jest.fn(),
-      dispatch: {mockDispatchfn}
+      dispatch: { mockDispatchfn },
+      onClick: mockOnClickfn,
+
     }
 
     container = mount(
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={uk}>
         <Provider store={store}>
-          <PreorderForm {...props}></PreorderForm>
+          <PreorderForm
+            {...props}
+            initialValues={{ clockId: 1 }}
+          />
         </Provider>
       </MuiPickersUtilsProvider>
     )
@@ -66,21 +74,24 @@ describe('testing PreorderForm', () => {
   })
   
   it('requires name when it is empty', async () => {
-    const inputs = container.find('input')
     
-    // for (let i of inputs) {
-    //   console.log('[i====]', i)
-    // }
+    let clockInput = container.find('input').at(0)
     
-    inputs.first().simulate("change", {
-      target: { value: '1' }
-    })
     
-    console.log('[inputs.first]', inputs.first().debug({ verbose: true }))
-    console.log('[inputs]', inputs.debug())
+    ////// doesn't work
+    // clockInput.props().onChange({target:{value:1}})
+
+    ////// doesn't work also
+    // clockInput.simulate('click')
+    // clockInput.simulate('keypress', {keyCode:40})
+    // clockInput.simulate('keypress', {keyCode:13})
+    
+    console.log('[clockInput]', clockInput.debug({verbose:true}))
+    
+    // [clockInput] <input value="" name="clockId" aria-hidden={true} onChange={[Function: handleChange]}.....
+    
   })
 
-  
-  
+   
   
 })
