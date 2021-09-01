@@ -61,11 +61,20 @@ describe('testing PreorderForm', () => {
   })
   
   it('requires name when it is empty', async () => {
-    const input =
-      container.find('input')
+    const inputs = container.find('input')
+    console.log(inputs)
     
-    console.log(input)
+    for (let i of inputs) {
+      console.log('[i====]', i)
+    }
+    // inputs.simulate("change", {
+    //   target: { value: 1 }
+    // })
+    
+    
 
+    
+    
   })
   
 })
