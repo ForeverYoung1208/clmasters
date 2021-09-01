@@ -82,9 +82,9 @@ describe('testing PreorderForm', () => {
     // clockInput.props().onChange({target:{value:1}})
 
     ////// doesn't work also
-    // clockInput.simulate('click')
-    // clockInput.simulate('keypress', {keyCode:40})
-    // clockInput.simulate('keypress', {keyCode:13})
+    clockInput.simulate('click')
+    clockInput.simulate('keypress', {keyCode:40})
+    clockInput.simulate('keypress', {keyCode:13})
     
     console.log('[clockInput]', clockInput.debug({verbose:true}))
     
