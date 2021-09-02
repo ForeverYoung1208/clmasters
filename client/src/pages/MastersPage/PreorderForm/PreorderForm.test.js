@@ -77,18 +77,18 @@ describe('testing PreorderForm', () => {
     
     let clockInput = container.find('input').at(0)
     
-    
-    ////// doesn't work
-    // clockInput.props().onChange({target:{value:1}})
+    //// doesn't work
+    clockInput.props().onChange({ target: { value: 1 } })
 
     ////// doesn't work also
-    clockInput.simulate('click')
-    clockInput.simulate('keypress', {keyCode:40})
-    clockInput.simulate('keypress', {keyCode:13})
+    // clockInput.simulate('click')
+    // clockInput.simulate('keypress', {keyCode:40})
+    // clockInput.simulate('keypress', {keyCode:13})
+    // console.log('[clockInput]', clockInput.debug({ verbose: true }))
     
-    console.log('[clockInput]', clockInput.debug({verbose:true}))
     
-    // [clockInput] <input value="" name="clockId" aria-hidden={true} onChange={[Function: handleChange]}.....
+    expect(clockInput.props().value).toBe(1)
+    
     
   })
 
