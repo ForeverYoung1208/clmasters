@@ -10,6 +10,7 @@ import { reducer as formReducer } from 'redux-form';
 import { compose, applyMiddleware, createStore } from 'redux'
 
 import { Select } from '@material-ui/core'
+import { act } from 'react-dom/test-utils'
 
 const mockDispatchfn = jest.fn()
 const mockOnClickfn = jest.fn()
@@ -76,12 +77,22 @@ describe('testing PreorderForm', () => {
   it('requires name when it is empty', async () => {
     
     let clockInput = container.find('input').at(0)
+    act(() => {
+      clockInput.simulate('click')
+      clockInput.simulate("mousedown", { button: 0 });
+      clockInput.simulate('keypress', {keyCode:40})
+      clockInput.simulate('keypress', {keyCode:13})
+
+      //// doesn't work also      
+      // clockInput.props().onChange({ target: { value: 1 } });
+    });
     
-    //// doesn't work
-    clockInput.props().onChange({ target: { value: 1 } })
+    //// doesn't work also
+    // clockInput.props().onChange({ target: { value: 1 } })
 
     ////// doesn't work also
     // clockInput.simulate('click')
+    // clockInput.simulate("mousedown", { button: 0 });
     // clockInput.simulate('keypress', {keyCode:40})
     // clockInput.simulate('keypress', {keyCode:13})
     // console.log('[clockInput]', clockInput.debug({ verbose: true }))

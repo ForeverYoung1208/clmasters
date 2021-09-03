@@ -32,3 +32,6 @@ https://www.robinwieruch.de/react-testing-library
 
 
 https://stackoverflow.com/questions/56617679/how-to-test-redux-form-using-react-testing-library
+
+
+https://redux-form.com/8.1.0/docs/api/reducerplugin.md/
