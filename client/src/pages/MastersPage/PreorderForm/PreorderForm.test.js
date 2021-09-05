@@ -5,17 +5,10 @@ import thunk from 'redux-thunk'
 import DateFnsUtils from '@date-io/date-fns'
 import { uk } from 'date-fns/locale'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { shallow, mount, render } from 'enzyme'
-import { reducer as formReducer } from 'redux-form'
-import { compose, applyMiddleware, createStore } from 'redux'
+import { mount } from 'enzyme'
 
-import { Select } from '@material-ui/core'
-import { act } from 'react-dom/test-utils'
 import configureStore from 'redux-mock-store'
-import pretty from 'pretty'
 
-const mockDispatchfn = jest.fn()
-const mockOnClickfn = jest.fn()
 const mockStore = configureStore([thunk])
 
 const initialState = {
