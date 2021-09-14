@@ -1,6 +1,6 @@
 import { LOADER_HIDE, LOADER_SHOW } from './actionTypes/loaders'
 import { SET_ERROR_MESSAGE } from './actionTypes/errors'
-import { REDIRECTION_DONE, REDIRECT_START } from './actionTypes/redirect'
+import { REDIRECTION_DONE, REDIRECT_START, SET_LAST_ADMIN_TAB } from './actionTypes/redirect'
 import { SET_PAGINATION_PAGE_SIZE } from './actionTypes/pagination'
 
 export const loaderShow = (name) => {
@@ -48,4 +48,12 @@ export const setPaginationPageSize = (paginationPageSize) => {
     type: SET_PAGINATION_PAGE_SIZE,
     paginationPageSize,
   }  
+}
+
+export const rememberSelectedAdminTab = (lastSelectedAdminTab) => {
+  return {
+    type: SET_LAST_ADMIN_TAB,
+    lastSelectedAdminTab,
+  }
+
 }
