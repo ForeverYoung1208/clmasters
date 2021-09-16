@@ -1,2 +1,3 @@
 export const REDIRECTION_DONE = 'main/REDIRECTION_DONE'
 export const REDIRECT_START = 'main/REDIRECT_START'
+export const SET_LAST_ADMIN_TAB = 'main/SET_LAST_ADMIN_TAB'

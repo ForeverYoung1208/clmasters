@@ -1,14 +1,10 @@
 import { SET_ERROR_MESSAGE } from '../actions/actionTypes/errors'
 import { LOADER_HIDE, LOADER_SHOW } from '../actions/actionTypes/loaders'
 import { SET_PAGINATION_PAGE_SIZE } from '../actions/actionTypes/pagination'
-// import {
-//   PREORDERS_POST_FULFILLED,
-//   PREORDERS_POST_PENDING,
-//   PREORDERS_POST_REJECTED
-// } from '../actions/actionTypes/preorders'
 import {
   REDIRECTION_DONE,
   REDIRECT_START,
+  SET_LAST_ADMIN_TAB,
 } from '../actions/actionTypes/redirect'
 
 const initialState = {
@@ -17,7 +13,6 @@ const initialState = {
     preorder: false,
   },
   paginationPageSize: 5,
-
 }
 
 const main = (state = initialState, action) => {
@@ -54,11 +49,17 @@ const main = (state = initialState, action) => {
         ...state,
         errorMessage: action.errorMessage,
       }
-    
+
     case SET_PAGINATION_PAGE_SIZE:
       return {
         ...state,
         paginationPageSize: action.paginationPageSize,
+      }
+
+    case SET_LAST_ADMIN_TAB:
+      return {
+        ...state,
+        lastSelectedAdminTab: action.lastSelectedAdminTab,
       }
 
     default:
