@@ -1,4 +1,11 @@
-const express = require('express')
+import express = require('express')
+
+// import express = require('express')
+// import express from "express"
+// --- const express = require('express')
+// https://stackoverflow.com/questions/28547970/typescript-require-with-type-checking
+
+
 const path = require('path')
 const routes = require('./routes')
 const cors = require('cors')
@@ -6,32 +13,33 @@ require('dotenv').config()
 
 const { APP_BUILD_FOLDER } = process.env
 
-let PORT
+let PORT: string
 switch (process.env.NODE_ENV) {
-case 'test':
-case 'development':
-  PORT = process.env.APP_PORT_DEV || 5000
-  break
-case 'production':
-  PORT = process.env.APP_PORT_PROD || 5001
-  break
-default:
-  console.log('unknown NODE_ENV, app port set to 5000 ')
-  PORT = 5000
+  case 'test':
+  case 'development':
+    PORT = process.env.APP_PORT_DEV || '5000'
+    break
+  case 'production':
+    PORT = process.env.APP_PORT_PROD || '5001'
+    break
+  default:
+    console.log('unknown NODE_ENV, app port set to 5000 ')
+    PORT = '5000'
 }
 
-const app = express()
+const app: express.Application = express()
 
 app.use(cors())
 
-app.use(
-  express.json({
-    extended: true,
-    verify: (req, res, buf) => {
-      req.rawBody = buf
-    },
-  })
-)
+// app.use(
+//   express.json({
+//     // extended: true,
+//     verify: (req, res, buf) => {
+//       // req.rawBody = buf
+//     },
+//   })
+// )
+app.use( express.json())
 
 app.use('/api/auth', routes.auth)
 app.use('/api/cities', routes.cities)
