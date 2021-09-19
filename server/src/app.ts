@@ -1,12 +1,15 @@
-import express = require('express')
+import express from 'express'
+import { IncomingMessageWithRawBody } from 'typings/http'
 
+// WAS // const express = require('express')
+// https://stackoverflow.com/questions/28547970/typescript-require-with-type-checking
+// the ways to tackle
 // import express = require('express')
 // import express from "express"
-// --- const express = require('express')
-// https://stackoverflow.com/questions/28547970/typescript-require-with-type-checking
-
 
 const path = require('path')
+
+// import path from 'path'
 const routes = require('./routes')
 const cors = require('cors')
 require('dotenv').config()
@@ -31,15 +34,13 @@ const app: express.Application = express()
 
 app.use(cors())
 
-// app.use(
-//   express.json({
-//     // extended: true,
-//     verify: (req, res, buf) => {
-//       // req.rawBody = buf
-//     },
-//   })
-// )
-app.use( express.json())
+app.use(
+  express.json({
+    verify: (req: IncomingMessageWithRawBody, res, buf) => {
+      req.rawBody = buf
+    },
+  })
+)
 
 app.use('/api/auth', routes.auth)
 app.use('/api/cities', routes.cities)
