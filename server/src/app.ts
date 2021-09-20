@@ -1,20 +1,13 @@
 import express from 'express'
 import { IncomingMessageWithRawBody } from 'typings/http'
+import path from 'path'
+import cors from 'cors'
+import dotenv from "dotenv"
+import routes from './routes'
 
-// WAS // const express = require('express')
-// https://stackoverflow.com/questions/28547970/typescript-require-with-type-checking
-// the ways to tackle
-// import express = require('express')
-// import express from "express"
+dotenv.config()
 
-const path = require('path')
-
-// import path from 'path'
-const routes = require('./routes')
-const cors = require('cors')
-require('dotenv').config()
-
-const { APP_BUILD_FOLDER } = process.env
+const APP_BUILD_FOLDER = process.env.APP_BUILD_FOLDER || '../client/build'
 
 let PORT: string
 switch (process.env.NODE_ENV) {
