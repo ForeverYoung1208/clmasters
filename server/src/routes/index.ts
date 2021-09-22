@@ -10,7 +10,7 @@ const basename = path.basename(__filename)
 fs.readdirSync(__dirname)
   .filter((file: string) => {
     return (
-      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
+      file.indexOf('.') !== 0 && file !== basename && (/\.(j|t)s$/.test (file.slice(-3)) )
     )
   })
   .forEach((file: string) => {
@@ -19,5 +19,6 @@ fs.readdirSync(__dirname)
     routes[name] = route
   })
 
-module.exports = routes
-// export default routes
+// module.exports = routes
+// export { routes }
+export default routes

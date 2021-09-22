@@ -3,8 +3,10 @@ import { IncomingMessageWithRawBody } from 'typings/http'
 import path from 'path'
 import cors from 'cors'
 import dotenv from "dotenv"
-//import routes from './routes'
-const routes = require ('./routes')
+
+import routes from './routes'
+// const routes = import ('./routes') as any
+// const routes = require ('./routes')
 
 dotenv.config()
 
