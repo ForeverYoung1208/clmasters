@@ -1,4 +1,4 @@
-const { Router } = require('express')
+import { Request, Response, Router } from 'express'
 const { ordersController } = require('../controllers/ordersController')
 const { accessTokenToEmail } = require('../middleware/accessTokenToEmail')
 const { checkEmailIsAdmin } = require('../middleware/checkEmailIsAdmin')
@@ -8,7 +8,7 @@ const router = Router()
 
 router.get(
   '/',
-  async (req, res) => ordersController.getAll(req, res)
+  async (req: Request, res: Response) => ordersController.getAll(req, res)
 )
 
 router.put(
@@ -16,20 +16,20 @@ router.put(
   accessTokenToEmail,
   checkEmailIsAdmin,
   ordersController.putValidators(),
-  async (req, res) => ordersController.put(req, res)
+  async (req: Request, res: Response) => ordersController.put(req, res)
 )
 
 router.post(
   '/',
   ordersController.postValidators(),
-  async (req, res) => ordersController.post(req, res)
+  async (req: Request, res: Response) => ordersController.post(req, res)
 )
 
 router.delete(
   '/:id', accessTokenToEmail,
   accessTokenToEmail,
   checkEmailIsAdmin,
-  async (req, res) => ordersController.delete(req, res)
+  async (req: Request, res: Response) => ordersController.delete(req, res)
 )
 
 module.exports = router

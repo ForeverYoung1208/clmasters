@@ -5,8 +5,7 @@ import cors from 'cors'
 import dotenv from "dotenv"
 
 import routes from './routes'
-// const routes = import ('./routes') as any
-// const routes = require ('./routes')
+
 
 dotenv.config()
 

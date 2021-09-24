@@ -1,4 +1,4 @@
-const { Router } = require('express')
+import { Request, Response, Router } from 'express'
 const { paymentController } = require('../controllers/paymentController')
 
 const router = Router()
@@ -6,11 +6,11 @@ const router = Router()
 router.post(
   '/createSession',
   paymentController.createPaymentSessionValidators(),
-  (req, res) => paymentController.createPaymentSession(req, res)
+  (req: Request, res: Response) => paymentController.createPaymentSession(req, res)
 )
 
 router.post(
   '/webhook',
-  (req, res) => paymentController.paymentWebhook(req, res)
+  (req: Request, res: Response) => paymentController.paymentWebhook(req, res)
 )
 module.exports = router

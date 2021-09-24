@@ -1,4 +1,4 @@
-const { Router } = require('express')
+import { Request, Response, Router } from 'express'
 
 const { citiesController } = require('../controllers/citiesController')
 const { accessTokenToEmail } = require('../middleware/accessTokenToEmail')
@@ -8,7 +8,7 @@ const router = Router()
 
 router.get(
   '/',
-  async (req, res) => citiesController.getAll(req, res)
+  async (req: Request, res: Response) => citiesController.getAll(req, res)
 )
 
 router.put(
@@ -16,7 +16,7 @@ router.put(
   accessTokenToEmail,
   checkEmailIsAdmin,
   citiesController.putValidators(),
-  async (req, res) => citiesController.put(req, res)
+  async (req: Request, res: Response) => citiesController.put(req, res)
 )
 
 router.post(
@@ -24,14 +24,14 @@ router.post(
   accessTokenToEmail,
   checkEmailIsAdmin,
   citiesController.postValidators(),
-  async (req, res) => citiesController.post(req, res)
+  async (req: Request, res: Response) => citiesController.post(req, res)
 )
 
 router.delete(
   '/:id',
   accessTokenToEmail,
   checkEmailIsAdmin,
-  async (req, res) => citiesController.delete(req, res)
+  async (req: Request, res: Response) => citiesController.delete(req, res)
 )
 
 module.exports = router

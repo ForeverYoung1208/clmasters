@@ -6,8 +6,8 @@
   "scripts": {
     "server": "nodemon --config nodemon.json --inspect src/app.ts",
     "dev": "NODE_ENV=development concurrently \"yarn server\" \"yarn client\"",
-    "build": "NODE_ENV=production tsx src/app.js",
-    "prod": "NODE_ENV=production node app.js",
+    "build": "NODE_ENV=production tsc -p ./tsconfig.json",
+    "prod": "NODE_ENV=production node build/app.js",
     "client": "yarn --cwd ../client start",
     "client:install": "yarn --cwd ../client install",
     "client:build": "yarn --cwd ../client build",
