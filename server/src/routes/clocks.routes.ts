@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
 
-const { clocksController } = require('../controllers/clocksController')
+import { clocksController } from '../controllers/clocksController'
 
 const router = Router()
 

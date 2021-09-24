@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express'
-
-const { preordersController } = require('../controllers/preordersController')
+import { preordersController } from '../controllers/preordersController'
 
 const router = Router()
 

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-const { paymentController } = require('../controllers/paymentController')
+import { paymentController } from '../controllers/paymentController'
 
 const router = Router()
 

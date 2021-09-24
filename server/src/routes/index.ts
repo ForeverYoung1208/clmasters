@@ -19,5 +19,4 @@ fs.readdirSync(__dirname)
     routes[name] = route
   })
 
-// module.exports = routes
 export default routes

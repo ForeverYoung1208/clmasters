@@ -1,16 +1,16 @@
-const { Model } = require('sequelize')
+import { Model } from 'sequelize'
+import { TModelParams, TPaginationParams } from 'typings/model'
 
-class PaginatedModel extends Model {
-  static async findAllPaginated(modelParams, paginationParams) {
+export class PaginatedModel extends Model {
+  static async findAllPaginated(modelParams : TModelParams, paginationParams: TPaginationParams) {
 
     //page is zero-based:
     let { page, pageSize } = paginationParams
     
-    page++
-    
     let addOptions = {}
     
     if (page && pageSize) {
+      page++
       addOptions = {
         offset: page * pageSize - pageSize,
         limit: pageSize,
@@ -28,4 +28,4 @@ class PaginatedModel extends Model {
   }
 }
 
-exports.PaginatedModel = PaginatedModel
+// exports.PaginatedModel = PaginatedModel

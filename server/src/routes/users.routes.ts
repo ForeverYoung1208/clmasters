@@ -1,8 +1,9 @@
 import { Request, Response, Router } from 'express'
-const { usersController } = require('../controllers/usersController')
-const { accessTokenToEmail } = require('../middleware/accessTokenToEmail')
-const { checkEmailIsAdmin } = require('../middleware/checkEmailIsAdmin')
-const { encodePassword } = require('../middleware/encodePassword')
+
+import { usersController } from '../controllers/usersController'
+import { accessTokenToEmail } from '../middleware/accessTokenToEmail'
+import { checkEmailIsAdmin } from '../middleware/checkEmailIsAdmin'
+import { encodePassword } from '../middleware/encodePassword'
 
 const router = Router()
 
