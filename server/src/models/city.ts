@@ -1,11 +1,9 @@
-'use strict'
+import { Sequelize } from 'sequelize/types'
+import { DataTypes } from 'sequelize'
 
-import { DataTypes, Sequelize } from 'sequelize/types'
+import { PaginatedModel as Model } from './PaginatedModel/PaginatedModel'
 
-// const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
-import { PaginatedModel as Model } from './PaginatedModel/PaginatedModel')
-
-module.exports = (sequelize: Sequelize, DT: typeof DataTypes) => {
+module.exports = (sequelize: Sequelize) => {
   class City extends Model {
     /**
      * Helper method for defining associations.
@@ -13,16 +11,15 @@ module.exports = (sequelize: Sequelize, DT: typeof DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
 
-    // eslint-disable-next-line no-unused-vars
-    static associate(models) {
+    static associate(models: any): void {
       // define association here
     }
   }
   City.init(
     {
-      name: DT.STRING,
-      comment: DT.STRING,
-      isActive: DT.BOOLEAN,
+      name: DataTypes.STRING,
+      comment: DataTypes.STRING,
+      isActive: DataTypes.BOOLEAN,
     },
     {
       sequelize,
