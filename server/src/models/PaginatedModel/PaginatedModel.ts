@@ -1,9 +1,9 @@
 import { Model } from 'sequelize'
-import { TModelParams, TPaginationParams } from 'typings/model'
+import { TPaginationParams } from 'typings/model'
 
-export class PaginatedModel extends Model {
+export class PaginatedModel<T> extends Model<T> {
   static async findAllPaginated(
-    modelParams: TModelParams,
+    modelParams: {} | null,
     paginationParams: TPaginationParams
   ) {
     let { page, pageSize } = paginationParams

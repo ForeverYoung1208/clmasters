@@ -1,6 +1,9 @@
-import { TModelParams, TPaginationParams } from 'typings/model'
+// https://stackoverflow.com/questions/60014874/how-to-use-typescript-with-sequelize
 
-export type TModelParams = {} | null
+// import { TModelParams, TPaginationParams } from 'typings/model'
+
+// export type TModelParams = {} | null
+
 export type TPaginationParams = {
   page: number | null
   pageSize: number | null
@@ -8,6 +11,7 @@ export type TPaginationParams = {
 
 export interface MyModel extends Model {
   name: string,
+  dataValues: any,
   associate?: (models: any ) => void
 }
 

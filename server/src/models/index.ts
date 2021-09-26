@@ -3,19 +3,17 @@ import path from 'path'
 import { Sequelize } from 'sequelize'
 import configDBs from '../config/configDB'
 import { MyModel } from 'typings/model'
-import { ISequelizeDB, isTKeyOfconfigDBs, TConfigDB } from 'typings/db'
+import { ISequelizeDB, TConfigDB } from 'typings/db'
 
 const basename = path.basename(__filename)
 const env = process.env.NODE_ENV || 'development'
 
 let configDB: TConfigDB
 
-if (isTKeyOfconfigDBs(env)) {
+if (Object.keys(configDBs).includes(env)) {
   configDB = configDBs[env]
 } else {
-  throw new Error(
-    'No database type given in .env ("development" | "test" | "production")'
-  )
+  throw new Error(`No database config found for environment ${env}`)
 }
 
 let sequelize = new Sequelize(

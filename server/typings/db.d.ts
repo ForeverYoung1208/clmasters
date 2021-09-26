@@ -15,15 +15,11 @@ export type TConfigDB = {
 
 // nice sample and explanation of making types from array
 // https://steveholgado.com/typescript-types-from-arrays/
-export const keysOfConfigDBs = ['test', 'development', 'production'] as const
+
 export type TKeyOfConfigDBs = typeof keysOfConfigDBs[number]
 
 export type TConfigDBs = {
-  [key: string]: TConfigDB,   /// need to change 'string' to 'TKeyOfConfigDBs' !!!!
-}
-
-export function isTKeyOfconfigDBs(givenKey: string | undefined): givenKey is TKeyOfConfigDBs{
-  return (givenKey && keysOfConfigDBs.includes(givenKey))
+  [key: string]: TConfigDB,
 }
 
 export interface ISequelizeDB {
