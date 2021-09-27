@@ -1,19 +1,8 @@
-import { Sequelize, DataTypes, Optional } from 'sequelize'
+import { Sequelize, DataTypes } from 'sequelize'
 
 import { PaginatedModel  } from './PaginatedModel/PaginatedModel'
 import { timestrToMSec } from '../shared/services'
-// import { MyModel } from 'typings/model'
-// import { IClock } from 'typings/models/clock'
-
-interface IClockAttr {
-  id:number
-  type: string
-  repairTime: string
-  comment: string
-  createdAt?: Date
-  updatedAt?: Date  
-}
-// interface ClockCreationAttr extends Optional<ClockAttr, "id"> { }
+import { IClockAttr } from 'typings/models/clock'
 
 module.exports = (sequelize: Sequelize) => {
   class Clock extends PaginatedModel<IClockAttr> implements IClockAttr{

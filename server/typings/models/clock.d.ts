@@ -1,5 +1,11 @@
-// import { Model, Optional } from 'sequelize'
+import { PaginatedModel } from "src/models/PaginatedModel/PaginatedModel";
 
-
-
-// export interface IClock extends Model<ClockAttr, ClockCreationAttr> {}
+export interface IClockAttr {
+  id:number
+  type: string
+  repairTime: string
+  comment: string
+  createdAt?: Date
+  updatedAt?: Date
+  maxRepairTimeMsec?():string
+}

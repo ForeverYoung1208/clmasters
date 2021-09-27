@@ -1,17 +1,31 @@
-'use strict'
-const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
+import { DataTypes, Model, ModelCtor, Sequelize } from 'sequelize'
+import { TPreorder } from 'typings/preorder'
+import { PaginatedModel } from './PaginatedModel/PaginatedModel'
+import { IMasterAttr } from 'typings/models/master'
+import { IClockAttr } from 'typings/models/clock'
 
 const { timestrToMSec } = require('../shared/services')
 const roundToMinute = require('date-fns/roundToNearestMinutes')
 
-module.exports = (sequelize, DataTypes) => {
-  class Master extends Model {
+
+module.exports = (sequelize: Sequelize) => {
+  class Master extends PaginatedModel<IMasterAttr> implements IMasterAttr {
+    id!: number
+    cityId!: number
+    rating!: number
+    hourRate!: number
+    name!: string
+    comment: string = ''
+    isActive: boolean = true
+    createdAt?: Date | undefined
+    updatedAt?: Date | undefined
     // excludeOrderId - to be able save order being eddited.
     // otherwise, we'll get error that master is busy
-    static async freeMastersForOrder(preorderData, excludeOrderId) {
+    static async freeMastersForOrder(preorderData: TPreorder, excludeOrderId:number) {
       const { cityId, orderDateTimeStr, clockTypeId } = preorderData
 
-      const Clock = sequelize.model('Clock')
+      const Clock: ModelCtor<Model<IClockAttr>> = sequelize.model('Clock')
+      
       const Order = sequelize.model('Order')
 
       const [clockType, maxRepairTimeMsec, mastersInCity] = await Promise.all([

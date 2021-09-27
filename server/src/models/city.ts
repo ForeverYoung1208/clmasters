@@ -1,27 +1,16 @@
-import { DataTypes, Optional, Sequelize, Model} from 'sequelize'
-
-// import { DataTypes, Optional, Sequelize } from 'sequelize'
-// import { PaginatedModel as Model } from './PaginatedModel/PaginatedModel'
-
-interface ICityAttr {
-  id:number
-  name: string
-  comment: string
-  isActive: boolean
-  createdAt?: Date
-  updatedAt?: Date  
-}
-// interface CityCreationAttr extends Optional<CityAttr, "id"> { }
+import { DataTypes, Sequelize } from 'sequelize'
+import { PaginatedModel } from './PaginatedModel/PaginatedModel'
+import { ICityAttr } from "typings/models/city";
 
 module.exports = (sequelize: Sequelize) => {
-  class City extends Model<ICityAttr> implements ICityAttr {
+  class City extends PaginatedModel<ICityAttr> implements ICityAttr {
     id!: number
     name!: string
     comment: string = ''
     isActive: boolean = true
     createdAt?: Date | undefined
     updatedAt?: Date | undefined
-    
+
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
