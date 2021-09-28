@@ -1,3 +1,4 @@
+import { Model, ModelCtor } from "sequelize/types";
 import { PaginatedModel } from "src/models/PaginatedModel/PaginatedModel";
 
 export interface IClockAttr {
@@ -9,3 +10,5 @@ export interface IClockAttr {
   updatedAt?: Date
   maxRepairTimeMsec?():string
 }
+export type TClockCtor<T> = ModelCtor<Model<T>>
+  & { maxRepairTimeMsec?: () => void }

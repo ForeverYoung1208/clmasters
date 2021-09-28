@@ -1,3 +1,5 @@
+import { Model } from "sequelize/types"
+
 export interface IMasterAttr {
   id: number
   cityId: number,
