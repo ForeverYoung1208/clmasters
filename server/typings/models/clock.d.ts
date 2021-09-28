@@ -1,5 +1,6 @@
 import { Model, ModelCtor } from "sequelize/types";
-import { PaginatedModel, TPaginatedModelCtor } from "src/models/PaginatedModel/PaginatedModel";
+import { PaginatedModel } from "src/models/PaginatedModel/PaginatedModel";
+import { TPaginatedModelCtor } from "typings/paginatedModel";
 
 export interface IClockAttr {
   id:number

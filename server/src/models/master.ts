@@ -1,6 +1,6 @@
 import { DataTypes, Model, ModelCtor, Sequelize } from 'sequelize'
 import { TPreorder } from 'typings/preorder'
-import { PaginatedModel, TPaginatedModelCtor } from './PaginatedModel/PaginatedModel'
+import { PaginatedModel } from './PaginatedModel/PaginatedModel'
 import { IMasterAttr } from 'typings/models/master'
 import { TClockCtor, IClockAttr } from 'typings/models/clock'
 
@@ -26,12 +26,10 @@ module.exports = (sequelize: Sequelize) => {
 
       const Clock = sequelize.model('Clock') as TClockCtor<IClockAttr>
       
-      const a = Clock.findAllPaginated(null, {page: 3, pageSize:2})
-      
       const Order = sequelize.model('Order')
 
       const [clockType, maxRepairTimeMsec, mastersInCity]:
-      [PaginatedModel<IClockAttr>|null, number, Array<Master>] = await Promise.all([
+      [Model<IClockAttr>|null, number, Array<Master>] = await Promise.all([
         Clock.findByPk(clockTypeId),
         Clock.maxRepairTimeMsec!(),
         this.findAll({
@@ -41,7 +39,7 @@ module.exports = (sequelize: Sequelize) => {
         }),
       ])
       
-      
+           
 
       const orderDateTimeStarts = new Date(orderDateTimeStr)
       const orderDateTimeEnds = new Date(

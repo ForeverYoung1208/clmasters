@@ -1,5 +1,5 @@
-import { Model, ModelCtor } from 'sequelize'
-import { TPaginationParams } from 'typings/model'
+import { Model } from 'sequelize'
+import { TPaginationParams } from 'typings/paginatedModel'
 
 export class PaginatedModel<T> extends Model<T> {
   static async findAllPaginated(
@@ -32,13 +32,3 @@ export class PaginatedModel<T> extends Model<T> {
   }
 }
 
-export type TPaginatedModelCtor<T> = ModelCtor<Model<T>>
-  & {
-    findAllPaginated: (
-      modelParams: {} | null,
-      paginationParams: TPaginationParams
-    ) => number
-  }
-
-
-// exports.PaginatedModel = PaginatedModel

@@ -1,15 +1,14 @@
-import { Dialect, Model, Sequelize } from "sequelize/types"
-import { MyModel } from "typings/model"
+import { Dialect, Model, ModelCtor, Sequelize } from 'sequelize/types'
 
 export type TConfigDB = {
-  username: string,
-  password: string,
-  database: string,
+  username: string
+  password: string
+  database: string
   options: {
-    host: string,
-    port: number | undefined,
-    dialect: Dialect,
-    logging?: boolean,
+    host: string
+    port: number | undefined
+    dialect: Dialect
+    logging?: boolean
   }
 }
 
@@ -19,11 +18,11 @@ export type TConfigDB = {
 export type TKeyOfConfigDBs = typeof keysOfConfigDBs[number]
 
 export type TConfigDBs = {
-  [key: string]: TConfigDB,
+  [key: string]: TConfigDB
 }
 
 export interface ISequelizeDB {
   sequelize: Sequelize
   Sequelize: typeof Sequelize
-  [key: string]: MyModel
+  [key: string]: Model & { associate?(ISequelizeDB): void }
 }
