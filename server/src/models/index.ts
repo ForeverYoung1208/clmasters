@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import { Sequelize } from 'sequelize'
+import { Model, Sequelize } from 'sequelize'
 import configDBs from '../config/configDB'
-import { MyModel } from 'typings/model'
+// import { MyModel } from 'typings/model'
 import { ISequelizeDB, TConfigDB } from 'typings/db'
 
 const basename = path.basename(__filename)
@@ -34,7 +34,8 @@ fs.readdirSync(__dirname)
     )
   })
   .forEach((file) => {
-    const model = require(path.join(__dirname, file))(sequelize) as MyModel
+    const model = require(path.join(__dirname, file))(sequelize) as Model & { name: string }
+    
     db[model.name] = model
   })
 

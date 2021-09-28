@@ -1,6 +1,6 @@
 import { DataTypes, Model, ModelCtor, Sequelize } from 'sequelize'
 import { TPreorder } from 'typings/preorder'
-import { PaginatedModel } from './PaginatedModel/PaginatedModel'
+import { PaginatedModel, TPaginatedModelCtor } from './PaginatedModel/PaginatedModel'
 import { IMasterAttr } from 'typings/models/master'
 import { TClockCtor, IClockAttr } from 'typings/models/clock'
 
@@ -24,12 +24,14 @@ module.exports = (sequelize: Sequelize) => {
     static async freeMastersForOrder(preorderData: TPreorder, excludeOrderId:number) {
       const { cityId, orderDateTimeStr, clockTypeId } = preorderData
 
-      // const Clock: ModelCtor<ClockStatic<IClockAttr>> & { maxRepairTimeMsec?: () => void } = sequelize.model('Clock')
-      const Clock: TClockCtor<IClockAttr> = sequelize.model('Clock')
+      const Clock = sequelize.model('Clock') as TClockCtor<IClockAttr>
+      
+      const a = Clock.findAllPaginated(null, {page: 3, pageSize:2})
       
       const Order = sequelize.model('Order')
 
-      const [clockType, maxRepairTimeMsec, mastersInCity] = await Promise.all([
+      const [clockType, maxRepairTimeMsec, mastersInCity]:
+      [PaginatedModel<IClockAttr>|null, number, Array<Master>] = await Promise.all([
         Clock.findByPk(clockTypeId),
         Clock.maxRepairTimeMsec!(),
         this.findAll({
@@ -38,11 +40,13 @@ module.exports = (sequelize: Sequelize) => {
           },
         }),
       ])
+      
+      
 
       const orderDateTimeStarts = new Date(orderDateTimeStr)
       const orderDateTimeEnds = new Date(
         orderDateTimeStarts.valueOf() +
-          timestrToMSec(clockType.dataValues.repairTime)
+          timestrToMSec(clockType?.repairTime)
       )
 
       const nearestOrders = await Order.withinInterval({
