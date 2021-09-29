@@ -1,4 +1,4 @@
-const checkMasterIsFree = async (sequelize, order) => {
+export const checkMasterIsFree = async (sequelize, order) => {
   const { masterId, onTime, clockId } = order.dataValues
 
   const Master = sequelize.model('Master')
@@ -22,4 +22,4 @@ const checkMasterIsFree = async (sequelize, order) => {
     return Promise.reject(new Error('The master is busy at given time'))
 }
 
-module.exports = { checkMasterIsFree }
+// module.exports = { checkMasterIsFree }

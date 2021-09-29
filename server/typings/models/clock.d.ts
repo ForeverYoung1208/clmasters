@@ -12,3 +12,5 @@ export interface IClockAttr {
 }
 export type TClockCtor<T> = TPaginatedModelCtor<T>
   & { maxRepairTimeMsec?(): number }
+
+export type TClock = PaginatedModel<IClockAttr> & IClockAttr

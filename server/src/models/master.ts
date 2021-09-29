@@ -1,8 +1,8 @@
-import { DataTypes, Model, ModelCtor, Sequelize } from 'sequelize'
+import { DataTypes, Sequelize } from 'sequelize'
 import { TPreorder } from 'typings/preorder'
 import { PaginatedModel } from './PaginatedModel/PaginatedModel'
 import { IMasterAttr } from 'typings/models/master'
-import { TClockCtor, IClockAttr } from 'typings/models/clock'
+import { TClockCtor, IClockAttr, TClock } from 'typings/models/clock'
 
 const { timestrToMSec } = require('../shared/services')
 const roundToMinute = require('date-fns/roundToNearestMinutes')
@@ -28,9 +28,8 @@ module.exports = (sequelize: Sequelize) => {
       
       const Order = sequelize.model('Order')
 
-      const [clockType, maxRepairTimeMsec, mastersInCity]:
-      [Model<IClockAttr>|null, number, Array<Master>] = await Promise.all([
-        Clock.findByPk(clockTypeId),
+      const [clockType, maxRepairTimeMsec, mastersInCity] = await Promise.all([
+        Clock.findByPk(clockTypeId) as Promise<TClock>,
         Clock.maxRepairTimeMsec!(),
         this.findAll({
           where: {
@@ -38,8 +37,6 @@ module.exports = (sequelize: Sequelize) => {
           },
         }),
       ])
-      
-           
 
       const orderDateTimeStarts = new Date(orderDateTimeStr)
       const orderDateTimeEnds = new Date(
@@ -77,13 +74,14 @@ module.exports = (sequelize: Sequelize) => {
       }, [])
 
       const freeMastersInCity = mastersInCity.filter(
-        ({ dataValues: masterInCity }) =>
+        // ({ dataValues: masterInCity }) =>
+        ( masterInCity ) =>
           !busyMasters.includes(+masterInCity.id)
       )
       return freeMastersInCity
     }
 
-    static associate(models) {
+    static associate(models:any) {
       this.belongsTo(models.City, {
         as: 'city',
         foreignKey: { name: 'cityId' },
@@ -96,6 +94,7 @@ module.exports = (sequelize: Sequelize) => {
   }
   Master.init(
     {
+      id: { primaryKey: true, type: DataTypes.NUMBER },
       name: DataTypes.STRING,
       cityId: DataTypes.INTEGER,
       comment: DataTypes.STRING,

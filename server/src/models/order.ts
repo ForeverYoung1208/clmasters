@@ -1,18 +1,16 @@
-'use strict'
-const { Op } = require('sequelize')
-const { PaginatedModel: Model } = require('./PaginatedModel/PaginatedModel')
-const { startOfDay, endOfDay } = require('date-fns')
-const orderValidators = require('./validators/orderValidators')
-const {
-  makeGoogleCalendarEvent,
-  deleteGoogleCalendarEvent,
-} = require('../shared/googleCalendarUtils')
+import { DataTypes, Sequelize } from 'sequelize'
+
+import { Op } from 'sequelize'
+import { PaginatedModel as Model } from './PaginatedModel/PaginatedModel'
+import { startOfDay, endOfDay } from 'date-fns'
+import orderValidators from './validators/orderValidators'
+import { makeGoogleCalendarEvent, deleteGoogleCalendarEvent } from '../shared/googleCalendarUtils'
 const cloudinary = require('cloudinary').v2
 
 const EQUALITY_THRESHOLD = 0.009
 
-module.exports = (sequelize, DataTypes) => {
-  class Order extends Model {
+module.exports = (sequelize: Sequelize) => {
+  class Order extends Model<IOrderAttr> {
     async putToGoogleCalendar() {
       let {
         clock,
@@ -99,7 +97,7 @@ module.exports = (sequelize, DataTypes) => {
       ) {
         cloudinary.api.delete_resources(
           [order._previousDataValues.photoPublicId],
-          function (error, result) {
+          function (error:an) {
             if (error) {
               console.log('cloudinary error:', error)
               throw new Error(error)
