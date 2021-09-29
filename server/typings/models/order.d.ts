@@ -1,16 +1,40 @@
-import { Model } from "sequelize/types"
-import { TPaginatedModelCtor } from "typings/paginatedModel"
-import { TPreorder } from "typings/preorder"
+import { type } from 'os'
+import { TPaginatedModelCtor } from '../paginatedModel'
+import { TClock } from './clock'
 
 export interface IOrderAttr {
-
+  id: number
+  clockId: number
+  masterId: number
+  userId: number
+  comment: string
+  onTime: Date
+  deletedAt?: Date
+  price?: number
+  calendarEventId?: string
+  thumbnailUrl?: string
+  photoPublicId?: string
+  payedSum?: number
+  
 }
 
-export type TOrder = TPaginatedModelCtor<IOrderAttr> & IOrderAttr
+export interface IOrderAttrOptional {
+  putToGoogleCalendar(): void
+  deleteFromGoogleCalendar(): void
+  deleteFromCloudinary(): void
+  checkForPhotoCleanup(): void
+  isPayed(): boolean
+  payedDoneOnSum(payedSum: string): TOrder
+}
 
-export type TOrderCtor<T> = TPaginatedModelCtor<T>
-  & {
-    
+type DatesFromTo = {
+    dateFrom: Date 
+    dateTo: Date
   }
 
+export type TOrderCtor<T> = TPaginatedModelCtor<T> & {
+  getAtDate(dateStr: string): Array<TOrder>
+  withinInterval({}:DatesFromTo): Array<TOrder>
+}
 
+export type TOrder = TPaginatedModelCtor<IOrderAttr> & IOrderAttr 

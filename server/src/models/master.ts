@@ -2,7 +2,8 @@ import { DataTypes, Sequelize } from 'sequelize'
 import { TPreorder } from 'typings/preorder'
 import { PaginatedModel } from './PaginatedModel/PaginatedModel'
 import { IMasterAttr } from 'typings/models/master'
-import { TClockCtor, IClockAttr, TClock } from 'typings/models/clock'
+import { TClockCtor, TClock } from 'typings/models/clock'
+import { TOrder } from 'typings/models/order'
 
 const { timestrToMSec } = require('../shared/services')
 const roundToMinute = require('date-fns/roundToNearestMinutes')
@@ -24,9 +25,9 @@ module.exports = (sequelize: Sequelize) => {
     static async freeMastersForOrder(preorderData: TPreorder, excludeOrderId:number) {
       const { cityId, orderDateTimeStr, clockTypeId } = preorderData
 
-      const Clock = sequelize.model('Clock') as TClockCtor<IClockAttr>
+      const Clock = sequelize.model('Clock') as TClockCtor
       
-      const Order = sequelize.model('Order')
+      const Order = sequelize.model('Order') as TOrder
 
       const [clockType, maxRepairTimeMsec, mastersInCity] = await Promise.all([
         Clock.findByPk(clockTypeId) as Promise<TClock>,

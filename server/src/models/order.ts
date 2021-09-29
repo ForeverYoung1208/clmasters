@@ -1,16 +1,39 @@
 import { DataTypes, Sequelize } from 'sequelize'
 
 import { Op } from 'sequelize'
-import { PaginatedModel as Model } from './PaginatedModel/PaginatedModel'
 import { startOfDay, endOfDay } from 'date-fns'
 import orderValidators from './validators/orderValidators'
 import { makeGoogleCalendarEvent, deleteGoogleCalendarEvent } from '../shared/googleCalendarUtils'
+import {IOrderAttr} from 'typings/models/order'
+import { PaginatedModel } from './PaginatedModel/PaginatedModel'
+import { TClock } from 'typings/models/clock'
+import { TMaster } from 'typings/models/master'
+
+type TUser = any  /////////////////////////!!!!!!!!!!!!!!!!
+
 const cloudinary = require('cloudinary').v2
 
 const EQUALITY_THRESHOLD = 0.009
 
 module.exports = (sequelize: Sequelize) => {
-  class Order extends Model<IOrderAttr> {
+  class Order extends PaginatedModel<IOrderAttr> implements IOrderAttr {
+    id!: number
+    clockId!: number
+    masterId!: number
+    userId!: number
+    comment: string =''
+    onTime!: Date
+    deletedAt?: Date
+    price?: number
+    calendarEventId?: string
+    thumbnailUrl?: string
+    photoPublicId?: string
+    payedSum?: number
+    clock?: TClock
+    user?: TUser
+    master?: TMaster
+    
+    
     async putToGoogleCalendar() {
       let {
         clock,
@@ -25,8 +48,8 @@ module.exports = (sequelize: Sequelize) => {
       } = this
 
       // in case if this method was called on instance without bound associations
-      if (!clock) clock = await sequelize.models.Clock.findByPk(clockId)
-      if (!user) user = await sequelize.models.User.findByPk(userId)
+      if (!clock) clock = await sequelize.models.Clock.findByPk(clockId) as TClock
+      if (!user) user = await sequelize.models.User.findByPk(userId) as TUser
       if (!master) {
         master = await sequelize.models.Master.findOne({
           where: { id: masterId },
@@ -36,7 +59,7 @@ module.exports = (sequelize: Sequelize) => {
               as: 'city',
             },
           ],
-        })
+        })as TMaster
       }
 
       const endTime = new Date(
@@ -62,7 +85,7 @@ module.exports = (sequelize: Sequelize) => {
       const {
         data: { id: eventId },
       } = await makeGoogleCalendarEvent(eventData)
-      this.calendarEventId = eventId
+      this.calendarEventId = eventId || undefined
 
       //should ignore hooks to prevent infinite loop
       await this.save({ hooks: false })
@@ -155,7 +178,7 @@ module.exports = (sequelize: Sequelize) => {
       return orders
     }
 
-    static associate(models) {
+    static associate(models:any) {
       // define association here
       this.belongsTo(models.User, {
         as: 'user',
@@ -174,6 +197,7 @@ module.exports = (sequelize: Sequelize) => {
 
   Order.init(
     {
+      id: { primaryKey: true, type: DataTypes.NUMBER },
       clockId: DataTypes.INTEGER,
       masterId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,

@@ -1,4 +1,5 @@
-import { TPaginatedModel, TPaginatedModelCtor } from "typings/paginatedModel"
+import { PaginatedModel } from 'src/models/PaginatedModel/PaginatedModel'
+import { TPaginatedModel, TPaginatedModelCtor } from 'typings/paginatedModel'
 
 export interface ICityAttr {
   id: number
@@ -9,7 +10,8 @@ export interface ICityAttr {
   updatedAt?: Date
 }
 
-export type TCityCtor<T> = TPaginatedModelCtor<T>
-  & { maxRepairTimeMsec?(): number }
+export type TCityCtor = TPaginatedModelCtor<ICityAttr> & {
+  maxRepairTimeMsec?(): number
+}
 
-export type TCity = TPaginatedModel<ICityAttr> & ICityAttr
+export type TCity = PaginatedModel<ICityAttr> & ICityAttr
