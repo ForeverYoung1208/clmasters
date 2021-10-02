@@ -3,7 +3,7 @@ import { TPreorder } from 'typings/preorder'
 import { PaginatedModel } from './PaginatedModel/PaginatedModel'
 import { IMasterAttr } from 'typings/models/master'
 import { TClockCtor, TClock } from 'typings/models/clock'
-import { TOrder } from 'typings/models/order'
+import { TOrder, TOrderCtor } from 'typings/models/order'
 
 const { timestrToMSec } = require('../shared/services')
 const roundToMinute = require('date-fns/roundToNearestMinutes')
@@ -27,7 +27,7 @@ module.exports = (sequelize: Sequelize) => {
 
       const Clock = sequelize.model('Clock') as TClockCtor
       
-      const Order = sequelize.model('Order') as TOrder
+      const Order = sequelize.model('Order') as TOrderCtor
 
       const [clockType, maxRepairTimeMsec, mastersInCity] = await Promise.all([
         Clock.findByPk(clockTypeId) as Promise<TClock>,
@@ -50,20 +50,22 @@ module.exports = (sequelize: Sequelize) => {
         dateTo: new Date(orderDateTimeStarts.valueOf() + maxRepairTimeMsec),
       })
 
-      const busyMasters = nearestOrders.reduce((acc, order) => {
+      const busyMasters = nearestOrders.reduce((acc:Array<number>, order) => {
         // make exclusion if needed - this oder doesn't make the master busy
         if (+order.id === +excludeOrderId) return acc
 
         const {
           dataValues: existingOrder,
-          clock: { dataValues: existingClock },
+          clock: { dataValues: existingClock } = {dataValues:undefined},
+          // clock: existingClock, 
         } = order
         const existingOrderEnds = new Date(
-          existingOrder.onTime.valueOf() +
-            timestrToMSec(existingClock.repairTime)
+          existingOrder?.onTime.valueOf() +
+            timestrToMSec(existingClock?.repairTime)
         )
 
         if (
+          existingOrder &&
           roundToMinute(orderDateTimeStarts) <
             roundToMinute(existingOrderEnds) &&
           roundToMinute(orderDateTimeEnds) > roundToMinute(existingOrder.onTime)

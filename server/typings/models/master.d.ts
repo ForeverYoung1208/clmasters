@@ -2,6 +2,7 @@ import { Model } from 'sequelize/types'
 import { PaginatedModel } from 'src/models/PaginatedModel/PaginatedModel'
 import { TPaginatedModelCtor } from 'typings/paginatedModel'
 import { TPreorder } from 'typings/preorder'
+import { TCity } from './city'
 
 export interface IMasterAttr {
   id: number
@@ -14,6 +15,8 @@ export interface IMasterAttr {
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date
+  city?: TCity
+  orders?: Array<TOrder>  
 }
 
 export type TMasterCtor = TPaginatedModelCtor<IMasterAttr> & {

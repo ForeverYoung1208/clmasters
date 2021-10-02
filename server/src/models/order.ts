@@ -4,15 +4,16 @@ import { Op } from 'sequelize'
 import { startOfDay, endOfDay } from 'date-fns'
 import orderValidators from './validators/orderValidators'
 import { makeGoogleCalendarEvent, deleteGoogleCalendarEvent } from '../shared/googleCalendarUtils'
-import {IOrderAttr} from 'typings/models/order'
+import { DatesFromTo, IOrderAttr, TOrder } from 'typings/models/order'
 import { PaginatedModel } from './PaginatedModel/PaginatedModel'
 import { TClock } from 'typings/models/clock'
 import { TMaster } from 'typings/models/master'
+import _cloudinary from 'cloudinary'
+import { TUser } from 'typings/models/user'
 
-type TUser = any  /////////////////////////!!!!!!!!!!!!!!!!
+// const cloudinary = require('cloudinary').v2
 
-const cloudinary = require('cloudinary').v2
-
+const cloudinary = _cloudinary.v2
 const EQUALITY_THRESHOLD = 0.009
 
 module.exports = (sequelize: Sequelize) => {
@@ -70,7 +71,7 @@ module.exports = (sequelize: Sequelize) => {
         summary: `Order ${id} (${clock.type} clock repair)`,
         description: `
           ${clock.type} clock repair (${clock.repairTime}),
-          city: ${master.city.name}, master:${master.name},
+          city: ${master.city?.name}, master:${master.name},
           user: ${user.name},
           comment:${comment} 
         `,
@@ -113,14 +114,16 @@ module.exports = (sequelize: Sequelize) => {
       }
     }
 
-    checkForPhotoCleanup(order) {
+    checkForPhotoCleanup(order: TOrder) {
       if (
-        order._changed.has('photoPublicId') &&
-        order._previousDataValues.photoPublicId
+        order.changed('photoPublicId') &&
+        order.previous('photoPublicId')
+        // order._changed.has('photoPublicId') &&
+        // order._previousDataValues.photoPublicId
       ) {
         cloudinary.api.delete_resources(
-          [order._previousDataValues.photoPublicId],
-          function (error:an) {
+          [order.previous('photoPublicId')!],
+          function (error:any) {
             if (error) {
               console.log('cloudinary error:', error)
               throw new Error(error)
@@ -130,17 +133,20 @@ module.exports = (sequelize: Sequelize) => {
       }
     }
 
-    isPayed() {
-      return Math.abs(this.payedSum - this.price) < EQUALITY_THRESHOLD
+    isPayed(this: TOrder) {
+      const payedSum = this.payedSum || 0
+      const price = this.price || 0
+      return Math.abs(payedSum - price) < EQUALITY_THRESHOLD
     }
 
-    async payedDoneOnSum(payedSum) {
-      this.payedSum = +this.payedSum + payedSum
+    async payedDoneOnSum(this: TOrder, payedSum: string) {
+      const prevPayedSum = this.payedSum || 0      
+      this.payedSum = prevPayedSum + +payedSum
       const updatedOrder = await this.save()
       return updatedOrder
     }
 
-    static async getAtDate(dateStr) {
+    static async getAtDate(dateStr:string) {
       const { startOfDay, endOfDay } = require('date-fns')
       const givenDateTime = new Date(dateStr)
       const ds = startOfDay(givenDateTime)
@@ -155,7 +161,7 @@ module.exports = (sequelize: Sequelize) => {
       return orders
     }
 
-    static async withinInterval({ dateFrom, dateTo }) {
+    static async withinInterval({ dateFrom, dateTo }: DatesFromTo) {
       const Clock = sequelize.model('Clock')
 
       const ds = startOfDay(dateFrom)
@@ -216,7 +222,7 @@ module.exports = (sequelize: Sequelize) => {
       paranoid: true,
       validate: {
         async isMasterFree() {
-          await orderValidators.checkMasterIsFree(sequelize, this)
+          await orderValidators.checkMasterIsFree(sequelize, this as unknown as TOrder)
         },
       },
       hooks: {
