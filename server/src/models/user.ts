@@ -10,7 +10,7 @@ module.exports = (sequelize: Sequelize) => {
     email!: string
     name!: string
     password?: string
-    isAdmin: boolean = false
+    isAdmin?: boolean
     static async register(name: string, email: string) {
       if (await User.exists(email)) {
         return { error: 'email already taken' }
