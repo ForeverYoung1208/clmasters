@@ -1,15 +1,22 @@
-const { check } = require('express-validator')
-const { User } = require('../models')
-const { noTimestamps } = require('../shared/services')
-const { CRUDController } = require('./common/CRUDController')
+import { Request, Response } from 'express'
+import { check } from 'express-validator'
+import { PaginatedModel } from 'src/models/PaginatedModel/PaginatedModel'
+import { IUserAttr, TUser, TUserCtor } from 'typings/models/user'
+import { TPaginatedModelCtor } from 'typings/paginatedModel'
+import db from '../models'
+import { noTimestamps } from '../shared/services'
+import { CRUDController } from './common/CRUDController'
+
+const User = db.User as TUserCtor
 
 class UsersController extends CRUDController {
-  constructor(model) {
+  model!: TUserCtor
+  constructor(model: TPaginatedModelCtor<IUserAttr>) {
     super(model)
   }
 
   // real delete !!!
-  async delete(req, res) {
+  async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.params
 
     try {
@@ -23,7 +30,7 @@ class UsersController extends CRUDController {
           message: `CDUD controller: model with id:${id} can not be deleted`,
         })
       return res.sendStatus(204)
-    } catch (error) {
+    } catch (error: any) {
       return res.status(400).json({
         message: `CDUD controller: error with deletion model id:${id}: ${error.name}`,
       })
@@ -31,7 +38,19 @@ class UsersController extends CRUDController {
   }
 
   // overrides parent CRUDcontroller method
-  async getAll(req, res) {
+  async getAll(
+    req: Request,
+    res: Response
+  ): Promise<
+    Response<
+      | { errors: Array<{ param: string; msg: string }> }
+      | {
+          totalCount: number
+          currentPage: number
+          data: Array<Omit<IUserAttr, 'password'>>
+        }
+    >
+  > {
     const { page, pageSize } = req.query
     if (page && !pageSize) {
       res.status(400).json({
@@ -66,7 +85,8 @@ class UsersController extends CRUDController {
       }
     )
     const data = rows.map((m) => {
-      const { wipedPassword, ...userDataNoPassword } = m.dataValues
+      // const { wipedPassword, ...userDataNoPassword } = m.dataValues
+      const { password: wipedPassword, ...userDataNoPassword } = m.dataValues
       return noTimestamps(userDataNoPassword)
     })
     return res.status(200).json({ totalCount, currentPage, data })
@@ -93,4 +113,4 @@ class UsersController extends CRUDController {
   }
 }
 
-exports.usersController = new UsersController(User)
+export const usersController = new UsersController(User)

@@ -11,7 +11,7 @@ export interface IUserAttr {
   orders?: Array<TOrder>
 }
 
-export type TUserCtor<T> = TPaginatedModelCtor<T> & {
+export type TUserCtor = TPaginatedModelCtor<IUserAttr> & {
   register(name: string, email: string): TUser
   getByEmail(email: string): TUser
   authenticate(email: string, password: string): TUser | string

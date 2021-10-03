@@ -24,5 +24,5 @@ export type TConfigDBs = {
 export interface ISequelizeDB {
   sequelize: Sequelize
   Sequelize: typeof Sequelize
-  [key: string]: Model & { associate?(ISequelizeDB): void }
+  [key: string]: ModelCtor & { associate?(ISequelizeDB): void }
 }
