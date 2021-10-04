@@ -6,6 +6,7 @@ import { TPaginatedModelCtor } from 'typings/paginatedModel'
 import db from '../models'
 import { noTimestamps } from '../shared/services'
 import { CRUDController } from './common/CRUDController'
+import {TModelResponceAll} from 'typings/controllers/CRUDController'
 
 const User = db.User as TUserCtor
 
@@ -41,16 +42,7 @@ class UsersController extends CRUDController {
   async getAll(
     req: Request,
     res: Response
-  ): Promise<
-    Response<
-      | { errors: Array<{ param: string; msg: string }> }
-      | {
-          totalCount: number
-          currentPage: number
-          data: Array<Omit<IUserAttr, 'password'>>
-        }
-    >
-  > {
+  ): Promise<Response<TModelResponceAll<IUserAttr>>> {
     const { page, pageSize } = req.query
     if (page && !pageSize) {
       res.status(400).json({
@@ -80,8 +72,8 @@ class UsersController extends CRUDController {
     } = await this.model.findAllPaginated(
       { order: [['id', 'ASC']] },
       {
-        page,
-        pageSize,
+        page: Number(page),
+        pageSize: Number(pageSize),
       }
     )
     const data = rows.map((m) => {
@@ -97,7 +89,7 @@ class UsersController extends CRUDController {
       check('name', 'name must be not empty!').exists().notEmpty(),
       check('email', 'Enter correct Email address.').isEmail(),
       check('password', 'Must be longer than 2 chars')
-        .if((value, { req }) => req.body.isAdmin)
+        .if((value:any, { req }) => req.body.isAdmin)
         .isLength({ min: 2 }),
     ]
   }
